@@ -1,0 +1,21 @@
+﻿<UserControl
+            x:Class="CatoriCity2025WPF.Views.Controls.FactoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged"
+             d:DesignHeight="80" d:DesignWidth="80" x:Name="BusinessUC" >
+    <Border x:Name="MainBorder" BorderThickness="2" Width="{Binding ActualWidth, ElementName=BusinessUC}"
+            Height="{Binding ActualHeight, ElementName=BusinessUC}" AllowDrop="True" DragDrop.Drop="MainBorder_Drop">
+        <Canvas x:Name="MainLayout" AllowDrop="True" DragDrop.Drop="MainLayout_Drop"  Width="{Binding ActualWidth, ElementName=MainBorder}"
+            Height="{Binding ActualHeight, ElementName=MainBorder}">
+            <Image x:Name="BusinessImage" Canvas.Left="0" Canvas.Top="0"  Width="{Binding ActualWidth, ElementName=MainLayout}"
+            Height="{Binding ActualHeight, ElementName=MainLayout}"/>
+            <Image x:Name="PersonImage"  Width="25" Height="25" Canvas.Left="65" Canvas.Top="00"/>
+
+            <Image x:Name="GearsImage"  Width="10" Height="10" Canvas.Left="65" Canvas.Top="25"/>
+        </Canvas>
+    </Border>
+</UserControl>

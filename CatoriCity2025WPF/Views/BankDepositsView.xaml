@@ -1,0 +1,51 @@
+﻿<Window x:Class="CatoriCity2025WPF.Views.BankDepositsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        mc:Ignorable="d" Background="{DynamicResource MainGradient}" WindowStyle="None"
+        Title="BankDepositsView" Height="350" Width="600">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8" Background="{DynamicResource MainGradient}">
+            <Label Content="BankId:" VerticalAlignment="Center" Foreground="{DynamicResource ButtonForeground}"/>
+            <TextBox x:Name="txtBankId" Width="80" Margin="6,0,12,0" VerticalAlignment="Center" IsReadOnly="True"/>
+            <Label Content="Name:" />
+            <TextBox x:Name="txtBankName" Width="200" Margin="6"/>
+            <Label Content="Total Funds:" />
+            <TextBox x:Name="txtBankFunds" Width="110" Margin="6"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,8" Background="{DynamicResource MainGradient}">
+            <Button x:Name="btnRefresh" Content="Refresh" Width="80" Margin="6,0,0,0" Click="BtnRefresh_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
+            <Button x:Name="btnClose" Content="Close" Width="80" Margin="12,0,0,0" Click="BtnClose_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
+        </StackPanel>
+
+        <DataGrid x:Name="dgDeposits" Background="{DynamicResource MainGradient}"
+                  Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Deposit Id" Binding="{Binding DepositId}" Width="80"/>
+                <DataGridTextColumn Header="Bank Id" Binding="{Binding BankId}" Width="90"/>
+                <DataGridTextColumn Header="Person Id" Binding="{Binding PersonId}" Width="90"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="120" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="txtStatus" Text="Ready" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

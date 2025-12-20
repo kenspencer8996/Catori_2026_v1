@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.FactoryInteriorUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d" Width="200" Height="120"
+             d:DesignHeight="100" d:DesignWidth="250" x:Name="UC">
+    <Canvas Width="{Binding ElementName=UC, Path=ActualWidth}" 
+             Height="{Binding ElementName=UC, Path=ActualHeight}">
+        <Image x:Name="Factory1InteriorImage" Stretch="Fill" Source="/Images/FactoryInterior1.png" Width="500" Height="260"/>
+        <local:RobotUC x:Name="RobotLeftUC" HorizontalAlignment="Left" Canvas.Left="324" Canvas.Top="95" VerticalAlignment="Top" Width="50" Height="80"/>
+        <local:RobotUC x:Name="RobotRightUC" HorizontalAlignment="Left" Canvas.Left="250" Canvas.Top="102"  VerticalAlignment="Top" Width="24" Height="56"/>
+        <Image x:Name="WorkerImage" Stretch="Fill" Source="/Images/badguy_6_wcash.png" Width="40" Height="40" Canvas.Left="64" Canvas.Top="95"/>
+    </Canvas>
+</UserControl>

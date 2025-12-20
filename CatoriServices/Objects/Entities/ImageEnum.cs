@@ -1,0 +1,35 @@
+﻿namespace CityAppServices.Objects.Entities
+{
+    public enum ImageEnum
+    {
+        vehicle,
+        vehiclesales,
+        bank,
+        factory,
+        badguy,
+        airport,
+        livingroom,
+        bedroom,
+        kitchen,
+        girl,
+        guy,
+        house,
+        store,
+        carlot,
+        classroom,
+        garage,
+        room,
+        man,
+        bush,
+        barn,
+        tree,
+        campfire,
+        shed,
+        forest,
+        petshop,
+        police,
+        policestation,
+        tent,
+        other
+    }
+}

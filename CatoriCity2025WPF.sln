@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriCity2025WPF", "CatoriCity2025WPF\CatoriCity2025WPF.csproj", "{F92216EC-F973-4540-9FEF-A791962432E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93970132-D7A8-AA24-1213-D76F1C4CFE61} = {93970132-D7A8-AA24-1213-D76F1C4CFE61}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriServices", "CatoriServices\CatoriServices.csproj", "{93970132-D7A8-AA24-1213-D76F1C4CFE61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F92216EC-F973-4540-9FEF-A791962432E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F92216EC-F973-4540-9FEF-A791962432E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F92216EC-F973-4540-9FEF-A791962432E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F92216EC-F973-4540-9FEF-A791962432E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93970132-D7A8-AA24-1213-D76F1C4CFE61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93970132-D7A8-AA24-1213-D76F1C4CFE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93970132-D7A8-AA24-1213-D76F1C4CFE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93970132-D7A8-AA24-1213-D76F1C4CFE61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A962E72-66E6-41DA-87D9-868A9C392F22}
+	EndGlobalSection
+EndGlobal

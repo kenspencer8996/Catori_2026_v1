@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0-windows7.0</TargetFramework>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Mantin.Controls.Wpf.Notification</RootNamespace>
+		<AssemblyName>Mantin.Controls.Wpf.Notification</AssemblyName>
+		<ExpressionBlendVersion>12.0.50716.0</ExpressionBlendVersion>
+		<SccProjectName>SAK</SccProjectName>
+		<SccLocalPath>SAK</SccLocalPath>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccProvider>SAK</SccProvider>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+	</PropertyGroup>
+	<ItemGroup>
+		<AppDesigner Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\help20.png" />
+		<Resource Include="Resources\HelpIcon.png" />
+		<Resource Include="Resources\information.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\error20.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\HelpIcon.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\warning.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\error.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\delete24.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\information20.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\warning20.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Toast.xaml.cs" />
+		<None Remove="Resources\HelpIcon.png" />
+		<Page Remove="Toast.xaml" />
+	</ItemGroup>
+	<PropertyGroup>
+		<Version>8.0.0.0</Version>
+		<Authors>Lawrence Mantin</Authors>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/accessguru/mantincontrols</PackageProjectUrl>
+		<Description>WPF Control library for Toast Popup and Help Balloon.</Description>
+		<RepositoryUrl>https://github.com/accessguru/mantincontrols</RepositoryUrl>
+		<PackageTags> WPF control help balloon notification notify toast popup </PackageTags>
+	</PropertyGroup>
+</Project>

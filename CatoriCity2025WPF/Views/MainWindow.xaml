@@ -1,0 +1,111 @@
+﻿<Window x:Class="CatoriCity2025WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriCity2025WPF"
+        xmlns:localConvertor="clr-namespace:CatoriCity2025WPF.Convertors"
+        xmlns:localUC="clr-namespace:CatoriCity2025WPF.Views.Controls"
+        mc:Ignorable="d" x:Name="MainWin"
+        Title="MainWindow" Height="1080" Width="1920" Closing="MainWin_Closing"
+        MouseDown="MainWin_MouseDown" SizeChanged="Window_SizeChanged" MouseMove="MainWin_MouseMove" 
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Window_Loaded">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid Background="#FBF5DE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90*" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Grid.Row="0"    Width="300" Height="25" x:Name="BadGuySpeedStackPanel" VerticalAlignment="Center">
+            <Label Content="Bad Guy Speed:" VerticalAlignment="Center" />
+            <Slider x:Name="BadGuyTravelSpeedSlider" Minimum="0" Foreground="Blue"
+           Maximum="40"
+           TickFrequency="1"
+           IsSnapToTickEnabled="True"
+           Width="150"
+           Value="{Binding BadGuyTravelSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueChanged="BadGuyTravelSpeedSlider_ValueChanged" Style="{DynamicResource SliderStyle1}"  />
+        </StackPanel>
+            <StackPanel Orientation="Horizontal" Canvas.Top="1030" Canvas.Left="1300" Width="300" Height="25"
+                        x:Name="PoliceCarSpeedStackPanel"  VerticalAlignment="Center" Margin="10,0,0,0" >
+            <Label Content="Police Car Speed:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <Slider Style="{DynamicResource SliderStyle1}" x:Name="PoliceCarTravelSpeedSlider" Minimum="0"
+           Maximum="40"
+           TickFrequency="1"
+           IsSnapToTickEnabled="True"
+           Width="150"
+           Value="{Binding PolicecarToravelSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueChanged="PoliceCarTravelSpeedSlider_ValueChanged"  />
+            <StackPanel x:Name="GroupIdsPanel" Panel.ZIndex="1200" Orientation="Horizontal" Margin="10,0,0,0" >
+                <Label x:Name="GroupsLabel" Content="Groups"/>
+                <StackPanel x:Name="GroupsIdsList" Orientation="Horizontal"/>
+            </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ShowSelectorButton"  Width="25" Click="ShowSelectorButton_Click">
+                    <Image x:Name="PeopleSelectorImage" Source="/Images/PeopleSelector.png" Width="25" Height="25"
+                      MouseEnter="PeopleSelectorImage_MouseEnter"/>
+                </Button>
+                <Button x:Name="SettingsViewButton" Width="25" Click="SettingsViewButton_Click" Margin="25,0,0,0">
+                    <Image x:Name="GearImage" Source="/Images/gear_.png" Width="25" Height="25"/>
+                </Button>
+  
+                <localUC:TrashCanUC x:Name="TrashControl" Canvas.Left="1865" Canvas.Top="10" Height="25" Width="25"/>
+            </StackPanel>
+       
+        </StackPanel>
+        <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" Width="{Binding ElementName=MainWin, Path=ActualWidth}"
+        Height="{Binding ElementName=MainWin, Path=ActualHeight}" Background="#FFE2F2F7">
+            <ListBox x:Name="PeopleSelectorList" Panel.ZIndex="300"   Width="160" Height="173" SelectionChanged="PeopleSelectorList_SelectionChanged" 
+        Canvas.Left="1760" Canvas.Top="10" PreviewMouseLeftButtonDown="PeopleSelectorList_PreviewMouseLeftButtonDown" MouseDown="PeopleSelectorList_MouseDown" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding StaticImageFilePath}" Width="50" Height="50"/>
+                            <!--<TextBlock Text="{Binding Name}" Margin="10,0,0,0"/>-->
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        <Button x:Name="SaveLayoutButton"  Width="50" Click="SaveLayoutButton_Click">
+            <Image x:Name="SaveImage" Source="/Images/SaveButtonCool.png" Width="1720" Height="50"/>
+        </Button>
+           <Rectangle x:Name="YouStRect" Width="1720" Height="50" Fill="#FF99999E"
+                   Canvas.Left="110" Canvas.Top="110" RadiusX="0.5" />
+        <Label x:Name="YouStLabel" Content="You St" FontWeight="Bold"  Canvas.ZIndex="200" Foreground="White" Canvas.Left="300" Canvas.Top="120"/>
+        <Rectangle x:Name="MikStRect" Width="1640" Height="50" Fill="#FF99999E"
+            Canvas.Left="110" Canvas.ZIndex="0"  Canvas.Top="930" RadiusX="0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Label x:Name="MikLabel" Content="Mik St" FontWeight="Bold"  Canvas.ZIndex="201" Foreground="White" Canvas.Left="300" Canvas.Top="855"/>
+        <Rectangle x:Name="YodelStRect" Width="50" Height="779" Fill="#FF99999E"
+            Canvas.Left="110" Canvas.Top="150" RadiusX="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Label x:Name="YodelStLabel" Content="Yodel St" FontWeight="Bold"  Canvas.ZIndex="200" Foreground="White" Canvas.Left="120" Canvas.Top="420">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </Label.LayoutTransform>
+        </Label>
+        <Rectangle x:Name="TeaStRect" Width="50" Height="780" Fill="#FF99999E"
+          Canvas.Left="1700" Canvas.Top="150" RadiusX="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Label x:Name="TeaStLabel" Content="Tea St" FontWeight="Bold"  Canvas.ZIndex="200" Foreground="White" Canvas.Left="1765" Canvas.Top="420">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </Label.LayoutTransform>
+        </Label>
+        <Rectangle x:Name="MooStRect" Width="50" Height="779" Fill="#FF99999E"
+            Canvas.Left="1060" Canvas.Top="150" RadiusX="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Label x:Name="MooStLabel" Content="Moo St" FontWeight="Bold"  Canvas.ZIndex="210" Foreground="White" Canvas.Left="1040" Canvas.Top="420">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </Label.LayoutTransform>
+        </Label>
+            <localUC:HelpIconControl x:Name="FactoryHelp" Caption="Drop worker on factory to earn money." Location="LeftBottom" Canvas.Left="65"  Canvas.Top="55"/>
+        <localUC:BaloonControl x:Name="BaloonHelpUC" Panel.ZIndex="5250"  Visibility="Visible" Canvas.Left="150" Canvas.Top="300" Height="200" Width="330"/>
+
+        </Canvas>
+    </Grid>
+</Window>

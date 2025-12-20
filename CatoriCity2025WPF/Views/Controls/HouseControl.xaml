@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.HouseControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d" Loaded="UserControl_Loaded" x:Name="HouseUC" SizeChanged="HouseControl_SizeChanged"
+             d:DesignHeight="90" d:DesignWidth="90" AllowDrop="True">
+        <Border x:Name="MainBorder" BorderThickness="2" Width="{Binding ElementName=HouseUC, Path=ActualWidth}"
+            Height="{Binding ElementName=HouseUC, Path=ActualHeight}" >
+        <Canvas x:Name="MainLayout"  Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+            Height="{Binding ElementName=MainBorder, Path=ActualHeight}" AllowDrop="True" 
+                DragDrop.Drop="MainLayout_Drop">
+            <Image x:Name="HouseImage"  Width="{Binding ElementName=MainLayout, Path=ActualWidth}"
+            Height="{Binding ElementName=MainLayout, Path=ActualHeight}"/>
+            <Button Name="ExpandButton" Width="15" Height="15" Click="ExpandButton_Click">
+                <Image Source="/Images/uparrowRed.png"></Image>
+            </Button>
+            <Image x:Name="PersonImage"  Width="30" Height="30" Canvas.Left="30" Canvas.Top="00" MouseDown="PersonImage_MouseDown" Visibility="Hidden"/>
+            <Thumb Name="fundsThumb" Canvas.Left="60" Canvas.Top="30" MouseDoubleClick="fundsThumb_MouseDoubleClick" >
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <Image x:Name="FundsImage" Visibility="Visible"  Width="15" Height="15" 
+                        AllowDrop="True" Source="/Images/dollarsign.png" />
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
+        </Canvas>
+    </Border>
+</UserControl>

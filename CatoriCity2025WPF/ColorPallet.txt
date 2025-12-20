@@ -1,0 +1,5 @@
+﻿Color Pallet
+3D74B6 		blue
+FBF5DE 		beige
+EAC8A6		tan
+DC3C22		red

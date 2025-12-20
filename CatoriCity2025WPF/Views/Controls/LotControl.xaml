@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.LotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d" x:Name="LotUC"
+             d:DesignHeight="90" d:DesignWidth="90" Padding="5,5,5,5">
+    <Border x:Name="LotUCBorder" BorderBrush="Black" BorderThickness="2" Width="{Binding ElementName=LotUC, Path=ActualWidth}"
+             Height="{Binding ElementName=LotUC, Path=ActualHeight}"
+            CornerRadius="5">
+        <Canvas x:Name="LotUCMainLayout"  Width="{Binding ElementName=LotUCBorder, Path=ActualWidth}"
+             Height="{Binding ElementName=LotUCBorder, Path=ActualHeight}">
+            <Label x:Name="LotLabel" Content="Lot" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
+        </Canvas>
+    </Border>
+</UserControl>

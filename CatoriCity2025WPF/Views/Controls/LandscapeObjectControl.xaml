@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.LandscapeObjectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d" SizeChanged="LandscapeUC_SizeChanged"
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="LandscapeUC" MouseLeftButtonDown="LandscapeUC_MouseLeftButtonDown"
+             MouseDown="LandscapeUC_MouseDown" MouseUp="LandscapeUC_MouseUp" MouseMove="LandscapeUC_MouseMove"
+             MouseLeave="LandscapeUC_MouseLeave" Loaded="LandscapeUC_Loaded">
+    <UserControl.ContextMenu>
+        <ContextMenu   StaysOpen="true">
+            <MenuItem x:Name="ResizeMenuItem" Header="Resize" Click="ResizeMenuItem_Click"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>   
+    <Border x:Name="MainBorder"  Width="{Binding ElementName=LandscapeUC, Path=ActualWidth}"
+      Height="{Binding ElementName=LandscapeUC, Path=ActualHeight}" BorderBrush="Black" BorderThickness="4,4,4,4">
+        <Canvas x:Name="MainCanvas" Width="{Binding ElementName=MainBorder, Path=ActualWidth}" 
+            Height="{Binding ElementName=MainBorder, Path=ActualHeight}" >
+        <Image x:Name="LandscapeImage"  
+                    Width="{Binding ElementName=MainCanvas, Path=ActualWidth}"
+                   Height="{Binding ElementName=MainCanvas, Path=ActualHeight}"
+                   Canvas.Left="0" Canvas.Top="0" Canvas.ZIndex ="10" Source="/Images/closexred.png" />
+            <Popup Name="SizePopup" IsOpen="False"  PlacementTarget="{Binding ElementName=LandscapeImage}" Placement="Right">
+                <Grid Background="#FF7D7979">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Width:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Height:" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="White"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="WidthTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="HeightTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Grid.Row="2" x:Name="ResizeOKButton" Content="OK" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" Click="ResizeOKButton_Click"/>
+                </Grid>
+            </Popup>
+        </Canvas>
+    </Border>
+</UserControl>

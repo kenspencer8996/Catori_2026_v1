@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Objects\ResourceHelperWin.cs" />
+    <Compile Remove="Objects\ReturnForInsertMethods.cs" />
+    <Compile Remove="Objects\SampleData.cs" />
+    <Compile Remove="Objects\StreetsModel.cs" />
+    <Compile Remove="Objects\UIHelpers.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Images\badguy_6_wcash.png" />
+    <None Remove="Images\closexred.png" />
+    <None Remove="Images\DefaultRobotArmt.png" />
+    <None Remove="Images\DepositImage.png" />
+    <None Remove="Images\dollarsign.png" />
+    <None Remove="Images\FactoryInterior1.png" />
+    <None Remove="Images\gear_.png" />
+    <None Remove="Images\HelpIcon.png" />
+    <None Remove="Images\information.png" />
+    <None Remove="Images\PeopleSelector.png" />
+    <None Remove="Images\policestation_.png" />
+    <None Remove="Images\SaveButtonCool.png" />
+    <None Remove="Images\Trashcan.png" />
+    <None Remove="Images\uparrowRed.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Objects\Graphics\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\badguy_6_wcash.png" />
+    <Resource Include="Images\closexred.png" />
+    <Resource Include="Images\DefaultRobotArmt.png" />
+    <Resource Include="Images\DepositImage.png" />
+    <Resource Include="Images\dollarsign.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\FactoryInterior1.png" />
+    <Resource Include="Images\gear_.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\HelpIcon.png" />
+    <Resource Include="Images\information.png" />
+    <Resource Include="Images\PeopleSelector.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\SaveButtonCool.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Trashcan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\uparrowRed.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Controls\FactoryControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
