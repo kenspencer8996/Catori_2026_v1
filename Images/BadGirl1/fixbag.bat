@@ -1,0 +1,19 @@
+
+ren	BadGirl__Bag_WalkL_01.png   				BadGirl_Bag_WalkL_01.png   
+ren	BadGirl__Bag_WalkL_02.png				BadGirl_Bag_WalkL_02.png
+ren	BadGirl__Bag_WalkL_03.png   				BadGirl_Bag_WalkL_03.png   
+ren	BadGirl__Bag_WalkL_04.png				BadGirl_Bag_WalkL_04.png
+ren	BadGirl__Bag_WalkL_05.png   				BadGirl_Bag_WalkL_05.png   
+ren	BadGirl__Bag_WalkL_06.png				BadGirl_Bag_WalkL_06.png
+ren	BadGirl__Bag_WalkL_07.png   				BadGirl_Bag_WalkL_07.png   
+ren	BadGirl__Bag_WalkL_08.png				BadGirl_Bag_WalkL_08.png
+ren	BadGirl__Bag_WalkL_09.png   				BadGirl_Bag_WalkL_09.png   
+ren	BadGirl__Bag_WalkR_01.png				BadGirl_Bag_WalkR_01.png
+ren	BadGirl__Bag_WalkR_02.png   				BadGirl_Bag_WalkR_02.png   
+ren	BadGirl__Bag_WalkR_03.png				BadGirl_Bag_WalkR_03.png
+ren	BadGirl__Bag_WalkR_04.png   				BadGirl_Bag_WalkR_04.png   
+ren	BadGirl__Bag_WalkR_05.png				BadGirl_Bag_WalkR_05.png
+ren	BadGirl__Bag_WalkR_06.png   				BadGirl_Bag_WalkR_06.png   
+ren	BadGirl__Bag_WalkR_07.png				BadGirl_Bag_WalkR_07.png
+ren	BadGirl__Bag_WalkR_08.png   				BadGirl_Bag_WalkR_08.png   
+ren	BadGirl__Bag_WalkR_09.png				BadGirl_Bag_WalkR_09.png
