@@ -9,7 +9,7 @@ namespace CityAppServices
     public class GlobalServices
     {
         public static ObservableCollection<SettingEntity> Settings { get; set; } = new ObservableCollection<SettingEntity>();
-        public static string Database = "C:\\Develpoment\\Gaming\\Databases\\cityapps026.db";
+        public static string Database = "C:\\Develpoment\\Gaming\\Databases\\CatoriDatabase2026\\cityapps026.db";
         public static Int32 LandscapeObjecGroupid = 1;
 
         public static void LoadSettings()

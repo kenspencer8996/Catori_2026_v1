@@ -9,7 +9,6 @@ using CityAppServices.Objects;
 using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Media;
 
 namespace CatoriCity2025WPF.Objects
@@ -172,7 +171,7 @@ namespace CatoriCity2025WPF.Objects
         //  public List<ResidenceEntity> Residences { get; set; } = new List<ResidenceEntity>();
         //public List<VehicleEntity> Vehicles { get; set; } = new List<VehicleEntity>();
         public static List<HouseViewModel> Houses { get; set; } = new List<HouseViewModel>();
-        public static string _imageFolder = "C:\\Develpoment\\Gaming\\CatoriCity2025WPF\\Images";
+        public static string _imageFolder = "C:\\Develpoment\\Gaming\\Catori2026\\Catori_2026_v1\\Images";
         
         public static string ImageFolder
         {

@@ -40,7 +40,7 @@ namespace CatoriCity2025WPF.Controllers
             BitmapImage thisBitMap = new BitmapImage(new Uri(_imageFileNames[_imageindex]));
             thisBitMap.Freeze();
 
-            if (thisBitMap != null)
+            if (thisBitMap != null && Application.Current != null)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
