@@ -5,29 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="BankEditView" Height="450" Width="800">
+        Title="Bank Edit View" Height="350" Width="800" Background="{DynamicResource MainGradient}">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="145"/>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="240"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Key:" VerticalAlignment="Center" />
         <TextBox Grid.Row="0" Grid.Column="1" x:Name="TxtKey" Text="{Binding BusinesskeyImageNameWOExtension}" Margin="4,4,0,4"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Description:" VerticalAlignment="Top" />
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtDescription" MaxLines="3" Text="{Binding Description}" Margin="4,4,0,4" AcceptsReturn="True" Height="80"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Image File:" VerticalAlignment="Top" />
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtImageFile" Text="{Binding ImageFileName}" Margin="4,4,0,4" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Image File:" VerticalAlignment="Top" />
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TxtImageFile" Text="{Binding ImageFileName}" Margin="4,4,0,4" />
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Description:" VerticalAlignment="Top" />
-        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TxtDescription" MaxLines="3" Text="{Binding Description}" Margin="4,4,0,4" AcceptsReturn="True" Height="80"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Business key (Image Name WO Extension):" VerticalAlignment="Top" />
+        <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtImageKey" MaxLines="3" Text="{Binding BusinesskeyImageNameWOExtension}" Margin="4,4,0,4" AcceptsReturn="True" Height="80"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Financials:" VerticalAlignment="Top" />
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <Label Grid.Row="3" Grid.Column="0" Content="Current funds:" VerticalAlignment="Top" />
+            <TextBox  x:Name="txtCurrentFunds" MaxLines="3" Text="{Binding CurrentFunds}" MinWidth="100" />
+            <Label  Content="Interest Rate:" VerticalAlignment="Top" />
+            <TextBox x:Name="txtInterestrate" Height="35" Text="{Binding InterestRate}"  MinWidth="100" />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,8,0,0">
+        </StackPanel>        
+        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,8,0,0">
             <Button x:Name="BtnSave" Content="Save" Width="100" Margin="4" Click="BtnSave_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
             <Button x:Name="BtnCancel" Content="Cancel" Width="100" Margin="4" Click="BtnCancel_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
         </StackPanel>

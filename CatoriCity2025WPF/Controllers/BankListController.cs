@@ -49,7 +49,7 @@ namespace CatoriCity2025WPF.Controllers
         public void Edit(BankViewModel vm)
         {
             if (vm == null) return;
-            var editView = new Views.BankEditView(new BankViewModel { BusinesskeyImageNameWOExtension = vm.BusinesskeyImageNameWOExtension, ImageFileName = vm.ImageFileName, Description = vm.Description, BankId = vm.BankId });
+            var editView = new Views.BankEditView(vm);
             editView.Owner = _view;
             var result = editView.ShowDialog();
             if (result == true)

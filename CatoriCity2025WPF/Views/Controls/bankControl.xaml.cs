@@ -2,6 +2,7 @@
 using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.Services;
 using CatoriCity2025WPF.ViewModels;
+using CatoriServices.Objects;
 using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows;
@@ -15,6 +16,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// </summary>
     public partial class BankControl : UserControl
     {
+      
         public BankViewModel Model = new BankViewModel();
         private string _imagename = "";
         public double RotationDegrees { get; set; }
@@ -30,18 +32,18 @@ namespace CatoriCity2025WPF.Views.Controls
             ParentLeft = left;
             Parentop = top;
             depositservice = new DepositService();
-            //WeakReferenceMessenger.Default.Register<DepositMessageArgument>(this, (r, m) =>
-            //{
+            WeakReferenceMessenger.Default.Register<DepositMessageArgument>(this, (r, m) =>
+            {
 
-            //    cLogger.Log(this.Name + " WeakReferenceMessenger called : " + " ");
-            //    if (m.BankId == Model.BankId)
-            //    {
-            //        Funds.Money += m.Amount;
-            //        SaveDeposit(m.Amount,m.Person.PersonId,m.BusinessName);
-            //        SendMessageDepositeMade(Funds);
-            //        SenMessageToBadGuys(Funds);
-            //    }
-            //});
+                cLogger.Log(this.Name + " WeakReferenceMessenger called : " + " ");
+                if (m.BankId == Model.BankId)
+                {
+                    Funds.Money += m.Amount;
+                    SaveDeposit(m.Amount, m.Person.PersonId, m.BusinessName);
+                    SendMessageDepositeMade(Funds);
+                   // SenMessageToBadGuys(Funds);
+                }
+            });
         }
         private void SenMessageToBadGuys(FundsViewModel funds)
         {
@@ -54,9 +56,19 @@ namespace CatoriCity2025WPF.Views.Controls
 
         public void SaveDeposit(decimal amount,int personid,string businessname)
         {
+            decimal existingdeposits = 0;
+            var currentdeposits = depositservice.GetDepositsForPersonAsync(personid);
+            if (currentdeposits != null && currentdeposits.Count > 0)
+            {
+               var persondeposits = currentdeposits.Where(d => d.BankId == Model.BankId);
+                foreach (var deposit in persondeposits)
+                {
+                    existingdeposits =deposit.Amount;
+                }
+            }
             DepositViewModel _depositViewModel = new DepositViewModel();
             _depositViewModel.BankId = Model.BankId;
-            _depositViewModel.Amount = amount;
+            _depositViewModel.Amount = amount + existingdeposits;
             _depositViewModel.PersonId = personid;
             _depositViewModel.BusinessName = businessname;
             

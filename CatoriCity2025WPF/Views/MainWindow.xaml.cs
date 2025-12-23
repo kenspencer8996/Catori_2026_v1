@@ -115,7 +115,10 @@ namespace CatoriCity2025WPF
         private void LoadPersons()
         {
             Canvas.SetZIndex(PeopleSelectorList, 200);
-            //PeopleSelectorList
+            double left = this.Width - PeopleSelectorList.Width - 20;
+            Canvas.SetLeft(PeopleSelectorList, left);
+            
+             //PeopleSelectorList
             try
             {
                 //string imagePath = GlobalStuff.ImageFolder + "\\PrimaryPeople";

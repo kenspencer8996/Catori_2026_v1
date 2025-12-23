@@ -16,7 +16,7 @@ namespace CatoriCity2025WPF.ViewModels
         public double Y { get; set; }
         public BankControl BankUC { get; set; }
         public decimal InterestRate { get; set; }
-        public string Bankkey 
+        public string Bankkey
         {
             get
             {
@@ -32,7 +32,7 @@ namespace CatoriCity2025WPF.ViewModels
             {
                 _currentFunds = value;
             }
-        }   
+        }
         public string BusinesskeyImageNameWOExtension
         {
             get => _businessKey;
@@ -67,6 +67,21 @@ namespace CatoriCity2025WPF.ViewModels
                 if (string.IsNullOrEmpty(filename))
                     return filename;
 
+                return filename;
+            }
+            set
+            {
+                _imageFileName = value;
+            }
+        }
+        public string ImageFileNameWIthPath
+        {
+            get
+            {
+                string filename = _imageFileName;
+                if (string.IsNullOrEmpty(filename))
+                    return filename;
+
                 if (filename.StartsWith(GlobalStuff.ImageFolder))
                     filename = _imageFileName;
                 else
@@ -79,7 +94,6 @@ namespace CatoriCity2025WPF.ViewModels
                 _imageFileName = value;
             }
         }
-
         public string Description
         {
             get => _description;
