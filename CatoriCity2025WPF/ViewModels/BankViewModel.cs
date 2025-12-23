@@ -15,6 +15,7 @@ namespace CatoriCity2025WPF.ViewModels
         public double X { get; set; }
         public double Y { get; set; }
         public BankControl BankUC { get; set; }
+        public decimal InterestRate { get; set; }
         public string Bankkey 
         {
             get
@@ -103,6 +104,7 @@ namespace CatoriCity2025WPF.ViewModels
             entity.BusinesskeyImageNameWOExtension = BusinesskeyImageNameWOExtension;
             entity.ImageFileName = ImageFileName;
             entity.Description = Description;
+            entity.Interestrate = (decimal)InterestRate;
             return entity;
         }
 
@@ -119,6 +121,7 @@ namespace CatoriCity2025WPF.ViewModels
                 Name = System.IO.Path.GetFileName(entity.ImageFileName);
             else
                 Name = entity.BusinesskeyImageNameWOExtension;
+            InterestRate = entity.Interestrate;
         }
     }
 }

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
         xmlns:uc="clr-namespace:CatoriCity2025WPF.Views.Controls"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Settings View" Height="600" Width="1024" Closing="Window_Closing">
-    <Grid>
+        Title="Settings View" Height="600" Width="1024" Closing="Window_Closing" Background="{DynamicResource MainGradient}">
+    <Grid Background="{DynamicResource MainGradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -17,7 +17,7 @@
             <Label x:Name="GroupsLabel" Content="Groups"/>
             <StackPanel x:Name="GroupsIdsList" Orientation="Horizontal"/>
         </StackPanel>
-        <TabControl x:Name="SettingsTabControl" Grid.Row="1">
+        <TabControl x:Name="SettingsTabControl" Grid.Row="1" Background="{DynamicResource MainGradient}">
             <TabItem Header="General">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -126,8 +126,28 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="PoliceCarsButton" Content="Police Cars" Click="PoliceCarsButton_Click"/>
-                    <Button x:Name="BadPersonButton" Content="Bad person" Grid.Row="1" Click="BadPersonButton_Click"/>
+                    <Button x:Name="PoliceCarsButton" Content="Police Cars" Click="PoliceCarsButton_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
+                    <Button x:Name="BadPersonButton" Content="Bad person" Grid.Row="1" Click="BadPersonButton_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Misc">
+                <Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BanksButton" Content="Banks" Click="BanksButton_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

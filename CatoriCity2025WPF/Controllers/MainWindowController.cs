@@ -9,6 +9,7 @@ using CatoriServices.Objects.Entities;
 using CityAppServices;
 using CityAppServices.Objects;
 using CityAppServices.Objects.Entities;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -28,6 +29,7 @@ namespace CatoriCity2025WPF.Controllers
         int _streetwidth;
         private List<LotControl> _lots = new List<LotControl>();
         DispatcherTimer _updatePathsTimerTimer;
+        System.Timers.Timer interestAddTimer;
         internal MainWindowController(MainWindow view)
         {
             _view = view;
@@ -75,11 +77,28 @@ namespace CatoriCity2025WPF.Controllers
                 _updatePathsTimerTimer = new DispatcherTimer();
                 _updatePathsTimerTimer.Tick += new EventHandler(__updatePathsTimerTimer_Tick);
                 _updatePathsTimerTimer.Interval = new TimeSpan(0, 0, 30);
+
+                interestAddTimer = new System.Timers.Timer();
+                interestAddTimer.Interval = 60000 * 10; // 10 minutes
+                interestAddTimer.Elapsed += InterestAddTimer_Elapsed;
+                interestAddTimer.Start();
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        private void InterestAddTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            interestAddTimer.Stop();
+            DepositService  depositService = new DepositService();  
+            BankService bankService = new BankService();
+            var banks = bankService.GetAllAsync().Result;   
+            depositService.CalculateDeposits(banks).Wait();
+
+            interestAddTimer.Start();
+
         }
 
         private void AddfactoryIntrnalView(double leftFactory,double topFactory)
@@ -361,7 +380,7 @@ namespace CatoriCity2025WPF.Controllers
                 int y = (int)Canvas.GetTop(firstlot);
                 List<BankViewModel> bankViewModels = new List<BankViewModel>();
                 BankService bankService = new BankService();
-                bankViewModels = bankService.GetAllAsync();
+                bankViewModels = bankService.GetAllAsync().Result;
                 foreach (var item in banks)
                 {
                     try

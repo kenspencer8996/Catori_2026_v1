@@ -167,5 +167,12 @@ namespace CatoriCity2025WPF.Views
             FundsMessage msg = new FundsMessage(funds);
             WeakReferenceMessenger.Default.Send(msg);
         }
+
+        private void BanksButton_Click(object sender, RoutedEventArgs e)
+        {
+            BankListView bankListView = new BankListView();
+            bankListView.Owner = this;
+            bankListView.ShowDialog();
+        }
     }
 }

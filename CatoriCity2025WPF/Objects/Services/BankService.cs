@@ -18,9 +18,9 @@ namespace CatoriCity2025WPF.Objects.Services
             _repository = new BankRepository();
         }
 
-        public List<BankViewModel> GetAllAsync(CancellationToken cancellationToken = default)
+        public Task<List<BankViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            List < BankViewModel > results = new List<BankViewModel>();
+            var results = new List<BankViewModel>();
             var entities = _repository.GetBanksAsync().Result;
             foreach (var entity in entities)
             {
@@ -28,7 +28,7 @@ namespace CatoriCity2025WPF.Objects.Services
                 viewModel.ToModel(entity);
                 results.Add(viewModel);
             }
-            return results;
+            return Task.FromResult(results); 
         }
 
         public BankViewModel GetByIdAsync(int bankId, CancellationToken cancellationToken = default)

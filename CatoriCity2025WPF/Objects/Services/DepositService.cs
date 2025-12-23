@@ -30,7 +30,34 @@ namespace CatoriCity2025WPF.Objects.Services
                 throw;
             }
         }
+        public async Task CalculateDeposits(List<BankViewModel> Banks)
+        {
+            try
+            {
+                // iterate over banks
+                //get deposits for each bank
+                //calc interest and add to deposit amount
+                foreach (var bank in Banks)
+                {
+                    var depositsForBank = await _repository.GetDepositsForBankAsync(bank.BankId).ConfigureAwait(false);
+                    foreach (var deposit in depositsForBank)
+                    {
+                        // Example interest calculation (replace with actual logic)
+                        decimal interest = deposit.Amount * bank.InterestRate ;
+                        deposit.Amount += interest;
+                        _repository.Upsert(deposit);
+                    }
+                }
 
+              
+            }
+            catch (Exception)
+            {
+                // preserve original behavior of throwing to caller
+                throw;
+            }
+
+        }
 
         /// <summary>
         /// Returns all deposits.

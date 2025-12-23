@@ -1,0 +1,44 @@
+﻿<Window x:Class="CatoriCity2025WPF.Views.BankListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="BankListView" Height="450" Width="800" Background="{DynamicResource MainGradient}">
+    <Grid Background="{DynamicResource MainGradient}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
+            <Button x:Name="BtnNew" Content="New" Width="80" Click="BtnNew_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+            <Button x:Name="BtnEdit" Content="Edit" Width="80" Margin="6,0,0,0" Click="BtnEdit_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+            <Button x:Name="BtnDelete" Content="Delete" Width="80" Margin="6,0,0,0" Click="BtnDelete_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+            <Button x:Name="BtnRefresh" Content="Refresh" Width="80" Margin="12,0,0,0" Click="BtnRefresh_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+            <Button x:Name="BtnClose" Content="Close" Width="80" Margin="12,0,0,0" Click="BtnClose_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+        </StackPanel>
+
+        <DataGrid x:Name="DgBanks"
+                 Grid.Row="1"
+                 AutoGenerateColumns="False"
+                 SelectionMode="Single"
+                 CanUserAddRows="False" SelectionChanged ="DgBanks_SelectionChanged"
+                 IsReadOnly="True" Background="{DynamicResource MainGradient}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="BankId" Binding="{Binding BankId}" Width="80"/>
+                <DataGridTextColumn Header="Key" Binding="{Binding BusinesskeyImageNameWOExtension}" Width="180"/>
+                <DataGridTextColumn Header="ImageFile" Binding="{Binding ImageFileName}" Width="200"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom" Margin="0,6,0,0">
+            <StatusBarItem>
+                <TextBlock x:Name="TxtStatus" Text="Ready"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

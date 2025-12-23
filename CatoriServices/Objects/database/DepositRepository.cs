@@ -134,7 +134,6 @@ namespace CatoriServices.Objects.database
 
                 if (foundDeposit != null && foundDeposit.DepositId != 0)
                 {
-                    entity.Amount += foundDeposit.Amount;
                     // Update
                     using var command = connection.CreateCommand();
                     command.CommandText = "UPDATE Deposit SET BankId = @BankId, PersonId = @personId, Amount = @amount WHERE DepositId = @depositId";
@@ -163,6 +162,41 @@ namespace CatoriServices.Objects.database
             }
         }
 
-        
+        public async Task<IEnumerable<DepositEntity>> GetDepositsForBankAsync(int bankId)
+        {
+            List<DepositEntity> deposits = new List<DepositEntity>();
+            try
+            {
+                string sql = "SELECT DepositId, d.BankId, PersonId, Amount,d.businessname FROM Deposit d ";
+                sql += " where d.BankId = " + bankId;
+                IDataReader reader = sqlhelper.GetReader(sql);
+
+                int idxDepositId = reader.GetOrdinal("DepositId");
+                int idxBankId = reader.GetOrdinal("BankId");
+                int idxPersonId = reader.GetOrdinal("PersonId");
+                int idxAmount = reader.GetOrdinal("Amount");
+                int idxBusinessName = reader.GetOrdinal("businessname");
+
+                while (reader.Read())
+                {
+                    DepositEntity entity = new DepositEntity();
+                    if (!reader.IsDBNull(idxDepositId)) entity.DepositId = reader.GetInt32(idxDepositId);
+                    if (!reader.IsDBNull(idxBankId)) entity.BankId = reader.GetInt32(idxBankId);
+                    if (!reader.IsDBNull(idxPersonId)) entity.PersonId = reader.GetInt32(idxPersonId);
+                    if (!reader.IsDBNull(idxAmount)) entity.Amount = reader.GetDecimal(idxAmount);
+                    if (!reader.IsDBNull(idxBusinessName)) entity.BusinessName = reader.GetString(idxBusinessName);
+
+                    deposits.Add(entity);
+                }
+
+                reader.Close();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return deposits;
+        }
     }
 }

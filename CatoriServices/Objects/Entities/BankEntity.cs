@@ -7,5 +7,6 @@
         public string ImageFileName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal CurrentFunds { get; set; } = 0m;
+        public decimal Interestrate { get; set; }
     }
 }
