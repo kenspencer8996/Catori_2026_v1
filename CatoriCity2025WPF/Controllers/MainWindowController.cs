@@ -1,18 +1,4 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
-using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
-using CatoriServices.Objects;
-using CatoriServices.Objects.database;
-using CatoriServices.Objects.Entities;
-using CityAppServices;
-using CityAppServices.Objects;
-using CityAppServices.Objects.Entities;
-using System.Timers;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -111,7 +97,7 @@ namespace CatoriCity2025WPF.Controllers
             _view.MainLayout.Children.Add(GlobalStuff.factoryInteriorControl);
             Canvas.SetLeft(GlobalStuff.factoryInteriorControl, leftFactory - width);
             Canvas.SetTop(GlobalStuff.factoryInteriorControl, topFactory + 100 );
-            Canvas.SetZIndex(GlobalStuff.factoryInteriorControl, 1200);
+            Canvas.SetZIndex(GlobalStuff.factoryInteriorControl, 2000);
         }
 
         private void BaloonHelpUC_MoveBaloon(object? sender, Objects.Arguments.BaloonLocationInfoArgument e)
@@ -322,35 +308,52 @@ namespace CatoriCity2025WPF.Controllers
             cLogger.Log($"houses : {GlobalStuff.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
 
             PersonViewModel currentPerson = new PersonViewModel();
-            if (GlobalStuff.CurrentUserPersonId > 0)
+            if (GlobalStuff.CurrentUserPerson.PersonId > 0)
             {
                 var person = from i in GlobalStuff.AllPersons
-                                    where i.PersonId == GlobalStuff.CurrentUserPersonId
+                                    where i.PersonId == GlobalStuff.CurrentUserPerson.PersonId
                                     select i;
                 currentPerson = person.First();
             }
-            foreach (var house in GlobalStuff.Houses)
+            try
             {
-                HouseControl houseControl = new HouseControl(house);
-                if (house.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower())
+                foreach (var house in GlobalStuff.Houses)
                 {
-                    houseControl.AddPersonModel(currentPerson);
+                    try
+                    {
+                        HouseControl houseControl = new HouseControl(house);
+                        if (house.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower()
+                            && currentPerson.Name != null && currentPerson.Name != "")
+                        {
+                            houseControl.AddPersonModel(currentPerson);
+                        }
+                        houseControl.Width = GlobalStuff.buildingsize;
+                        houseControl.Height = GlobalStuff.buildingsize - 10;
+                        Canvas.SetZIndex(houseControl, 100);
+                        Canvas.SetLeft(houseControl, left);
+                        Canvas.SetTop(houseControl, top);
+                        var found = from lot in _lots
+                                    where lot.LotOccupied == false
+                                    && lot.Street == StreetsEnum.YouStreet
+                                    select lot;
+                        if (found.Any())
+                        {
+                            found.First().AddBuilding(houseControl);
+                        }
+                        left += 90;
+                    }
+                    catch (Exception exi)
+                    {
+
+                        throw;
+                    }
+                    cLogger.Log($"HouseControl: {house.HouseImageFileName}"); // HouseControl: /CatoriCity2025WPF; 100 100
                 }
-                houseControl.Width = GlobalStuff.buildingsize;
-                houseControl.Height = GlobalStuff.buildingsize - 10;
-                Canvas.SetZIndex(houseControl, 100);
-                Canvas.SetLeft(houseControl, left);
-                Canvas.SetTop(houseControl, top);
-                var found = from lot in _lots
-                            where lot.LotOccupied == false
-                            && lot.Street == StreetsEnum.YouStreet
-                            select lot;
-                if (found.Any())
-                {
-                    found.First().AddBuilding(houseControl);
-                }
-                left += 90;
-                cLogger.Log($"HouseControl: {house.HouseImageFileName}"); // HouseControl: /CatoriCity2025WPF; 100 100
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
         private void LoadBanks()

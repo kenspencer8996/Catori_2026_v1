@@ -56,7 +56,7 @@ namespace CityAppServices
 
             return setting;
         }
-        public static SettingEntity GettingSetting(string settingName)
+        public static SettingEntity GetSetting(string settingName)
         {
             SettingEntity result = new SettingEntity();
             var settingfound = from s in Settings where s.Name == settingName select s;
@@ -66,8 +66,23 @@ namespace CityAppServices
             }
             return result;
         }
-       
-            
+        public static void UpdateSetting(string settingName, string stringSetting, int intSetting)
+        {
+            SettingEntity result = new SettingEntity();
+            var settingfound = from s in Settings where s.Name == settingName select s;
+            if (settingfound != null && settingfound.Any())
+            {
+                result = settingfound.FirstOrDefault();
+                result.IntSetting = intSetting;
+                result.StringSetting = stringSetting;
+            }
+            else
+            {
+               InsertSetting( settingName, stringSetting, intSetting);
+            }
+            LoadSettings();
+        }
+
         public static void InsertSetting(string name, string stringSetting, int intSetting)
         {
             SettingEntity setting = new SettingEntity(name, stringSetting, intSetting);

@@ -210,14 +210,22 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         public void AddPersonModel(PersonViewModel model)
         {
-            personmodel = model;
-            _houseViewModel.PersonCurrentImagePath = model.StaticImageFilePath;
-            PersonImage.Source = _houseViewModel.CurrentImage.Source;
-            PersonImage.ToolTip = model.Name;
-            PersonImage.Visibility = Visibility.Visible;
-            PersonName = model.Name;
-            if (model.Funds > 0)
-                Funds = model.Funds;
+            try
+            {
+                personmodel = model;
+                _houseViewModel.PersonCurrentImagePath = model.StaticImageFilePath;
+                PersonImage.Source = _houseViewModel.CurrentImage.Source;
+                PersonImage.ToolTip = model.Name;
+                PersonImage.Visibility = Visibility.Visible;
+                PersonName = model.Name;
+                if (model.Funds > 0)
+                    Funds = model.Funds;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         private void MainLayout_Drop(object sender, DragEventArgs e)
         {

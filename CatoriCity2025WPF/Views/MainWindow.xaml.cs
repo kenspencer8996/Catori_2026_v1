@@ -1,20 +1,6 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
 using CatoriCity2025WPF.Views;
-using CatoriCity2025WPF.Views.Controls;
-using CatoriServices.Objects;
-using CityAppServices;
-using CityAppServices.Objects.Entities;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Configuration;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace CatoriCity2025WPF
 {
@@ -27,6 +13,9 @@ namespace CatoriCity2025WPF
         LandscapeObjectService _landscapeObjectService = new LandscapeObjectService();
         SettingService _settingService = new SettingService();
         internal bool ispagedirty = false;
+        DepositService _depositService = new DepositService();
+        StatusControl1 statusUC = new StatusControl1();
+
         internal Brush MainLayoutBackground
         {
             get { return MainLayout.Background as SolidColorBrush; }
@@ -42,10 +31,13 @@ namespace CatoriCity2025WPF
                 }
             }
         }
+        System.Windows.Threading.DispatcherTimer statusUpdatedispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
             DateTime now = DateTime.Now;
+            statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimerr_Tick);
+            statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 5, 0);
 
             string timestamp = now.ToString("yyyy-MM-dd_HH");
 
@@ -56,6 +48,23 @@ namespace CatoriCity2025WPF
             Title = "Catori City Game 2025";
             _controller = new MainWindowController(this);
         }
+
+        private void statusUpdatedispatcherTimerr_Tick(object? sender, EventArgs e)
+        {
+            statusUpdatedispatcherTimer.Stop();
+            decimal currentFunds = 0m;
+            var foundfunds = from d in GlobalStuff.Deposits
+                             where d.PersonId == GlobalStuff.CurrentUserPerson.PersonId
+                             select d;
+            if (foundfunds.Count() > 0)
+            {
+                currentFunds = foundfunds.First().Amount;
+            }
+            currentFunds += GlobalStuff.CurrentUserPerson.CurrentPay;
+            statusUC.FundsLabel.Content = currentFunds.ToString();
+            statusUpdatedispatcherTimer.Start();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GlobalStuff.Screenwidth = this.ActualWidth;
@@ -63,24 +72,19 @@ namespace CatoriCity2025WPF
             GlobalStuff.WriteDebugOutput("screen  " + $"Width: {GlobalStuff.Screenwidth}, Height: {GlobalStuff.Screenheight}");
 
             GlobalServices.LoadSettings();
-            GlobalStuff.CurrentUserPersonId = GlobalServices.GettingSetting("CurrentUserPersonId").IntSetting;
-            GlobalStuff.CurrentHouseName = GlobalServices.GettingSetting("CurrentHouseName").StringSetting;
-            if (GlobalStuff.CurrentUserPersonId == 0)
-            {
-                // get 1st isuser
-                var founduser = from p in GlobalStuff.AllPersons
-                                where p.IsUser == true
-                                select p;   
-                if (founduser.Count() > 0)
-                    GlobalStuff.CurrentUserPersonId = founduser.First().PersonId;
-            }
+            GlobalStuff.CurrentUserPerson = new PersonViewModel();
+            SetCurrentUserPerson();
+            GlobalStuff.CurrentHouseName = GlobalServices.GetSetting("CurrentHouseName").StringSetting;
             if (GlobalStuff.CurrentHouseName == null || GlobalStuff.CurrentHouseName == "")
             {
                 // get 1st isuser
                 var founduser = from h in GlobalStuff.Houses
                                 select h;
                 if (founduser.Count() > 0)
-                    GlobalStuff.CurrentHouseName = founduser.First().Name;
+                {
+                   GlobalStuff.CurrentHouseName = founduser.First().Name;
+                   statusUC.NameLabel.Content = founduser.First().Name;
+                }
             }
             _controller.Startup((int)YouStRect.Height);
             LoadPersons();
@@ -92,16 +96,43 @@ namespace CatoriCity2025WPF
             PeopleSelectorList.Visibility = Visibility.Collapsed;
             ispagedirty = false ;
         }
+        private void SetCurrentUserPerson()
+        {
+            PersonService personService = new PersonService();
+            var persons = personService.GetPersonsAsync().Result;
+            int currentUser = GlobalServices.GetSetting("CurrentUserPersonId").IntSetting;
+            if (currentUser > 0)
+            {
+                var foundperson = from p in persons
+                                  where p.PersonId == currentUser
+                                  select p;
+                if (foundperson.Count() > 0)
+                {
+                    GlobalStuff.CurrentUserPerson = foundperson.First();
+                }
+            }
+            else
+            {
+                var foundperson = from p in persons
+                                  where p.IsUser == true
+                                  select p;
+                if (foundperson.Count() > 0)
+                {
+                    GlobalStuff.CurrentUserPerson = foundperson.First();
+                }
+            }
+            statusUC.NameLabel.Content = GlobalStuff.CurrentUserPerson.Name;
+        }
 
         private void SetTravelSpeed()
         {
-            GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GettingSetting("PoliceCarTravelSpeed").IntSetting;
-            GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GettingSetting("BadGuyTravelSpeed").IntSetting;
+            GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSetting("PoliceCarTravelSpeed").IntSetting;
+            GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSetting("BadGuyTravelSpeed").IntSetting;
         }
 
         private void SetSettings()
         {
-            var foundscreen = GlobalServices.GettingSetting("ScreenBackgroundColor");
+            var foundscreen = GlobalServices.GetSetting("ScreenBackgroundColor");
             if (foundscreen != null )
             {
                 var screen = foundscreen;
@@ -121,6 +152,13 @@ namespace CatoriCity2025WPF
              //PeopleSelectorList
             try
             {
+                MainLayout.Children.Add(statusUC);
+                statusUC.Width = 400;
+                statusUC.Height = 100;
+                statusUpdatedispatcherTimer.Start();
+                double leftStatus = this.Width - statusUC.Width - 20;
+                Canvas.SetLeft(statusUC, leftStatus);
+                Canvas.SetTop(statusUC, 10);
                 //string imagePath = GlobalStuff.ImageFolder + "\\PrimaryPeople";
                 //string[] images = System.IO.Directory.GetFiles(imagePath, "*.*");
                 List<PersonViewModel> persons = new List<PersonViewModel>();
@@ -310,6 +348,9 @@ namespace CatoriCity2025WPF
                 data.SetText(modelstring);
                 DragDrop.DoDragDrop(PeopleSelectorList, modelstring, DragDropEffects.Move);
                 PeopleSelectorList.Visibility = Visibility.Collapsed;
+                statusUC.NameLabel.Content = selected.Name;
+                GlobalStuff.CurrentUserPerson = selected;
+                GlobalServices.UpdateSetting("CurrentUserPersonId","", selected.PersonId);
             }
         }
         private void PeopleSelectorList_SelectionChanged(object sender, SelectionChangedEventArgs e)

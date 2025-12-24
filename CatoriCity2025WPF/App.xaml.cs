@@ -1,4 +1,17 @@
-﻿using System.Windows;
+﻿global using CatoriCity2025WPF.Objects;
+global using CatoriCity2025WPF.Objects.Services;
+global using CatoriCity2025WPF.ViewModels;
+global using CatoriCity2025WPF.Views.Controls;
+global using CatoriServices.Objects;
+global using CatoriServices.Objects.database;
+global using CatoriServices.Objects.Entities;
+global using CityAppServices;
+global using CityAppServices.Objects;
+global using CityAppServices.Objects.Entities;
+global using System.Timers;
+global using System.Windows;
+global using System.Windows.Controls;
+global using System.Windows.Media;
 
 namespace CatoriCity2025WPF
 {

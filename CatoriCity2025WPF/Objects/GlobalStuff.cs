@@ -396,7 +396,7 @@ namespace CatoriCity2025WPF.Objects
         public static List<PoliceCarEntity> PoliceCars { get; internal set; }
         public static double Screenwidth { get; internal set; }
         public static double Screenheight { get; internal set; }
-        public static int CurrentUserPersonId { get; internal set; }
+        public static PersonViewModel CurrentUserPerson { get; internal set; }
         public static string CurrentHouseName { get; internal set; }
 
         public static List<LotControl> FinancialLotCobtrols = new List<LotControl>();

@@ -10,7 +10,7 @@ namespace CatoriCity2025WPF.ViewModels
 
         public void OnPropertyChanged(string propertyName)
         {
-            if (HelperStuff.Loading == false)
+            //if (HelperStuff.Loading == false)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }

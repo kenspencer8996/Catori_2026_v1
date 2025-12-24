@@ -27,9 +27,17 @@ namespace CatoriCity2025WPF.Objects
         {
             get
             {
-                if (_staticImageFilePath == null || _staticImageFilePath == "")
+                try
                 {
-                    _staticImageFilePath = System.IO.Path.Combine(ImagesFolder, FileNameOptional);
+                    if (_staticImageFilePath == null || _staticImageFilePath == "")
+                    {
+                        _staticImageFilePath = System.IO.Path.Combine(ImagesFolder, FileNameOptional);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
                 }
                 return _staticImageFilePath;
             }

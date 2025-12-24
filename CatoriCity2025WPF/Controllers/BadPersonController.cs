@@ -125,7 +125,7 @@ namespace CatoriCity2025WPF.Controllers
         {
             Storyboard storyboard = new Storyboard();
             storyboard.Completed += MovePersonOutToApproachAndSetupAnimation_Completed;
-            SettingEntity badGuyTravelSpeedSetting = GlobalServices.GettingSetting("badguytravelspeed");
+            SettingEntity badGuyTravelSpeedSetting = GlobalServices.GetSetting("badguytravelspeed");
             GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = badGuyTravelSpeedSetting.IntSetting;
             TimeSpan duration = TimeSpan.FromSeconds(4); //
             double xstart = Canvas.GetLeft(_view);

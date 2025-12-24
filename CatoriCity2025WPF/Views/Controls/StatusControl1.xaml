@@ -5,8 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="120" d:DesignWidth="400" Background="{DynamicResource MainGradient}">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Status" HorizontalContentAlignment="Center" Foreground="Red"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Name:"/>
+        <Label Grid.Row="1" Grid.Column="1" x:Name="NameLabel"  />
+        <Label Grid.Row="2" Grid.Column="0" Content="Current Funds:"/>
+        <Label Grid.Row="2" Grid.Column="1" x:Name="FundsLabel" Content="{Binding Funds, Mode=TwoWay}" />
+        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding StatusMessage, Mode=TwoWay}" />
+
     </Grid>
 </UserControl>

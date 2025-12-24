@@ -24,7 +24,7 @@ namespace CatoriCity2025WPF.ViewModels
                 if (_policecartravelSpeed != value)
                 {
                     _policecartravelSpeed = value;
-                    var policecartravelSpeedEntity = GlobalServices.GettingSetting("PoliceCarTravelSpeed");
+                    var policecartravelSpeedEntity = GlobalServices.GetSetting("PoliceCarTravelSpeed");
                     policecartravelSpeedEntity.IntSetting = (int)_policecartravelSpeed;
 
                     OnPropertyChanged(nameof(PolicecarToravelSpeed));
@@ -39,7 +39,7 @@ namespace CatoriCity2025WPF.ViewModels
                 if (_badguytravelSpeed != value)
                 {
                     _badguytravelSpeed = value;
-                    var badguytravelspeed = GlobalServices.GettingSetting("BadGuyTravelSpeed");
+                    var badguytravelspeed = GlobalServices.GetSetting("BadGuyTravelSpeed");
                     badguytravelspeed.IntSetting = (int)_badguytravelSpeed;
 
                     OnPropertyChanged(nameof(BadGuyTravelSpeed));

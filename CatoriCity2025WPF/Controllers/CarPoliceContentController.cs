@@ -92,7 +92,7 @@ namespace CatoriCity2025WPF.Controllers
         {
             try
             {
-                SettingEntity policeCarspeedSetting = GlobalServices.GettingSetting("policecarspeed");
+                SettingEntity policeCarspeedSetting = GlobalServices.GetSetting("policecarspeed");
                 GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = policeCarspeedSetting.IntSetting;
                 _currentDirectionParking = PositionsEWNSEnum.North;
                 _view.ChangeDirection(_currentDirectionParking);
