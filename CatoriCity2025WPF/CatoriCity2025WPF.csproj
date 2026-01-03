@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>CatoriImage.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,8 @@
 
   <ItemGroup>
     <None Remove="Images\badguy_6_wcash.png" />
+    <None Remove="Images\CatoriImage.ico" />
+    <None Remove="Images\CatoriImage.png" />
     <None Remove="Images\closexred.png" />
     <None Remove="Images\DefaultRobotArmt.png" />
     <None Remove="Images\DepositImage.png" />
@@ -29,8 +32,18 @@
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
     <None Remove="Images\SaveButtonCool.png" />
+    <None Remove="Images\Saw.png" />
+    <None Remove="Images\SawChain.png" />
+    <None Remove="Images\Shovel.png" />
+    <None Remove="Images\StoreHardware_Doorspng.png" />
+    <None Remove="Images\Store_hardwareFront.png" />
+    <None Remove="Images\Store_hardware_Interior.png" />
     <None Remove="Images\Trashcan.png" />
     <None Remove="Images\uparrowRed.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="CatoriImage.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +63,14 @@
 
   <ItemGroup>
     <Resource Include="Images\badguy_6_wcash.png" />
+    <Resource Include="Images\CatoriImage.ico" />
+    <Resource Include="Images\Saw.png" />
+    <Resource Include="Images\SawChain.png" />
+    <Resource Include="Images\Shovel.png" />
+    <Resource Include="Images\StoreHardware_Doorspng.png" />
+    <Resource Include="Images\Store_hardwareFront.png" />
+    <Resource Include="Images\Store_hardware_Interior.png" />
+    <SplashScreen Include="Images\CatoriImage.png" />
     <Resource Include="Images\closexred.png" />
     <Resource Include="Images\DefaultRobotArmt.png" />
     <Resource Include="Images\DepositImage.png" />

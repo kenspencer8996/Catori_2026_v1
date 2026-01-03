@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:CatoriCity2025WPF"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
+        <BitmapImage x:Key="sawimage" UriSource="pack://siteoforigin:,,,/Images/saw.png"/>
         <SolidColorBrush x:Key="ButtonBackground" Color="Red"/>
         <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" x:Key="MainGradient">

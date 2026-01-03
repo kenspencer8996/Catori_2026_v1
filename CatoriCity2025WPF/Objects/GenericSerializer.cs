@@ -12,7 +12,7 @@ namespace CatoriCity2025WPF.Objects
 
 //Generic Json Serialization
 
-    public static string Serializer<T>(T t)
+    public static string Serialize<T>(T t)
     {
             string json = JsonConvert.SerializeObject(t);
 

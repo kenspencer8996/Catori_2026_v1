@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ExecuteSQLStatementsFromFIle": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Development\\Gaming\\Databases\\testdb.db \r\nC:\\Development\\Gaming\\Databases\\MigrationScript.sql",
+      "workingDirectory": "C:\\Development\\Gaming\\Databases"
+    }
+  }
+}

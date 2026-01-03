@@ -1,0 +1,28 @@
+﻿<Window x:Class="CatoriCity2025WPF.Views.AboutView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="AboutView" Height="450" Width="800" Background="{DynamicResource MainGradient}">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Catori Spencer City Scape Game" VerticalAlignment="Center" FontSize="14" />
+        <Label Grid.Row="5" Grid.Column="0" Content="Copyright @ 2026 Catori and Papa Spencer" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Image Grid.Row="6" HorizontalAlignment="Center" Source="/Images/CatoriImage.png"/>
+    </Grid>
+</Window>

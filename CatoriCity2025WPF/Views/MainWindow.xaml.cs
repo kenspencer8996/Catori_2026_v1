@@ -35,21 +35,23 @@ namespace CatoriCity2025WPF
         public MainWindow()
         {
             InitializeComponent();
+            this.Width = 1820;
+            this.Height = 980;
             DateTime now = DateTime.Now;
-            statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimerr_Tick);
+            statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimer_Tick);
             statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 5, 0);
 
             string timestamp = now.ToString("yyyy-MM-dd_HH");
 
-            cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2025WPF" + timestamp + ".Log");
+            cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2026WPF" + timestamp + ".Log");
             GlobalStuff.mainWindowViewModel = new MainWindowViewModel();
             DataContext = GlobalStuff.mainWindowViewModel;
             GlobalStuff.MainView = this;
-            Title = "Catori City Game 2025";
+            Title = "Catori City Game 2026";
             _controller = new MainWindowController(this);
         }
 
-        private void statusUpdatedispatcherTimerr_Tick(object? sender, EventArgs e)
+        private void statusUpdatedispatcherTimer_Tick(object? sender, EventArgs e)
         {
             statusUpdatedispatcherTimer.Stop();
             decimal currentFunds = 0m;
@@ -87,13 +89,12 @@ namespace CatoriCity2025WPF
                 }
             }
             _controller.Startup((int)YouStRect.Height);
-            LoadPersons();
+            LoadPersonsOmCanvas();
             AddBadGuysToCanvas();
             SetSettings();
             SetTravelSpeed();
             _controller.SetupPaths();
             CreateStreetPaths();
-            PeopleSelectorList.Visibility = Visibility.Collapsed;
             ispagedirty = false ;
         }
         private void SetCurrentUserPerson()
@@ -143,12 +144,8 @@ namespace CatoriCity2025WPF
             }
         }
 
-        private void LoadPersons()
+        private void LoadPersonsOmCanvas()
         {
-            Canvas.SetZIndex(PeopleSelectorList, 200);
-            double left = this.Width - PeopleSelectorList.Width - 20;
-            Canvas.SetLeft(PeopleSelectorList, left);
-            
              //PeopleSelectorList
             try
             {
@@ -171,7 +168,6 @@ namespace CatoriCity2025WPF
                     item.StaticImageFilePath = System.IO.Path.Combine(item.ImagesFolder, item.FileNameOptional);
                     persons.Add(item);
                 }
-                PeopleSelectorList.ItemsSource = persons;
 
                 var foundhousesimages = from i in GlobalStuff.AllPersons
                                         where i.IsUser == false
@@ -270,7 +266,7 @@ namespace CatoriCity2025WPF
             GlobalStuff.MainViewHeight = e.NewSize.Height - 50;
             GlobalStuff.MainViewWidth = e.NewSize.Width;
             SetStreetSizes();
-
+            _controller.ResizeLots(e.PreviousSize, e.NewSize);
             //double groupsLabelTop = e.NewSize.Height;
             //groupsLabelTop -= 50;
             //Canvas.SetTop(GroupIdsPanel, groupsLabelTop);
@@ -338,32 +334,6 @@ namespace CatoriCity2025WPF
         private void PeopleSelectorList_MouseDown(object sender, MouseButtonEventArgs e)
         {
         }
-       private void PeopleListSelectDrag()
-        {
-            if (PeopleSelectorList.SelectedItem != null)
-            {
-                PersonViewModel selected = (PersonViewModel)PeopleSelectorList.SelectedItem;
-                string modelstring = GenericSerializer.Serializer<PersonViewModel>(selected);
-                DataObject data = new DataObject();
-                data.SetText(modelstring);
-                DragDrop.DoDragDrop(PeopleSelectorList, modelstring, DragDropEffects.Move);
-                PeopleSelectorList.Visibility = Visibility.Collapsed;
-                statusUC.NameLabel.Content = selected.Name;
-                GlobalStuff.CurrentUserPerson = selected;
-                GlobalServices.UpdateSetting("CurrentUserPersonId","", selected.PersonId);
-            }
-        }
-        private void PeopleSelectorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PeopleListSelectDrag();
-            PeopleSelectorList.SelectedItem = null;
-        }
-
-        private void ShowSelectorButton_Click(object sender, RoutedEventArgs e)
-        {
-            PeopleSelectorList.Visibility = Visibility.Visible;
-        }
-
         private void MainWin_MouseMove(object sender, MouseEventArgs e)
         {
             var pt = e.GetPosition(this);
@@ -483,6 +453,26 @@ namespace CatoriCity2025WPF
         {
             ispagedirty = true;
             GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = BadGuyTravelSpeedSlider.Value;
+        }
+
+        private void MainWin_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
+
+        private void AboutViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            AboutView aboutView = new AboutView();
+            aboutView.Owner = this;
+            aboutView.ShowDialog();
+        }
+
+        private void AboutButtonImage_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            AboutView aboutView = new AboutView();
+            aboutView.Owner = this;
+            aboutView.ShowDialog();
+
         }
     }
     

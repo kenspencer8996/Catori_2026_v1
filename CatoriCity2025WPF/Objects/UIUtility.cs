@@ -59,7 +59,29 @@ namespace CatoriCity2025WPF.Objects
 
             return thisImage;
         }
+        public static BitmapImage GetImageBitmap(string path)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            try
+            {
+                if (path != null && path != "")
+                {
 
+                    // Fix: Convert the string path to an ImageSource using BitmapImage  
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new System.Uri(path, System.UriKind.RelativeOrAbsolute);
+                    bitmap.EndInit();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBoxResult result = MessageBox.Show("UIUtility.GetImageControl exception:" + ex.Message, "Exception", MessageBoxButton.OK);
+
+            }
+
+            return bitmap;
+        }
         internal static Brush GetSolidColorBrush(string screenBackgroundColor)
         {
             Brush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(screenBackgroundColor));

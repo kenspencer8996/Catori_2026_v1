@@ -1,4 +1,5 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -6,12 +7,11 @@ namespace CatoriCity2025WPF.Controllers
     internal class MainWindowController
     {
         MainWindow _view;
-
+        StoreHardwareInteriorControl storeHardwareInteriorUC = new StoreHardwareInteriorControl();
         internal CityscapeStreetsViewModel Model = new CityscapeStreetsViewModel();
         public bool instartupFlag = true;
         bool VisualContentLoaded = false;
         MapPositionEntity _mapPosition = new MapPositionEntity();
-        LotHelper lotHelper;
         int _streetwidth;
         private List<LotControl> _lots = new List<LotControl>();
         DispatcherTimer _updatePathsTimerTimer;
@@ -29,7 +29,23 @@ namespace CatoriCity2025WPF.Controllers
                 int rInt = rnd.Next(0, 5);
                 GlobalStuff.TimingsRandom.Add(rInt);
             }
+            WeakReferenceMessenger.Default.Register<ShopItemShowMessage>(this, (r, m) =>
+            {
+                try
+                {
+                    ShopItemShowMessage shopItemShowMessage = m;
+                    storeHardwareInteriorUC.Width = _view.Width;
+                    storeHardwareInteriorUC.Height = _view.Height;
+                    storeHardwareInteriorUC.Model = m.Model;
+                    Canvas.SetZIndex(storeHardwareInteriorUC, 2000);
+                    storeHardwareInteriorUC.Visibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                {
 
+                    throw;
+                }
+            });
         }
         internal void Startup(int streetwidth)
         {
@@ -44,6 +60,8 @@ namespace CatoriCity2025WPF.Controllers
                 GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
                 LoadHouses();
                 LoadBanks();
+                LoadShopItems();
+                LoadStores();
                 LoadFactories();
                 AddPoliceStation();
                 loadPoliceCars();
@@ -73,6 +91,68 @@ namespace CatoriCity2025WPF.Controllers
             {
                 throw;
             }
+        }
+
+        private void LoadShopItems()
+        {
+            ShopItemService shopItemService = new ShopItemService();
+            GlobalStuff.ShopItem = shopItemService.GetAllAsync().Result;
+            foreach (var item in GlobalStuff.ShopItem)
+            {
+                ShopItemControl shopitem = new ShopItemControl();
+                shopitem.Width = 100;
+                shopitem.Height = 100;
+                shopitem.Name = item.Name;
+                shopitem.Width = item.Width;
+                shopitem.Height = item.Height;
+                shopitem.Model = item;
+                if (item.RotationDegree > 0)
+                {
+                    RotateTransform rotateTransform = new RotateTransform(item.RotationDegree);
+                    shopitem.RenderTransform = rotateTransform;
+
+                }
+                shopitem.Visibility = Visibility.Visible;
+                Canvas.SetLeft(shopitem, Convert.ToDouble(item.X));
+                Canvas.SetTop(shopitem, Convert.ToDouble(item.Y));
+                Canvas.SetZIndex(shopitem, 2002);
+                //shopitem.ItemCost = item.Price.ToString("C");
+                string filepath = Imagehelper.GetImagePath(item.ImageName);
+                shopitem.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
+                storeHardwareInteriorUC.MainLayout.Children.Add(shopitem);
+            }
+            
+        }
+
+        private void LoadStores()
+        {
+            StoreHardwareControl ucStore1 = new StoreHardwareControl();
+            ucStore1.Width = GlobalStuff.buildingsize;
+            ucStore1.Height = GlobalStuff.buildingsize;
+            Canvas.SetZIndex(ucStore1, 4);
+            var found = from lot in _lots
+                        where lot.LotOccupied == false
+                        && lot.Street == StreetsEnum.MikAve
+                        select lot;
+            LotControl lotControl = found.First();
+            if (found.Any())
+            {
+                try
+                {
+                    double x = Canvas.GetLeft(lotControl);
+                    double y = Canvas.GetTop(lotControl);
+                    lotControl.AddBuilding(ucStore1);
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
+            Canvas.SetLeft(storeHardwareInteriorUC, 0);
+            Canvas.SetTop(storeHardwareInteriorUC, 0);
+            storeHardwareInteriorUC.Visibility = Visibility.Hidden;
+            _view.MainLayout.Children.Add(storeHardwareInteriorUC);
         }
 
         private void InterestAddTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -241,6 +321,7 @@ namespace CatoriCity2025WPF.Controllers
             _lots = new List<LotControl>();
             int nslotcount = GlobalGeo.StLengthNS / GlobalGeo.LotSize;
             int lotloccounter = 100;
+
             //layout EW lots
             string info2 = "--------------------------------------------------Lots------------------------------" + Environment.NewLine;
             cLogger.Log(info2);
@@ -274,19 +355,50 @@ namespace CatoriCity2025WPF.Controllers
             for (int i = 0; i < nslotcount; i++)
             {
                 LotControl lotControl = GetLotControl();
+                lotControl.Street = StreetsEnum.YodelLane;
                 Canvas.SetTop(lotControl, lotloccounter);
                 Canvas.SetLeft(lotControl, 0);
                 _view.MainLayout.Children.Add(lotControl);
 
                 double left = GlobalGeo.TeaStreetLoc.LocationStartXY.x + 50;
+               
+                LotControl lotControlMiddle = GetLotControl();
+                lotControlMiddle.Street = StreetsEnum.MooDr;
+                Canvas.SetTop(lotControlMiddle, lotloccounter);
+                Canvas.SetLeft(lotControlMiddle, left);
+
                 LotControl lotControlRight = GetLotControl();
+                lotControlRight.Street = StreetsEnum.Teastreet;
+                 _lots.Add(lotControlRight);
                 Canvas.SetTop(lotControlRight, lotloccounter);
                 Canvas.SetLeft(lotControlRight, left);
-                lotControlRight.Street = StreetsEnum.Teastreet;
-                _lots.Add(lotControlRight);
                 _view.MainLayout.Children.Add(lotControlRight);
                 //double left = Canvas.GetLeft(lotControlRight);
                 lotloccounter += GlobalGeo.LotSize;
+            }
+        }
+
+        public void ResizeLots(Size previousSize, Size newSize)
+        {
+            var lotsTea = from l in _lots
+                       where l.Street == StreetsEnum.Teastreet 
+                       select l;
+            foreach (var lot in lotsTea)
+            {
+                double left = GlobalGeo.TeaStreetLoc.LocationStartXY.x + 50;
+
+                Canvas.SetLeft(lot, left);
+
+            }
+
+            var lotsMiks = from l in _lots
+                          where l.Street == StreetsEnum.MikAve
+                          select l;
+            foreach (var lot in lotsMiks)
+            {
+                double top = GlobalGeo.MikAveLoc.LocationStartXY.y + 50;
+                Canvas.SetTop(lot, top);
+
             }
         }
         private LotControl GetLotControl()
@@ -445,6 +557,7 @@ namespace CatoriCity2025WPF.Controllers
                         throw;
                     }
                 }
+                
                 string info2 = "--------------------------------------------------------------------------------" + Environment.NewLine;
                 cLogger.Log(info2);
 

@@ -1,11 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
-using CatoriServices.Objects;
-using CityAppServices.Objects;
-using System.Windows;
-using System.Windows.Controls;
+﻿using CatoriCity2025WPF.Objects.Arguments;
 using System.Windows.Input;
 using System.Windows.Threading;
 

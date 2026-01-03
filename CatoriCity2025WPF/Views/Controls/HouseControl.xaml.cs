@@ -208,6 +208,8 @@ namespace CatoriCity2025WPF.Views.Controls
             var data = new DataObject(DataFormats.StringFormat, Funds);
             DragDrop.DoDragDrop(fundsThumb, data, DragDropEffects.Move); // Here the exception occurs
         }
+        
+
         public void AddPersonModel(PersonViewModel model)
         {
             try
@@ -256,7 +258,7 @@ namespace CatoriCity2025WPF.Views.Controls
                 //     model.PersonCurrentImagePath = _houseViewModel.PersonCurrentImagePath;
                 personmodel.Funds = Funds;
                 personmodel.StaticImageFilePath = _houseViewModel.PersonCurrentImagePath;
-                string modelstring = GenericSerializer.Serializer<PersonViewModel>(personmodel);
+                string modelstring = GenericSerializer.Serialize<PersonViewModel>(personmodel);
                 DataObject data = new DataObject();
                 data.SetText(modelstring);
                 DragDrop.DoDragDrop(PersonImage, modelstring, DragDropEffects.Move);

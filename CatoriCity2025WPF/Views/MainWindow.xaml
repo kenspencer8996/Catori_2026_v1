@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:CatoriCity2025WPF"
         xmlns:localConvertor="clr-namespace:CatoriCity2025WPF.Convertors"
         xmlns:localUC="clr-namespace:CatoriCity2025WPF.Views.Controls"
-        mc:Ignorable="d" x:Name="MainWin"
-        Title="MainWindow" Height="1080" Width="1920" Closing="MainWin_Closing"
+        mc:Ignorable="d" x:Name="MainWin" 
+        Title="Catori City Application" Height="1080" Width="1920" Closing="MainWin_Closing"
         MouseDown="MainWin_MouseDown" SizeChanged="Window_SizeChanged" MouseMove="MainWin_MouseMove" 
-        WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Window_Loaded">
+        WindowStartupLocation="CenterScreen" WindowState="Normal" Loaded="Window_Loaded">
     <Window.Resources>
     </Window.Resources>
     <Grid Background="#FBF5DE">
@@ -48,31 +48,18 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="ShowSelectorButton"  Width="25" Click="ShowSelectorButton_Click">
-                    <Image x:Name="PeopleSelectorImage" Source="/Images/PeopleSelector.png" Width="25" Height="25"
-                      MouseEnter="PeopleSelectorImage_MouseEnter"/>
-                </Button>
-                <Button x:Name="SettingsViewButton" Width="25" Click="SettingsViewButton_Click" Margin="25,0,0,0">
+                <Button x:Name="SettingsViewButton" Width="25" Click="SettingsViewButton_Click" Margin="25,0,0,0" ToolTip="Settings">
                     <Image x:Name="GearImage" Source="/Images/gear_.png" Width="25" Height="25"/>
                 </Button>
-  
+                <Button x:Name="AboutViewButton" Content="?" Width="25" Click="AboutViewButton_Click" Margin="25,0,0,0" ToolTip="About" Background="{x:Null}">
+                </Button>
+
                 <localUC:TrashCanUC x:Name="TrashControl" Canvas.Left="1865" Canvas.Top="10" Height="25" Width="25"/>
             </StackPanel>
        
         </StackPanel>
         <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" Width="{Binding ElementName=MainWin, Path=ActualWidth}"
         Height="{Binding ElementName=MainWin, Path=ActualHeight}" Background="#FFE2F2F7">
-            <ListBox x:Name="PeopleSelectorList" Panel.ZIndex="300"   Width="160" Height="173" SelectionChanged="PeopleSelectorList_SelectionChanged" 
-        Canvas.Left="1760" Canvas.Top="10" PreviewMouseLeftButtonDown="PeopleSelectorList_PreviewMouseLeftButtonDown" MouseDown="PeopleSelectorList_MouseDown" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding StaticImageFilePath}" Width="50" Height="50"/>
-                            <!--<TextBlock Text="{Binding Name}" Margin="10,0,0,0"/>-->
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
         <Button x:Name="SaveLayoutButton"  Width="50" Click="SaveLayoutButton_Click">
             <Image x:Name="SaveImage" Source="/Images/SaveButtonCool.png" Width="1720" Height="50"/>
         </Button>

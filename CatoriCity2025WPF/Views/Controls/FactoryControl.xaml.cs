@@ -1,8 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-using CityAppServices.Objects.Entities;
-using CommunityToolkit.Mvvm.Messaging;
-using System.Windows;
-using System.Windows.Controls;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Views.Controls

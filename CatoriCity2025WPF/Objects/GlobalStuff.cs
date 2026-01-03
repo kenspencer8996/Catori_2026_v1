@@ -1,15 +1,7 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Services;
 using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
-using CatoriServices.Objects;
-using CatoriServices.Objects.Entities;
-using CityAppServices.Objects;
-using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
 
 namespace CatoriCity2025WPF.Objects
 {
@@ -67,6 +59,7 @@ namespace CatoriCity2025WPF.Objects
       
         //___________________________________________________
         //Street Intersections
+        public static List<ShopItemViewModel> ShopItem { get; set; }
         public static LocationXYEntity IntersectuonYouYodel { get; set; } = new LocationXYEntity();
         public static LocationXYEntity IntersectuonYouTea { get; set; } = new LocationXYEntity();
         public static LocationXYEntity IntersectuonYouMoo { get; set; } = new LocationXYEntity();
