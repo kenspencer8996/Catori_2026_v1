@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using System.Reflection.Emit;
 using System.Windows.Input;
 
 namespace CatoriCity2025WPF.Views.Controls
@@ -12,7 +13,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             InitializeComponent();
         }
-
+       
         private void DoorImage_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -58,6 +59,16 @@ namespace CatoriCity2025WPF.Views.Controls
             }
 
             WeakReferenceMessenger.Default.Send(msg);
+
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
 
         }
     }

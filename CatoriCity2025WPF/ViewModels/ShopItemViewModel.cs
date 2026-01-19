@@ -7,13 +7,11 @@
         private string _description = string.Empty;
         private decimal _price;
         private string _imageName = string.Empty;
-        private string _category = string.Empty;
+        private string _storeType = string.Empty;
         private string _filePath = string.Empty;
         private double _height;
-        private double _wwidth;
+        private double _width;
         private double _rotationDegree;
-        private double _x;
-        private double _y;
 
         public ShopItemViewModel()
         {
@@ -89,15 +87,15 @@
             }
         }
 
-        public string Category
+        public string StoreType
         {
-            get => _category;
+            get => _storeType;
             set
             {
-                if (_category != value)
+                if (_storeType != value)
                 {
-                    _category = value;
-                    OnPropertyChanged(nameof(Category));
+                    _storeType = value;
+                    OnPropertyChanged(nameof(StoreType));
                 }
             }
         }
@@ -130,17 +128,17 @@
 
         public double Width
         {
-            get => _wwidth;
+            get => _width;
             set
             {
-                if (_wwidth != value)
+                if (_width != value)
                 {
-                    _wwidth = value;
+                    _width = value;
                     OnPropertyChanged(nameof(Width));
                 }
             }
         }
-
+        
         public double RotationDegree
         {
             get => _rotationDegree;
@@ -154,32 +152,7 @@
             }
         }
 
-        public double X
-        {
-            get => _x;
-            set
-            {
-                if (_x != value)
-                {
-                    _x = value;
-                    OnPropertyChanged(nameof(X));
-                }
-            }
-        }
-
-        public double Y
-        {
-            get => _y;
-            set
-            {
-                if (_y != value)
-                {
-                    _y = value;
-                    OnPropertyChanged(nameof(Y));
-                }
-            }
-        }
-
+  
         public ShopItemEntity GetEntity()
         {
             return new ShopItemEntity
@@ -189,13 +162,11 @@
                 Description = this.Description ?? string.Empty,
                 Price = this.Price,
                 ImageName = this.ImageName ?? string.Empty,
-                Category = this.Category ?? string.Empty,
+                StoreType = this.StoreType ?? string.Empty,
                 FilePath = this.FilePath ?? string.Empty,
                 Height = this.Height,
                 Width = this.Width,
                 RotationDegree = this.RotationDegree,
-                X = this.X,
-                Y = this.Y
             };
         }
 
@@ -208,13 +179,11 @@
             Description = entity.Description ?? string.Empty;
             Price = entity.Price;
             ImageName = entity.ImageName ?? string.Empty;
-            Category = entity.Category ?? string.Empty;
+            StoreType = entity.StoreType ?? string.Empty;
             FilePath = entity.FilePath ?? string.Empty;
             Height = entity.Height;
             Width = entity.Width;
             RotationDegree = entity.RotationDegree;
-            X = entity.X;
-            Y = entity.Y;
         }
     }
 }

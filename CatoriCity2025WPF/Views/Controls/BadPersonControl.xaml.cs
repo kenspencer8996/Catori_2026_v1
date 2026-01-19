@@ -138,7 +138,10 @@ namespace CatoriCity2025WPF.Views.Controls
             }
 
         }
-
+        public void ResetAnimation()
+        {
+            MoveBadPersonOnEscapeToHome();
+        }
         private void MoveToHomeTimer_Tick(object? sender, EventArgs e)
         {
             MoveBadPersonOnEscapeToHome();

@@ -54,6 +54,9 @@
                 <Button x:Name="AboutViewButton" Content="?" Width="25" Click="AboutViewButton_Click" Margin="25,0,0,0" ToolTip="About" Background="{x:Null}">
                 </Button>
 
+                <Button x:Name="ResetButton"  Width="25" Click="ResetButton_Click" Margin="25,0,0,0" ToolTip="About" Background="{x:Null}">
+                    <Image x:Name="ResetImage" Source="/Images/ResetBlue.png" Width="25" Height="25"/>
+                </Button>
                 <localUC:TrashCanUC x:Name="TrashControl" Canvas.Left="1865" Canvas.Top="10" Height="25" Width="25"/>
             </StackPanel>
        

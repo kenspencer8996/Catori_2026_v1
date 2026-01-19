@@ -22,7 +22,7 @@ namespace CatoriCity2025WPF.Objects
         public static ObservableCollection<LandscapeObjectViewModel> LandscapeObjects { get; set; }
         public static List<LandscapeObjectControl> LandscapeUCs;
         public static string Burglaralarmfile = "";
-       
+       public static  PersonViewModel CurrentPerson { get; set; } 
         public static int BadGuyWith { get; set; } = 30;
         public static int BadGuyHeight { get; set; } = 70;
         // public static GeometryHelper GlobalGeometryHelper;
@@ -59,7 +59,7 @@ namespace CatoriCity2025WPF.Objects
       
         //___________________________________________________
         //Street Intersections
-        public static List<ShopItemViewModel> ShopItem { get; set; }
+        public static List<ShopItemViewModel> ShopItems { get; set; }
         public static LocationXYEntity IntersectuonYouYodel { get; set; } = new LocationXYEntity();
         public static LocationXYEntity IntersectuonYouTea { get; set; } = new LocationXYEntity();
         public static LocationXYEntity IntersectuonYouMoo { get; set; } = new LocationXYEntity();
@@ -238,6 +238,13 @@ namespace CatoriCity2025WPF.Objects
 
         internal static MapPositionEntity Mappositions { get; set; } = new MapPositionEntity();
 
+        public static List<ShelfLocationViewModel> GetShelfLocationsForStore(string storeType)
+        {
+            var shelves = from s in ShelfViewModels
+                          where s.StoreType == storeType
+                          select s;
+            return shelves.ToList();
+        }
         public static BankControl GetFinancialBusinessControlForRobber(string RobberName)
         {
             BankControl BusinessControl = null;
@@ -378,19 +385,23 @@ namespace CatoriCity2025WPF.Objects
             x = value;
             return x;
         }
+        public static List<ShelfLocationViewModel> ShelfViewModels  { get; set; } = new List<ShelfLocationViewModel>();
         public double PathThickness { get; set; } = 1; 
-        public static LotControl PoliceStationLocation { get; internal set; }
-        public static LandscapeObjectViewModel NextFromHomeObject { get; internal set; }
-        public static LandscapeObjectViewModel HomeLandscapeObject { get; internal set; }
-        public static LocationXYEntity ApproachPointN { get; internal set; }
-        public static LocationXYEntity ApproachPointE { get; internal set; }
-        public static LocationXYEntity ApproachPointS { get; internal set; }
-        public static LocationXYEntity ApproachPointW { get; internal set; }
-        public static List<PoliceCarEntity> PoliceCars { get; internal set; }
-        public static double Screenwidth { get; internal set; }
-        public static double Screenheight { get; internal set; }
-        public static PersonViewModel CurrentUserPerson { get; internal set; }
+        public static LotControl PoliceStationLocation { get;  set; }
+        public static LandscapeObjectViewModel NextFromHomeObject { get;  set; }
+        public static LandscapeObjectViewModel HomeLandscapeObject { get;  set; }
+        public static LocationXYEntity ApproachPointN { get;  set; }
+        public static LocationXYEntity ApproachPointE { get;  set; }
+        public static LocationXYEntity ApproachPointS { get;  set; }
+        public static LocationXYEntity ApproachPointW { get;  set; }
+        public static List<PoliceCarEntity> PoliceCars { get;  set; }
+        public static double Screenwidth { get;  set; }
+        public static double Screenheight { get;  set; }
+        public static PersonViewModel CurrentUserPerson { get;  set; }
         public static string CurrentHouseName { get; internal set; }
+        public static List<ShelfItemControl> ShelfUCs { get;  set; }
+        public static List<string> Stores = new List<string>();
+        
 
         public static List<LotControl> FinancialLotCobtrols = new List<LotControl>();
         public static LandscapeObjectControl GetNextFromHomeObject()

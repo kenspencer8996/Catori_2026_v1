@@ -14,6 +14,15 @@ namespace CatoriCity2025WPF.Views.Controls
             InitializeComponent();
 
         }
-      
+
+        private void UserControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+
+        private void UserControl_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
     }
 }

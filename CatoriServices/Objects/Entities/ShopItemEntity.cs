@@ -10,7 +10,7 @@
         public decimal Price { get; set; }
 
         public string ImageName { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
+        public string StoreType { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
 
         // Geometry / layout
@@ -19,8 +19,6 @@
 
         // Placement / transform
         public double RotationDegree { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
 
     }
 }

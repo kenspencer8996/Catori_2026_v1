@@ -41,7 +41,7 @@ namespace CatoriCity2025WPF
             statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimer_Tick);
             statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 5, 0);
 
-            string timestamp = now.ToString("yyyy-MM-dd_HH");
+            string timestamp = now.ToString("yyyy-MM-dd_HH_mm_ss");
 
             cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2026WPF" + timestamp + ".Log");
             GlobalStuff.mainWindowViewModel = new MainWindowViewModel();
@@ -89,7 +89,7 @@ namespace CatoriCity2025WPF
                 }
             }
             _controller.Startup((int)YouStRect.Height);
-            LoadPersonsOmCanvas();
+            LoadPersonsOnCanvas();
             AddBadGuysToCanvas();
             SetSettings();
             SetTravelSpeed();
@@ -144,7 +144,7 @@ namespace CatoriCity2025WPF
             }
         }
 
-        private void LoadPersonsOmCanvas()
+        private void LoadPersonsOnCanvas()
         {
              //PeopleSelectorList
             try
@@ -473,6 +473,11 @@ namespace CatoriCity2025WPF
             aboutView.Owner = this;
             aboutView.ShowDialog();
 
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.ResetCharacters();
         }
     }
     

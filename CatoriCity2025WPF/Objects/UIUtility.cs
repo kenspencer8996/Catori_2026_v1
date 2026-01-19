@@ -8,6 +8,7 @@ namespace CatoriCity2025WPF.Objects
 {
     public class UIUtility
     {
+        private static string SavedClipboard = "";
         /// <summary>
         /// Processes all pending UI events in the Dispatcher queue.
         /// </summary>
@@ -24,7 +25,32 @@ namespace CatoriCity2025WPF.Objects
             // Process events
             Dispatcher.PushFrame(frame);
         }
+        public static void SaveToClipboard(string item)
+        {
+            SavedClipboard = Clipboard.GetText();
+            Clipboard.SetText(item);
+        }
+        public static string GetFromClipboard()
+        {
+            string clip = Clipboard.GetText();
+            Clipboard.SetText(SavedClipboard);
+            return clip; ; 
+        }
+        public static IEnumerable<T> FindChildrenOfType<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) yield break;
 
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T typedChild)
+                    yield return typedChild;
+
+                foreach (var descendant in FindChildrenOfType<T>(child))
+                    yield return descendant;
+            }
+        }
         private static object ExitFrame(object f)
         {
             ((DispatcherFrame)f).Continue = false;

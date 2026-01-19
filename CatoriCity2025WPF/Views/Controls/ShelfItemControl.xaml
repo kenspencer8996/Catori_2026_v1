@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.ShelfItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
+             mc:Ignorable="d"  x:Name="ShelfUC"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border x:Name="UCBorder" BorderBrush="Black" BorderThickness="2" Width="{Binding ElementName=ShelfUC, Path=ActualWidth}"
+             Height="{Binding ElementName=ShelfUC, Path=ActualHeight}"
+            CornerRadius="5">
+        <Canvas x:Name="ShelfUCMainLayout"  Width="{Binding ElementName=UCBorder, Path=ActualWidth}"
+             Height="{Binding ElementName=UCBorder, Path=ActualHeight}">
+            <Label x:Name="ShelfLabel" Content="Lot" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
+        </Canvas>
+    </Border>
+</UserControl>

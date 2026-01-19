@@ -125,9 +125,16 @@ namespace CatoriCity2025WPF.Objects.Services
         /// </summary>
         public Task UpsertAsync(DepositEntity entity, CancellationToken cancellationToken = default)
         {
-            // repository.Upsert is async void; call it and return a completed Task.
-            // If the repository is changed to return Task, replace this with 'return _repository.UpsertAsync(entity);'
-            _repository.Upsert(entity);
+            try
+            {
+                // repository.Upsert is async void; call it and return a completed Task.
+                // If the repository is changed to return Task, replace this with 'return _repository.UpsertAsync(entity);'
+                _repository.Upsert(entity);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             return Task.CompletedTask;
         }
     }

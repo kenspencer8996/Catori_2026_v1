@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
 using CommunityToolkit.Mvvm.Messaging;
+using System;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -38,6 +39,7 @@ namespace CatoriCity2025WPF.Controllers
                     storeHardwareInteriorUC.Height = _view.Height;
                     storeHardwareInteriorUC.Model = m.Model;
                     Canvas.SetZIndex(storeHardwareInteriorUC, 2000);
+                    storeHardwareInteriorUC.MoveCart();
                     storeHardwareInteriorUC.Visibility = Visibility.Visible;
                 }
                 catch (Exception ex)
@@ -60,6 +62,7 @@ namespace CatoriCity2025WPF.Controllers
                 GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
                 LoadHouses();
                 LoadBanks();
+                LoadShelves();
                 LoadShopItems();
                 LoadStores();
                 LoadFactories();
@@ -92,36 +95,139 @@ namespace CatoriCity2025WPF.Controllers
                 throw;
             }
         }
+        private void LoadShelves()
+        {
+            ShelfLocationService shelfLocationService = new ShelfLocationService();
+            GlobalStuff.ShelfViewModels = shelfLocationService.GetAllAsync().Result;
+            var groupByStoreQuery = from s in GlobalStuff.ShelfViewModels
+                                   group s by s.StoreType into storeTypesKey
+                                   select new
+                                   {
+                                       groupkey = storeTypesKey.Key
+                                   };
 
+            foreach (var grp in groupByStoreQuery)
+            {
+                GlobalStuff.Stores.Add(grp.groupkey);
+                var foundShelf = from sh in GlobalStuff.ShelfViewModels
+                                 where sh.StoreType == grp.groupkey
+                                 select sh;
+                GlobalStuff.ShelfUCs = new List<ShelfItemControl>();
+                foreach (var shelf in foundShelf)
+                {
+                    ShelfItemControl shelfUC = GetShelfControl(shelf);
+                    shelfUC.Model = shelf;
+                    Canvas.SetLeft(shelfUC, Convert.ToDouble(shelf.PositionX));
+                    Canvas.SetTop(shelfUC, Convert.ToDouble(shelf.PositionY));
+                    Canvas.SetZIndex(shelfUC, 2002);
+                    GlobalStuff.ShelfUCs.Add(shelfUC);
+                    switch (shelf.StoreType)  
+                        {
+                        case "Hardware1":
+                            shelfUC.Name = "HardwareShelf" + shelf.ShelfLocationID;
+                            storeHardwareInteriorUC.MainLayout.Children.Add(shelfUC);
+                            break;
+                        default:
+                            shelfUC.Name = "Shelf" + shelf.ShelfLocationID;
+                            break;
+                    }
+                } 
+            }
+        }
         private void LoadShopItems()
         {
             ShopItemService shopItemService = new ShopItemService();
-            GlobalStuff.ShopItem = shopItemService.GetAllAsync().Result;
-            foreach (var item in GlobalStuff.ShopItem)
+            GlobalStuff.ShopItems = shopItemService.GetAllAsync().Result;
+            foreach (var item in GlobalStuff.ShopItems)
             {
-                ShopItemControl shopitem = new ShopItemControl();
-                shopitem.Width = 100;
-                shopitem.Height = 100;
-                shopitem.Name = item.Name;
-                shopitem.Width = item.Width;
-                shopitem.Height = item.Height;
-                shopitem.Model = item;
-                if (item.RotationDegree > 0)
+                var found = from sh in GlobalStuff.ShelfUCs where sh.Model.ShopItemId == item.ShopItemId
+                            select sh;
+                if (found.Any())
                 {
-                    RotateTransform rotateTransform = new RotateTransform(item.RotationDegree);
-                    shopitem.RenderTransform = rotateTransform;
-
-                }
-                shopitem.Visibility = Visibility.Visible;
-                Canvas.SetLeft(shopitem, Convert.ToDouble(item.X));
-                Canvas.SetTop(shopitem, Convert.ToDouble(item.Y));
-                Canvas.SetZIndex(shopitem, 2002);
-                //shopitem.ItemCost = item.Price.ToString("C");
-                string filepath = Imagehelper.GetImagePath(item.ImageName);
-                shopitem.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
-                storeHardwareInteriorUC.MainLayout.Children.Add(shopitem);
+                    ShelfItemControl shelfUC = found.First();
+                    shelfUC.AddSHopItemToShelfLocation(GetShopItemControl(item));
+                }   
             }
+
+
+            //foreach (var store in GlobalStuff.Stores)
+            //{
+            //    var foundShelf = from sh in GlobalStuff.ShelfViewModels
+            //                     where sh.ShopItemId == store.Key
+            //                         select sh;
+            //    foreach (var shelf in foundShelf)
+            //    {
+            //        var storeitems = from si in GlobalStuff.ShopItems
+            //                         where si.ShopItemId == shelf.ShopItemId
+            //                         select si;
+
+            //        if (storeitems.Any())
+            //        {
+            //            ShopItemViewModel newShopItem = new ShopItemViewModel();
+            //            newShopItem = storeitems.FirstOrDefault();
+            //            ShopItemControl shopitem = new ShopItemControl();
+            //            shopitem.Width = newShopItem.Width;
+            //            shopitem.Height = newShopItem.Height;
+            //            shopitem.Name = newShopItem.Name;
+            //            shopitem.Width = newShopItem.Width;
+            //            shopitem.Height = newShopItem.Height;
+            //            //hopitem.Model = newShopItem;
+            //            shopitem.ShopItemMouseDown += storeHardwareInteriorUC.ShopItemMouseDown;
+            //            shopitem.ShopItemMouseUp += storeHardwareInteriorUC.ShopItemMouseUp; ;
+            //            if (newShopItem.RotationDegree > 0)
+            //            {
+            //                RotateTransform rotateTransform = new RotateTransform(newShopItem.RotationDegree);
+            //                shopitem.RenderTransform = rotateTransform;
+
+            //            }
+            //            shopitem.Visibility = Visibility.Visible;
+            //            shelfUC.AddSHopItemToShelfLocation(shopitem);
+
+            //            //shopitem.ItemCost = item.Price.ToString("C");
+            //            string filepath = Imagehelper.GetImagePath(newShopItem.ImageName);
+            //            shopitem.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
+            //        }
+
+            //    }
+            //}
+
+        }
+        private ShopItemControl GetShopItemControl(ShopItemViewModel model)
+        {
+            ShopItemControl shopitemtemp = new ShopItemControl();
+            shopitemtemp.Width = model.Width;
+            shopitemtemp.Height = model.Height;
+            shopitemtemp.Name = model.Name;
+            shopitemtemp.Width = model.Width;
+            shopitemtemp.Height = model.Height;
+            //hopitem.Model = newShopItem;
+            shopitemtemp.ShopItemMouseDown += storeHardwareInteriorUC.ShopItemMouseDown;
+            shopitemtemp.ShopItemMouseUp += storeHardwareInteriorUC.ShopItemMouseUp; ;
+            if (model.RotationDegree > 0)
+            {
+                RotateTransform rotateTransform = new RotateTransform(model.RotationDegree);
+                shopitemtemp.RenderTransform = rotateTransform;
+
+            }
+            shopitemtemp.Visibility = Visibility.Visible;
+
+            //shopitem.ItemCost = item.Price.ToString("C");
+            string filepath = Imagehelper.GetImagePath(model.ImageName);
+            shopitemtemp.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
+            return shopitemtemp;
+        }
+        private ShelfItemControl GetShelfControl(ShelfLocationViewModel model)
+        {
+            ShelfItemControl shelftemp = new ShelfItemControl();
+            shelftemp.Width = model.Width;
+            shelftemp.Height = model.Height;
             
+            return shelftemp;
+        }
+
+        private void Shopitem_StopDrag(object? sender, Objects.Arguments.ShopItemControlDrag e)
+        {
+            throw new NotImplementedException();
         }
 
         private void LoadStores()
@@ -141,7 +247,9 @@ namespace CatoriCity2025WPF.Controllers
                 {
                     double x = Canvas.GetLeft(lotControl);
                     double y = Canvas.GetTop(lotControl);
-                    lotControl.AddBuilding(ucStore1);
+                    storeHardwareInteriorUC.x = x;
+                    storeHardwareInteriorUC.y = y;
+                    lotControl.AddBuilding(ucStore1, false);
                 }
                 catch (Exception ex)
                 {
@@ -227,7 +335,7 @@ namespace CatoriCity2025WPF.Controllers
             _updatePathsTimerTimer.Start();
 
         }
-
+      
         private void LoadPersons()
         {
             PersonService personService = new PersonService();
@@ -292,7 +400,7 @@ namespace CatoriCity2025WPF.Controllers
                         policeLot.x = x;
                         policeLot.y = y;
                         policeLot.lotPosition = LotPositionEnum.RightSide;
-                        lotControl.AddBuilding(ps);
+                        lotControl.AddBuilding(ps,false);
                         GlobalGeo.PoliceStationLocationEntity = policeLot;
                         GlobalStuff.PoliceStationLocation = lotControl;
                     }
@@ -413,31 +521,39 @@ namespace CatoriCity2025WPF.Controllers
 
 
         #region Load Routines
+        private PersonViewModel GetCurrentPersonModel()
+        {
+            PersonViewModel currentPerson = new PersonViewModel();
+            if (GlobalStuff.CurrentUserPerson.PersonId > 0)
+            {
+
+                var person = from i in GlobalStuff.AllPersons
+                             where i.PersonId == GlobalStuff.CurrentUserPerson.PersonId
+                             select i;
+                currentPerson= person.First();
+            }
+            return currentPerson;
+        }
         private void LoadHouses()
         {
             int top = 100;
             int left = 100;
             cLogger.Log($"houses : {GlobalStuff.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
 
-            PersonViewModel currentPerson = new PersonViewModel();
-            if (GlobalStuff.CurrentUserPerson.PersonId > 0)
-            {
-                var person = from i in GlobalStuff.AllPersons
-                                    where i.PersonId == GlobalStuff.CurrentUserPerson.PersonId
-                                    select i;
-                currentPerson = person.First();
-            }
+            GlobalStuff.CurrentPerson = GetCurrentPersonModel();
             try
             {
+                bool primaryPersonHouse = false;
                 foreach (var house in GlobalStuff.Houses)
                 {
                     try
                     {
                         HouseControl houseControl = new HouseControl(house);
                         if (house.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower()
-                            && currentPerson.Name != null && currentPerson.Name != "")
+                            && GlobalStuff.CurrentPerson.Name != null && GlobalStuff.CurrentPerson.Name != "")
                         {
-                            houseControl.AddPersonModel(currentPerson);
+                            houseControl.AddPersonModel(GlobalStuff.CurrentPerson);
+                            primaryPersonHouse = true;  
                         }
                         houseControl.Width = GlobalStuff.buildingsize;
                         houseControl.Height = GlobalStuff.buildingsize - 10;
@@ -450,9 +566,10 @@ namespace CatoriCity2025WPF.Controllers
                                     select lot;
                         if (found.Any())
                         {
-                            found.First().AddBuilding(houseControl);
+                            found.First().AddBuilding(houseControl, primaryPersonHouse);
                         }
                         left += 90;
+                        primaryPersonHouse = false;
                     }
                     catch (Exception exi)
                     {
@@ -466,6 +583,26 @@ namespace CatoriCity2025WPF.Controllers
             {
 
                 throw;
+            }
+        }
+
+        public void ResetCharacters()
+        {
+            var foundlot = from lot in _lots
+                          where lot.LotOccupied == true
+                          && lot.IsPrimaryPersonHouse == true
+                          select lot;   
+           if (foundlot.Any())
+            {
+                PersonViewModel model = GetCurrentPersonModel();
+                LotControl lotControl = foundlot.First();
+                lotControl.Building.Visibility = Visibility.Visible;
+                lotControl.Building.AddPersonModel(model);
+            }
+           var badguys =UIUtility.FindChildrenOfType<BadPersonControl>(_view.MainLayout);
+            foreach (var badguy in badguys)
+            {
+                badguy.ResetAnimation();
             }
         }
         private void LoadBanks()
@@ -535,7 +672,7 @@ namespace CatoriCity2025WPF.Controllers
                         if (found.Any())
                         {
                             lotControl = found.First();
-                            lotControl.AddBuilding(bankUC);
+                            lotControl.AddBuilding(bankUC, false);
                             GlobalStuff.FinancialLotCobtrols.Add(found.First());
                             bankUC.Funds.Y = Canvas.GetTop(lotControl);
                             bankUC.Funds.X = Canvas.GetLeft(lotControl);
@@ -614,7 +751,7 @@ namespace CatoriCity2025WPF.Controllers
                             select lot;
                 if (found.Any())
                 {
-                    found.First().AddBuilding(factoryControl);
+                    found.First().AddBuilding(factoryControl, false);
                 }
                 string leftpos = Canvas.GetLeft(factoryControl).ToString();
                 // cLogger.Log($"BusinessControl: {businessControl.BusinessImage.Source}  {left} {top}");

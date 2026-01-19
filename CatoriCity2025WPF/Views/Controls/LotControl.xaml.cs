@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.Objects;
 using System.Windows.Controls;
+using System.Windows.Data;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace CatoriCity2025WPF.Views.Controls
@@ -9,6 +10,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// </summary>
     public partial class LotControl : UserControl
     {
+        public bool IsPrimaryPersonHouse { get; set; } = false;  
         public LotControl()
         {
             InitializeComponent();
@@ -27,10 +29,15 @@ namespace CatoriCity2025WPF.Views.Controls
         public StreetsEnum  Street { get;set; }
         public bool LotOccupied { get; set; } = false;  
 
-        public void AddBuilding(UserControl userControl)
+        public HouseControl Building { get; set; }
+        public void AddBuilding(UserControl userControl,bool primary)
         {
             if (userControl != null)
             {
+                if(userControl.GetType() == typeof(HouseControl))
+                {
+                    Building = userControl as HouseControl;
+                }
                 LotUCMainLayout.Children.Add(userControl);
                 Canvas.SetLeft(userControl, 0);
                 Canvas.SetTop(userControl, 0);

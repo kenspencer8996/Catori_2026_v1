@@ -1,5 +1,4 @@
-﻿using CatoriesCityAppHelper_2025.Objects;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace CatoriCity2025WPF.ViewModels
 {

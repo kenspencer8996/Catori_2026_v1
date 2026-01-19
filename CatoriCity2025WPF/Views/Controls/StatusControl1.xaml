@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave"
              d:DesignHeight="120" d:DesignWidth="400" Background="{DynamicResource MainGradient}">
     <Grid>
         <Grid.ColumnDefinitions>

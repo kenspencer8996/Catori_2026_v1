@@ -4,17 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
-             mc:Ignorable="d" x:Name="UC" Width="500" Height="120"  
-             d:DesignHeight="200" d:DesignWidth="120">
+             mc:Ignorable="d" x:Name="UC" Width="1820" Height="900"  Loaded="UC_Loaded"
+             d:DesignHeight="1820" d:DesignWidth="900">
     <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
              Width="{Binding ElementName=UC, Path=ActualWidth}" 
             Height="{Binding ElementName=UC, Path=ActualHeight}" >
-        <Canvas x:Name="MainLayout" Width="{Binding ElementName=MainBorder, Path=ActualWidth}" 
+        <Canvas x:Name="MainLayout" MouseDown="MainLayout_MouseDown" MouseUp="MainLayout_MouseUp" MouseMove="MainLayout_MouseMove" Width="{Binding ElementName=MainBorder, Path=ActualWidth}" 
             Height="{Binding ElementName=MainBorder, Path=ActualHeight}">
-            <Image x:Name="Factory1InteriorImage" Stretch="Fill" Source="/Images/Store_hardware_Interior.png" Width="{Binding ElementName=UC, Path=ActualWidth}" 
-            Height="{Binding ElementName=MainBorder, Path=ActualHeight}"/>
-
-
+            <Image x:Name="StoreInteriorImage" Stretch="Fill" Source="/Images/Store_hardware_Interior.png" Width="{Binding ElementName=UC, Path=ActualWidth}" 
+            Height="{Binding ElementName=MainBorder, Path=ActualHeight}" Panel.ZIndex="2"/>
+            <local:RobotCartControl x:Name="robotMover" Canvas.Left="32" Canvas.Top="149" Panel.ZIndex="2000"/>
+            <local:POSUI_UC x:Name="POSUC" Canvas.Left="252" Canvas.Top="410" Width="170" Height="150" Panel.ZIndex="2500"/>
+            <Image x:Name="TrapazoidImage" Source="/Images/TrapazoidGray.png" Panel.ZIndex="3001" 
+                  Canvas.Left="700" Canvas.Top="200" Width="250" Height="150" Visibility="Hidden"/>
         </Canvas>
     </Border>
 </UserControl>

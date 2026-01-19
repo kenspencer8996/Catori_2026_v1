@@ -19,18 +19,22 @@
 
   <ItemGroup>
     <None Remove="Images\badguy_6_wcash.png" />
+    <None Remove="Images\cabinetcorner.png" />
     <None Remove="Images\CatoriImage.ico" />
     <None Remove="Images\CatoriImage.png" />
     <None Remove="Images\closexred.png" />
     <None Remove="Images\DefaultRobotArmt.png" />
     <None Remove="Images\DepositImage.png" />
     <None Remove="Images\dollarsign.png" />
+    <None Remove="Images\DroneWithBox.png" />
     <None Remove="Images\FactoryInterior1.png" />
+    <None Remove="Images\FlatnedCart.png" />
     <None Remove="Images\gear_.png" />
     <None Remove="Images\HelpIcon.png" />
     <None Remove="Images\information.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
+    <None Remove="Images\ResetBlue.png" />
     <None Remove="Images\SaveButtonCool.png" />
     <None Remove="Images\Saw.png" />
     <None Remove="Images\SawChain.png" />
@@ -38,8 +42,10 @@
     <None Remove="Images\StoreHardware_Doorspng.png" />
     <None Remove="Images\Store_hardwareFront.png" />
     <None Remove="Images\Store_hardware_Interior.png" />
+    <None Remove="Images\TrapazoidGray.png" />
     <None Remove="Images\Trashcan.png" />
     <None Remove="Images\uparrowRed.png" />
+    <None Remove="Images\warehoouserollingrobot.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,13 +69,19 @@
 
   <ItemGroup>
     <Resource Include="Images\badguy_6_wcash.png" />
+    <Resource Include="Images\cabinetcorner.png" />
     <Resource Include="Images\CatoriImage.ico" />
+    <Resource Include="Images\DroneWithBox.png" />
+    <Resource Include="Images\FlatnedCart.png" />
+    <Resource Include="Images\ResetBlue.png" />
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
     <Resource Include="Images\Shovel.png" />
     <Resource Include="Images\StoreHardware_Doorspng.png" />
     <Resource Include="Images\Store_hardwareFront.png" />
     <Resource Include="Images\Store_hardware_Interior.png" />
+    <Resource Include="Images\TrapazoidGray.png" />
+    <Resource Include="Images\warehoouserollingrobot.png" />
     <SplashScreen Include="Images\CatoriImage.png" />
     <Resource Include="Images\closexred.png" />
     <Resource Include="Images\DefaultRobotArmt.png" />
