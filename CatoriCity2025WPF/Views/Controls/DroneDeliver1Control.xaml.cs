@@ -21,18 +21,25 @@ namespace CatoriCity2025WPF.Views.Controls
     public partial class DroneDeliver1UC : UserControl
     {
         private DroneDeliver1UCController _controller;
+        private string _imagePath;
         public DroneDeliver1UC()
         {
             InitializeComponent();
             _controller = new DroneDeliver1UCController(this);
-
+            _imagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "DroneShipping");
             // design-time placeholder
+            if (GlobalStuff.ShowAllBordersIfAvailable)
+            {
+                this.BorderThickness = new Thickness(1);
+                this.BorderBrush = Brushes.Red;
+            }
             if (DesignerProperties.GetIsInDesignMode(this))
             {
                 SetImage("pack://application:,,,/CatoriCity2025WPF;component/Images/dronewithbox.png");
             }
             else
             {
+                ImagePath = System.IO.Path.Combine(_imagePath, "DoneEmpty.png");
                 Loaded += DroneDeliver1_Loaded;
             }
         }
@@ -47,9 +54,6 @@ namespace CatoriCity2025WPF.Views.Controls
             get => (string?)GetValue(ImagePathProperty) ?? string.Empty;
             set => SetValue(ImagePathProperty, value);
         }
-
-       
-
         private void DroneDeliver1_Loaded(object? sender, RoutedEventArgs e)
         {
             // if ImagePath was set via DP before Loaded, apply it
@@ -66,28 +70,28 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         public void FlyToPickup()
         {
-            ImagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "DroneEmpty.png");
+            ImagePath = System.IO.Path.Combine(_imagePath, "DroneEmpty.png");
             _controller.FlyToPickup();
         }
         public void FlyToDroneParking()
         {
-            ImagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "DroneEmpty.png");
+            ImagePath = System.IO.Path.Combine(_imagePath, "DroneEmpty.png");
             _controller.FlyToDroneParking();
         }
         public void LiftOff()
         {
-           ImagePath =System.IO.Path.Combine(GlobalStuff.ImageFolder, "dronewithbox.png");
+           ImagePath =System.IO.Path.Combine(_imagePath, "dronewithbox.png");
             _controller.LiftOff();
         }
         public void FlyToHouse()
         {
-            ImagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "dronewithbox.png");
+            ImagePath = System.IO.Path.Combine(_imagePath, "dronewithbox.png");
             _controller.FlyToHouse();
         }
 
         public void DeliverPackage()
         {
-            ImagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "dronewithbox.png");
+            ImagePath = System.IO.Path.Combine(_imagePath, "dronewithbox.png");
             _controller.DeliverPackage();
         }
         /// <summary>

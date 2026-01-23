@@ -8,7 +8,7 @@ namespace CatoriCity2025WPF.Views.Controls
     public partial class POSUI_UC : UserControl
     {
         POSUI_UCController _controller;
-        public event EventHandler CheckoutButtonClicked;
+        public event EventHandler CheckoutButtonClickedEvent;
         public POSUI_UC()
         {
             InitializeComponent();
@@ -21,9 +21,9 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void CheckoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckoutButtonClicked != null)
+            if (CheckoutButtonClickedEvent != null)
             {
-                CheckoutButtonClicked(this, EventArgs.Empty);
+                CheckoutButtonClickedEvent(this, EventArgs.Empty);
             }
         }
 

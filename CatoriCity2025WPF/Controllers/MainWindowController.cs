@@ -200,7 +200,7 @@ namespace CatoriCity2025WPF.Controllers
             shopitemtemp.Name = model.Name;
             shopitemtemp.Width = model.Width;
             shopitemtemp.Height = model.Height;
-            //hopitem.Model = newShopItem;
+            shopitemtemp.Model = model;
             shopitemtemp.ShopItemMouseDown += storeHardwareInteriorUC.ShopItemMouseDown;
             shopitemtemp.ShopItemMouseUp += storeHardwareInteriorUC.ShopItemMouseUp; ;
             if (model.RotationDegree > 0)

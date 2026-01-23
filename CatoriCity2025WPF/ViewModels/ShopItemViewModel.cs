@@ -112,7 +112,10 @@
                 }
             }
         }
-
+        public string FilePathAbsolute
+        {
+            get => System.IO.Path.Combine(GlobalStuff.ImageFolder, _filePath);
+        }
         public double Height
         {
             get => _height;

@@ -13,7 +13,7 @@ namespace CatoriCity2025WPF.Objects
         public static double MainViewHeight = 0;
         public static int buildingsize = 90;
         public static int BuildingLocationBuffer = 2;
-        public static bool ShowAllBordersIfAvailable = false;
+        public static bool ShowAllBordersIfAvailable = true;
         public static bool ShowPaths = false;
         public static Int32 PathSegmentsToRun = 1;
         public static Int32 PathSegmentsInnerToCreate = 1;

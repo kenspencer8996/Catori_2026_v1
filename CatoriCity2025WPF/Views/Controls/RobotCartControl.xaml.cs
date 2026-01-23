@@ -1,4 +1,5 @@
 ﻿
+using CatoriCity2025WPF.Controllers;
 using CatoriCity2025WPF.Objects.Arguments;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -12,12 +13,20 @@ namespace CatoriCity2025WPF.Views.Controls
     {
         public event EventHandler RobotCartControlMouseUp;
         DispatcherTimer _moveCartTimer;
-        public double _originalLeft = 350;
-        public double _originalTop = 520;
         public event EventHandler<RobotMoverControlDrag> RobotMoverMouseUp;
+        public event EventHandler<RobotMoverControlDrag> RobotEnter;
+        public event EventHandler<RobotMoverControlDrag> RobotLeave;
+        public event EventHandler<RobotMoverControlDrag> RobotAllFinished;
+
+        RobotCartControlController _controller;
+        public double _originalLeft ;
+        public double _originalTop ;
         public RobotCartControl()
         {
             InitializeComponent();
+            _controller = new RobotCartControlController(this);
+            _originalLeft = _controller._originalLeft;
+            _originalTop = _controller._originalTop;
             _moveCartTimer = new DispatcherTimer();
             _moveCartTimer.Tick += new EventHandler(_moveCartTimer_Tick);
             _moveCartTimer.Interval = new TimeSpan(0, 0, 2);
@@ -32,6 +41,10 @@ namespace CatoriCity2025WPF.Views.Controls
 
         public ShoppingCartItemViewModel Model;
         public string HardwareStoreName { get; set; }
+        internal void MoveCartToLoadOut()
+        {
+            _controller.MoveCartToLoadOut();
+        }
         internal void MoveCart()
         {
             _moveCartTimer.Start();
@@ -39,66 +52,20 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         private void MoveCartFromTimer()
         {
-            //show side view
-            SetSideView();
-            int seconds = 2;
-            Storyboard sb = new Storyboard();
-            DoubleAnimation daleft = AnimationHelper.GetDoubleAnimation(_originalLeft, 500, seconds * 1000);
-            daleft.EasingFunction = new ExponentialEase
-            {
-                EasingMode = EasingMode.EaseOut,
-                Exponent = 5
-            };
-            Storyboard.SetTarget(daleft, this);
-            Storyboard.SetTargetProperty(daleft, new PropertyPath("(Canvas.Left)"));
-            sb.Children.Add(daleft);
-
-            DoubleAnimation dtop = AnimationHelper.GetDoubleAnimation(_originalTop, 550, seconds * 1000);
-            Storyboard.SetTarget(dtop, this);
-            Storyboard.SetTargetProperty(dtop, new PropertyPath("(Canvas.Top)"));
-            dtop.EasingFunction = new ExponentialEase
-            {
-                EasingMode = EasingMode.EaseOut,
-                Exponent = 5
-            };
-            sb.Children.Add(dtop);
-
-            DoubleAnimation daleft2 = AnimationHelper.GetDoubleAnimation(1000, 1220, seconds * 1000);
-            Storyboard.SetTarget(daleft2, this);
-            Storyboard.SetTargetProperty(daleft2, new PropertyPath("(Canvas.Left)"));
-            sb.Children.Add(daleft2);
-
-            DoubleAnimation dtop2 = AnimationHelper.GetDoubleAnimation(550, 400, seconds * 1000);
-            Storyboard.SetTarget(dtop2, this);
-            Storyboard.SetTargetProperty(dtop2, new PropertyPath("(Canvas.Top)"));
-            sb.Children.Add(dtop2);
-
-            sb.Completed += (s, e) =>
-            {
-                //show rear view
-                SetreadView();
-                Task.Delay(500).ContinueWith(t =>
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        //show front view
-                        SetFrontiew();
-                    });
-                });
-            };  
-            sb.Begin();
+            _controller.MoveCartFromTimer();
+           
         }
-        private void SetFrontiew()
+        public void SetFrontiew()
         {
             string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehoouserollingrobot.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
         }
-        private void SetSideView()
+        public void SetSideView()
         {
             string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehouserobobtsideview.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
         }
-        private void SetreadView()
+        public void SetRearView()
         {
             string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehouserobotrearview.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
@@ -114,7 +81,7 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void ShopItemsPanel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-
+          
         }
 
         private void ShopItemsPanel_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -124,7 +91,12 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void UserControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            if (RobotEnter != null)
+            {
+                RobotMoverControlDrag arg = new RobotMoverControlDrag();
 
+                RobotEnter(this, arg);
+            }
         }
 
         private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -152,5 +124,23 @@ namespace CatoriCity2025WPF.Views.Controls
             }
         }
 
+        private void UserControl_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (RobotLeave != null)
+            {
+                RobotMoverControlDrag arg = new RobotMoverControlDrag();
+
+                RobotLeave(this, arg);
+            }
+        }
+
+        public void RobotAllDone()
+        {
+            if (RobotAllFinished != null)
+            {
+                RobotMoverControlDrag arg = new RobotMoverControlDrag();
+                RobotAllFinished(this, arg);
+            }
+        }
     }
 }

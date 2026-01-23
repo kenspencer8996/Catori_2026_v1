@@ -14,9 +14,14 @@
             <Image x:Name="StoreInteriorImage" Stretch="Fill" Source="/Images/Store_hardware_Interior.png" Width="{Binding ElementName=UC, Path=ActualWidth}" 
             Height="{Binding ElementName=MainBorder, Path=ActualHeight}" Panel.ZIndex="2"/>
             <local:RobotCartControl x:Name="robotMover" Canvas.Left="32" Canvas.Top="149" Panel.ZIndex="2000"/>
-            <local:POSUI_UC x:Name="POSUC" Canvas.Left="252" Canvas.Top="410" Width="170" Height="150" Panel.ZIndex="2500"/>
+            <local:POSUI_UC x:Name="POSUC" Canvas.Left="252" Canvas.Top="410" Width="320" Height="150" Panel.ZIndex="2500"/>
             <Image x:Name="TrapazoidImage" Source="/Images/TrapazoidGray.png" Panel.ZIndex="3001" 
                   Canvas.Left="700" Canvas.Top="200" Width="250" Height="150" Visibility="Hidden"/>
+            <Image x:Name="DragImage" Source="/Images/gear_.png" Panel.ZIndex="3001" 
+       Canvas.Left="500" Canvas.Top="200" Width="250" Height="150" Visibility="Visible"/>
+            <local:CardboardBoxUC x:Name="BoxclosedUC" Canvas.Left="635" Canvas.Top="960" Width="120" Height="0" Panel.ZIndex="2000"/>
+            <!--<local:DroneDeliver1UC x:Name="DroneDeliver111UC" Canvas.Left="350" Canvas.Top="1280" Width="188" Height="110" Panel.ZIndex="4000"/>-->
+            <local:DroneDeliveryControl x:Name="DroneDeliveryUC" Canvas.Left="400" Canvas.Top="1280" Width="188" Height="110" Panel.ZIndex="4000"/>
         </Canvas>
     </Border>
 </UserControl>

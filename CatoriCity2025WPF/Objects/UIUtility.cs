@@ -1,14 +1,25 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Objects
 {
     public class UIUtility
     {
+
         private static string SavedClipboard = "";
+        public static bool CheckMouseMoveForDrag(Point current, Point startposition)
+        {
+            bool result = false;
+            double xoffset = Math.Abs(current.X - startposition.X);
+            double yoffset = Math.Abs(current.Y - startposition.Y);
+
+            if (xoffset > SystemParameters.MinimumHorizontalDragDistance ||
+               yoffset > SystemParameters.MinimumVerticalDragDistance)
+            {
+                result = true;
+            }
+            return result;
+        }
         /// <summary>
         /// Processes all pending UI events in the Dispatcher queue.
         /// </summary>

@@ -47,6 +47,10 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             double centerX = x - (this.ActualWidth / 2);
             double centerY = y - (this.ActualHeight / 2);
+            centerX = x;
+            centerY = y;
+            cLogger.Log(" SetLocation to  X: " + x + " Y: " + y);
+            cLogger.Log(" SetLocation2 to  centerX: " + centerX + " centerY: " + centerY + " visible " + Visibility);
             Canvas.SetLeft(this, centerX);
             Canvas.SetTop(this, centerY);
         }
@@ -61,9 +65,9 @@ namespace CatoriCity2025WPF.Views.Controls
             double yoffset = Math.Abs(currentPosition.Y - _mouseOffset.Y);
             // Check if mouse moved enough to be considered a drag
             cLogger.Log("    xoffset " + xoffset + " yoffset " + yoffset);
-            if (xoffset > SystemParameters.MinimumHorizontalDragDistance ||
-                yoffset > SystemParameters.MinimumVerticalDragDistance)
-            {
+            //if (xoffset > SystemParameters.MinimumHorizontalDragDistance ||
+            //    yoffset > SystemParameters.MinimumVerticalDragDistance)
+            //{
 
                 DataObject data = new DataObject();
                 string modelasstring = GenericSerializer.Serialize<ShopItemViewModel>(Model);
@@ -77,8 +81,9 @@ namespace CatoriCity2025WPF.Views.Controls
                 ShopItemControlDrag args = new ShopItemControlDrag();
                 args.shopItemControl = this;
                 args.MouseArgs = e;
+                args.OriginalLocation =new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
                 ShopItemMouseDown(this, args);
-            }
+            //}
 
         }
         //protected override void OnMouseMove(MouseEventArgs e)

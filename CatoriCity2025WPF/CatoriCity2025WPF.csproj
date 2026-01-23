@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <None Remove="Images\badguy_6_wcash.png" />
+    <None Remove="Images\BoxShippingShipping3.png" />
     <None Remove="Images\cabinetcorner.png" />
     <None Remove="Images\CatoriImage.ico" />
     <None Remove="Images\CatoriImage.png" />
@@ -69,6 +70,7 @@
 
   <ItemGroup>
     <Resource Include="Images\badguy_6_wcash.png" />
+    <Resource Include="Images\BoxShippingShipping3.png" />
     <Resource Include="Images\cabinetcorner.png" />
     <Resource Include="Images\CatoriImage.ico" />
     <Resource Include="Images\DroneWithBox.png" />

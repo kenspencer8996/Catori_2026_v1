@@ -6,5 +6,6 @@ namespace CatoriCity2025WPF.Objects.Arguments
     {
         public ShopItemControl shopItemControl;
         public MouseButtonEventArgs MouseArgs;
+        public Point OriginalLocation;
     }
 }
