@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
                 mc:Ignorable="d" x:Name="UC" Width="128" Height="128" >
-         <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="4" BorderBrush="#FFF11111" 
+         <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
            Width="{Binding ElementName=UC, Path=ActualWidth}" 
           Height="{Binding ElementName=UC, Path=ActualHeight}" >
         <Canvas>

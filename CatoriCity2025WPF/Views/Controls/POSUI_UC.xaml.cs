@@ -1,4 +1,6 @@
 ﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Objects.Arguments;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
@@ -12,7 +14,10 @@ namespace CatoriCity2025WPF.Views.Controls
         public POSUI_UC()
         {
             InitializeComponent();
-            _controller = new POSUI_UCController(this);
+        }
+        public void SetupPOC(int personid)
+        {
+            _controller = new POSUI_UCController(this,personid);
         }
         public void AddItemToCart(ShoppingCartItemViewModel item)
         {
@@ -21,10 +26,16 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void CheckoutButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckoutButton.IsEnabled = false;
+            POCArgs pOCArgs = new POCArgs();
+            pOCArgs.Items = _controller.Items;
+            WeakReferenceMessenger.Default.Send<POCArgs>(pOCArgs);
+            _controller.SaveCartItems();
             if (CheckoutButtonClickedEvent != null)
             {
                 CheckoutButtonClickedEvent(this, EventArgs.Empty);
             }
+            _controller.Items.Clear();
         }
 
         internal void CheckOut()

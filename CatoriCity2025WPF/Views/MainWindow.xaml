@@ -48,6 +48,9 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
             <StackPanel Orientation="Horizontal">
+                <Button x:Name="TreasureFieldViewButton" Width="25" Click="TreasureFile1ViewButton_Click" Margin="25,0,0,0" >
+                    <Image x:Name="UpsttowTF1Image" Source="/Images/Uparrow.png" Width="25" Height="25"/>
+                </Button>
                 <Button x:Name="SettingsViewButton" Width="25" Click="SettingsViewButton_Click" Margin="25,0,0,0" ToolTip="Settings">
                     <Image x:Name="GearImage" Source="/Images/gear_.png" Width="25" Height="25"/>
                 </Button>

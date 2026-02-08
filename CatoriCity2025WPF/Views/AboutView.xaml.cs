@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Reflection;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -17,9 +7,27 @@ namespace CatoriCity2025WPF.Views
     /// </summary>
     public partial class AboutView : Window
     {
+        string _name;
+        string _versionnumber;
         public AboutView()
         {
             InitializeComponent();
+            var version = Assembly.GetExecutingAssembly()
+                             .GetName()
+                             .Version;
+
+            var assembly = Assembly.GetExecutingAssembly();
+
+            // Option 1: Read <Version> (Informational Version)
+            var infoVersion = assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion;
+
+            _name = Assembly.GetExecutingAssembly().GetName().Name ?? "CatoriCity2025WPF";
+            _versionnumber = version.ToString();
+
+            NameLabel.Content = _name;
+            VersionNumberLabel.Content = _versionnumber;  
         }
     }
 }

@@ -18,11 +18,16 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="80*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Catori Spencer City Scape Game" VerticalAlignment="Center" FontSize="14" />
-        <Label Grid.Row="5" Grid.Column="0" Content="Copyright @ 2026 Catori and Papa Spencer" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
-        <Image Grid.Row="6" HorizontalAlignment="Center" Source="/Images/CatoriImage.png"/>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Catori Spencer City Scape Game" VerticalAlignment="Center" FontSize="14" />
+        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Copyright @ 2026 Catori and Papa Spencer" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Name:" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Label x:Name="NameLabel" Grid.Row="2" Grid.Column="1" Content="" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Label Grid.Row="3" Grid.Column="0" Content="Version:" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Label x:Name="VersionNumberLabel" Grid.Row="3" Grid.Column="1" Content="" VerticalAlignment="Center" FontSize="14"  Foreground="#FFEC1919" />
+        <Image Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Center" Source="/Images/CatoriImage.png"/>
     </Grid>
 </Window>

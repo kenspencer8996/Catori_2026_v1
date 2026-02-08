@@ -7,9 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>CatoriImage.ico</ApplicationIcon>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <Compile Remove="Objects\ResourceHelperWin.cs" />
     <Compile Remove="Objects\ReturnForInsertMethods.cs" />
     <Compile Remove="Objects\SampleData.cs" />
@@ -23,15 +25,26 @@
     <None Remove="Images\cabinetcorner.png" />
     <None Remove="Images\CatoriImage.ico" />
     <None Remove="Images\CatoriImage.png" />
+    <None Remove="Images\CHestClosed.png" />
     <None Remove="Images\closexred.png" />
     <None Remove="Images\DefaultRobotArmt.png" />
     <None Remove="Images\DepositImage.png" />
+    <None Remove="Images\DirtSpot.png" />
     <None Remove="Images\dollarsign.png" />
+    <None Remove="Images\DronePortal.png" />
     <None Remove="Images\DroneWithBox.png" />
+    <None Remove="Images\entrytogarage.png" />
     <None Remove="Images\FactoryInterior1.png" />
+    <None Remove="Images\Factoryinterior2.png" />
+    <None Remove="Images\Factoryinterior3.jpg" />
+    <None Remove="Images\Factoryinterior4.jpg" />
+    <None Remove="Images\FactoryInterior4.png" />
     <None Remove="Images\FlatnedCart.png" />
     <None Remove="Images\gear_.png" />
+    <None Remove="Images\GirlfWithBushesNohole.png" />
+    <None Remove="Images\GrasswithTreasureSpot.png" />
     <None Remove="Images\HelpIcon.png" />
+    <None Remove="Images\HouseDoor.png" />
     <None Remove="Images\information.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
@@ -45,8 +58,13 @@
     <None Remove="Images\Store_hardware_Interior.png" />
     <None Remove="Images\TrapazoidGray.png" />
     <None Remove="Images\Trashcan.png" />
+    <None Remove="Images\Uparrow.png" />
     <None Remove="Images\uparrowRed.png" />
     <None Remove="Images\warehoouserollingrobot.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Views\Controls\DroneDeliver1.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,8 +91,19 @@
     <Resource Include="Images\BoxShippingShipping3.png" />
     <Resource Include="Images\cabinetcorner.png" />
     <Resource Include="Images\CatoriImage.ico" />
+    <Resource Include="Images\CHestClosed.png" />
+    <Resource Include="Images\DirtSpot.png" />
+    <Resource Include="Images\DronePortal.png" />
     <Resource Include="Images\DroneWithBox.png" />
+    <Resource Include="Images\entrytogarage.png" />
+    <Resource Include="Images\Factoryinterior2.png" />
+    <Resource Include="Images\Factoryinterior3.jpg" />
+    <Resource Include="Images\Factoryinterior4.jpg" />
+    <Resource Include="Images\FactoryInterior4.png" />
     <Resource Include="Images\FlatnedCart.png" />
+    <Resource Include="Images\GirlfWithBushesNohole.png" />
+    <Resource Include="Images\GrasswithTreasureSpot.png" />
+    <Resource Include="Images\HouseDoor.png" />
     <Resource Include="Images\ResetBlue.png" />
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
@@ -83,6 +112,7 @@
     <Resource Include="Images\Store_hardwareFront.png" />
     <Resource Include="Images\Store_hardware_Interior.png" />
     <Resource Include="Images\TrapazoidGray.png" />
+    <Resource Include="Images\Uparrow.png" />
     <Resource Include="Images\warehoouserollingrobot.png" />
     <SplashScreen Include="Images\CatoriImage.png" />
     <Resource Include="Images\closexred.png" />
@@ -111,6 +141,15 @@
 
   <ItemGroup>
     <Compile Update="Views\Controls\FactoryControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_4UC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_3UC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_2UC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

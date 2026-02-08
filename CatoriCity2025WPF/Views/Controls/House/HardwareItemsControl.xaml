@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.House.HardwareItemsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls.House"
+             mc:Ignorable="d" Width="600" Height="200" x:Name="UC" >
+    <Border x:Name="MainBorder" BorderBrush="Black" Width="{Binding ActualWidth, ElementName=UC}"
+            Height="{Binding ActualHeight, ElementName=UC}">
+        <Canvas x:Name="MainLayout" Width="{Binding ActualWidth, ElementName=MainBorder}"
+            Height="{Binding ActualHeight, ElementName=MainBorder}">
+            <StackPanel x:Name="ItemsStackPanel" Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=MainLayout}"
+                Height="{Binding ActualHeight, ElementName=MainLayout}">
+        </StackPanel>
+    </Canvas>
+    </Border>
+</UserControl>

@@ -8,10 +8,11 @@ namespace CatoriCity2025WPF.Controllers
         POSUI_UC _view;
         public ObservableCollection<ShoppingCartItemViewModel> Items = new ObservableCollection<ShoppingCartItemViewModel>();
         private readonly DispatcherTimer _timer;
-
-        public POSUI_UCController(POSUI_UC view)
+        int _personId;
+        public POSUI_UCController(POSUI_UC view, int personId)
         {
             _view = view;
+            _personId = personId;
             _view.CartDataGrid.ItemsSource = Items;
             _timer = new DispatcherTimer
             {
@@ -29,8 +30,8 @@ namespace CatoriCity2025WPF.Controllers
         public void AddItemToCart(ShoppingCartItemViewModel item)
         {
             Items.Add(item);
-            
-            decimal total = CalculateandSetTotal(); 
+
+            decimal total = CalculateandSetTotal();
             if (total > GlobalStuff.CurrentPerson.Funds)
                 _view.CheckoutButton.IsEnabled = false;
             else
@@ -46,6 +47,19 @@ namespace CatoriCity2025WPF.Controllers
             }
             _view.TotalTextBox.Text = $"${total:F2}";
             return total;
+        }
+        public void SaveCartItems()
+        {
+            PersonProductsOwnedService personProductsOwnedService = new PersonProductsOwnedService();
+            foreach (var item in Items) 
+            {
+                personProductsOwnedService.UpsertAsync(new PersonProductsOwnedViewModel
+                {
+                    PersonId = _personId,
+                    ShopItemId = item.ShopItem.ShopItemId,
+                    Quantity = item.Quantity
+                });
+            }
         }
     }
 }

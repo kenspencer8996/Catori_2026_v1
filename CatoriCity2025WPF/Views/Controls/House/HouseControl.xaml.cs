@@ -1,14 +1,7 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
 using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
 using CatorisControlLibrary.Objects;
-using CatoriServices.Objects;
-using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CatoriCity2025WPF.Views.Controls
@@ -33,8 +26,6 @@ namespace CatoriCity2025WPF.Views.Controls
         public HouseViewModel _houseViewModel;
         private string PersonName = "";
         private decimal Funds = 0;
-        PersonService personservice;
-        PersonViewModel personmodel = new PersonViewModel();
 
         public string HouseImageName
         {
@@ -88,28 +79,16 @@ namespace CatoriCity2025WPF.Views.Controls
             Width = GlobalStuff.buildingsize;
             Height = GlobalStuff.buildingsize;
             DataContext = _houseViewModel;
-            personservice = new PersonService();
 
-            if (_houseViewModel.PersonCurrentImagePath != null && _houseViewModel.PersonCurrentImagePath != "")
-            {
-                PersonImage.Source = UIUtility.GetImageControl(_houseViewModel.PersonCurrentImagePath, Width, Height, 0).Source;
-            }
-            else
-            {
-                PersonImage.Source = null;
-            }
-            fundsThumb.Visibility = Visibility.Hidden;
+            string tooltipimageSaw = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses", "living_10_roomarmchair_HouseBlue3.png");
 
-            WeakReferenceMessenger.Default.Register<LeaveWorkArg>(this, (r, m) =>
+            ImageTextToolTip toolTip = new ImageTextToolTip
             {
-                //check if the person is in this house
-                if (m.Person.Name == PersonName)
-                {
-                    PersonImage.Visibility = Visibility.Visible;
-                    fundsThumb.Visibility = Visibility.Visible;
-                    personservice.UpsertPerson(m.Person);
-                }
-            });
+                Title = "Living Room",
+                Description = "View the living room and find the garage.",
+                Icon = UIUtility.GetImageControl(tooltipimageSaw, 32, 32, 0).Source
+            };
+            this.ToolTip = toolTip;
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -182,7 +161,7 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void ExpandButton_Click(object sender, RoutedEventArgs e)
         {
-            DetailHouseInsideView view = new DetailHouseInsideView(_houseViewModel);
+            DetailHouseInsideView view = new DetailHouseInsideView(_houseViewModel,GlobalStuff.MainViewWidth,GlobalStuff.MainViewHeight);
             view.Owner = GlobalStuff.MainView;
             view.Show();
         }
@@ -193,9 +172,7 @@ namespace CatoriCity2025WPF.Views.Controls
             double newimagesize = newWidth - 25;
             HouseImage.Width = newimagesize;
             HouseImage.Height = newimagesize;
-            Canvas.SetLeft(PersonImage, newimagesize);
-            Canvas.SetLeft(fundsThumb, newimagesize);
-
+ 
         }
 
         private void fundsThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
@@ -205,8 +182,8 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void fundsThumb_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
         {
-            var data = new DataObject(DataFormats.StringFormat, Funds);
-            DragDrop.DoDragDrop(fundsThumb, data, DragDropEffects.Move); // Here the exception occurs
+            //var data = new DataObject(DataFormats.StringFormat, Funds);
+            //DragDrop.DoDragDrop(fundsThumb, data, DragDropEffects.Move); // Here the exception occurs
         }
         
 
@@ -214,14 +191,13 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             try
             {
-                personmodel = model;
-                _houseViewModel.PersonCurrentImagePath = model.StaticImageFilePath;
-                PersonImage.Source = _houseViewModel.CurrentImage.Source;
-                PersonImage.ToolTip = model.Name;
-                PersonImage.Visibility = Visibility.Visible;
-                PersonName = model.Name;
-                if (model.Funds > 0)
-                    Funds = model.Funds;
+                //_houseViewModel.PersonCurrentImagePath = model.StaticImageFilePath;
+                //PersonImage.Source = _houseViewModel.CurrentImage.Source;
+                //PersonImage.ToolTip = model.Name;
+                //PersonImage.Visibility = Visibility.Visible;
+                //PersonName = model.Name;
+                //if (model.Funds > 0)
+                //    Funds = model.Funds;
             }
             catch (Exception ex)
             {
@@ -237,14 +213,14 @@ namespace CatoriCity2025WPF.Views.Controls
                 string dataasstring = data.GetData(DataFormats.StringFormat).ToString();
                 if (dataasstring == null || dataasstring == "" || dataasstring == "0.0")
                     return;
-                personmodel = GenericSerializer.Deserialize<PersonViewModel>(dataasstring);
-                _houseViewModel.PersonCurrentImagePath = personmodel.StaticImageFilePath;
-                PersonImage.Source = _houseViewModel.CurrentImage.Source;
-                PersonImage.ToolTip = personmodel.Name;
-                PersonImage.Visibility = Visibility.Visible;
-                PersonName = personmodel.Name;
-                if (personmodel.Funds > 0)
-                    Funds = personmodel.Funds;
+                //personmodel = GenericSerializer.Deserialize<PersonViewModel>(dataasstring);
+                //_houseViewModel.PersonCurrentImagePath = personmodel.StaticImageFilePath;
+                //PersonImage.Source = _houseViewModel.CurrentImage.Source;
+                //PersonImage.ToolTip = personmodel.Name;
+                //PersonImage.Visibility = Visibility.Visible;
+                //PersonName = personmodel.Name;
+                //if (personmodel.Funds > 0)
+                //    Funds = personmodel.Funds;
 
             }
         }
@@ -254,15 +230,15 @@ namespace CatoriCity2025WPF.Views.Controls
             cLogger.Log($"HouseControl PersonImage_MouseDown before if :  {PersonName}");
             if (PersonName != null && PersonName != "")
             {
-                personmodel.Name = PersonName;
-                //     model.PersonCurrentImagePath = _houseViewModel.PersonCurrentImagePath;
-                personmodel.Funds = Funds;
-                personmodel.StaticImageFilePath = _houseViewModel.PersonCurrentImagePath;
-                string modelstring = GenericSerializer.Serialize<PersonViewModel>(personmodel);
-                DataObject data = new DataObject();
-                data.SetText(modelstring);
-                DragDrop.DoDragDrop(PersonImage, modelstring, DragDropEffects.Move);
-                PersonImage.Visibility = Visibility.Collapsed;
+                //personmodel.Name = PersonName;
+                ////     model.PersonCurrentImagePath = _houseViewModel.PersonCurrentImagePath;
+                //personmodel.Funds = Funds;
+                //personmodel.StaticImageFilePath = _houseViewModel.PersonCurrentImagePath;
+                //string modelstring = GenericSerializer.Serialize<PersonViewModel>(personmodel);
+                //DataObject data = new DataObject();
+                //data.SetText(modelstring);
+                //DragDrop.DoDragDrop(PersonImage, modelstring, DragDropEffects.Move);
+                //PersonImage.Visibility = Visibility.Collapsed;
                 cLogger.Log($"HouseControl PersonImage_MouseDown if :  {PersonName}");
             }
             else
@@ -274,9 +250,9 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void fundsThumb_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            FundsDetailView fundsDetailView = new FundsDetailView(personmodel);
-            fundsDetailView.Owner = GlobalStuff.MainView;
-            fundsDetailView.ShowDialog();
+            //FundsDetailView fundsDetailView = new FundsDetailView(personmodel);
+            //fundsDetailView.Owner = GlobalStuff.MainView;
+            //fundsDetailView.ShowDialog();
         }
     }
 }

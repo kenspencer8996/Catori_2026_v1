@@ -4,11 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" x:Name="UC"
              d:DesignHeight="200" d:DesignWidth="200">
     <Canvas>
-        <Image x:Name="CardboardBoxImage" Stretch="Fill"  Source="/Images/BoxShippingShipping3.png"
-                 Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
+            Width="{Binding ElementName=UC, Path=ActualWidth}" 
+           Height="{Binding ElementName=UC, Path=ActualHeight}" >
+            <Image x:Name="CardboardBoxImage" Stretch="Fill"  Source="/Images/BoxShippingShipping3.png" 
+                   Width="{Binding ElementName=MainBorder, Path=ActualWidth}" 
+                   Height="{Binding ElementName=MainBorder, Path=ActualHeight}" />
+        </Border>
     </Canvas>
 </UserControl>

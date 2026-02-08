@@ -20,8 +20,12 @@ namespace CatoriCity2025WPF.Controllers
         internal MainWindowController(MainWindow view)
         {
             _view = view;
+            string startupmessage = "--------------------- Application Startup ------------------------" + Environment.NewLine;
+            startupmessage += "Application Startup Time: " + DateTime.Now.ToString() + Environment.NewLine;
+            startupmessage+= GlobalStuff.GetNameWithVersion() + Environment.NewLine;
+            cLogger.Log(startupmessage);
             //NlogSetup.Configure();
-
+            GlobalStuff.LoadFactoryInteriorControls();
             cLogger.Log("MainWindowController Constructor");
             GlobalStuff.TimingsRandom = new List<int>();
             Random rnd = new Random();
@@ -54,9 +58,11 @@ namespace CatoriCity2025WPF.Controllers
             try
             {
                 cLogger.Log("MainWindowController Startup");
+                HouseService houseService = new HouseService();
+
                 _streetwidth = streetwidth;
                 CreateLots();
-                GlobalStuff.Houses = ImageFileHelper.GetHouses();
+                GlobalStuff.Houses = houseService.GetHousesAsync().Result;
                 GlobalStuff.Banks = ImageFileHelper.GetBanks();
                 LoadPersons();
                 GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
@@ -68,6 +74,13 @@ namespace CatoriCity2025WPF.Controllers
                 LoadFactories();
                 AddPoliceStation();
                 loadPoliceCars();
+
+                PersonControl person = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault());
+                _view.MainLayout.Children.Add(person);
+                Canvas.SetLeft(person, 450);
+                Canvas.SetTop(person, 250);
+                Canvas.SetZIndex(person, 4001);
+
                 //AddToLandscapeItems();
                 LoadLandscapeObjects();
                 GetLandscapeObjectsGroupIds();
@@ -279,13 +292,24 @@ namespace CatoriCity2025WPF.Controllers
         {
             double width = 300;
             double height = 200;
-            GlobalStuff.factoryInteriorControl.Width = width;
-            GlobalStuff.factoryInteriorControl.Height = height;
-            GlobalStuff.factoryInteriorControl.Visibility = Visibility.Collapsed;
-            _view.MainLayout.Children.Add(GlobalStuff.factoryInteriorControl);
-            Canvas.SetLeft(GlobalStuff.factoryInteriorControl, leftFactory - width);
-            Canvas.SetTop(GlobalStuff.factoryInteriorControl, topFactory + 100 );
-            Canvas.SetZIndex(GlobalStuff.factoryInteriorControl, 2000);
+            try
+            {
+                foreach (var child in GlobalStuff.factoryInteriorControls)
+                {
+                    child.Width = width;
+                    child.Height = height;
+                    child.Visibility = Visibility.Collapsed;
+                    _view.MainLayout.Children.Add(child);
+                    Canvas.SetLeft(child, leftFactory - width);
+                    Canvas.SetTop(child, topFactory + 100);
+                    Canvas.SetZIndex(child, 2000);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         private void BaloonHelpUC_MoveBaloon(object? sender, Objects.Arguments.BaloonLocationInfoArgument e)
@@ -341,6 +365,7 @@ namespace CatoriCity2025WPF.Controllers
             PersonService personService = new PersonService();
             GlobalStuff.AllPersons = personService.GetPersonsAsync().Result;
 
+          
         }
         #region Add methods
 
@@ -556,7 +581,7 @@ namespace CatoriCity2025WPF.Controllers
                             primaryPersonHouse = true;  
                         }
                         houseControl.Width = GlobalStuff.buildingsize;
-                        houseControl.Height = GlobalStuff.buildingsize - 10;
+                        houseControl.Height = GlobalStuff.buildingsize;
                         Canvas.SetZIndex(houseControl, 100);
                         Canvas.SetLeft(houseControl, left);
                         Canvas.SetTop(houseControl, top);
@@ -732,34 +757,45 @@ namespace CatoriCity2025WPF.Controllers
             int I = 0;
             double leftFistFactory = Canvas.GetLeft( firstlot);
             double topFistFactory = Canvas.GetTop(firstlot);
-            foreach (var item in business)
+            int factoryCount = 1;
+            try
             {
-                FactoryControl factoryControl = new FactoryControl();
-                factoryControl.BusinessImage.Source = UIUtility.GetImageControl(item.ImageName, Width, Height, 0).Source; ;
-                factoryControl.Width = GlobalStuff.buildingsize;
-                factoryControl.Height = GlobalStuff.buildingsize;
-                Canvas.SetZIndex(factoryControl, 100);
-                Canvas.SetLeft(factoryControl, left);
-                Canvas.SetTop(factoryControl, top);
-                if (I == 0)
+                foreach (var item in business)
                 {
-                    I++;
+                    FactoryControl factoryControl = new FactoryControl(factoryCount);
+                    factoryControl.BusinessImage.Source = UIUtility.GetImageControl(item.ImageName, Width, Height, 0).Source; ;
+                    factoryControl.Width = GlobalStuff.buildingsize;
+                    factoryControl.Height = GlobalStuff.buildingsize;
+                    Canvas.SetZIndex(factoryControl, 100);
+                    Canvas.SetLeft(factoryControl, left);
+                    Canvas.SetTop(factoryControl, top);
+                    if (I == 0)
+                    {
+                        I++;
+                    }
+                    var found = from lot in _lots
+                                where lot.LotOccupied == false
+                                && lot.Street == StreetsEnum.Teastreet
+                                select lot;
+                    if (found.Any())
+                    {
+                        found.First().AddBuilding(factoryControl, false);
+                    }
+                    string leftpos = Canvas.GetLeft(factoryControl).ToString();
+                    // cLogger.Log($"BusinessControl: {businessControl.BusinessImage.Source}  {left} {top}");
+                    //_view.MainLayout.Children.Add(businessControl);
+                    left += 90;
+                    factoryCount++;
+                    cLogger.Log($"BusinessControl: {item.ImageName}"); // HouseControl: /CatoriCity2025WPF; 100 100
                 }
-                var found = from lot in _lots
-                            where lot.LotOccupied == false
-                            && lot.Street == StreetsEnum.Teastreet
-                            select lot;
-                if (found.Any())
-                {
-                    found.First().AddBuilding(factoryControl, false);
-                }
-                string leftpos = Canvas.GetLeft(factoryControl).ToString();
-                // cLogger.Log($"BusinessControl: {businessControl.BusinessImage.Source}  {left} {top}");
-                //_view.MainLayout.Children.Add(businessControl);
-                left += 90;
-                cLogger.Log($"BusinessControl: {item.ImageName}"); // HouseControl: /CatoriCity2025WPF; 100 100
+             AddfactoryIntrnalView(leftFistFactory,topFistFactory);
+           }
+            catch (Exception ex)
+            {
+
+                throw;
             }
-            AddfactoryIntrnalView(leftFistFactory,topFistFactory);
+            factoryCount++;
         }
 
         #endregion

@@ -49,6 +49,16 @@ namespace CatoriCity2025WPF
             GlobalStuff.MainView = this;
             Title = "Catori City Game 2026";
             _controller = new MainWindowController(this);
+
+            string tooltipimagechest = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Treasure","CHestClosed.png");
+
+            ImageTextToolTip toolTip = new ImageTextToolTip
+            {
+                Title = "Treasure Field",
+                Description = "View the treasure field to see the clues and information about the bad guys hidden treasure.",
+                Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
+            };
+            TreasureFieldViewButton.ToolTip = toolTip;
         }
 
         private void statusUpdatedispatcherTimer_Tick(object? sender, EventArgs e)
@@ -478,6 +488,13 @@ namespace CatoriCity2025WPF
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             _controller.ResetCharacters();
+        }
+
+        private void TreasureFile1ViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            TreasureFile1View view = new TreasureFile1View(Width,Height);
+            view.Owner = this;
+            view.ShowDialog();
         }
     }
     

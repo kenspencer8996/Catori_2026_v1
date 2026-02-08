@@ -16,10 +16,12 @@ namespace CatoriCity2025WPF.Views.Controls
         private decimal _payRate = 25;
         private int _worktimer = 0;
         private int _worktimerMax = 2;
-        public FactoryControl()
+        public int InteriorSelector = 0;  
+        public FactoryControl(int interiorSelector  )
         {
             InitializeComponent();
             GearsImage.Visibility = Visibility.Hidden;
+            InteriorSelector = interiorSelector;
         }
         public decimal PayRate
         {
@@ -133,7 +135,7 @@ namespace CatoriCity2025WPF.Views.Controls
                 }
                 PersonViewModel model = GenericSerializer.Deserialize<PersonViewModel>(dataasstring);
                 _personViewModel = model;
-                GlobalStuff.SetFactoryWorking(_personViewModel.StaticImageFilePath);
+                GlobalStuff.SetFactoryWorking(_personViewModel.StaticImageFilePath,InteriorSelector);
                 
                 //string _personcurrentImage = _personViewModel.StaticImageFilePath;
                 //PersonImage.Source = UIUtility.GetImageControl(_personcurrentImage, 50, 50, 0).Source;
@@ -153,7 +155,7 @@ namespace CatoriCity2025WPF.Views.Controls
             LeaveWorkArg detail = new LeaveWorkArg(_personViewModel);
             WeakReferenceMessenger.Default.Send(detail);
             PersonImage.Source = null;
-            GlobalStuff.SetFactoryNotWorking();
+            GlobalStuff.SetFactoryNotWorking(InteriorSelector);
 
         }
         private void MainBorder_Drop(object sender, DragEventArgs e)

@@ -1,7 +1,6 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Objects.Arguments;
 using System.Windows.Input;
-using CatoriCity2025WPF.Controllers;
-using System.Windows.Media.Animation;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
@@ -18,9 +17,8 @@ namespace CatoriCity2025WPF.Views.Controls
         {
              InitializeComponent();
            _controller = new StoreHardwareInteriorControlController(this);
+
             //DroneDeliver1UC.Visibility = Visibility.Hidden;
-            Canvas.SetLeft(DroneDeliveryUC, 400);
-            Canvas.SetTop(DroneDeliveryUC, 1280);
             DragImage.Visibility = Visibility.Hidden;
             robotMover.RobotEnter += RobotMover_RobotEnter;
             robotMover.RobotLeave += RobotMover_RobotLeave;
@@ -28,11 +26,13 @@ namespace CatoriCity2025WPF.Views.Controls
             robotMover.RobotAllFinished += RobotMover_RobotAllFinished;
         }
 
+     
+
         private void RobotMover_RobotAllFinished(object? sender, RobotMoverControlDrag e)
         {
-            _controller.MoveUpBox();
-           
+            // _controller.MoveUpBox();
 
+            _controller.cardboardBoxUC.ShowOpen();
         }
 
         private void POSUC_CheckoutButtonClickedEvent(object? sender, EventArgs e)

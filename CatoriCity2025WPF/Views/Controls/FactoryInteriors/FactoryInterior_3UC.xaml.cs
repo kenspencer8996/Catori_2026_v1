@@ -1,13 +1,11 @@
-﻿using CatoriCity2025WPF.Objects;
-using System.Windows.Controls;
-using System.Windows.Threading;
+﻿using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
     /// <summary>
     /// Interaction logic for Factoru1InteriorUC.xaml
     /// </summary>
-    public partial class FactoryInteriorUC : UserControl
+    public partial class FactoryInterior_3UC : UserControl
     {
         readonly DispatcherTimer _animation_timer;
         List <string> robotImagePaths = new List<string>();
@@ -21,26 +19,26 @@ namespace CatoriCity2025WPF.Views.Controls
         public string restImageRight = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Factories", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
         //C:\Develpoment\Games\Images\Factories\RobotArms\RightDrilling
 
-        public FactoryInteriorUC()
+        public FactoryInterior_3UC()
         {
             InitializeComponent();
             _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
-            RobotLeftUC.Startup(SearchPattern, ImagesFolderLeft,restImageLeft);
-            RobotRightUC.Startup(SearchPatternRight, ImagesFolderRight, restImageRight);
-            //LoadRobotImages();
+            //RobotLeftUC.Startup(SearchPattern, ImagesFolderLeft,restImageLeft);
+            //RobotRightUC.Startup(SearchPatternRight, ImagesFolderRight, restImageRight);
+            ////LoadRobotImages();
         }
 
         public void StartWorking(string workerImagePath)
         {
-            RobotLeftUC.StartWorking();
-            RobotRightUC.StartWorking();
+            //RobotLeftUC.StartWorking();
+            //RobotRightUC.StartWorking();
             WorkerImage.Source = UIUtility.GetImageControl(workerImagePath, 10, 5, 0).Source; ;
         }
         public void StopWorking()
         {
             //_animation_timer.Stop();
-            RobotLeftUC.StopWorking();
-            RobotRightUC.StopWorking();
+            //    RobotLeftUC.StopWorking();
+            //    RobotRightUC.StopWorking();
         }
     }
 }

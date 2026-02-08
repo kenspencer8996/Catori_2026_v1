@@ -10,83 +10,125 @@ namespace CatoriCity2025WPF.Objects
 {
     public class ImageFileHelper
     {
-        public static List<HouseViewModel> GetHouses()
-        {
-            List<HouseViewModel> houseViewModels = new List<HouseViewModel>();
-            List<HouseEntity> houses = new List<HouseEntity>();
-            try
-            {
-                //string[] housefiles = System.IO.Directory.GetFiles(
-                //    GlobalStuff.ImageFolder + "\\House*", "*.png");
-                string searchPattern = "house*.*";
-                string[] housefiles = System.IO.Directory.GetFiles(GlobalStuff.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
-                cLogger.Log("housefiles count " + housefiles.Length.ToString());
-                // Create a Random instance
-                Random random = new Random();
-                List<int> numbers = new List<int>();
-                int housecounter = 0;
-                cLogger.Log($"housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
-                foreach (var housefile in housefiles)
-                {
-                    numbers.Add(housecounter); // Add the index to the list
-                    housecounter++;
-                    cLogger.Log($"housefile: {housefile}"); // HouseControl: /CatoriCity2025WPF; 100 100
-                }
-                Random rng = new Random();
-                // Shuffle the list of numbers
-                for (int ii = numbers.Count - 1; ii > 0; ii--)
-                {
-                    int j = rng.Next(ii + 1);
-                    (numbers[ii], numbers[j]) = (numbers[j], numbers[ii]); // Swap elements
-                }
-                foreach (var number in numbers)
-                {
-                    cLogger.Log($"number: {number}"); // HouseControl: /CatoriCity2025WPF; 100 100
-                }   
+        //public static List<HouseViewModel> GetHouses()
+        //{
+        //    List<HouseViewModel> houseViewModels = new List<HouseViewModel>();
+        //    List<HouseEntity> houses = new List<HouseEntity>();
+        //    try
+        //    {
+        //        //string[] housefiles = System.IO.Directory.GetFiles(
+        //        //    GlobalStuff.ImageFolder + "\\House*", "*.png");
+        //        string searchPattern = "house*.*";
+        //        string housesfolder = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses");
+        //        string[] housefiles = System.IO.Directory.GetFiles(housesfolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
+        //        cLogger.Log("housefiles count " + housefiles.Length.ToString());
+        //        // Create a Random instance
+        //        Random random = new Random();
+        //        List<int> numbers = new List<int>();
+        //        int housecounter = 0;
+        //        cLogger.Log($"housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        foreach (var housefile in housefiles)
+        //        {
+        //            numbers.Add(housecounter); // Add the index to the list
+        //            housecounter++;
+        //            cLogger.Log($"housefile: {housefile}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        }
+        //        Random rng = new Random();
+        //        // Shuffle the list of numbers
+        //        for (int ii = numbers.Count - 1; ii > 0; ii--)
+        //        {
+        //            int j = rng.Next(ii + 1);
+        //            (numbers[ii], numbers[j]) = (numbers[j], numbers[ii]); // Swap elements
+        //        }
+        //        foreach (var number in numbers)
+        //        {
+        //            cLogger.Log($"number: {number}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        }   
 
-                // Randomly select items from housefiles
-                int numberOfItemsToAdd = numbers.Count() ; // Random count of items to add
-                int counter = 0;
-                while (counter < numberOfItemsToAdd)
-                {
-                    int index = numbers[counter];
-                    HouseEntity house = new HouseEntity
-                    {
-                        ImageFileName = housefiles[index]
-                    };
-                    cLogger.Log($"HouseEntity rand: {housefiles[index]}"); // HouseControl: /CatoriCity2025WPF; 100 100
-                    houses.Add(house);
-                    counter++;
-                }
-                searchPattern = "living*.*";
-                string[] livingroomfiles = System.IO.Directory.GetFiles(GlobalStuff.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
+        //        // Randomly select items from housefiles
+        //        int numberOfItemsToAdd = numbers.Count() ; // Random count of items to add
+        //        int counter = 0;
+        //        while (counter < numberOfItemsToAdd)
+        //        {
+        //            int index = numbers[counter];
+        //            HouseEntity house = new HouseEntity
+        //            {
+        //                ImageFileName = housefiles[index]
+        //            };
+        //            cLogger.Log($"HouseEntity rand: {housefiles[index]}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //            houses.Add(house);
+        //            counter++;
+        //        }
+        //        searchPattern = "living*.*";
+        //        string[] livingroomfiles = System.IO.Directory.GetFiles(housesfolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
 
-                int livingroomcount = livingroomfiles.Length;
-                int i = 0;
-                foreach (var house in houses)
-                {
-                    house.ImageLivingRoomFileName = livingroomfiles[i];
-                    HouseViewModel model = new HouseViewModel();
-                    model.ToModel(house);
-                    houseViewModels.Add(model);
-                    if (i < livingroomcount)
-                    {
-                        i++;
-                    }
-                    else
-                        i = 0;
-                }
-                cLogger.Log($"end housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        int livingroomcount = livingroomfiles.Length;
+        //        int i = 0;
+        //        foreach (var house in houses)
+        //        {
+        //            //house.ImageLivingRoomFileName = livingroomfiles[i];
+        //            string housefilenameonly = System.IO.Path.GetFileNameWithoutExtension(house.ImageFileName);
+        //            house.ImageLivingRoomFileName = GetFilenameForLivingRoomIfExists(housesfolder,housefilenameonly);
+        //            string garagefilename = GetFilenameForGarageIfExists(housesfolder, housefilenameonly);  
+        //            if (System.IO.File.Exists(garagefilename))
+        //            {
+        //                house.ImageGarageFileName = garagefilename;
+        //            }
+        //            else
+        //                house.ImageGarageFileName = "";
+        //            HouseViewModel model = new HouseViewModel();
+        //            model.ToModel(house);
+        //            houseViewModels.Add(model);
+        //            if (i < livingroomcount)
+        //            {
+        //                i++;
+        //            }
+        //            else
+        //                i = 0;
+        //        }
+        //        cLogger.Log($"end housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
 
-            }
-            catch (Exception)
-            {
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return houseViewModels;
-        }
+        //    return houseViewModels;
+        //}
+        //private static string GetFilenameForLivingRoomIfExists(string housesfolder,string houseImageFileName)
+        //{
+        //    string filename = System.IO.Path.GetFileNameWithoutExtension(houseImageFileName);
+        //    string folder = housesfolder;
+        //    string livingroomfilename = "";
+        //    string[] files = System.IO.Directory.GetFiles(folder, "living*" + filename + ".*", SearchOption.TopDirectoryOnly);
+        //    if (files.Length > 0)
+        //    {
+        //        livingroomfilename = files[0];
+        //    }
+        //    if (livingroomfilename == "")
+        //    {
+   
+        //    }
+        //    return livingroomfilename;
+        //}
+        //private static string GetFilenameForGarageIfExists(string housesfolder, string houseImageFileName)
+        //{
+        //    string filename = System.IO.Path.GetFileNameWithoutExtension(houseImageFileName);
+        //    string folder = housesfolder;
+        //    string livingroomfilename = "";
+        //    string[] files = System.IO.Directory.GetFiles(folder, "garage*" + filename + ".*", SearchOption.TopDirectoryOnly);
+        //    if (files.Length > 0)
+        //    {
+        //        livingroomfilename = files[0];
+        //    }
+        //    if (livingroomfilename == "")
+        //    {
+
+        //    }
+        //    return livingroomfilename;
+        //}
         private static List<HouseViewModel> SetRoomsInHouse(List<HouseViewModel> viewModels)
         {
             List<HouseViewModel> results = new List<HouseViewModel>();

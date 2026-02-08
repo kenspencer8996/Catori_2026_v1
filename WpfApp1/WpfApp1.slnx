@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ClassLibrary1/ClassLibrary1.csproj" Id="da3e759f-16d6-4b0b-a031-9b03ee09cf8e" />
+  <Project Path="WpfApp1/WpfApp1.csproj" />
+</Solution>

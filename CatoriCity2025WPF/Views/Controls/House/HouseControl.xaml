@@ -14,17 +14,8 @@
             <Image x:Name="HouseImage"  Width="{Binding ElementName=MainLayout, Path=ActualWidth}"
             Height="{Binding ElementName=MainLayout, Path=ActualHeight}"/>
             <Button Name="ExpandButton" Width="15" Height="15" Click="ExpandButton_Click">
-                <Image Source="/Images/uparrowRed.png"></Image>
+                <Image Source="/Images/HouseDoor.png"></Image>
             </Button>
-            <Image x:Name="PersonImage"  Width="30" Height="30" Canvas.Left="30" Canvas.Top="00" MouseDown="PersonImage_MouseDown" Visibility="Hidden"/>
-            <Thumb Name="fundsThumb" Canvas.Left="60" Canvas.Top="30" MouseDoubleClick="fundsThumb_MouseDoubleClick" >
-                <Thumb.Template>
-                    <ControlTemplate>
-                        <Image x:Name="FundsImage" Visibility="Visible"  Width="15" Height="15" 
-                        AllowDrop="True" Source="/Images/dollarsign.png" />
-                    </ControlTemplate>
-                </Thumb.Template>
-            </Thumb>
         </Canvas>
     </Border>
 </UserControl>

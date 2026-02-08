@@ -1,0 +1,13 @@
+﻿namespace CatoriCity2025WPF.Views.Controls.Treasure
+{
+    /// <summary>
+    /// Interaction logic for TreasureChest1.xaml
+    /// </summary>
+    public partial class TreasureChestControl1 : UserControl
+    {
+        public TreasureChestControl1()
+        {
+            InitializeComponent();
+        }
+    }
+}

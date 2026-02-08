@@ -1,11 +1,5 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.ViewModels;
-using CatoriServices.Objects;
-using CatoriServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 

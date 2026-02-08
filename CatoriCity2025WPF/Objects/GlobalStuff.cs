@@ -2,6 +2,7 @@
 using CatoriCity2025WPF.Viewmodels;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 
 namespace CatoriCity2025WPF.Objects
 {
@@ -11,9 +12,9 @@ namespace CatoriCity2025WPF.Objects
         public static MainWindow MainView { get; set; }   
         public static double MainViewWidth = 0;
         public static double MainViewHeight = 0;
-        public static int buildingsize = 90;
+        public static int buildingsize = 100;
         public static int BuildingLocationBuffer = 2;
-        public static bool ShowAllBordersIfAvailable = true;
+        public static bool ShowAllBordersIfAvailable = false;
         public static bool ShowPaths = false;
         public static Int32 PathSegmentsToRun = 1;
         public static Int32 PathSegmentsInnerToCreate = 1;
@@ -200,15 +201,107 @@ namespace CatoriCity2025WPF.Objects
             citybush2Width = 50;
             citybush2Height = 50;
         }
-        public static FactoryInteriorUC factoryInteriorControl = new FactoryInteriorUC();
-        public static void SetFactoryWorking(string personImagePath)
+        public static  List<UserControl> factoryInteriorControls = new List<UserControl>();
+        //public static FactoryInterior_1UC factoryInteriorControl = new FactoryInterior_1UC();
+        public static FactoryInterior_1UC GetFactoryInterior1()
         {
-            factoryInteriorControl.Visibility = System.Windows.Visibility.Visible;
-            factoryInteriorControl.StartWorking(personImagePath);
+            var UC = factoryInteriorControls[0] as FactoryInterior_1UC;
+            return UC;
         }
-        public static void SetFactoryNotWorking()
+        public static FactoryInterior_2UC GetFactoryInterior2()
         {
-            factoryInteriorControl.Visibility = System.Windows.Visibility.Hidden;
+            var UC = factoryInteriorControls[1] as FactoryInterior_2UC;
+            return UC;
+        }
+        public static FactoryInterior_3UC GetFactoryInterior3()
+        {
+            var UC = factoryInteriorControls[2] as FactoryInterior_3UC;
+            return UC;
+        }
+        public static FactoryInterior_4UC GetFactoryInterior4()
+        {
+            var UC = factoryInteriorControls[3] as FactoryInterior_4UC;
+            return UC;
+        }
+        public static void LoadFactoryInteriorControls()
+        {
+            FactoryInterior_1UC factoryInteriorControl1 = new FactoryInterior_1UC();
+            factoryInteriorControls.Add(factoryInteriorControl1);
+            FactoryInterior_2UC factoryInteriorControl2 = new FactoryInterior_2UC();
+            factoryInteriorControls.Add(factoryInteriorControl2);
+            FactoryInterior_3UC factoryInteriorControl3 = new FactoryInterior_3UC();
+            factoryInteriorControls.Add(factoryInteriorControl3);
+            FactoryInterior_4UC factoryInteriorControl4 = new FactoryInterior_4UC();
+            factoryInteriorControls.Add(factoryInteriorControl4);
+        }
+        public static string GetNameWithVersion()
+        {
+            string name = "Catori City 2025 WPF";
+            var version = System.Reflection.Assembly.GetExecutingAssembly()
+                             .GetName()
+                             .Version;
+            if (version != null)
+            {
+                name += " - Version " + version.ToString();
+            }
+            return name;
+        }   
+        public static void SetFactoryWorking(string personImagePath,int counter)
+        {
+            if ( counter <= 4)
+            {
+                
+                switch (counter)
+                {
+                    case 1:
+                        var uc1 = GetFactoryInterior1();
+                        uc1.Visibility = System.Windows.Visibility.Visible;
+                        uc1.StartWorking(personImagePath);
+                        break;  
+                        case 2:
+                        var uc2 = GetFactoryInterior2();
+                        uc2.Visibility = System.Windows.Visibility.Visible;
+                        uc2.StartWorking(personImagePath);
+                        break;
+                        case 3:
+                        var uc3 = GetFactoryInterior3();
+                        uc3.Visibility = System.Windows.Visibility.Visible;
+                        uc3.StartWorking(personImagePath);
+                        break;
+                    case 4:
+                        var uc4 = GetFactoryInterior4();
+                        uc4.Visibility = System.Windows.Visibility.Visible;
+                        uc4.StartWorking(personImagePath);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+        public static void SetFactoryNotWorking(int counter)
+        {
+            if (counter <= 3)
+            {
+
+                switch (counter)
+                {
+                    case 1:
+                        var uc1 = GetFactoryInterior1();
+                        uc1.Visibility = System.Windows.Visibility.Hidden;
+                        break;
+                    case 2:
+                        var uc2 = GetFactoryInterior2();
+                        uc2.Visibility = System.Windows.Visibility.Hidden;
+                        break;
+                    case 3:
+                        var uc3 = GetFactoryInterior3();
+                        uc3.Visibility = System.Windows.Visibility.Hidden;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         public static int BadGuyStartY
         {

@@ -1,0 +1,43 @@
+ Volume in drive C is Windows
+ Volume Serial Number is EAC2-1E22
+
+ Directory of C:\Development\Gaming\Catori2026\Catori_2026_v1\Images\Houses
+
+[.]
+[..]
+bedroom.png
+entrytogarage.png
+files.txt
+FrontHouseDoor.png
+garage_House2f.png
+garage_HouseBlue.png
+garage_HouseBlue1.jpg
+garage_HouseBlue3.png
+garage_HouseGreen.png
+garage_HouseOrange.png
+garage_HouseOrange2.png
+Garage_HouseOrange3.png
+garage_HouseRed.png
+garage_HousRed2.png
+House2f.png
+HouseBlue.png
+HouseBlue1.png
+HouseBlue3.png
+HouseGreen.png
+HouseOrange.png
+HouseOrange2.png
+HouseOrange3.png
+HouseRed.png
+Housred2.png
+livingroomarmchairtable_HouseOrange.png
+livingroomarmchair_HouseBlue1.jpg
+livingroomcouchchair_house2f.png
+livingroomlibrary_HouseOrange2.png
+livingroomopen_HouseOrange3.png
+livingroomshadowfp_housered.png
+livingroomsimple_HouseGreen.png
+livingroomwindowfp_HouseBlue.png
+livingroomwindows_HouseOrange3.png
+living_10_roomarmchair_HouseBlue3.png
+              34 File(s)     15,984,170 bytes
+               2 Dir(s)  519,070,392,320 bytes free
