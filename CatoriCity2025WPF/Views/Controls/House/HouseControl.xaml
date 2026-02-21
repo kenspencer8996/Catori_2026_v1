@@ -16,6 +16,7 @@
             <Button Name="ExpandButton" Width="15" Height="15" Click="ExpandButton_Click">
                 <Image Source="/Images/HouseDoor.png"></Image>
             </Button>
+            <Image x:Name="MailBoxImage" Opacity="0" Width="15" Height="15" Canvas.Left="15" Canvas.Top="0"/> 
         </Canvas>
     </Border>
 </UserControl>

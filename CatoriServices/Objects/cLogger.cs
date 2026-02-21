@@ -9,7 +9,7 @@
 
         {
             string classname = System.IO.Path.GetFileNameWithoutExtension(sourceFilePath);
-            string outputMessage = $"{classname}: {message} | MemberName: {memberName} | SourceLineNumber: {sourceLineNumber}" + Environment.NewLine;
+            string outputMessage = $"{classname}: Member: {memberName} | Line: {sourceLineNumber} | {message}" + Environment.NewLine;
             System.IO.File.AppendAllText(LogFilePath, outputMessage);
         }
  

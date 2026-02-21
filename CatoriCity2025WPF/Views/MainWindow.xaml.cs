@@ -1,6 +1,9 @@
 ﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace CatoriCity2025WPF
 {
@@ -15,6 +18,12 @@ namespace CatoriCity2025WPF
         internal bool ispagedirty = false;
         DepositService _depositService = new DepositService();
         StatusControl1 statusUC = new StatusControl1();
+        Point mouseOffset;
+        public bool isdragging = false;
+        public bool isMouseDown = false;
+        private Point _previousPosition; // Stores the last mouse position
+        private bool _isFirstMove = true; // To skip direction check on first move
+        private readonly DispatcherTimer _mouseStopTimer;
 
         internal Brush MainLayoutBackground
         {
@@ -39,7 +48,7 @@ namespace CatoriCity2025WPF
             this.Height = 980;
             DateTime now = DateTime.Now;
             statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimer_Tick);
-            statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 5, 0);
+            statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 0, 30);
 
             string timestamp = now.ToString("yyyy-MM-dd_HH_mm_ss");
 
@@ -59,8 +68,35 @@ namespace CatoriCity2025WPF
                 Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
             };
             TreasureFieldViewButton.ToolTip = toolTip;
+            
+            RegisterDragDropHandlers();
+
+            _mouseStopTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(500) // delay after last movement
+            };
+            _mouseStopTimer.Tick += MouseStopped;
+
+            statusUpdatedispatcherTimer.Start();
         }
 
+        private void RegisterDragDropHandlers()
+        {
+            DragManager.RegisterDropHandler<StoreHardwareControl>(new StoreHardwareDropHandler());
+            DragManager.RegisterDropHandler<FactoryControl>(new FactoryControlDropHandler());
+            DragManager.RegisterDropHandler<LandscapeObjectControl>(new LandscapeToCanvasDropHandler());
+        }
+
+        private void MouseStopped(object? sender, EventArgs e)
+        {
+            _controller.primaryPerson.StopAnimation();
+        }
+        /// <summary>
+        /// Update status with current funds and pay.  This runs every 30 seconds 
+        /// to keep the status updated with any changes to funds or pay that may have occurred from other views or actions in the game.  It calculates the current funds by summing the user's deposits, current pay, and existing funds, then updates the status control's FundsLabel with the formatted currency value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void statusUpdatedispatcherTimer_Tick(object? sender, EventArgs e)
         {
             statusUpdatedispatcherTimer.Stop();
@@ -72,8 +108,8 @@ namespace CatoriCity2025WPF
             {
                 currentFunds = foundfunds.First().Amount;
             }
-            currentFunds += GlobalStuff.CurrentUserPerson.CurrentPay;
-            statusUC.FundsLabel.Content = currentFunds.ToString();
+            currentFunds += GlobalStuff.CurrentUserPerson.CurrentPay + GlobalStuff.CurrentUserPerson.Funds;
+            statusUC.FundsLabel.Content = currentFunds.ToString("C");
             statusUpdatedispatcherTimer.Start();
         }
 
@@ -256,21 +292,7 @@ namespace CatoriCity2025WPF
             }
 
         }
-        private ListBoxItem GetListBoxItemForPerson(string imagename)
-        {
-            string imagePath = Imagehelper.GetImagePath(imagename);
-            ListBoxItem item = new ListBoxItem();
-            Image image = new Image();
-            image.Source = UIUtility.GetImageControl(imagePath, 50, 50, 0).Source;
-            image.Width = 20;
-            image.Height = 30;
-            image.AllowDrop = false;
-            StackPanel stack = new StackPanel();
-            stack.Children.Add(image);
-            item.Content = stack;
-
-            return item;
-        }
+      
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             GlobalStuff.MainViewHeight = e.NewSize.Height - 50;
@@ -331,32 +353,7 @@ namespace CatoriCity2025WPF
 
             }
 
-        private void PeopleSelectorImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-
-        }
-
-        private void PeopleSelectorList_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-           
-        }
-
-        private void PeopleSelectorList_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-        }
-        private void MainWin_MouseMove(object sender, MouseEventArgs e)
-        {
-            var pt = e.GetPosition(this);
-            //cLogger.Log("MainWin_MouseMove main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
-
-        }
-        private void MainWin_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var pt = e.GetPosition(this);
-            //cLogger.Log("MainWin_MouseDown main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
-
-        }
-
+    
         private void SettingsViewButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsView view = new SettingsView();
@@ -492,10 +489,160 @@ namespace CatoriCity2025WPF
 
         private void TreasureFile1ViewButton_Click(object sender, RoutedEventArgs e)
         {
-            TreasureFile1View view = new TreasureFile1View(Width,Height);
+            TreasureFieldView view = new TreasureFieldView(Width,Height);
             view.Owner = this;
             view.ShowDialog();
         }
+        #region Mouse events 
+      
+        private void MainWin_MouseMove(object sender, MouseEventArgs e)
+        {
+            var pt = e.GetPosition(this);
+            _mouseStopTimer.Stop();  // reset timer to detect if mouse stopped
+            _mouseStopTimer.Start();
+
+            //cLogger.Log("MainWin_MouseMove main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
+            // Get mouse position relative to the window
+            Point relativePoint = e.GetPosition(MainLayout);
+
+            double xpos = relativePoint.X;
+            double toppos = relativePoint.Y;
+            Point personpoint = e.GetPosition(_controller.primaryPerson);
+            Point currentPosition = e.GetPosition(this);
+
+            double deltaX = currentPosition.X - _previousPosition.X;
+            double deltaY = currentPosition.Y - _previousPosition.Y;
+            // Skip direction detection on the very first move
+            if (_isFirstMove)
+            {
+                _previousPosition = currentPosition;
+                _isFirstMove = false;
+                deltaX = 0;
+                deltaY = 0;
+                _controller.primaryPerson.StopAnimation();
+                return;
+            }
+ 
+
+            if (isdragging== false && isMouseDown)
+                isdragging = UIUtility.CheckMouseMoveForDrag(relativePoint, personpoint);
+            if (_controller.MovePerson)
+            { 
+            //if (isMouseDown == false)
+            //    isdragging = false;
+            //if (isdragging == true && _controller.primaryPerson != null)
+            //{
+                double personwidth = _controller.primaryPerson.PersonImage.ActualWidth;
+                double personheight = _controller.primaryPerson.PersonImage.ActualHeight;
+                double halfwidth = personwidth / 2;
+                double halfheight = personheight / 2;
+                double finalx = xpos - halfwidth;
+                double finaltop = toppos - halfheight;
+                //_controller._draggedShopItemControl.SetLocation(xpos, ypos);
+                //cLogger.Log("isdragging  finalx " + finalx + " finaltop " + finaltop);
+                //cLogger.Log("  xpos " + xpos + " ypos " + toppos);
+                //cLogger.Log("  halfwidth " + halfwidth + " halfheight " + halfheight);
+                Canvas.SetLeft(_controller.primaryPerson, finalx);
+                Canvas.SetTop(_controller.primaryPerson, finaltop);
+                MouseDirectionEnum direction = GetDirection(deltaX, deltaY);
+                switch (direction)
+                {
+                    case MouseDirectionEnum.Up:
+                    case MouseDirectionEnum.Down:
+                    case MouseDirectionEnum.Left:
+                        _controller.primaryPerson.WalkLeft();
+                        break;
+                    case MouseDirectionEnum.Right:
+                        _controller.primaryPerson.WalkRight();
+                        break;
+                    case MouseDirectionEnum.UpLeft:
+                        _controller.primaryPerson.WalkLeft();
+                        break;
+                    case MouseDirectionEnum.UpRight:
+                        _controller.primaryPerson.WalkRight();
+                        break;
+                    case MouseDirectionEnum.DownLeft:
+                        _controller.primaryPerson.WalkLeft();
+                        break;
+                    case MouseDirectionEnum.DownRight:
+                        _controller.primaryPerson.WalkRight();
+                        break;
+                    case MouseDirectionEnum.None:
+                        _controller.primaryPerson.StopAnimation();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+        /// <summary>
+        /// Determines the direction based on X and Y deltas.
+        /// </summary>
+        private MouseDirectionEnum GetDirection(double deltaX, double deltaY)
+        {
+            MouseDirectionEnum result = MouseDirectionEnum.None;
+            const double threshold = 1.0; // Ignore tiny movements
+            bool isset = false;
+            if (Math.Abs(deltaX) < threshold && Math.Abs(deltaY) < threshold)
+            {
+                result = MouseDirectionEnum.None;
+                return result; // No significant movement
+            }
+
+            if (Math.Abs(deltaX) > Math.Abs(deltaY))
+            {
+                isset = true;
+                if (deltaX > 0)
+                    result = MouseDirectionEnum.Right;
+                else
+                {
+                    result = MouseDirectionEnum.Left;
+                }
+            }
+            else if( isset == false)
+            {
+                if (deltaY > 0)
+                    result = MouseDirectionEnum.Down;
+                else
+                {
+                    result = MouseDirectionEnum.Up;
+                }
+            }
+            if (isset == false)
+            {
+                // Diagonal movement
+                if (deltaX > 0 && deltaY > 0) result = MouseDirectionEnum.DownRight;
+                if (deltaX < 0 && deltaY > 0) result = MouseDirectionEnum.DownLeft;
+                if (deltaX > 0 && deltaY < 0) result = MouseDirectionEnum.UpRight ;
+                if (deltaX < 0 && deltaY < 0) result = MouseDirectionEnum.UpLeft;
+            }
+            return result;
+        }
+        private void MainWin_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var pt = e.GetPosition(this);
+            isMouseDown = true;
+            mouseOffset = e.GetPosition(_controller.primaryPerson);
+
+            //cLogger.Log("MainWin_MouseDown main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
+
+        }
+        #endregion
+
+      
+
+        private void MainWin_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isMouseDown = false;
+
+        }
+
+        private void MainWin_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            
+
+        }
     }
-    
+
 }

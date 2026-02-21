@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CatoriCity2025WPF.ViewModels
+﻿namespace CatoriCity2025WPF.ViewModels
 {
     public class PersonProductsOwnedViewModel:ViewmodelBase
     {

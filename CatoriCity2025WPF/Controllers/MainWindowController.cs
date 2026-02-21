@@ -1,6 +1,6 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
+using CatoriCity2025WPF.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
-using System;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -17,6 +17,12 @@ namespace CatoriCity2025WPF.Controllers
         private List<LotControl> _lots = new List<LotControl>();
         DispatcherTimer _updatePathsTimerTimer;
         System.Timers.Timer interestAddTimer;
+        public PersonControl primaryPerson;
+        public bool MovePerson = false;
+
+        public void WalkLeft ()
+        { }
+
         internal MainWindowController(MainWindow view)
         {
             _view = view;
@@ -34,11 +40,11 @@ namespace CatoriCity2025WPF.Controllers
                 int rInt = rnd.Next(0, 5);
                 GlobalStuff.TimingsRandom.Add(rInt);
             }
-            WeakReferenceMessenger.Default.Register<ShopItemShowMessage>(this, (r, m) =>
+            WeakReferenceMessenger.Default.Register<ShowHardwareStoreInteriorMessage>(this, (r, m) =>
             {
                 try
                 {
-                    ShopItemShowMessage shopItemShowMessage = m;
+                    ShowHardwareStoreInteriorMessage showHardwareInteriorMessage = m;
                     storeHardwareInteriorUC.Width = _view.Width;
                     storeHardwareInteriorUC.Height = _view.Height;
                     storeHardwareInteriorUC.Model = m.Model;
@@ -52,6 +58,24 @@ namespace CatoriCity2025WPF.Controllers
                     throw;
                 }
             });
+            WeakReferenceMessenger.Default.Register<PostOfficeInteriorhowMessage>(this, (r, m) =>
+            {
+                try
+                {
+                    PostOfficeInteriorhowMessage shopItemShowMessage = m;
+                    //xx.Width = _view.Width;
+                    //storeHardwareInteriorUC.Height = _view.Height;
+                    //storeHardwareInteriorUC.Model = m.Model;
+                    //Canvas.SetZIndex(storeHardwareInteriorUC, 2000);
+                    //storeHardwareInteriorUC.Visibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            });
+            
         }
         internal void Startup(int streetwidth)
         {
@@ -65,6 +89,7 @@ namespace CatoriCity2025WPF.Controllers
                 GlobalStuff.Houses = houseService.GetHousesAsync().Result;
                 GlobalStuff.Banks = ImageFileHelper.GetBanks();
                 LoadPersons();
+               
                 GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
                 LoadHouses();
                 LoadBanks();
@@ -74,17 +99,21 @@ namespace CatoriCity2025WPF.Controllers
                 LoadFactories();
                 AddPoliceStation();
                 loadPoliceCars();
-
-                PersonControl person = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault());
-                _view.MainLayout.Children.Add(person);
-                Canvas.SetLeft(person, 450);
-                Canvas.SetTop(person, 250);
-                Canvas.SetZIndex(person, 4001);
-
+                
+                primaryPerson = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault());
+                primaryPerson.MovePersonStop += PrimaryPerson_MovePersonStop;
+                primaryPerson.MovePersonStart += PrimaryPerson_MovePersonStart;
+                _view.MainLayout.Children.Add(primaryPerson);
+                GlobalStuff.ShowPrimaryPerson();
+                //Canvas.SetLeft(primaryPerson, 450);
+                //Canvas.SetTop(primaryPerson, 250);
+                Canvas.SetZIndex(primaryPerson, 4001);
+                primaryPerson.PersonMouseDown += Person_PersonMouseDown; ;
+                primaryPerson.PersonMouseUp += Person_PersonMouseUp;
                 //AddToLandscapeItems();
                 LoadLandscapeObjects();
                 GetLandscapeObjectsGroupIds();
-                _view.BaloonHelpUC.Visibility = Visibility.Collapsed;
+                _view.BaloonHelpUC.Visibility = Visibility.Hidden;
                 double mainwidth = _view.Width;
                 double mainheight = _view.Height;
                 Canvas.SetTop(_view.BadGuySpeedStackPanel, mainheight - _view.BadGuySpeedStackPanel.Height);
@@ -92,7 +121,7 @@ namespace CatoriCity2025WPF.Controllers
                 GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSettingByName("BadGuyTravelSpeed").IntSetting;
                 GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSettingByName("PoliceCarTravelSpeed").IntSetting;
                 _view.BaloonHelpUC.MoveBaloon += BaloonHelpUC_MoveBaloon;
-                _view.BaloonHelpUC.Visibility = Visibility.Collapsed;
+                _view.BaloonHelpUC.Visibility = Visibility.Hidden;
                 _view.BadGuyTravelSpeedSlider.Value = GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed;
                 _updatePathsTimerTimer = new DispatcherTimer();
                 _updatePathsTimerTimer.Tick += new EventHandler(__updatePathsTimerTimer_Tick);
@@ -108,6 +137,19 @@ namespace CatoriCity2025WPF.Controllers
                 throw;
             }
         }
+
+        private void PrimaryPerson_MovePersonStart(object? sender, PrimaryPrsonDragArgg e)
+        {
+            cLogger.Log("Event Hit");
+            MovePerson = true;
+        }
+
+        private void PrimaryPerson_MovePersonStop(object? sender, PrimaryPrsonDragArgg e)
+        {
+            cLogger.Log("Event Hit");
+            MovePerson = false;
+        }
+
         private void LoadShelves()
         {
             ShelfLocationService shelfLocationService = new ShelfLocationService();
@@ -585,13 +627,13 @@ namespace CatoriCity2025WPF.Controllers
                         Canvas.SetZIndex(houseControl, 100);
                         Canvas.SetLeft(houseControl, left);
                         Canvas.SetTop(houseControl, top);
-                        var found = from lot in _lots
+                        var found2 = from lot in _lots
                                     where lot.LotOccupied == false
                                     && lot.Street == StreetsEnum.YouStreet
                                     select lot;
-                        if (found.Any())
+                        if (found2.Any())
                         {
-                            found.First().AddBuilding(houseControl, primaryPersonHouse);
+                            found2.First().AddBuilding(houseControl, primaryPersonHouse);
                         }
                         left += 90;
                         primaryPersonHouse = false;
@@ -603,6 +645,37 @@ namespace CatoriCity2025WPF.Controllers
                     }
                     cLogger.Log($"HouseControl: {house.HouseImageFileName}"); // HouseControl: /CatoriCity2025WPF; 100 100
                 }
+                RealEstateControl realEstateControl = new RealEstateControl();
+                realEstateControl.Width = GlobalStuff.buildingsize;
+                realEstateControl.Height = GlobalStuff.buildingsize;
+                Canvas.SetZIndex(realEstateControl, 100);
+                Canvas.SetLeft(realEstateControl, left);
+                Canvas.SetTop(realEstateControl, top);
+                var foundReal = from lot in _lots
+                            where lot.LotOccupied == false
+                            && lot.Street == StreetsEnum.YouStreet
+                            select lot;
+                if (foundReal.Any())
+                {
+                    foundReal.First().AddBuilding(realEstateControl, false);
+                }
+
+
+                PostOfficeControl postOffice = new PostOfficeControl();
+                postOffice.Width = GlobalStuff.buildingsize;
+                postOffice.Height = GlobalStuff.buildingsize;
+                Canvas.SetZIndex(postOffice, 100);
+                Canvas.SetLeft(postOffice, left);
+                Canvas.SetTop(postOffice, top);
+                var found = from lot in _lots
+                            where lot.LotOccupied == false
+                            && lot.Street == StreetsEnum.YouStreet
+                            select lot;
+                if (found.Any())
+                {
+                    found.First().AddBuilding(postOffice, primaryPersonHouse);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -763,6 +836,8 @@ namespace CatoriCity2025WPF.Controllers
                 foreach (var item in business)
                 {
                     FactoryControl factoryControl = new FactoryControl(factoryCount);
+                    string controlname = "Factory_" + System.IO.Path.GetFileNameWithoutExtension(item.Name);
+                    factoryControl.Name = controlname;
                     factoryControl.BusinessImage.Source = UIUtility.GetImageControl(item.ImageName, Width, Height, 0).Source; ;
                     factoryControl.Width = GlobalStuff.buildingsize;
                     factoryControl.Height = GlobalStuff.buildingsize;
@@ -828,7 +903,7 @@ namespace CatoriCity2025WPF.Controllers
             double mainheight = _view.Height;
             GlobalStuff.LandscapeUCs = new List<LandscapeObjectControl>();
             LandscapeObjectService landscapeservice = new LandscapeObjectService();
-            GlobalStuff.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync();
+            GlobalStuff.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(GlobalServices.LandscapeObjecGroupid);
             LandscapeObjectViewModel featureModel = new LandscapeObjectViewModel();
             foreach (var landscapeObject in GlobalStuff.LandscapeObjects)
             {
@@ -875,6 +950,15 @@ namespace CatoriCity2025WPF.Controllers
             thisUC.OnDragDropChange += ThisUC_OnDragDropChange;
 
             return thisUC;
+        }
+        private void Person_PersonMouseUp(object? sender, PrimaryPrsonDragArgg e)
+        {
+            _view.isdragging = false;
+        }
+
+        private void Person_PersonMouseDown(object? sender, Objects.Arguments.PrimaryPrsonDragArgg e)
+        {
+            _view.isdragging = true;
         }
 
         private void SetupApproachSettingPoints(LandscapeObjectViewModel featureModel)
@@ -989,6 +1073,11 @@ namespace CatoriCity2025WPF.Controllers
             {
                 foundPolice.StartanimationToBank(robberyMessage);
             }
+        }
+
+        internal void StopPersonWalkingAnimation()
+        {
+            primaryPerson.StopAnimation();
         }
 
         #endregion

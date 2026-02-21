@@ -14,14 +14,18 @@ namespace CatoriCity2025WPF.Objects.Services
         /// </summary>
         public async Task<List<PersonProductsOwnedViewModel>> GetByPersonIdWithShopItemDetailsAsync(int personId)
         {
+            ShopItemService shopItemService = new ShopItemService();    
             List<PersonProductsOwnedViewModel> results = new List<PersonProductsOwnedViewModel>();
             try
             {
+                var shopItems = await shopItemService.GetAllAsync().ConfigureAwait(false);
                 var entities = await _repository.GetByPersonIdWithShopItemDetailsAsync(personId).ConfigureAwait(false);
-               foreach(var entity in entities)
+                foreach(var entity in entities)
                 {
+                    var product = shopItems.Where(si => si.ShopItemId == entity.ShopItemId).FirstOrDefault();  
                     PersonProductsOwnedViewModel model = new PersonProductsOwnedViewModel();
                     model.ToModel(entity);
+                    model.ImageName = product.ImageName;
                     results.Add(model);
                 }
                 return results;

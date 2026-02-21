@@ -62,6 +62,7 @@ namespace CatoriServices.Objects.database
 
             return items;
         }
+      
         public async Task<List<PersonProductsOwnedEntity>> GetAllAsync()
         {
             List<PersonProductsOwnedEntity> items = new List<PersonProductsOwnedEntity>();

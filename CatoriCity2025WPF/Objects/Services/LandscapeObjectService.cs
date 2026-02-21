@@ -1,26 +1,15 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriServices.Objects.database;
-using CatoriServices.Objects.Entities;
-using CityAppServices;
-using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace CatoriCity2025WPF.Objects.Services
 {
     internal class LandscapeObjectService
     {
         private LandscapeObjectRepository repository = new LandscapeObjectRepository();
-        public async Task<ObservableCollection<LandscapeObjectViewModel>> GetLandscapeObjectsAsync()
+        public async Task<ObservableCollection<LandscapeObjectViewModel>> GetLandscapeObjectsAsync(int groupid)
         {
             ObservableCollection<LandscapeObjectViewModel> LandscapeObjects = new ObservableCollection<LandscapeObjectViewModel>();
             List<LandscapeObjectEntity> landscapeObjectEntities = new List<LandscapeObjectEntity>();
-            landscapeObjectEntities = await repository.GetLandscapeObjectsAsync();
+            landscapeObjectEntities = await repository.GetLandscapeObjectsAsync(groupid);
             foreach (LandscapeObjectEntity landscape in landscapeObjectEntities)
             {
                 LandscapeObjectViewModel landscapeObjectViewModel = new LandscapeObjectViewModel();

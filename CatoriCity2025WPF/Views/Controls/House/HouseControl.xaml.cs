@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.Controllers;
 using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.Messages;
 using CatorisControlLibrary.Objects;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
@@ -25,7 +26,6 @@ namespace CatoriCity2025WPF.Views.Controls
         Button expandimageButton = new Button();
         public HouseViewModel _houseViewModel;
         private string PersonName = "";
-        private decimal Funds = 0;
 
         public string HouseImageName
         {
@@ -80,15 +80,54 @@ namespace CatoriCity2025WPF.Views.Controls
             Height = GlobalStuff.buildingsize;
             DataContext = _houseViewModel;
 
-            string tooltipimageSaw = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses", "living_10_roomarmchair_HouseBlue3.png");
+            if (_houseViewModel.OwnerName == "Catori")
+            {
+                LoadOwnerImage();
+            }
+
+            string tooltipimagepath = _houseViewModel.HouseImageFileName;
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {
-                Title = "Living Room",
-                Description = "View the living room and find the garage.",
-                Icon = UIUtility.GetImageControl(tooltipimageSaw, 32, 32, 0).Source
+                Title = _houseViewModel.Name,
+                Description = "View the living room and find the garage by clicking tharrow.",
+                Icon = UIUtility.GetImageControl(tooltipimagepath, 32, 32, 0).Source
             };
             this.ToolTip = toolTip;
+            WeakReferenceMessenger.Default.Register<HouseSoldMessage>(this, (r, m) =>
+            {
+                try
+                {
+                    _houseViewModel = m.House;
+                    if (_houseViewModel.Name == m.House.Name)
+                    {
+                        LoadOwnerImage();
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            });
+
+        }
+        private void LoadOwnerImage()
+        {
+            string tooltipimagepath = Imagehelper.GetImagePath("houses//CatoriMailBox.png");
+
+            string imagePath = Imagehelper.GetImagePath("houses//CatoriMailBox.png");
+            MailBoxImage.Source = UIUtility.GetImageControl(imagePath, 15, 15, 0).Source;
+
+            ImageTextToolTip toolTip = new ImageTextToolTip
+            {
+                Title = "Catori's house",
+                Description = "Catori owns this house.",
+                Icon = UIUtility.GetImageControl(tooltipimagepath, 32, 32, 0).Source
+            };
+            MailBoxImage.ToolTip = toolTip;
+            MailBoxImage.Opacity = 1;
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -253,6 +292,11 @@ namespace CatoriCity2025WPF.Views.Controls
             //FundsDetailView fundsDetailView = new FundsDetailView(personmodel);
             //fundsDetailView.Owner = GlobalStuff.MainView;
             //fundsDetailView.ShowDialog();
+        }
+
+        private void SaleButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

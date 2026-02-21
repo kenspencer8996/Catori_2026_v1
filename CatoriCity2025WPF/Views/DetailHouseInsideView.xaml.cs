@@ -42,11 +42,11 @@ namespace CatoriCity2025WPF.Views
             EntryDoorToGarage.Height = 60;
             EntryDoorToGarage.OnOpenDoor += EntryDoorToGarage_OnOpenDoor;
 
-            
-            //if (houseViewModel.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower())
-            //{
+
+            if (houseViewModel.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower())
+            {
                 LoadProducts();
-            //}
+            }
         }
 
         private void LoadProducts()

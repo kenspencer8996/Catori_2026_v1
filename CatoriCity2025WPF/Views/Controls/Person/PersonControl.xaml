@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.PersonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls" MouseUp="UserControl_MouseUp"
+             MouseDown="UserControl_MouseDown" MouseEnter="UserControl_MouseEnter" PreviewMouseDown="UserControl_PreviewMouseDown"
+             PreviewMouseUp="UserControl_PreviewMouseUp" MouseMove="UserControl_MouseMove"
+             mc:Ignorable="d" Width="80" Height="200">
+    <Border x:Name="MainBorder" BorderBrush="Black" >
+        <Canvas>
+            <Canvas.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="MovePersonMenu" Header="Move Person" Click="MovePersonMenu_Click"/>
+                    <MenuItem x:Name="DepositMenu" Header="Deposit Funds" Click="DepositMenu_Click"/>
+                    <MenuItem x:Name="PickupShovelMenu" Header="Pickup Shovel" Click="PickupShovelMenu_Click" IsEnabled="False"/>
+                    <MenuItem x:Name="DigMenu" Header="Start Digging" Click="DigMenu_Click"  IsEnabled="False"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
+            <Image x:Name="PersonImage" Width="80" Height="200" Source="/Images/GirlStandingRight.png"  />
+        </Canvas>
+    </Border>
+</UserControl>

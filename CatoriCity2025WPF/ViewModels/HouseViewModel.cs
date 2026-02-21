@@ -18,9 +18,21 @@ namespace CatoriCity2025WPF.ViewModels
         private double _garageButtonLocY = 0;
         private double _garageProductsLocX = 0;
         private double _garageProductsLocY = 0;
-
+        private int _forSale = 0;
         public int HouseId { get; set; }
 
+        public int ForSale
+        {
+            get { return _forSale; }
+            set
+            {
+                if (_forSale != value)
+                {
+                    _forSale = value;
+                    OnPropertyChanged(nameof(_forSale));
+                }
+            }
+        }
         public string Name
         {
             get { return _name; }
@@ -33,7 +45,6 @@ namespace CatoriCity2025WPF.ViewModels
                 }
             }
         }
-
         public string OwnerName
         {
             get { return _ownerName; }
@@ -250,6 +261,7 @@ namespace CatoriCity2025WPF.ViewModels
             entity.GarageButtonLocY = GarageButtonLocY;
             entity.GarageProductsLocX = GarageProductsLocX;
             entity.GarageProductsLocY = GarageProductsLocY;
+            entity.ForSale = ForSale;
             return entity;
         }
 
@@ -276,6 +288,7 @@ namespace CatoriCity2025WPF.ViewModels
                 _livingRoomImage = entity.ImageLivingRoomFileName;
             if (!string.IsNullOrEmpty(entity.ImageGarageFileName))
                 _garageImage = entity.ImageGarageFileName;
+            _forSale = entity.ForSale;
         }
     }
 }

@@ -10,13 +10,16 @@ namespace CatoriServices.Objects.database
     {
         AdoNetHelper adoNetHelper = new AdoNetHelper();
         SqlHelper sqlhelper = new SqlHelper();
-        public async Task<List<LandscapeObjectEntity>> GetLandscapeObjectsAsync()
+        public async Task<List<LandscapeObjectEntity>> GetLandscapeObjectsAsync(int groupId)
         {
             List<LandscapeObjectEntity> LandscapeObjects = new List<LandscapeObjectEntity>();
             try
             {
                 string sql = "SELECT LandScapeObjectID,Name,Description,Height,Width,xActual,yActual,ImageName,GroupId,HomeObject,NextFromHomeObject,FeatureNote FROM LandScapeObject";
-                sql += " where groupid = " + GlobalServices.LandscapeObjecGroupid;
+                if (groupId  > 0)
+                {
+                    sql += " where groupid = " + groupId;
+                }
                 IDataReader reader = sqlhelper.GetReader(sql);
                 Int32 LandScapeObjectIDIndex = 0;
                 Int32 NameIndex = 1;
@@ -61,7 +64,7 @@ namespace CatoriServices.Objects.database
                             landscape.FeatureNote = reader.GetString(FeatureNoteIndex);
                         
                         LandscapeObjects.Add(landscape);
-                        cLogger.Log("GetLandscapeObjectsAsync  " + landscape.Name + " x " + landscape.xActual + " y " + landscape.yActual);
+                        //cLogger.Log("GetLandscapeObjectsAsync  " + landscape.Name + " x " + landscape.xActual + " y " + landscape.yActual);
 
                     }
                     catch (Exception ex)

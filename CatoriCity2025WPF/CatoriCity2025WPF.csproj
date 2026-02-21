@@ -40,14 +40,20 @@
     <None Remove="Images\Factoryinterior4.jpg" />
     <None Remove="Images\FactoryInterior4.png" />
     <None Remove="Images\FlatnedCart.png" />
+    <None Remove="Images\ForSale.png" />
     <None Remove="Images\gear_.png" />
     <None Remove="Images\GirlfWithBushesNohole.png" />
+    <None Remove="Images\GirlStanding.png" />
+    <None Remove="Images\GirlStandingRight.png" />
     <None Remove="Images\GrasswithTreasureSpot.png" />
     <None Remove="Images\HelpIcon.png" />
     <None Remove="Images\HouseDoor.png" />
     <None Remove="Images\information.png" />
+    <None Remove="Images\MailBox.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
+    <None Remove="Images\RealEstateOfficeExterior.png" />
+    <None Remove="Images\RealEstateOfficeInterior.png" />
     <None Remove="Images\ResetBlue.png" />
     <None Remove="Images\SaveButtonCool.png" />
     <None Remove="Images\Saw.png" />
@@ -102,8 +108,19 @@
     <Resource Include="Images\FactoryInterior4.png" />
     <Resource Include="Images\FlatnedCart.png" />
     <Resource Include="Images\GirlfWithBushesNohole.png" />
+    <Resource Include="Images\GirlStanding.png" />
+    <Resource Include="Images\GirlStandingRight.png" />
     <Resource Include="Images\GrasswithTreasureSpot.png" />
     <Resource Include="Images\HouseDoor.png" />
+    <Resource Include="Images\MailBox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\RealEstateOfficeExterior.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\RealEstateOfficeInterior.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\ResetBlue.png" />
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
@@ -140,16 +157,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Controls\FactoryControl.xaml.cs">
+    <Compile Update="Views\Controls\Factory\FactoryControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_4UC.xaml.cs">
+    <Compile Update="Views\Controls\Factory\FactoryInteriors\FactoryInterior_4UC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_3UC.xaml.cs">
+    <Compile Update="Views\Controls\Factory\FactoryInteriors\FactoryInterior_3UC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Controls\FactoryInteriors\FactoryInterior_2UC.xaml.cs">
+    <Compile Update="Views\Controls\Factory\FactoryInteriors\FactoryInterior_2UC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\House\RealEstateControl .xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\Stores\PostOfficeControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

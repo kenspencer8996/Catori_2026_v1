@@ -26,8 +26,14 @@
         private double _garageProductsLocX = 0;
         private double _garageProductsLocY = 0;
         private decimal _price = 0;
-        public int HouseId { get; set; }
+        private int _forSale = 0;
 
+        public int HouseId { get; set; }
+        public int ForSale
+        {
+            get { return _forSale; }
+            set { _forSale = value; }
+        }
         public string Name
         {
             get { return _name; }

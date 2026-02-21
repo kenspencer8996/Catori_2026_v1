@@ -1,8 +1,8 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.Messages;
 using CatoriCity2025WPF.Viewmodels;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 
 namespace CatoriCity2025WPF.Objects
 {
@@ -23,7 +23,9 @@ namespace CatoriCity2025WPF.Objects
         public static ObservableCollection<LandscapeObjectViewModel> LandscapeObjects { get; set; }
         public static List<LandscapeObjectControl> LandscapeUCs;
         public static string Burglaralarmfile = "";
-       public static  PersonViewModel CurrentPerson { get; set; } 
+        public static List<PersonProductsOwnedEntity> ItemsOwned { get; set; }
+        public static  PersonViewModel CurrentPerson { get; set; } 
+        public static HouseControl OwnedHouseControl { get; set; }    
         public static int BadGuyWith { get; set; } = 30;
         public static int BadGuyHeight { get; set; } = 70;
         // public static GeometryHelper GlobalGeometryHelper;
@@ -158,6 +160,12 @@ namespace CatoriCity2025WPF.Objects
                 else
                     return new List<PersonViewModel>();
             }
+        }
+        public static void ShowPrimaryPerson()
+        {
+            PersonShowMessage args = new PersonShowMessage();
+            args.ShowPerson = true;
+            WeakReferenceMessenger.Default.Send<PersonShowMessage>(args);
         }
         public static List<PersonViewModel> AllPersons { get; set; } = new List<PersonViewModel>();
         public static List<PersonImageViewModel> PersonImages { get; set; } = new List<PersonImageViewModel>();

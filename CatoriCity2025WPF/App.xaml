@@ -326,6 +326,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-  
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Application.Resources>
 </Application>
