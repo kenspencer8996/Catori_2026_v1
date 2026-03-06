@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
              mc:Ignorable="d" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged"
              d:DesignHeight="450" d:DesignWidth="800" x:Name="BusinessUC" >
-    <Border x:Name="MainBorder" BorderThickness="2" Width="{Binding ActualWidth, ElementName=BusinessUC}"
+    <Border x:Name="MainBorder" BorderThickness="2" BorderBrush="Red" Width="{Binding ActualWidth, ElementName=BusinessUC}"
             Height="{Binding ActualHeight, ElementName=BusinessUC}"  >
         <Grid>
             <Grid.RowDefinitions>
@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="15"/>
             </Grid.ColumnDefinitions>
-        <Canvas x:Name="MainLayout" AllowDrop="True" Grid.Column="0" DragDrop.Drop="MainLayout_Drop" 
+        <Canvas x:Name="MainLayoutBank" AllowDrop="True" Grid.Column="0" DragDrop.Drop="MainLayout_Drop" 
                 SizeChanged="MainLayout_SizeChanged" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Canvas.Left="0" Canvas.Top="0">
                 <Image x:Name="BusinessImage"  />

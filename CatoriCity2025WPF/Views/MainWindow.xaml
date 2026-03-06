@@ -64,8 +64,10 @@
             </StackPanel>
        
         </StackPanel>
-        <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" Width="{Binding ElementName=MainWin, Path=ActualWidth}"
-        Height="{Binding ElementName=MainWin, Path=ActualHeight}" Background="#FFE2F2F7">
+        <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" 
+                Width="{Binding ElementName=MainWin, Path=ActualWidth}"
+        Height="{Binding ElementName=MainWin, Path=ActualHeight}" 
+                Background="#FFE2F2F7" >
         <Button x:Name="SaveLayoutButton"  Width="50" Click="SaveLayoutButton_Click">
             <Image x:Name="SaveImage" Source="/Images/SaveButtonCool.png" Width="1720" Height="50"/>
         </Button>

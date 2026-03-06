@@ -7,7 +7,7 @@
              mc:Ignorable="d" Width="600" Height="200" x:Name="UC" >
     <Border x:Name="MainBorder" BorderBrush="Black" Width="{Binding ActualWidth, ElementName=UC}"
             Height="{Binding ActualHeight, ElementName=UC}">
-        <Canvas x:Name="MainLayout" Width="{Binding ActualWidth, ElementName=MainBorder}"
+        <Canvas x:Name="MainLayoutHardware" Width="{Binding ActualWidth, ElementName=MainBorder}"
             Height="{Binding ActualHeight, ElementName=MainBorder}">
             <StackPanel x:Name="ItemsStackPanel" Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=MainLayout}"
                 Height="{Binding ActualHeight, ElementName=MainLayout}">

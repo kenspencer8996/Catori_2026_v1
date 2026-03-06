@@ -1,0 +1,13 @@
+ Volume in drive C is Windows
+ Volume Serial Number is EAC2-1E22
+
+ Directory of C:\Development\Gaming\Catori2026\Catori_2026_v1\Images\PrimaryPeople\Digging
+
+GirlDigBackDirt1.png                 GirlDigBackDirt2.png
+GirlDigDownDirt1.png                 GirlDigShovelDown.png
+GirlDigShovelDownDirt2.png           GirlDigShovelDownDIrt3.png
+GirlDigShovelDownDirt4.png           GirlDigShovelOverDhoulderDirt.png
+GirlDigShovelOverDhoulderDirt2.png   GirlDigShovelOverDhoulderDirt3.png
+GirlDigShovelOverDhoulderDirt4.png   GIrlDigShovelPartialDownDirt.png
+              12 File(s)      5,835,332 bytes
+               0 Dir(s)  466,217,119,744 bytes free

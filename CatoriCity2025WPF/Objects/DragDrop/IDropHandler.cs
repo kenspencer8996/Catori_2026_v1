@@ -1,6 +1,8 @@
-﻿using System.Windows;
-
-public interface IDropHandler
+﻿namespace CatoriCity2025WPF.Objects.DragDrop
 {
-    void HandleDrop(UIElement dragged, UIElement target);
+    public interface IDropHandler
+    {
+        public bool CanDrop(object drag, object target);
+        public void OnDrop(object drag, object target);
+    }
 }

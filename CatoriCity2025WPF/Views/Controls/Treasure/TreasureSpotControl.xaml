@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls.Treasure" Loaded="UC_Loaded"
-             mc:Ignorable="d" x:Name="UC" Width="200" Height="100" >
-    <Canvas x:Name="MainLayout" Width="{Binding ActualWidth, ElementName=UC}" Height="{Binding ActualHeight, ElementName=UC}">
-        <Image x:Name="TreasureSpotImage" Stretch="Fill" StretchDirection="Both"  Width="{Binding ActualWidth, ElementName=MainLayout}"
-                   Height="{Binding ActualHeight, ElementName=MainLayout}" Source="/Images/DirtSpot.png" Panel.ZIndex="200" />
+             mc:Ignorable="d" x:Name="UC" Width="200" Height="65" >
+    <Border x:Name="GlowBorder" >
+    <Canvas x:Name="MainLayoutTreasureSpot" Width="{Binding ActualWidth, ElementName=UC}" Height="{Binding ActualHeight, ElementName=UC}">
+        <Image x:Name="TreasureSpotImage" Stretch="Fill" StretchDirection="Both"  Width="{Binding ActualWidth, ElementName=MainLayoutTreasureSpot}"
+                   Height="{Binding ActualHeight, ElementName=MainLayoutTreasureSpot}" Source="/Images/DirtSpot.png" Panel.ZIndex="200" Canvas.Left="0" Canvas.Top="0" Margin="0,0,0,0" />
     </Canvas>
+    </Border>
 </UserControl>

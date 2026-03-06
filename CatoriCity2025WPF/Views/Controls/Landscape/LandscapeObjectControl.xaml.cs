@@ -1,4 +1,5 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.DragDrop;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -7,7 +8,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for LandscapeObjectControl.xaml
     /// </summary>
-    public partial class LandscapeObjectControl : UserControl
+    public partial class LandscapeObjectControl : UserControl,IDropTarget
     {
         private DispatcherTimer _longPressTimer;
         private bool _isLongPressTriggered;
@@ -206,6 +207,14 @@ namespace CatoriCity2025WPF.Views.Controls
                 this.ReleaseMouseCapture();
             }
         }
+       
+        public bool CanDrop(UIElement element)
+        {
+            return true;
+        }
 
+        public void OnDrop(UIElement element)
+        {
+        }
     }
 }

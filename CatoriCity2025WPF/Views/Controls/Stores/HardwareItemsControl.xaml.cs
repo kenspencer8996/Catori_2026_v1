@@ -1,9 +1,11 @@
-﻿namespace CatoriCity2025WPF.Views.Controls.House
+﻿using CatoriCity2025WPF.Objects.DragDrop;
+
+namespace CatoriCity2025WPF.Views.Controls.House
 {
     /// <summary>
     /// Interaction logic for HardwareItemsControl.xaml
     /// </summary>
-    public partial class HardwareItemsControl : UserControl
+    public partial class HardwareItemsControl : UserControl,IDropTarget
     {
         List<PersonProductsOwnedViewModel> _models;
         public HardwareItemsControl(List<PersonProductsOwnedViewModel> models)
@@ -25,5 +27,17 @@
                 ItemsStackPanel.Children.Add(thisimage);
             }
         }
+
+
+
+        void IDropTarget.OnDrop(UIElement element)
+        {
+            throw new NotImplementedException();
+        }
+        bool IDropTarget.CanDrop(UIElement element)
+        {
+            return true;
+        }
+        
     }
 }

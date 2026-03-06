@@ -89,9 +89,7 @@ namespace CatoriCity2025WPF.Objects
             }
             catch (Exception ex)
             {
-
-                MessageBoxResult result = MessageBox.Show("UIUtility.GetImageControl exception:" + ex.Message, "Exception", MessageBoxButton.OK);
-
+                cLogger.Log("UIUtility.GetImageControl exception:" + ex.Message);
             }
 
             return thisImage;

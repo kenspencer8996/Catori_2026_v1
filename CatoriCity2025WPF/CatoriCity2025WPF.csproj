@@ -12,11 +12,13 @@
     <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
     <ItemGroup>
+    <Compile Remove="Objects\DragDrop\DragManager - Copy.cs" />
     <Compile Remove="Objects\ResourceHelperWin.cs" />
     <Compile Remove="Objects\ReturnForInsertMethods.cs" />
     <Compile Remove="Objects\SampleData.cs" />
     <Compile Remove="Objects\StreetsModel.cs" />
     <Compile Remove="Objects\UIHelpers.cs" />
+    <Compile Remove="Views\Controls\Stores\StoreHardwareInteriorControl.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +28,7 @@
     <None Remove="Images\CatoriImage.ico" />
     <None Remove="Images\CatoriImage.png" />
     <None Remove="Images\CHestClosed.png" />
+    <None Remove="Images\CityScapeButtonImage.png" />
     <None Remove="Images\closexred.png" />
     <None Remove="Images\DefaultRobotArmt.png" />
     <None Remove="Images\DepositImage.png" />
@@ -59,6 +62,7 @@
     <None Remove="Images\Saw.png" />
     <None Remove="Images\SawChain.png" />
     <None Remove="Images\Shovel.png" />
+    <None Remove="Images\StartWorld.png" />
     <None Remove="Images\StoreHardware_Doorspng.png" />
     <None Remove="Images\Store_hardwareFront.png" />
     <None Remove="Images\Store_hardware_Interior.png" />
@@ -71,6 +75,7 @@
 
   <ItemGroup>
     <Page Remove="Views\Controls\DroneDeliver1.xaml" />
+    <Page Remove="Views\Controls\Stores\StoreHardwareInteriorControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +84,7 @@
 
   <ItemGroup>
     <Folder Include="Objects\Graphics\" />
+    <Folder Include="Views\Controls\B\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +104,7 @@
     <Resource Include="Images\cabinetcorner.png" />
     <Resource Include="Images\CatoriImage.ico" />
     <Resource Include="Images\CHestClosed.png" />
+    <Resource Include="Images\CityScapeButtonImage.png" />
     <Resource Include="Images\DirtSpot.png" />
     <Resource Include="Images\DronePortal.png" />
     <Resource Include="Images\DroneWithBox.png" />
@@ -125,6 +132,7 @@
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
     <Resource Include="Images\Shovel.png" />
+    <Resource Include="Images\StartWorld.png" />
     <Resource Include="Images\StoreHardware_Doorspng.png" />
     <Resource Include="Images\Store_hardwareFront.png" />
     <Resource Include="Images\Store_hardware_Interior.png" />

@@ -1,13 +1,5 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
-using CatoriServices.Objects;
-using CityAppServices.Objects.Entities;
+﻿using CatoriCity2025WPF.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace CatoriCity2025WPF.Views.Controls
 {

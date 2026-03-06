@@ -1,14 +1,11 @@
-﻿using CatoriCity2025WPF.Objects;
-using System.Windows.Controls;
-using System.Windows.Data;
-using static System.Reflection.Metadata.BlobBuilder;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
     /// <summary>
     /// Interaction logic for LotContent.xaml
     /// </summary>
-    public partial class LotControl : UserControl
+    public partial class LotControl : UserControl,IDropTarget
     {
         public bool IsPrimaryPersonHouse { get; set; } = false;  
         public LotControl()
@@ -30,8 +27,10 @@ namespace CatoriCity2025WPF.Views.Controls
         public bool LotOccupied { get; set; } = false;  
 
         public HouseControl Building { get; set; }
+        public IDropAddToUC BuildingUC { get; set; }
         public void AddBuilding(UserControl userControl,bool primary)
         {
+            BuildingUC = userControl as IDropAddToUC;
             if (userControl != null)
             {
                 if(userControl.GetType() == typeof(HouseControl))
@@ -51,6 +50,17 @@ namespace CatoriCity2025WPF.Views.Controls
                 LotUCMainLayout.Children.Clear();
                 LotOccupied = false;
             }
+        }
+
+        public bool CanDrop(UIElement element)
+        {
+            return true;
+        }
+
+        public void OnDrop(UIElement element)
+        {
+           // Building.AddDroppedElement(element) ;
+           BuildingUC.AddDroppedElement(element);
         }
     }
 }

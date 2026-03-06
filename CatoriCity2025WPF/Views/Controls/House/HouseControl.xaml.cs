@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.Controllers;
 using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Objects.Messages;
 using CatorisControlLibrary.Objects;
 using CommunityToolkit.Mvvm.Messaging;
@@ -10,7 +11,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for HouseControl.xaml
     /// </summary>
-    public partial class HouseControl : UserControl
+    public partial class HouseControl : UserControl, IDropAddToUC
     {
         HouseControlController _controller;
         private string _ImageKitchenFileName;
@@ -26,7 +27,7 @@ namespace CatoriCity2025WPF.Views.Controls
         Button expandimageButton = new Button();
         public HouseViewModel _houseViewModel;
         private string PersonName = "";
-
+        PersonControl _personControl;
         public string HouseImageName
         {
             get
@@ -294,9 +295,11 @@ namespace CatoriCity2025WPF.Views.Controls
             //fundsDetailView.ShowDialog();
         }
 
-        private void SaleButton_Click(object sender, RoutedEventArgs e)
+      
+        public void AddDroppedElement(UIElement element)
         {
-
+            _personControl = element as PersonControl;
+            element.Visibility = Visibility.Hidden;
         }
     }
 }

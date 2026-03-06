@@ -54,7 +54,7 @@ namespace CatoriCity2025WPF.Views
             PersonProductsOwnedService service = new PersonProductsOwnedService();
             var products = service.GetByPersonIdWithShopItemDetailsAsync(GlobalStuff.CurrentPerson.PersonId).Result;
             hardwareItems = new HardwareItemsControl(products);
-            MainLayout.Children.Add(hardwareItems);
+            MainLayoutDetailHome.Children.Add(hardwareItems);
             hardwareItems.Visibility = Visibility.Hidden;
         }
 

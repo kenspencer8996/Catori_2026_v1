@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls.Dirt"
              mc:Ignorable="d" MouseEnter="UserControl_MouseEnter" MouseUp="UserControl_MouseUp"
             Width="800" Height="450" x:Name="UC">
-    <Grid x:Name="MainLayout" Width="{Binding ElementName=UC, Path=ActualWidth}" 
+    <Grid x:Name="MainLayoutDirt" Width="{Binding ElementName=UC, Path=ActualWidth}" 
              Height="{Binding ElementName=UC, Path=ActualHeight}">
         <Image x:Name="Dirt1Image"  Stretch="Fill" StretchDirection="Both"  
                Source="/Images/Dirt1.png" Width="{Binding ElementName=MainLayout, Path=ActualWidth}" 

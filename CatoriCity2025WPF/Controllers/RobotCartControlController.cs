@@ -42,7 +42,7 @@ namespace CatoriCity2025WPF.Controllers
             };
             sb.Children.Add(dtop);
 
-            DoubleAnimation daleft2 = AnimationHelper.GetDoubleAnimation(1000, 1220, seconds * 1000);
+            DoubleAnimation daleft2 = AnimationHelper.GetDoubleAnimation(1000, 1070, seconds * 1000);
             Storyboard.SetTarget(daleft2, _view);
             Storyboard.SetTargetProperty(daleft2, new PropertyPath("(Canvas.Left)"));
             sb.Children.Add(daleft2);

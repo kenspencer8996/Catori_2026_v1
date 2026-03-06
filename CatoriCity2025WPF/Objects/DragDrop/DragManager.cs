@@ -1,133 +1,123 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
+using System.Diagnostics;
 using System.Windows.Input;
-using System.Windows.Media;
 
-public static class DragManager
+public class DragManager
 {
-    private static UIElement _dragged;
-    private static Canvas _canvas;
+    private readonly Canvas _canvas;
+    private PhysicsDragController _physics;
 
- 
-    private static PhysicsDragController _physics;
-    private static Point _clickOffset;
+    private List<IDropTarget> _dropTargets = new();
 
-    private static readonly Dictionary<Type, IDropHandler> _dropHandlers = new();
+    private UIElement _dragged;
+    private Point _grabOffset;
 
-    public static void RegisterDropHandler<T>(IDropHandler handler) where T : UIElement
-        => _dropHandlers[typeof(T)] = handler;
-
-    public static void StartDrag(UIElement element, Canvas canvas, Point clickOffset)
+    public DragManager(Canvas canvas)
     {
-        _dragged = element;
         _canvas = canvas;
-        _clickOffset = clickOffset;
 
-        var mouse = Mouse.GetPosition(_canvas);
+        _canvas.MouseLeftButtonDown += OnMouseDown;
+        _canvas.MouseMove += OnMouseMove;
+        _canvas.MouseLeftButtonUp += OnMouseUp;
 
-        var startPos = new Point(
-            mouse.X - _clickOffset.X,
-            mouse.Y - _clickOffset.Y
-        );
-
-        _physics = new PhysicsDragController(p =>
-        {
-            Canvas.SetLeft(_dragged, p.X);
-            Canvas.SetTop(_dragged, p.Y);
-        });
-
-        _physics.Start(startPos);
+        _physics = new PhysicsDragController(_canvas, SetElementPosition);
+    }
+    private void CreatePhysicsController()
+    {
+        _physics = new PhysicsDragController(_canvas, SetElementPosition);
+    }
+    public void ResetDragState() 
+    { 
+        CreatePhysicsController();
+        _dragged = null; 
+        _grabOffset = new Point();
+       
+    }
+    // ---------------------------------------------------------
+    // RegisterDropTarget
+    // ---------------------------------------------------------
+    public void RegisterDropTarget(IDropTarget target)
+    {
+        if (!_dropTargets.Contains(target))
+            _dropTargets.Add(target);
     }
 
-    public static void UpdateDrag()
+    private void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (_dragged == null || _canvas == null)
-            return;
+        if (e.Source is UIElement element && _canvas.Children.Contains(element))
+        {
+            _dragged = element;
 
-        var mouse = Mouse.GetPosition(_canvas);
+            var mouse = e.GetPosition(_canvas);
+            var left = Canvas.GetLeft(_dragged);
+            var top = Canvas.GetTop(_dragged);
 
-        var target = new Point(
-            mouse.X - _clickOffset.X,
-            mouse.Y - _clickOffset.Y
-        );
+            _grabOffset = new Point(mouse.X - left, mouse.Y - top);
+
+            //_physics.Start(new Point(left, top));
+            _physics.Start(new Point(left,top));
+            _canvas.CaptureMouse();
+        }
+    }
+
+    private void OnMouseMove(object sender, MouseEventArgs e)
+    {
+        if (_dragged == null) return;
+
+        var mouse = e.GetPosition(_canvas);
+        var target = new Point(mouse.X - _grabOffset.X, mouse.Y - _grabOffset.Y);
 
         _physics.SetTarget(target);
     }
-    public static void EndDrag()
+
+    private void OnMouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (_dragged == null || _canvas == null)
-            return;
+        if (_dragged == null) return;
 
-        _physics?.Stop();
-        _physics = null;
+        _physics.Stop();
+        _canvas.ReleaseMouseCapture();
 
-        var mouse = Mouse.GetPosition(_canvas);
-
-        // NEW: correct drop target detection
-        var target = HitTestForDropTarget(mouse);
-
-        if (target != null &&
-            _dropHandlers.TryGetValue(target.GetType(), out var handler))
-        {
-            handler.HandleDrop(_dragged, target);
-        }
-
+        TryDrop(_dragged);
         _dragged = null;
-        _canvas = null;
+        ResetDragState();
     }
 
-
-    private static UIElement HitTestForDropTarget(Point position)
+    private void SetElementPosition(Point p)
     {
-        UIElement found = null;
+        if (_dragged == null) return;
 
-        VisualTreeHelper.HitTest(
-            _canvas,
-            // Filter: skip the dragged element
-            (DependencyObject obj) =>
-            {
-                if (obj == _dragged)
-                    return HitTestFilterBehavior.ContinueSkipSelf;
-
-                return HitTestFilterBehavior.Continue;
-            },
-            // Result callback
-            (HitTestResult result) =>
-            {
-                var current = result.VisualHit;
-
-                while (current != null)
-                {
-                    if (current is UIElement ui &&
-                        _dropHandlers.ContainsKey(ui.GetType()))
-                    {
-                        found = ui;
-                        return HitTestResultBehavior.Stop;
-                    }
-
-                    current = VisualTreeHelper.GetParent(current);
-                }
-
-                return HitTestResultBehavior.Continue;
-            },
-            new PointHitTestParameters(position)
-        );
-
-        return found;
+        Canvas.SetLeft(_dragged, p.X);
+        Canvas.SetTop(_dragged, p.Y);
     }
 
-    public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+    private void TryDrop(UIElement element)
     {
-        while (child != null)
+        var fe = (FrameworkElement)element;
+
+        var elementBounds = new Rect(
+            Canvas.GetLeft(element),
+            Canvas.GetTop(element),
+            fe.ActualWidth,
+            fe.ActualHeight);
+
+        foreach (var target in _dropTargets)
         {
-            if (child is T t)
-                return t;
-
-            child = VisualTreeHelper.GetParent(child);
+            if (target is FrameworkElement feTarget)
+            {
+                var targetBounds = new Rect(
+                    Canvas.GetLeft(feTarget),
+                    Canvas.GetTop(feTarget),
+                    feTarget.ActualWidth,
+                    feTarget.ActualHeight);
+                Debug.WriteLine($"Element={elementBounds} Target={targetBounds}");
+                if (elementBounds.IntersectsWith(targetBounds) &&
+                    target.CanDrop(element))
+                {
+                    target.OnDrop(element);
+                    return;
+                }
+            }
         }
-        return null;
-    }
 
+    }
 }

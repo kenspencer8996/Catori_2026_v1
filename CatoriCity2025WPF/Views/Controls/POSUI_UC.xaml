@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls" x:Name="UC"
              mc:Ignorable="d" MinWidth="300" MinHeight="200">
-    <Grid x:Name="MainLayout" Background="{DynamicResource MainGradient}" Width="{Binding ElementName=UC, Path=ActualWidth}" 
+    <Grid x:Name="MainLayoutPOS" Background="{DynamicResource MainGradient}" Width="{Binding ElementName=UC, Path=ActualWidth}" 
             Height="{Binding ElementName=UC, Path=ActualHeight}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

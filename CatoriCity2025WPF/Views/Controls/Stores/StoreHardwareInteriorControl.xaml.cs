@@ -9,14 +9,14 @@ namespace CatoriCity2025WPF.Views.Controls
     /// </summary>
     public partial class StoreHardwareInteriorControl
     {
-        StoreHardwareInteriorControlController _controller;
+        StoreHardwareInteriorViewController _controller;
         bool overrobot = false;
         PersonViewModel _personViewModel;
 
         public StoreHardwareInteriorControl()
         {
              InitializeComponent();
-           _controller = new StoreHardwareInteriorControlController(this);
+           _controller = new StoreHardwareInteriorViewController(this);
 
             //DroneDeliver1UC.Visibility = Visibility.Hidden;
             DragImage.Visibility = Visibility.Hidden;
@@ -95,7 +95,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void MainLayout_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // Get mouse position relative to the window
-            Point relativePoint = e.GetPosition(MainLayout);
+            Point relativePoint = e.GetPosition(MainLayoutHardwareStoreInterior);
             
             // Convert to absolute screen coordinates
             //Point absolutePoint = this.PointToScreen(relativePoint);

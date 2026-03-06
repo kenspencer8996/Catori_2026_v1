@@ -1,6 +1,8 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
 using CatoriCity2025WPF.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Diagnostics;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -8,7 +10,7 @@ namespace CatoriCity2025WPF.Controllers
     internal class MainWindowController
     {
         MainWindow _view;
-        StoreHardwareInteriorControl storeHardwareInteriorUC = new StoreHardwareInteriorControl();
+       // StoreHardwareInteriorControl storeHardwareInteriorUC = new StoreHardwareInteriorControl();
         internal CityscapeStreetsViewModel Model = new CityscapeStreetsViewModel();
         public bool instartupFlag = true;
         bool VisualContentLoaded = false;
@@ -16,15 +18,18 @@ namespace CatoriCity2025WPF.Controllers
         int _streetwidth;
         private List<LotControl> _lots = new List<LotControl>();
         DispatcherTimer _updatePathsTimerTimer;
+        DispatcherTimer _startupTimer;
         System.Timers.Timer interestAddTimer;
         public PersonControl primaryPerson;
         public bool MovePerson = false;
-
+        DragManager _dragManager;
         public void WalkLeft ()
-        { }
+        {
+            //_dropTargetManager.Register();
+        }
 
         internal MainWindowController(MainWindow view)
-        {
+        { 
             _view = view;
             string startupmessage = "--------------------- Application Startup ------------------------" + Environment.NewLine;
             startupmessage += "Application Startup Time: " + DateTime.Now.ToString() + Environment.NewLine;
@@ -40,17 +45,18 @@ namespace CatoriCity2025WPF.Controllers
                 int rInt = rnd.Next(0, 5);
                 GlobalStuff.TimingsRandom.Add(rInt);
             }
+            _dragManager = GlobalCode.GetDragmanager(GlobalStuff.MainView.MainLayout);
             WeakReferenceMessenger.Default.Register<ShowHardwareStoreInteriorMessage>(this, (r, m) =>
             {
                 try
                 {
-                    ShowHardwareStoreInteriorMessage showHardwareInteriorMessage = m;
-                    storeHardwareInteriorUC.Width = _view.Width;
-                    storeHardwareInteriorUC.Height = _view.Height;
-                    storeHardwareInteriorUC.Model = m.Model;
-                    Canvas.SetZIndex(storeHardwareInteriorUC, 2000);
-                    storeHardwareInteriorUC.MoveCart();
-                    storeHardwareInteriorUC.Visibility = Visibility.Visible;
+                    //ShowHardwareStoreInteriorMessage showHardwareInteriorMessage = m;
+                    //storeHardwareInteriorUC.Width = _view.Width;
+                    //storeHardwareInteriorUC.Height = _view.Height;
+                    //storeHardwareInteriorUC.Model = m.Model;
+                    //Canvas.SetZIndex(storeHardwareInteriorUC, 2000);
+                    //storeHardwareInteriorUC.MoveCart();
+                    //storeHardwareInteriorUC.Visibility = Visibility.Visible;
                 }
                 catch (Exception ex)
                 {
@@ -75,8 +81,75 @@ namespace CatoriCity2025WPF.Controllers
                     throw;
                 }
             });
+            WeakReferenceMessenger.Default.Register<ResetPersonMesssage>(this, (r, m) =>
+            {
+                try
+                {
+                    ResetPrimaryPerson(120,120);
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            });
             
         }
+
+        private void ResetPrimaryPerson(double originalleft, double originaltop)
+        {
+
+            int seconds = 2;
+            Point target = new Point(450, 385);
+                      //var tt = primaryPerson.RenderTransform as TranslateTransform;
+            //if (tt == null)
+            //{
+            //    tt = new TranslateTransform();
+            //    primaryPerson.RenderTransform = tt;
+            //}
+
+            //var sb = new Storyboard();
+            //sb.Duration = TimeSpan.FromSeconds(seconds);
+
+            //var animX = new DoubleAnimation
+            //{
+            //    To = target.X,
+            //    Duration = sb.Duration,
+            //    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            //};
+            //Storyboard.SetTarget(animX, primaryPerson);
+            //Storyboard.SetTargetProperty(animX, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.X)"));
+
+            //var animY = new DoubleAnimation
+            //{
+            //    To = target.Y,
+            //    Duration = sb.Duration,
+            //    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            //};
+            //Storyboard.SetTarget(animY, primaryPerson);
+            //Storyboard.SetTargetProperty(animY, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+            //sb.Children.Add(animX);
+            //sb.Children.Add(animY);
+            //sb.Completed += (s, e) =>
+            //{
+            //    Canvas.SetLeft(primaryPerson, target.X);
+            //    Canvas.SetTop(primaryPerson, target.Y);
+
+            //    Canvas.SetZIndex(primaryPerson, 4001);
+
+            //    tt.X = 0;
+            //    tt.Y = 0;
+            //};
+            //sb.Begin();
+
+
+            Canvas.SetLeft(primaryPerson, target.X);
+            Canvas.SetTop(primaryPerson, target.Y);
+
+            Canvas.SetZIndex(primaryPerson, 4001);
+        }
+
         internal void Startup(int streetwidth)
         {
             try
@@ -93,20 +166,18 @@ namespace CatoriCity2025WPF.Controllers
                 GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
                 LoadHouses();
                 LoadBanks();
-                LoadShelves();
-                LoadShopItems();
                 LoadStores();
                 LoadFactories();
                 AddPoliceStation();
                 loadPoliceCars();
                 
-                primaryPerson = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault());
+                primaryPerson = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault(), _dragManager, _view.MainLayout);
                 primaryPerson.MovePersonStop += PrimaryPerson_MovePersonStop;
                 primaryPerson.MovePersonStart += PrimaryPerson_MovePersonStart;
                 _view.MainLayout.Children.Add(primaryPerson);
                 GlobalStuff.ShowPrimaryPerson();
-                //Canvas.SetLeft(primaryPerson, 450);
-                //Canvas.SetTop(primaryPerson, 250);
+                Canvas.SetLeft(primaryPerson, 120);
+                Canvas.SetTop(primaryPerson, 120);
                 Canvas.SetZIndex(primaryPerson, 4001);
                 primaryPerson.PersonMouseDown += Person_PersonMouseDown; ;
                 primaryPerson.PersonMouseUp += Person_PersonMouseUp;
@@ -126,16 +197,26 @@ namespace CatoriCity2025WPF.Controllers
                 _updatePathsTimerTimer = new DispatcherTimer();
                 _updatePathsTimerTimer.Tick += new EventHandler(__updatePathsTimerTimer_Tick);
                 _updatePathsTimerTimer.Interval = new TimeSpan(0, 0, 30);
+                _startupTimer = new DispatcherTimer();
+                _startupTimer.Tick += new EventHandler(StartupTimer_Tick);
+                _startupTimer.Interval = new TimeSpan(0, 0, 1);
 
                 interestAddTimer = new System.Timers.Timer();
                 interestAddTimer.Interval = 60000 * 10; // 10 minutes
                 interestAddTimer.Elapsed += InterestAddTimer_Elapsed;
                 interestAddTimer.Start();
+
+                _startupTimer.Start();
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        private void StartupTimer_Tick(object? sender, EventArgs e)
+        {
+            ResetPrimaryPerson(120, 120);
         }
 
         private void PrimaryPerson_MovePersonStart(object? sender, PrimaryPrsonDragArgg e)
@@ -150,59 +231,8 @@ namespace CatoriCity2025WPF.Controllers
             MovePerson = false;
         }
 
-        private void LoadShelves()
-        {
-            ShelfLocationService shelfLocationService = new ShelfLocationService();
-            GlobalStuff.ShelfViewModels = shelfLocationService.GetAllAsync().Result;
-            var groupByStoreQuery = from s in GlobalStuff.ShelfViewModels
-                                   group s by s.StoreType into storeTypesKey
-                                   select new
-                                   {
-                                       groupkey = storeTypesKey.Key
-                                   };
-
-            foreach (var grp in groupByStoreQuery)
-            {
-                GlobalStuff.Stores.Add(grp.groupkey);
-                var foundShelf = from sh in GlobalStuff.ShelfViewModels
-                                 where sh.StoreType == grp.groupkey
-                                 select sh;
-                GlobalStuff.ShelfUCs = new List<ShelfItemControl>();
-                foreach (var shelf in foundShelf)
-                {
-                    ShelfItemControl shelfUC = GetShelfControl(shelf);
-                    shelfUC.Model = shelf;
-                    Canvas.SetLeft(shelfUC, Convert.ToDouble(shelf.PositionX));
-                    Canvas.SetTop(shelfUC, Convert.ToDouble(shelf.PositionY));
-                    Canvas.SetZIndex(shelfUC, 2002);
-                    GlobalStuff.ShelfUCs.Add(shelfUC);
-                    switch (shelf.StoreType)  
-                        {
-                        case "Hardware1":
-                            shelfUC.Name = "HardwareShelf" + shelf.ShelfLocationID;
-                            storeHardwareInteriorUC.MainLayout.Children.Add(shelfUC);
-                            break;
-                        default:
-                            shelfUC.Name = "Shelf" + shelf.ShelfLocationID;
-                            break;
-                    }
-                } 
-            }
-        }
-        private void LoadShopItems()
-        {
-            ShopItemService shopItemService = new ShopItemService();
-            GlobalStuff.ShopItems = shopItemService.GetAllAsync().Result;
-            foreach (var item in GlobalStuff.ShopItems)
-            {
-                var found = from sh in GlobalStuff.ShelfUCs where sh.Model.ShopItemId == item.ShopItemId
-                            select sh;
-                if (found.Any())
-                {
-                    ShelfItemControl shelfUC = found.First();
-                    shelfUC.AddSHopItemToShelfLocation(GetShopItemControl(item));
-                }   
-            }
+     
+        
 
 
             //foreach (var store in GlobalStuff.Stores)
@@ -246,39 +276,9 @@ namespace CatoriCity2025WPF.Controllers
             //    }
             //}
 
-        }
-        private ShopItemControl GetShopItemControl(ShopItemViewModel model)
-        {
-            ShopItemControl shopitemtemp = new ShopItemControl();
-            shopitemtemp.Width = model.Width;
-            shopitemtemp.Height = model.Height;
-            shopitemtemp.Name = model.Name;
-            shopitemtemp.Width = model.Width;
-            shopitemtemp.Height = model.Height;
-            shopitemtemp.Model = model;
-            shopitemtemp.ShopItemMouseDown += storeHardwareInteriorUC.ShopItemMouseDown;
-            shopitemtemp.ShopItemMouseUp += storeHardwareInteriorUC.ShopItemMouseUp; ;
-            if (model.RotationDegree > 0)
-            {
-                RotateTransform rotateTransform = new RotateTransform(model.RotationDegree);
-                shopitemtemp.RenderTransform = rotateTransform;
-
-            }
-            shopitemtemp.Visibility = Visibility.Visible;
-
-            //shopitem.ItemCost = item.Price.ToString("C");
-            string filepath = Imagehelper.GetImagePath(model.ImageName);
-            shopitemtemp.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
-            return shopitemtemp;
-        }
-        private ShelfItemControl GetShelfControl(ShelfLocationViewModel model)
-        {
-            ShelfItemControl shelftemp = new ShelfItemControl();
-            shelftemp.Width = model.Width;
-            shelftemp.Height = model.Height;
-            
-            return shelftemp;
-        }
+        
+       
+       
 
         private void Shopitem_StopDrag(object? sender, Objects.Arguments.ShopItemControlDrag e)
         {
@@ -300,11 +300,8 @@ namespace CatoriCity2025WPF.Controllers
             {
                 try
                 {
-                    double x = Canvas.GetLeft(lotControl);
-                    double y = Canvas.GetTop(lotControl);
-                    storeHardwareInteriorUC.x = x;
-                    storeHardwareInteriorUC.y = y;
                     lotControl.AddBuilding(ucStore1, false);
+                    _dragManager.RegisterDropTarget(lotControl);
                 }
                 catch (Exception ex)
                 {
@@ -312,10 +309,10 @@ namespace CatoriCity2025WPF.Controllers
                     throw;
                 }
             }
-            Canvas.SetLeft(storeHardwareInteriorUC, 0);
-            Canvas.SetTop(storeHardwareInteriorUC, 0);
-            storeHardwareInteriorUC.Visibility = Visibility.Hidden;
-            _view.MainLayout.Children.Add(storeHardwareInteriorUC);
+            //Canvas.SetLeft(storeHardwareInteriorUC, 0);
+            //Canvas.SetTop(storeHardwareInteriorUC, 0);
+            //storeHardwareInteriorUC.Visibility = Visibility.Hidden;
+            //_view.MainLayout.Children.Add(storeHardwareInteriorUC);
         }
 
         private void InterestAddTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -633,7 +630,9 @@ namespace CatoriCity2025WPF.Controllers
                                     select lot;
                         if (found2.Any())
                         {
-                            found2.First().AddBuilding(houseControl, primaryPersonHouse);
+                            LotControl lotControl = found2.First();
+                            lotControl.AddBuilding(houseControl, primaryPersonHouse);
+                            _dragManager.RegisterDropTarget(lotControl);
                         }
                         left += 90;
                         primaryPersonHouse = false;
@@ -664,6 +663,7 @@ namespace CatoriCity2025WPF.Controllers
                 PostOfficeControl postOffice = new PostOfficeControl();
                 postOffice.Width = GlobalStuff.buildingsize;
                 postOffice.Height = GlobalStuff.buildingsize;
+                _dragManager.RegisterDropTarget( postOffice);
                 Canvas.SetZIndex(postOffice, 100);
                 Canvas.SetLeft(postOffice, left);
                 Canvas.SetTop(postOffice, top);
@@ -836,6 +836,8 @@ namespace CatoriCity2025WPF.Controllers
                 foreach (var item in business)
                 {
                     FactoryControl factoryControl = new FactoryControl(factoryCount);
+                    
+
                     string controlname = "Factory_" + System.IO.Path.GetFileNameWithoutExtension(item.Name);
                     factoryControl.Name = controlname;
                     factoryControl.BusinessImage.Source = UIUtility.GetImageControl(item.ImageName, Width, Height, 0).Source; ;
@@ -844,6 +846,8 @@ namespace CatoriCity2025WPF.Controllers
                     Canvas.SetZIndex(factoryControl, 100);
                     Canvas.SetLeft(factoryControl, left);
                     Canvas.SetTop(factoryControl, top);
+
+
                     if (I == 0)
                     {
                         I++;
@@ -854,7 +858,11 @@ namespace CatoriCity2025WPF.Controllers
                                 select lot;
                     if (found.Any())
                     {
-                        found.First().AddBuilding(factoryControl, false);
+                        LotControl thislot = found.First();
+                        thislot.AddBuilding(factoryControl, false);
+                        _dragManager.RegisterDropTarget(thislot);
+
+                        Debug.WriteLine($"Registered {factoryControl.Name}: Left={Canvas.GetLeft(thislot)}, Top={Canvas.GetTop(thislot)}");
                     }
                     string leftpos = Canvas.GetLeft(factoryControl).ToString();
                     // cLogger.Log($"BusinessControl: {businessControl.BusinessImage.Source}  {left} {top}");
@@ -914,6 +922,7 @@ namespace CatoriCity2025WPF.Controllers
                     thisUC = GetLandscapeObject(landscapeObject,landscapeObject.Name);
                     x = landscapeObject.xActual;
                     y = landscapeObject.yActual;
+                    _dragManager.RegisterDropTarget(thisUC);
 
                     GlobalStuff.LandscapeUCs.Add(thisUC);
                     Canvas.SetZIndex(thisUC, 1101);

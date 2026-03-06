@@ -7,7 +7,7 @@
         xmlns:House="clr-namespace:CatoriCity2025WPF.Views.Controls.House" x:Class="CatoriCity2025WPF.Views.DetailHouseInsideView"
         mc:Ignorable="d" Loaded="Window_Loaded"
         Title="DetailHouseInsideView" Height="800" Width="1000" WindowStartupLocation="CenterOwner" WindowStyle="None">
-    <Canvas x:Name="MainLayout" Width="{Binding ActualWidth, ElementName=DetailHouseInsideView}" 
+    <Canvas x:Name="MainLayoutDetailHome" Width="{Binding ActualWidth, ElementName=DetailHouseInsideView}" 
              Height="{Binding ActualHeight, ElementName=DetailHouseInsideView}" Background="White">
         <Image x:Name="MainImage" Stretch="Fill"  Canvas.Left="30" />
         <Button x:Name="ShrinkButton" Width="15" Height="15" Click="ShrinkButton_Click" Canvas.Left="985">

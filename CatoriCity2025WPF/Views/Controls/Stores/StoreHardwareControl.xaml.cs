@@ -1,4 +1,5 @@
-﻿using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
+using CatoriCity2025WPF.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
@@ -7,12 +8,14 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for StoreHardwareControl.xaml
     /// </summary>
-    public partial class StoreHardwareControl : UserControl
+    public partial class StoreHardwareControl : UserControl,IDropAddToUC
     {
         ShopItemShowMessage msg = new ShopItemShowMessage();
         bool IsPersonMouseUp = false;
         PersonViewModel _personViewModel;
         bool isMouseOver = false;
+        double originalLeft = 0;
+        double originalTop = 0;
         public StoreHardwareControl()
         {
             InitializeComponent();
@@ -103,6 +106,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             cLogger.Log("event hit PersonDroppedMessage");
+            ShowInterior();
         }
 
         private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -115,12 +119,30 @@ namespace CatoriCity2025WPF.Views.Controls
             cLogger.Log("event hit");
         }
 
-        internal void AddPerson(PersonViewModel person)
+        private void AddPerson(PersonViewModel person)
         {
             ShowHardwareStoreInteriorMessage msg = new ShowHardwareStoreInteriorMessage();
             msg.Model = person;
-            WeakReferenceMessenger.Default.Send<ShowHardwareStoreInteriorMessage>(msg);
+            originalLeft = Canvas.GetLeft(this);
+            originalTop = Canvas.GetTop(this);
+            ShowInterior();
+            //WeakReferenceMessenger.Default.Send<ShowHardwareStoreInteriorMessage>(msg);
+        }
+        private void ShowInterior()
+        {
+            StoreHardwareInteriorView view = new StoreHardwareInteriorView(originalLeft,originalTop);
+            view.Owner = GlobalStuff.MainView;
+            view.ShowDialog();
+        }
 
+        public void AddDroppedElement(UIElement element)
+        {
+            if (element != null)
+            {
+                PersonControl person = element as PersonControl;
+                if (person != null)
+                    AddPerson(person._person);
+            }
         }
     }
 }

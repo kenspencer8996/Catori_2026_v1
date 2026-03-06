@@ -1,4 +1,5 @@
-﻿using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
+using CatoriCity2025WPF.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
@@ -7,7 +8,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for StoreHardwareControl.xaml
     /// </summary>
-    public partial class PostOfficeControl : UserControl
+    public partial class PostOfficeControl : UserControl,IDropTarget
     {
         bool IsPersonMouseUp = false;
         PersonViewModel _personViewModel;
@@ -80,6 +81,16 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             cLogger.Log("Event Hit");
 
+        }
+
+        public bool CanDrop(UIElement element)
+        {
+            return true;
+        }
+
+        public void OnDrop(UIElement element)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
+using CatoriCity2025WPF.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Threading;
 
@@ -7,7 +8,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for BusinessControl.xaml
     /// </summary>
-    public partial class FactoryControl : UserControl
+    public partial class FactoryControl : UserControl, IDropAddToUC
     {
         private string _imagename = "";
         public double RotationDegrees { get; set; }
@@ -192,14 +193,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void FactoryControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             cLogger.Log("FactoryControl_MouseEnter");
-            if (IsPersonMouseUp)
-            {
-                StartWork();
-            }
-            FactoryMouseMessage args = new FactoryMouseMessage();
-            args.LeaveEnter = LeaveEnerEnum.Enter;
-            args.FactoryControlInstance = this;
-            WeakReferenceMessenger.Default.Send<FactoryMouseMessage>(args);
+            
         }
 
         private void FactoryControl_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
@@ -225,6 +219,27 @@ namespace CatoriCity2025WPF.Views.Controls
         private void BusinessUC_PreviewDrop(object sender, DragEventArgs e)
         {
             e.Handled = true;
+        }
+
+        public void HandleDrop(UIElement droppedElement)
+        {
+        }
+
+       
+        void Drop(UIElement draggedElement)
+        {
+ 
+        }
+
+        public void AddDroppedElement(UIElement element)
+        {
+            _personViewModel = (element as PersonControl)._person;
+            AddPerson(_personViewModel);
+            FactoryMouseMessage args = new FactoryMouseMessage();
+            args.LeaveEnter = LeaveEnerEnum.Enter;
+            args.FactoryControlInstance = this;
+            WeakReferenceMessenger.Default.Send<FactoryMouseMessage>(args);
+
         }
     }
 }

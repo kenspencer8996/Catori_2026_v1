@@ -9,7 +9,7 @@
              d:DesignHeight="90" d:DesignWidth="90" AllowDrop="True">
         <Border x:Name="MainBorder" BorderThickness="2" Width="{Binding ElementName=HouseUC, Path=ActualWidth}"
             Height="{Binding ElementName=HouseUC, Path=ActualHeight}" >
-        <Canvas x:Name="MainLayout"  Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+        <Canvas x:Name="MainLayoutRealestate"  Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
             Height="{Binding ElementName=MainBorder, Path=ActualHeight}" AllowDrop="True" 
                 DragDrop.Drop="MainLayout_Drop">
             <Image x:Name="OfficeImage"  Width="{Binding ElementName=MainLayout, Path=ActualWidth}"

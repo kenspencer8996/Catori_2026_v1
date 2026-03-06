@@ -1,6 +1,9 @@
 ﻿
+using System.Drawing;
+
 namespace CatoriCity2025WPF.Views.Controls
 {
+    
     /// <summary>
     /// Interaction logic for Pers_onShopperControl.xaml
     /// </summary>
@@ -10,7 +13,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             InitializeComponent();
         }
-
+      
         public PersonViewModel Model { get; internal set; }
 
         private void MainBorder_SizeChanged(object sender, SizeChangedEventArgs e)

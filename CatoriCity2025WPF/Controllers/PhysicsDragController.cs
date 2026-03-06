@@ -1,62 +1,93 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
+﻿
+using System.Diagnostics;
 
-public class PhysicsDragController
+public sealed class PhysicsDragController
 {
-    private readonly Action<Point> _setPosition;
+    private readonly CancellationTokenSource _cts = new();
+    private readonly Canvas _canvas;
 
-    private Point _currentPos;
-    private Point _targetPos;
-    private Vector _velocity;
+    private Action<Point> _setPosition;
+    private Point _current;
+    private Point _velocity;
 
-    private bool _isRunning;
-
-    private const double Stiffness = 0.20;
-    private const double Damping = 0.80;
-
-    public PhysicsDragController(Action<Point> setPosition)
+    public PhysicsDragController(Canvas canvas, Action<Point> setPosition)
     {
+        _canvas = canvas;
         _setPosition = setPosition;
-    }
-
-    public void Start(Point initialPos)
-    {
-        _currentPos = initialPos;
-        _targetPos = initialPos;
-        _velocity = new Vector(0, 0);
-
-        if (!_isRunning)
-        {
-            CompositionTarget.Rendering += OnRendering;
-            _isRunning = true;
-        }
     }
 
     public void SetTarget(Point target)
     {
-        _targetPos = target;
+        // You can add smoothing or velocity logic here
+        _velocity = new Point(target.X - _current.X, target.Y - _current.Y);
+    }
+
+    //public async void Start()
+    //{
+    //    var token = _cts.Token;
+
+    //    while (!token.IsCancellationRequested)
+    //    {
+    //        Debug.WriteLine("Physics update on thread: " + Thread.CurrentThread.ManagedThreadId);
+
+    //        // Simple velocity integration
+    //        _current.X += Convert.ToInt32( _velocity.X * 0.25);
+    //        _current.Y += Convert.ToInt32(_velocity.Y * 0.25);
+
+    //        if (token.IsCancellationRequested)
+    //            break;
+
+    //        await _canvas.Dispatcher.BeginInvoke(() =>
+    //        {
+    //            if (!token.IsCancellationRequested)
+    //                _setPosition(_current);
+    //        });
+
+    //        if (token.IsCancellationRequested)
+    //            break;
+
+    //        try
+    //        {
+    //            await Task.Delay(1, token);
+    //        }
+    //        catch (TaskCanceledException)
+    //        {
+    //            break;
+    //        }
+    //    }
+    //}
+    public void Start(Point initialPosition)
+    {
+        _current = initialPosition; // ← THIS FIXES THE JUMP
+        _velocity = new Point(0, 0);
+        var token = _cts.Token;
+
+        Task.Run(async () =>
+        {
+            while (!token.IsCancellationRequested)
+            {
+                Debug.WriteLine("Physics update on thread: " + Thread.CurrentThread.ManagedThreadId);  // Physics update on background thread
+                _current.X += _velocity.X * 0.25;
+                _current.Y += _velocity.Y * 0.25;
+
+                // UI update on dispatcher
+                await _canvas.Dispatcher.BeginInvoke(() =>
+                {
+                    if (!token.IsCancellationRequested)
+                        _setPosition(_current);
+                });
+
+                await Task.Delay(16, token); // ~60 FPS
+            }
+        }, token);
     }
 
     public void Stop()
     {
-        if (_isRunning)
-        {
-            CompositionTarget.Rendering -= OnRendering;
-            _isRunning = false;
-        }
-    }
+        // 1. Cancel loop immediately
+        _cts.Cancel();
 
-    private void OnRendering(object? sender, EventArgs e)
-    {
-        var toTarget = _targetPos - _currentPos;
-        var force = new Vector(toTarget.X * Stiffness, toTarget.Y * Stiffness);
-
-        _velocity += force;
-        _velocity *= Damping;
-
-        _currentPos += _velocity;
-
-        _setPosition(_currentPos);
+        // 2. Disable all future UI updates
+        _setPosition = _ => { };
     }
 }

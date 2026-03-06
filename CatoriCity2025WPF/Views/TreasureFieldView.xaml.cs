@@ -1,4 +1,7 @@
 ﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Objects.DragDrop;
+using CatoriCity2025WPF.Views.Controls.Digging;
+using CatoriCity2025WPF.Views.Controls.Treasure;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -27,6 +30,6 @@ namespace CatoriCity2025WPF.Views
         {
             _controller.LoadLandscapeAsync(landscapegroup);
         }
-
+       
     }
 }

@@ -8,10 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800" MouseMove="UserControl_MouseMove" AllowDrop="True" Drop="UserControl_Drop" >
     <Border x:Name="MainBorder" BorderThickness="2" Width="{Binding ActualWidth, ElementName=BusinessUC}"
          Height="{Binding ActualHeight, ElementName=BusinessUC}" AllowDrop="True" DragDrop.Drop="MainBorder_Drop">
-        <Canvas x:Name="MainLayout" AllowDrop="True" DragDrop.Drop="MainLayout_Drop"  Width="{Binding ActualWidth, ElementName=MainBorder}"
+        <Canvas x:Name="MainLayoutHardware" AllowDrop="True" DragDrop.Drop="MainLayout_Drop"  Width="{Binding ActualWidth, ElementName=MainBorder}"
          Height="{Binding ActualHeight, ElementName=MainBorder}" >
-            <Image x:Name="MainImageImage" Canvas.Left="0" Canvas.Top="0"  Width="{Binding ActualWidth, ElementName=MainLayout}"
-         Height="{Binding ActualHeight, ElementName=MainLayout}" Source="/Images/Store_hardwareFront.png" />
+            <Image x:Name="MainImageImage" Canvas.Left="0" Canvas.Top="0"  Width="{Binding ActualWidth, ElementName=MainLayoutHardware}"
+         Height="{Binding ActualHeight, ElementName=MainLayoutHardware}" Source="/Images/Store_hardwareFront.png" />
             <Image x:Name="DoorImage"  Width="147" Height="150" Canvas.Left="325" AllowDrop="False" Drop="DoorImage_Drop" Canvas.Top="225" MouseDown="DoorImage_MouseDown" Source="/Images/StoreHardware_Doorspng.png"/>
 
         </Canvas>

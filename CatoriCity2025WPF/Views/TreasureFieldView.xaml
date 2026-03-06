@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
         mc:Ignorable="d" x:Name="TreasureField1View" WindowStartupLocation="CenterOwner"
         Title="TreasureFile1View" Height="450" Width="800" Loaded="TreasureField1View_Loaded">
-    <Canvas x:Name="MainLayout"  Width="{Binding ElementName=TreasureField1View, Path=ActualWidth}"
+    <Canvas x:Name="MainLayoutField"  Width="{Binding ElementName=TreasureField1View, Path=ActualWidth}"
         Height="{Binding ElementName=TreasureField1View, Path=ActualHeight}">
         <Image x:Name="FieldImage" Source="/Images/GirlfWithBushesNohole.png" Stretch="Fill" StretchDirection="Both"  Width="{Binding ElementName=MainLayout, Path=ActualWidth}"
         Height="{Binding ElementName=MainLayout, Path=ActualHeight}"  />
