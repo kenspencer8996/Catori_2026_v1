@@ -22,7 +22,7 @@ namespace CatoriCity2025WPF.Controllers
         }
         private void LoadGroupList()
         {
-            foreach (var landscapeObject in GlobalStuff.landscapeObjectGroupIds)
+            foreach (var landscapeObject in CityScapeGlobal.landscapeObjectGroupIds)
             {
                 Button landscapeObjectButton = _view.GetButton();
 

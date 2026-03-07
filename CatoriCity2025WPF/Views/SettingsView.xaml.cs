@@ -63,7 +63,7 @@ namespace CatoriCity2025WPF.Views
         private void LoadLandscapeGroups(Int32 groupid)
         {
             GlobalServices.LandscapeObjecGroupid = groupid;
-            LandscapeGroups.ItemsSource = GlobalStuff.LandscapeObjects;
+            LandscapeGroups.ItemsSource = CityScapeGlobal.LandscapeObjects;
 
         }
 
@@ -153,7 +153,7 @@ namespace CatoriCity2025WPF.Views
         private void PoliceCarsButton_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            GlobalStuff.MainView.RunPoliceCars();
+            CityScapeGlobal.CityScapeView.RunPoliceCars();
         }
 
         private void BadPersonButton_Click(object sender, RoutedEventArgs e)
@@ -162,7 +162,7 @@ namespace CatoriCity2025WPF.Views
             FundsViewModel funds = new FundsViewModel();
             funds.Money = 500;
             funds.X = 150;
-            funds.Y = GlobalStuff.IntersectuonMikMoo.y;
+            funds.Y = CityScapeGlobal.IntersectuonMikMoo.y;
 
             FundsMessage msg = new FundsMessage(funds);
             WeakReferenceMessenger.Default.Send(msg);

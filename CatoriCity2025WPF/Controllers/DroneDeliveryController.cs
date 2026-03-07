@@ -11,7 +11,7 @@ namespace CatoriCity2025WPF.Controllers
         public DroneDeliveryController(DroneDeliveryControl view)
         {
             _view = view;
-            _imagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "DroneShipping");
+            _imagePath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "DroneShipping");
             string pathtofile = System.IO.Path.Combine(_imagePath, "DoneEmpty.png");
             SetImage(pathtofile);
 

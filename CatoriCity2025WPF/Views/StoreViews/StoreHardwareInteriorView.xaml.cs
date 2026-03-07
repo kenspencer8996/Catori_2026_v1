@@ -240,5 +240,10 @@ namespace CatoriCity2025WPF.Views
             WeakReferenceMessenger.Default.Send(resetPerson);
 
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

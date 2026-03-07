@@ -57,7 +57,7 @@ namespace CatoriCity2025WPF.Views.Controls
                 _payTimer.Tick += new EventHandler(DispatcherTimer_Tick);
                 _payTimer.Interval = new TimeSpan(0, 0, 10);
                 _payTimer.Start();
-                if (GlobalStuff.ShowAllBordersIfAvailable)
+                if (CityScapeGlobal.ShowAllBordersIfAvailable)
                 {
                     MainBorder.BorderThickness = new Thickness(2);
                 }
@@ -137,7 +137,7 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         public void StartWork()
         {
-            GlobalStuff.SetFactoryWorking(_personViewModel.StaticImageFilePath, InteriorSelector);
+            CityScapeGlobal.SetFactoryWorking(_personViewModel.StaticImageFilePath, InteriorSelector);
 
             //string _personcurrentImage = _personViewModel.StaticImageFilePath;
             //PersonImage.Source = UIUtility.GetImageControl(_personcurrentImage, 50, 50, 0).Source;
@@ -183,9 +183,9 @@ namespace CatoriCity2025WPF.Views.Controls
             LeaveWorkArg detail = new LeaveWorkArg(_personViewModel);
             WeakReferenceMessenger.Default.Send(detail);
             PersonImage.Source = null;
-            GlobalStuff.SetFactoryNotWorking(InteriorSelector);
+            CityScapeGlobal.SetFactoryNotWorking(InteriorSelector);
 
-            GlobalStuff.ShowPrimaryPerson();
+            CityScapeGlobal.ShowPrimaryPerson();
           
 
         }

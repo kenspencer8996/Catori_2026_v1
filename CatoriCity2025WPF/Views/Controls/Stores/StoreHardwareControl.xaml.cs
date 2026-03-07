@@ -131,7 +131,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void ShowInterior()
         {
             StoreHardwareInteriorView view = new StoreHardwareInteriorView(originalLeft,originalTop);
-            view.Owner = GlobalStuff.MainView;
+            view.Owner = CityScapeGlobal.CityScapeView;
             view.ShowDialog();
         }
 

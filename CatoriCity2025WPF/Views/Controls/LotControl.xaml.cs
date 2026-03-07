@@ -14,7 +14,7 @@ namespace CatoriCity2025WPF.Views.Controls
 
             //LotLabel.Content = Street.ToString();
             LotLabel.Content = "";
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 LotUCBorder.BorderThickness =new System.Windows.Thickness( 2);
             }

@@ -15,7 +15,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             InitializeComponent();
             _controller = new DroneDeliveryController(this);
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderThickness = new Thickness(1);
                 MainBorder.BorderBrush = Brushes.Red;

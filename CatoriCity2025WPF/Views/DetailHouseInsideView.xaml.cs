@@ -43,7 +43,7 @@ namespace CatoriCity2025WPF.Views
             EntryDoorToGarage.OnOpenDoor += EntryDoorToGarage_OnOpenDoor;
 
 
-            if (houseViewModel.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower())
+            if (houseViewModel.Name.Trim().ToLower() == CityScapeGlobal.CurrentHouseName.Trim().ToLower())
             {
                 LoadProducts();
             }
@@ -52,7 +52,7 @@ namespace CatoriCity2025WPF.Views
         private void LoadProducts()
         {
             PersonProductsOwnedService service = new PersonProductsOwnedService();
-            var products = service.GetByPersonIdWithShopItemDetailsAsync(GlobalStuff.CurrentPerson.PersonId).Result;
+            var products = service.GetByPersonIdWithShopItemDetailsAsync(GlobalAllApps.CurrentPerson.PersonId).Result;
             hardwareItems = new HardwareItemsControl(products);
             MainLayoutDetailHome.Children.Add(hardwareItems);
             hardwareItems.Visibility = Visibility.Hidden;

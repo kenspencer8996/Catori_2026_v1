@@ -11,7 +11,7 @@ namespace CatoriCity2025WPF.Views.Controls
             InitializeComponent();
             //LotLabel.Content = Street.ToString();
             ShelfLabel.Content = "";
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 UCBorder.BorderThickness = new System.Windows.Thickness(2);
             }

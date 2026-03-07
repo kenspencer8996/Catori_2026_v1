@@ -53,10 +53,10 @@ namespace CatoriCity2025WPF.Controllers
         private void LoadShopItems()
         {
             ShopItemService shopItemService = new ShopItemService();
-            GlobalStuff.ShopItems = shopItemService.GetAllAsync().Result;
-            foreach (var item in GlobalStuff.ShopItems)
+            CityScapeGlobal.ShopItems = shopItemService.GetAllAsync().Result;
+            foreach (var item in CityScapeGlobal.ShopItems)
             {
-                var found = from sh in GlobalStuff.ShelfUCs
+                var found = from sh in CityScapeGlobal.ShelfUCs
                             where sh.Model.ShopItemId == item.ShopItemId
                             select sh;
                 if (found.Any())
@@ -165,8 +165,8 @@ namespace CatoriCity2025WPF.Controllers
        private void LoadShelves()
         {
             ShelfLocationService shelfLocationService = new ShelfLocationService();
-            GlobalStuff.ShelfViewModels = shelfLocationService.GetAllAsync().Result;
-            var groupByStoreQuery = from s in GlobalStuff.ShelfViewModels
+            CityScapeGlobal.ShelfViewModels = shelfLocationService.GetAllAsync().Result;
+            var groupByStoreQuery = from s in CityScapeGlobal.ShelfViewModels
                                     group s by s.StoreType into storeTypesKey
                                     select new
                                     {
@@ -175,11 +175,11 @@ namespace CatoriCity2025WPF.Controllers
 
             foreach (var grp in groupByStoreQuery)
             {
-                GlobalStuff.Stores.Add(grp.groupkey);
-                var foundShelf = from sh in GlobalStuff.ShelfViewModels
+                CityScapeGlobal.Stores.Add(grp.groupkey);
+                var foundShelf = from sh in CityScapeGlobal.ShelfViewModels
                                  where sh.StoreType == grp.groupkey
                                  select sh;
-                GlobalStuff.ShelfUCs = new List<ShelfItemControl>();
+                CityScapeGlobal.ShelfUCs = new List<ShelfItemControl>();
                 foreach (var shelf in foundShelf)
                 {
                     ShelfItemControl shelfUC = GetShelfControl(shelf);
@@ -188,7 +188,7 @@ namespace CatoriCity2025WPF.Controllers
                     Canvas.SetLeft(shelfUC, Convert.ToDouble(shelf.PositionX));
                     Canvas.SetTop(shelfUC, Convert.ToDouble(shelf.PositionY));
                     Canvas.SetZIndex(shelfUC, 2002);
-                    GlobalStuff.ShelfUCs.Add(shelfUC);
+                    CityScapeGlobal.ShelfUCs.Add(shelfUC);
                     switch (shelf.StoreType)
                     {
                         case "Hardware1":

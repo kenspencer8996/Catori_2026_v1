@@ -14,7 +14,7 @@ namespace CatoriCity2025WPF.Views.Controls.House
         {
             InitializeComponent();
 
-            string tooltipimageSaw = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Stores", "Saw.png");
+            string tooltipimageSaw = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Stores", "Saw.png");
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {

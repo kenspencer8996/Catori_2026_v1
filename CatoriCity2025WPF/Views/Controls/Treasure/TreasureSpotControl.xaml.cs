@@ -22,15 +22,15 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         {
             DirtSpots = new List<string>();
             string path = "";
-            RawSpot = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtSpot.png");
+            RawSpot = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtSpot.png");
 
-            path = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtHole1.png");
+            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtHole1.png");
             DirtSpots.Add(path);
-            path = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtHole2.png");
+            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtHole2.png");
             DirtSpots.Add(path);
-            path = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtHole3.png");
+            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtHole3.png");
             DirtSpots.Add(path);
-            path = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtHole4.png");
+            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtHole4.png");
             DirtSpots.Add(path);
 
             SpotIndex = 1;
@@ -65,7 +65,7 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
 
         private void UC_Loaded(object sender, RoutedEventArgs e)
         {
-            TreasureSpotImage.Source = UIUtility.GetImageControl(System.IO.Path.Combine(GlobalStuff.ImageFolder, "Fields", "DirtSpot.png"), 50, 50, 0).Source;
+            TreasureSpotImage.Source = UIUtility.GetImageControl(System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Fields", "DirtSpot.png"), 50, 50, 0).Source;
 
         }
 

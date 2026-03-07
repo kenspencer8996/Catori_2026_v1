@@ -68,7 +68,7 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderThickness = new Thickness(2);
             }

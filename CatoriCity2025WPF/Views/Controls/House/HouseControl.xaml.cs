@@ -77,8 +77,8 @@ namespace CatoriCity2025WPF.Views.Controls
             _houseViewModel = houseViewModel;
             HouseImageName = _houseViewModel.HouseImageFileName;
 
-            Width = GlobalStuff.buildingsize;
-            Height = GlobalStuff.buildingsize;
+            Width = CityScapeGlobal.buildingsize;
+            Height = CityScapeGlobal.buildingsize;
             DataContext = _houseViewModel;
 
             if (_houseViewModel.OwnerName == "Catori")
@@ -132,7 +132,7 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderThickness = new Thickness(2);
             }
@@ -201,8 +201,8 @@ namespace CatoriCity2025WPF.Views.Controls
 
         private void ExpandButton_Click(object sender, RoutedEventArgs e)
         {
-            DetailHouseInsideView view = new DetailHouseInsideView(_houseViewModel,GlobalStuff.MainViewWidth,GlobalStuff.MainViewHeight);
-            view.Owner = GlobalStuff.MainView;
+            DetailHouseInsideView view = new DetailHouseInsideView(_houseViewModel,CityScapeGlobal.CityScapeViewWidth,CityScapeGlobal.CityScapeViewHeight);
+            view.Owner = CityScapeGlobal.CityScapeView;
             view.Show();
         }
         private void HouseControl_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -14,7 +14,7 @@ namespace CatoriCity2025WPF.Objects
         public double width;
         public double centerx;
         public double centery;
-        public double durationseconds = GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed;//ms
+        public double durationseconds = CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed;//ms
           
         public DoubleAnimation LeftAnimation ;
         public DoubleAnimation TopAnimation;

@@ -57,17 +57,17 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         public void SetFrontiew()
         {
-            string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehoouserollingrobot.png");
+            string filepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "stores", "warehoouserollingrobot.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
         }
         public void SetSideView()
         {
-            string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehouserobobtsideview.png");
+            string filepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "stores", "warehouserobobtsideview.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
         }
         public void SetRearView()
         {
-            string filepath = System.IO.Path.Combine(GlobalStuff.ImageFolder, "stores", "warehouserobotrearview.png");
+            string filepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "stores", "warehouserobotrearview.png");
             RobotCartImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
         }
         private void AddShoppingItem(ShoppingCartItemViewModel model)

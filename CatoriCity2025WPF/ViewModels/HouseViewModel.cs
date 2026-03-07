@@ -154,10 +154,10 @@ namespace CatoriCity2025WPF.ViewModels
                 if (string.IsNullOrEmpty(filename))
                     return filename;
 
-                if (filename.StartsWith(GlobalStuff.ImageFolder))
+                if (filename.StartsWith(CityScapeGlobal.ImageFolder))
                     filename = _frontImage;
                 else
-                    filename = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses", _frontImage);
+                    filename = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Houses", _frontImage);
                 return filename;
             }
             set
@@ -178,10 +178,10 @@ namespace CatoriCity2025WPF.ViewModels
                 if (string.IsNullOrEmpty(filename))
                     return filename;
 
-                if (filename.StartsWith(GlobalStuff.ImageFolder))
+                if (filename.StartsWith(CityScapeGlobal.ImageFolder))
                     filename = _livingRoomImage;
                 else
-                    filename = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses", _livingRoomImage);
+                    filename = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Houses", _livingRoomImage);
                 return filename;
             }
             set
@@ -202,10 +202,10 @@ namespace CatoriCity2025WPF.ViewModels
                 if (string.IsNullOrEmpty(filename))
                     return filename;
 
-                if (filename.StartsWith(GlobalStuff.ImageFolder))
+                if (filename.StartsWith(CityScapeGlobal.ImageFolder))
                     filename = _garageImage;
                 else
-                    filename = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Houses", _garageImage);
+                    filename = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Houses", _garageImage);
                 return filename;
             }
             set

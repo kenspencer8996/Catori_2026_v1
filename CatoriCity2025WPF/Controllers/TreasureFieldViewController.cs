@@ -20,18 +20,18 @@ namespace CatoriCity2025WPF.Controllers
             _view = view;
             _dragManager = GlobalCode.GetDragmanager(_view.MainLayoutField);
 
-            person = new PersonControl(GlobalStuff.CurrentPerson, _dragManager, _view.MainLayoutField);
+            person = new PersonControl(GlobalAllApps.CurrentPerson, _dragManager, _view.MainLayoutField);
         }
 
         public async Task LoadLandscapeAsync(int landscapegroup)
         {
             viewMainwidth = _view.Width;
             viewMainheight = _view.Height;
-            GlobalStuff.LandscapeUCs = new List<LandscapeObjectControl>();
+            CityScapeGlobal.LandscapeUCs = new List<LandscapeObjectControl>();
             LandscapeObjectService landscapeservice = new LandscapeObjectService();
-            GlobalStuff.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(landscapegroup);
+            CityScapeGlobal.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(landscapegroup);
             LandscapeObjectViewModel featureModel = new LandscapeObjectViewModel();
-            foreach (var landscapeObject in GlobalStuff.LandscapeObjects)
+            foreach (var landscapeObject in CityScapeGlobal.LandscapeObjects)
             {
                 if (landscapeObject.FeatureNote == null || landscapeObject.FeatureNote == "")
                 {
@@ -41,16 +41,16 @@ namespace CatoriCity2025WPF.Controllers
                     x = landscapeObject.xActual;
                     y = landscapeObject.yActual;
 
-                    GlobalStuff.LandscapeUCs.Add(thisUC);
+                    CityScapeGlobal.LandscapeUCs.Add(thisUC);
                     Canvas.SetZIndex(thisUC, 1101);
                     _view.MainLayoutField.Children.Add(thisUC);
                     Canvas.SetLeft(thisUC, x);
                     Canvas.SetTop(thisUC, y);
                     thisUC.SetCenter(x, y);
                     if (landscapeObject.NextFromHomeObject)
-                        GlobalStuff.NextFromHomeObject = landscapeObject;
+                        CityScapeGlobal.NextFromHomeObject = landscapeObject;
                     if (landscapeObject.HomeObject)
-                        GlobalStuff.HomeLandscapeObject = landscapeObject;
+                        CityScapeGlobal.HomeLandscapeObject = landscapeObject;
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace CatoriCity2025WPF.Controllers
         {
             LandscapeObjectControl thisUC = new LandscapeObjectControl();
             thisUC.Name = name;
-            thisUC.Location = new LocationXYEntity() { x = GlobalStuff.Tentx, y = GlobalStuff.Tenty };
+            thisUC.Location = new LocationXYEntity() { x = CityScapeGlobal.Tentx, y = CityScapeGlobal.Tenty };
             thisUC.Height = landscapeObject.Height;
             thisUC.Width = landscapeObject.Width;
             //thisUC.Height = 60;

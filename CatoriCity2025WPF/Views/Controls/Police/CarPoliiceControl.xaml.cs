@@ -38,7 +38,7 @@ namespace CatoriCity2025WPF.Views.Controls
             this.Width = width;
             this.Height = height;
             
-            _movedelaytime= GlobalStuff.TimingsRandom[_carNumber -1];
+            _movedelaytime= CityScapeGlobal.TimingsRandom[_carNumber -1];
             
             BorderImage.BorderThickness = new Thickness(0);
             BorderImage.BorderBrush = Brushes.Red;

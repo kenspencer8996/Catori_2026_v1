@@ -36,7 +36,7 @@ namespace CatoriCity2025WPF.Objects
         }
         private int GetNumberOfPathStops()
         {
-            int totalcount = GlobalStuff.LandscapeObjects.Count;
+            int totalcount = CityScapeGlobal.LandscapeObjects.Count;
             Random random = new Random();
             int minValue = 3; // Minimum value for the random number
             if (totalcount <= 3)
@@ -55,9 +55,9 @@ namespace CatoriCity2025WPF.Objects
             top = 0;
             List<LandscapeObjectViewModel> selectedlist = new List<LandscapeObjectViewModel>();
             if (top == 0)
-                selectedlist = GlobalStuff.LandscapeObjects.ToList();
+                selectedlist = CityScapeGlobal.LandscapeObjects.ToList();
             else
-                selectedlist = GlobalStuff.LandscapeObjects.Take(top).ToList();
+                selectedlist = CityScapeGlobal.LandscapeObjects.Take(top).ToList();
 
             LandScapeWithBank_ReturnEntity returnEntity = CreateShuffledDeck(selectedlist);
 
@@ -66,14 +66,14 @@ namespace CatoriCity2025WPF.Objects
 
         private void SethomeObject()
         {
-            for (int i = GlobalStuff.LandscapeObjects.Count() - 1; i > -1; i--)
+            for (int i = CityScapeGlobal.LandscapeObjects.Count() - 1; i > -1; i--)
             {
                 try
                 {
-                    LandscapeObjectViewModel model = GlobalStuff.LandscapeObjects[i];
+                    LandscapeObjectViewModel model = CityScapeGlobal.LandscapeObjects[i];
                     if (model.HomeObject == true)
                     {
-                        GlobalStuff.HomeLandscapeObject = model;
+                        CityScapeGlobal.HomeLandscapeObject = model;
                         //GlobalStuff.LandscapeObjects.RemoveAt(i);
                         break;
                     }
@@ -88,12 +88,12 @@ namespace CatoriCity2025WPF.Objects
         }
         private void SetNextObject()
         {
-            for (int i = GlobalStuff.LandscapeObjects.Count() - 1; i > -1; i--)
+            for (int i = CityScapeGlobal.LandscapeObjects.Count() - 1; i > -1; i--)
             {
-                LandscapeObjectViewModel model = GlobalStuff.LandscapeObjects[i];
+                LandscapeObjectViewModel model = CityScapeGlobal.LandscapeObjects[i];
                 if (model.NextFromHomeObject == true)
                 {
-                    GlobalStuff.NextFromHomeObject = model;
+                    CityScapeGlobal.NextFromHomeObject = model;
                     //GlobalStuff.LandscapeObjects.RemoveAt(i);
                     break;
                 }
@@ -153,7 +153,7 @@ namespace CatoriCity2025WPF.Objects
         {
             List<LandscapeObjectViewModel> results = new List<LandscapeObjectViewModel>();
             int i = 0;
-            foreach (LotControl item in GlobalStuff.FinancialLotCobtrols)
+            foreach (LotControl item in CityScapeGlobal.FinancialLotCobtrols)
             {
                 LandscapeObjectEntity entity = new LandscapeObjectEntity();
                 entity.Name = "Financial " + i;
@@ -204,10 +204,10 @@ namespace CatoriCity2025WPF.Objects
                         cLogger.Log(infoinsideloop);
                         nextok = false;
                     }
-                    var realucs = from uc in GlobalStuff.LandscapeUCs
+                    var realucs = from uc in CityScapeGlobal.LandscapeUCs
                                   where uc.Name == item.Name
                                   select uc;
-                    var realnextucs = from uc in GlobalStuff.LandscapeUCs
+                    var realnextucs = from uc in CityScapeGlobal.LandscapeUCs
                                       where uc.Name == nextmodek.Name
                                       select uc;
                     bool oktouseitem = DetermineIfItemValid(realucs.FirstOrDefault());
@@ -266,8 +266,8 @@ namespace CatoriCity2025WPF.Objects
                             xdistance = ystart - yend;
 
                         int numberOfStops = GetNumberOfPathStops();
-                        if (GlobalStuff.PathSegmentsInnerToCreate > 0)
-                            numberOfStops = GlobalStuff.PathSegmentsInnerToCreate;
+                        if (CityScapeGlobal.PathSegmentsInnerToCreate > 0)
+                            numberOfStops = CityScapeGlobal.PathSegmentsInnerToCreate;
                         if (numberOfStops < 1)
                             numberOfStops = 1; // Ensure at least one segment is created.
                         double xstep = xdistance / numberOfStops;

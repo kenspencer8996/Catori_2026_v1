@@ -76,7 +76,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void _animation_timer_Tick(object? sender, EventArgs e)
         {
 
-            GlobalStuff.WriteDebugOutput("_animation_timer_Tick " + _currentImageType.ToString() + "  (" + _imageindex + ")");
+            CityScapeGlobal.WriteDebugOutput("_animation_timer_Tick " + _currentImageType.ToString() + "  (" + _imageindex + ")");
             switch (_currentImageType)
             {
                 case BadPersonImageTypeEnum.WalkingRight:
@@ -173,7 +173,7 @@ namespace CatoriCity2025WPF.Views.Controls
                     double endx = 0;
                     double endy = 0;
 
-                    var found = from l in GlobalStuff.LandscapeUCs
+                    var found = from l in CityScapeGlobal.LandscapeUCs
                                 where l.Name.Contains("Forest")
                                 || l.Name.Contains("Barn") 
                                 || l.Name.Contains("Shed")
@@ -231,8 +231,8 @@ namespace CatoriCity2025WPF.Views.Controls
             Random rnd = new Random();
 
             // Generate random number in range [min, max]
-            int randomNumber = rnd.Next(0, GlobalStuff.Banks.Count -1); // max is exclusive, so add 1
-            CurrentTargetBank = GlobalStuff.Banks[randomNumber];
+            int randomNumber = rnd.Next(0, CityScapeGlobal.Banks.Count -1); // max is exclusive, so add 1
+            CurrentTargetBank = CityScapeGlobal.Banks[randomNumber];
             _robberFunds = new FundsViewModel();
             _robberFunds.X = CurrentTargetBank.X;
             _robberFunds.Y = CurrentTargetBank.Y;

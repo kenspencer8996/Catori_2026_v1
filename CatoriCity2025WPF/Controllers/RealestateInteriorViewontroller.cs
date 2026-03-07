@@ -63,7 +63,7 @@ namespace CatoriCity2025WPF.Controllers
                     cLogger.Log($"Error loading house image: {ex.Message}");
                 }
 
-                if (GlobalStuff.CurrentPerson.Funds > house.Price)
+                if (GlobalAllApps.CurrentPerson.Funds > house.Price)
                 {
                     _view.StatusText.Text = "You can purchase this house";
                     _view.StatusText.Foreground = Brushes.Green;
@@ -85,13 +85,13 @@ namespace CatoriCity2025WPF.Controllers
         internal void BuyHouse()
         {
             _selectedHouse.ForSale = 0;
-            _selectedHouse.OwnerName = GlobalStuff.CurrentPerson.Name;
+            _selectedHouse.OwnerName = GlobalAllApps.CurrentPerson.Name;
             _houseService.Upsert(_selectedHouse);
-            var house = from h in GlobalStuff.Houses
+            var house = from h in CityScapeGlobal.Houses
                         where h.Name == _selectedHouse.Name
-                        select h;    
-            GlobalStuff.CurrentPerson.Funds -= _selectedHouse.Price;
-            _personService.UpsertPerson(GlobalStuff.CurrentPerson);
+                        select h;
+            GlobalAllApps.CurrentPerson.Funds -= _selectedHouse.Price;
+            _personService.UpsertPerson(GlobalAllApps.CurrentPerson);
             WeakReferenceMessenger.Default.Send(new HouseSoldMessage(_selectedHouse));
         }
 

@@ -7,9 +7,9 @@ using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
 {
-    internal class MainWindowController
+    internal class CityScapeViewController
     {
-        MainWindow _view;
+        CityScapeView _view;
        // StoreHardwareInteriorControl storeHardwareInteriorUC = new StoreHardwareInteriorControl();
         internal CityscapeStreetsViewModel Model = new CityscapeStreetsViewModel();
         public bool instartupFlag = true;
@@ -28,24 +28,24 @@ namespace CatoriCity2025WPF.Controllers
             //_dropTargetManager.Register();
         }
 
-        internal MainWindowController(MainWindow view)
+        internal CityScapeViewController(CityScapeView view)
         { 
             _view = view;
             string startupmessage = "--------------------- Application Startup ------------------------" + Environment.NewLine;
             startupmessage += "Application Startup Time: " + DateTime.Now.ToString() + Environment.NewLine;
-            startupmessage+= GlobalStuff.GetNameWithVersion() + Environment.NewLine;
+            startupmessage+= CityScapeGlobal.GetNameWithVersion() + Environment.NewLine;
             cLogger.Log(startupmessage);
             //NlogSetup.Configure();
-            GlobalStuff.LoadFactoryInteriorControls();
+            CityScapeGlobal.LoadFactoryInteriorControls();
             cLogger.Log("MainWindowController Constructor");
-            GlobalStuff.TimingsRandom = new List<int>();
+            CityScapeGlobal.TimingsRandom = new List<int>();
             Random rnd = new Random();
             for (int i = 1; i <= 50; i++)
             {
                 int rInt = rnd.Next(0, 5);
-                GlobalStuff.TimingsRandom.Add(rInt);
+                CityScapeGlobal.TimingsRandom.Add(rInt);
             }
-            _dragManager = GlobalCode.GetDragmanager(GlobalStuff.MainView.MainLayout);
+            _dragManager = GlobalCode.GetDragmanager(CityScapeGlobal.CityScapeView.MainLayout);
             WeakReferenceMessenger.Default.Register<ShowHardwareStoreInteriorMessage>(this, (r, m) =>
             {
                 try
@@ -159,11 +159,10 @@ namespace CatoriCity2025WPF.Controllers
 
                 _streetwidth = streetwidth;
                 CreateLots();
-                GlobalStuff.Houses = houseService.GetHousesAsync().Result;
-                GlobalStuff.Banks = ImageFileHelper.GetBanks();
-                LoadPersons();
+                CityScapeGlobal.Houses = houseService.GetHousesAsync().Result;
+                CityScapeGlobal.Banks = ImageFileHelper.GetBanks();
                
-                GlobalStuff.Businesses.AddRange(ImageFileHelper.GetFactories());
+                CityScapeGlobal.Businesses.AddRange(ImageFileHelper.GetFactories());
                 LoadHouses();
                 LoadBanks();
                 LoadStores();
@@ -171,11 +170,11 @@ namespace CatoriCity2025WPF.Controllers
                 AddPoliceStation();
                 loadPoliceCars();
                 
-                primaryPerson = new PersonControl(GlobalStuff.AllPersons.FirstOrDefault(), _dragManager, _view.MainLayout);
+                primaryPerson = new PersonControl(GlobalAllApps.CurrentPerson, _dragManager, _view.MainLayout);
                 primaryPerson.MovePersonStop += PrimaryPerson_MovePersonStop;
                 primaryPerson.MovePersonStart += PrimaryPerson_MovePersonStart;
                 _view.MainLayout.Children.Add(primaryPerson);
-                GlobalStuff.ShowPrimaryPerson();
+                CityScapeGlobal.ShowPrimaryPerson();
                 Canvas.SetLeft(primaryPerson, 120);
                 Canvas.SetTop(primaryPerson, 120);
                 Canvas.SetZIndex(primaryPerson, 4001);
@@ -189,11 +188,11 @@ namespace CatoriCity2025WPF.Controllers
                 double mainheight = _view.Height;
                 Canvas.SetTop(_view.BadGuySpeedStackPanel, mainheight - _view.BadGuySpeedStackPanel.Height);
                 Canvas.SetLeft(_view.BadGuySpeedStackPanel, mainwidth - _view.BadGuySpeedStackPanel.Width - 20);
-                GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSettingByName("BadGuyTravelSpeed").IntSetting;
-                GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSettingByName("PoliceCarTravelSpeed").IntSetting;
+                CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSettingByName("BadGuyTravelSpeed").IntSetting;
+                CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSettingByName("PoliceCarTravelSpeed").IntSetting;
                 _view.BaloonHelpUC.MoveBaloon += BaloonHelpUC_MoveBaloon;
                 _view.BaloonHelpUC.Visibility = Visibility.Hidden;
-                _view.BadGuyTravelSpeedSlider.Value = GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed;
+                _view.BadGuyTravelSpeedSlider.Value = CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed;
                 _updatePathsTimerTimer = new DispatcherTimer();
                 _updatePathsTimerTimer.Tick += new EventHandler(__updatePathsTimerTimer_Tick);
                 _updatePathsTimerTimer.Interval = new TimeSpan(0, 0, 30);
@@ -288,8 +287,8 @@ namespace CatoriCity2025WPF.Controllers
         private void LoadStores()
         {
             StoreHardwareControl ucStore1 = new StoreHardwareControl();
-            ucStore1.Width = GlobalStuff.buildingsize;
-            ucStore1.Height = GlobalStuff.buildingsize;
+            ucStore1.Width = CityScapeGlobal.buildingsize;
+            ucStore1.Height = CityScapeGlobal.buildingsize;
             Canvas.SetZIndex(ucStore1, 4);
             var found = from lot in _lots
                         where lot.LotOccupied == false
@@ -333,7 +332,7 @@ namespace CatoriCity2025WPF.Controllers
             double height = 200;
             try
             {
-                foreach (var child in GlobalStuff.factoryInteriorControls)
+                foreach (var child in CityScapeGlobal.factoryInteriorControls)
                 {
                     child.Width = width;
                     child.Height = height;
@@ -366,11 +365,11 @@ namespace CatoriCity2025WPF.Controllers
         private void loadPoliceCars()
         {
             PoliceCarRepository policeCarRepo = new PoliceCarRepository();
-            GlobalStuff.PoliceCars = (List<PoliceCarEntity>) policeCarRepo.GetPoliceCars();
-            LotControl lotControl = GlobalStuff.PoliceStationLocation;
+            CityScapeGlobal.PoliceCars = (List<PoliceCarEntity>) policeCarRepo.GetPoliceCars();
+            LotControl lotControl = CityScapeGlobal.PoliceStationLocation;
             int policecarincrementer = 0;
             int carNumber = 1;
-            foreach (var car in GlobalStuff.PoliceCars)
+            foreach (var car in CityScapeGlobal.PoliceCars)
             {
 
                 if (car.CarType.ToLower() == "normal")
@@ -399,13 +398,7 @@ namespace CatoriCity2025WPF.Controllers
 
         }
       
-        private void LoadPersons()
-        {
-            PersonService personService = new PersonService();
-            GlobalStuff.AllPersons = personService.GetPersonsAsync().Result;
-
-          
-        }
+        
         #region Add methods
 
         internal void AddCarPoliiceOffRoad(PoliceCarEntity car,int policecarincrementer, LotControl lotControl)
@@ -446,8 +439,8 @@ namespace CatoriCity2025WPF.Controllers
             try
             {
                 PoliceStationUC ps = new PoliceStationUC();
-                ps.Width = GlobalStuff.buildingsize - 10;
-                ps.Height = GlobalStuff.buildingsize - 10;
+                ps.Width = CityScapeGlobal.buildingsize - 10;
+                ps.Height = CityScapeGlobal.buildingsize - 10;
                 Canvas.SetZIndex(ps, 4);
                 var found = from lotPS in _lots
                             where lotPS.LotOccupied == false
@@ -466,7 +459,7 @@ namespace CatoriCity2025WPF.Controllers
                         policeLot.lotPosition = LotPositionEnum.RightSide;
                         lotControl.AddBuilding(ps,false);
                         GlobalGeo.PoliceStationLocationEntity = policeLot;
-                        GlobalStuff.PoliceStationLocation = lotControl;
+                        CityScapeGlobal.PoliceStationLocation = lotControl;
                     }
                     catch (Exception ex)
                     {
@@ -585,42 +578,29 @@ namespace CatoriCity2025WPF.Controllers
 
 
         #region Load Routines
-        private PersonViewModel GetCurrentPersonModel()
-        {
-            PersonViewModel currentPerson = new PersonViewModel();
-            if (GlobalStuff.CurrentUserPerson.PersonId > 0)
-            {
-
-                var person = from i in GlobalStuff.AllPersons
-                             where i.PersonId == GlobalStuff.CurrentUserPerson.PersonId
-                             select i;
-                currentPerson= person.First();
-            }
-            return currentPerson;
-        }
+       
         private void LoadHouses()
         {
             int top = 100;
             int left = 100;
-            cLogger.Log($"houses : {GlobalStuff.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
+            cLogger.Log($"houses : {CityScapeGlobal.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
 
-            GlobalStuff.CurrentPerson = GetCurrentPersonModel();
             try
             {
                 bool primaryPersonHouse = false;
-                foreach (var house in GlobalStuff.Houses)
+                foreach (var house in CityScapeGlobal.Houses)
                 {
                     try
                     {
                         HouseControl houseControl = new HouseControl(house);
-                        if (house.Name.Trim().ToLower() == GlobalStuff.CurrentHouseName.Trim().ToLower()
-                            && GlobalStuff.CurrentPerson.Name != null && GlobalStuff.CurrentPerson.Name != "")
+                        if (house.Name.Trim().ToLower() == CityScapeGlobal.CurrentHouseName.Trim().ToLower()
+                            && GlobalAllApps.CurrentPerson.Name != null && GlobalAllApps.CurrentPerson.Name != "")
                         {
-                            houseControl.AddPersonModel(GlobalStuff.CurrentPerson);
+                            houseControl.AddPersonModel(GlobalAllApps.CurrentPerson);
                             primaryPersonHouse = true;  
                         }
-                        houseControl.Width = GlobalStuff.buildingsize;
-                        houseControl.Height = GlobalStuff.buildingsize;
+                        houseControl.Width = CityScapeGlobal.buildingsize;
+                        houseControl.Height = CityScapeGlobal.buildingsize;
                         Canvas.SetZIndex(houseControl, 100);
                         Canvas.SetLeft(houseControl, left);
                         Canvas.SetTop(houseControl, top);
@@ -645,8 +625,8 @@ namespace CatoriCity2025WPF.Controllers
                     cLogger.Log($"HouseControl: {house.HouseImageFileName}"); // HouseControl: /CatoriCity2025WPF; 100 100
                 }
                 RealEstateControl realEstateControl = new RealEstateControl();
-                realEstateControl.Width = GlobalStuff.buildingsize;
-                realEstateControl.Height = GlobalStuff.buildingsize;
+                realEstateControl.Width = CityScapeGlobal.buildingsize;
+                realEstateControl.Height = CityScapeGlobal.buildingsize;
                 Canvas.SetZIndex(realEstateControl, 100);
                 Canvas.SetLeft(realEstateControl, left);
                 Canvas.SetTop(realEstateControl, top);
@@ -661,8 +641,8 @@ namespace CatoriCity2025WPF.Controllers
 
 
                 PostOfficeControl postOffice = new PostOfficeControl();
-                postOffice.Width = GlobalStuff.buildingsize;
-                postOffice.Height = GlobalStuff.buildingsize;
+                postOffice.Width = CityScapeGlobal.buildingsize;
+                postOffice.Height = CityScapeGlobal.buildingsize;
                 _dragManager.RegisterDropTarget( postOffice);
                 Canvas.SetZIndex(postOffice, 100);
                 Canvas.SetLeft(postOffice, left);
@@ -692,7 +672,7 @@ namespace CatoriCity2025WPF.Controllers
                           select lot;   
            if (foundlot.Any())
             {
-                PersonViewModel model = GetCurrentPersonModel();
+                PersonViewModel model = GlobalAllApps.CurrentPerson;
                 LotControl lotControl = foundlot.First();
                 lotControl.Building.Visibility = Visibility.Visible;
                 lotControl.Building.AddPersonModel(model);
@@ -709,11 +689,11 @@ namespace CatoriCity2025WPF.Controllers
             {
                 int top = 100;
                 int left = 100;
-                double Width = GlobalStuff.buildingsize; //  double Width
-                double Height = GlobalStuff.buildingsize; //  double Width
-                var banks = from b in GlobalStuff.Banks
+                double Width = CityScapeGlobal.buildingsize; //  double Width
+                double Height = CityScapeGlobal.buildingsize; //  double Width
+                var banks = from b in CityScapeGlobal.Banks
                             select b;
-                cLogger.Log($"houses : {GlobalStuff.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
+                cLogger.Log($"houses : {CityScapeGlobal.Houses.Count}"); // HouseControl: /CatoriCity2025WPF; 100 100
                 string info = "---------------------------------Banks-----------------------------------------------" + Environment.NewLine;
                 cLogger.Log(info);
 
@@ -756,8 +736,8 @@ namespace CatoriCity2025WPF.Controllers
                             string busname = System.IO.Path.GetFileNameWithoutExtension(item.Bankkey);
                             item.Name = busname;
                         }
-                        bankUC.Width = GlobalStuff.buildingsize;
-                        bankUC.Height = GlobalStuff.buildingsize;
+                        bankUC.Width = CityScapeGlobal.buildingsize;
+                        bankUC.Height = CityScapeGlobal.buildingsize;
                         bankUC.businessName = item.Name;
                         Canvas.SetZIndex(bankUC, 100);
                         Canvas.SetLeft(bankUC, left);
@@ -771,7 +751,7 @@ namespace CatoriCity2025WPF.Controllers
                         {
                             lotControl = found.First();
                             lotControl.AddBuilding(bankUC, false);
-                            GlobalStuff.FinancialLotCobtrols.Add(found.First());
+                            CityScapeGlobal.FinancialLotCobtrols.Add(found.First());
                             bankUC.Funds.Y = Canvas.GetTop(lotControl);
                             bankUC.Funds.X = Canvas.GetLeft(lotControl);
                             bankUC.ParentLeft = bankUC.Funds.X;
@@ -808,9 +788,9 @@ namespace CatoriCity2025WPF.Controllers
         {
             int top = 100;
             int left = 100;
-            double Width = GlobalStuff.buildingsize - 20; //  double Width
-            double Height = GlobalStuff.buildingsize - 20; //  double Width
-            var business = from b in GlobalStuff.Businesses
+            double Width = CityScapeGlobal.buildingsize - 20; //  double Width
+            double Height = CityScapeGlobal.buildingsize - 20; //  double Width
+            var business = from b in CityScapeGlobal.Businesses
                            where b.BusinessType == BusinessTypeEnum.Factory
                            select b;
             var foundlots = from lot in _lots
@@ -841,8 +821,8 @@ namespace CatoriCity2025WPF.Controllers
                     string controlname = "Factory_" + System.IO.Path.GetFileNameWithoutExtension(item.Name);
                     factoryControl.Name = controlname;
                     factoryControl.BusinessImage.Source = UIUtility.GetImageControl(item.ImageName, Width, Height, 0).Source; ;
-                    factoryControl.Width = GlobalStuff.buildingsize;
-                    factoryControl.Height = GlobalStuff.buildingsize;
+                    factoryControl.Width = CityScapeGlobal.buildingsize;
+                    factoryControl.Height = CityScapeGlobal.buildingsize;
                     Canvas.SetZIndex(factoryControl, 100);
                     Canvas.SetLeft(factoryControl, left);
                     Canvas.SetTop(factoryControl, top);
@@ -890,7 +870,7 @@ namespace CatoriCity2025WPF.Controllers
             double mainheight = _view.Height;
 
             LandscapeObjectRepository repository = new LandscapeObjectRepository();
-            GlobalStuff.landscapeObjectGroupIds = repository.GetLandscapeObjectsGroupIds();
+            CityScapeGlobal.landscapeObjectGroupIds = repository.GetLandscapeObjectsGroupIds();
         }
 
         private void LandscapeObjectButton_Click(object sender, RoutedEventArgs e)
@@ -909,11 +889,11 @@ namespace CatoriCity2025WPF.Controllers
         {
             double mainwidth = _view.Width;
             double mainheight = _view.Height;
-            GlobalStuff.LandscapeUCs = new List<LandscapeObjectControl>();
+            CityScapeGlobal.LandscapeUCs = new List<LandscapeObjectControl>();
             LandscapeObjectService landscapeservice = new LandscapeObjectService();
-            GlobalStuff.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(GlobalServices.LandscapeObjecGroupid);
+            CityScapeGlobal.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(GlobalServices.LandscapeObjecGroupid);
             LandscapeObjectViewModel featureModel = new LandscapeObjectViewModel();
-            foreach (var landscapeObject in GlobalStuff.LandscapeObjects)
+            foreach (var landscapeObject in CityScapeGlobal.LandscapeObjects)
             {
                 if (landscapeObject.FeatureNote == null || landscapeObject.FeatureNote == "")
                 {
@@ -924,16 +904,16 @@ namespace CatoriCity2025WPF.Controllers
                     y = landscapeObject.yActual;
                     _dragManager.RegisterDropTarget(thisUC);
 
-                    GlobalStuff.LandscapeUCs.Add(thisUC);
+                    CityScapeGlobal.LandscapeUCs.Add(thisUC);
                     Canvas.SetZIndex(thisUC, 1101);
                     _view.MainLayout.Children.Add(thisUC);
                     Canvas.SetLeft(thisUC, x);
                     Canvas.SetTop(thisUC, y);
                     thisUC.SetCenter(x, y);
                     if (landscapeObject.NextFromHomeObject)
-                        GlobalStuff.NextFromHomeObject = landscapeObject;
+                        CityScapeGlobal.NextFromHomeObject = landscapeObject;
                     if (landscapeObject.HomeObject)
-                        GlobalStuff.HomeLandscapeObject = landscapeObject;
+                        CityScapeGlobal.HomeLandscapeObject = landscapeObject;
                 }
                 else
                 {
@@ -950,7 +930,7 @@ namespace CatoriCity2025WPF.Controllers
         {
             LandscapeObjectControl thisUC = new LandscapeObjectControl();
             thisUC.Name = name;
-            thisUC.Location = new LocationXYEntity() { x = GlobalStuff.Tentx, y = GlobalStuff.Tenty };
+            thisUC.Location = new LocationXYEntity() { x = CityScapeGlobal.Tentx, y = CityScapeGlobal.Tenty };
             thisUC.Height = landscapeObject.Height;
             thisUC.Width = landscapeObject.Width;
             //thisUC.Height = 60;
@@ -995,7 +975,7 @@ namespace CatoriCity2025WPF.Controllers
                 thisUCS.RenderTransform = GetRenderTransform(180, featureModel.Width, featureModel.Height);
                 thisUCW.RenderTransform = GetRenderTransform(270, featureModel.Width, featureModel.Height);
 
-                GlobalStuff.LandscapeObjectApproachNextControls = new List<LandscapeObjectControl>()
+                CityScapeGlobal.LandscapeObjectApproachNextControls = new List<LandscapeObjectControl>()
                 {
                     thisUCN,
                     thisUCE,
@@ -1007,20 +987,20 @@ namespace CatoriCity2025WPF.Controllers
 
                 int offset = offsetsettingval;
                 Canvas.SetZIndex(thisUCN, 1101);
-                Canvas.SetLeft(thisUCN, GlobalStuff.ApproachPointN.x);
-                Canvas.SetTop(thisUCN, GlobalStuff.ApproachPointN.y - offset);
+                Canvas.SetLeft(thisUCN, CityScapeGlobal.ApproachPointN.x);
+                Canvas.SetTop(thisUCN, CityScapeGlobal.ApproachPointN.y - offset);
 
                 Canvas.SetZIndex(thisUCE, 1101);
-                Canvas.SetLeft(thisUCE, GlobalStuff.ApproachPointE.x);
-                Canvas.SetTop(thisUCE, GlobalStuff.ApproachPointE.y);
+                Canvas.SetLeft(thisUCE, CityScapeGlobal.ApproachPointE.x);
+                Canvas.SetTop(thisUCE, CityScapeGlobal.ApproachPointE.y);
                 
                 Canvas.SetZIndex(thisUCS, 1101);
-                Canvas.SetLeft(thisUCS, GlobalStuff.ApproachPointS.x);
-                Canvas.SetTop(thisUCS, GlobalStuff.ApproachPointS.y+ offset);
+                Canvas.SetLeft(thisUCS, CityScapeGlobal.ApproachPointS.x);
+                Canvas.SetTop(thisUCS, CityScapeGlobal.ApproachPointS.y+ offset);
 
                 Canvas.SetZIndex(thisUCW, 1101);
-                Canvas.SetLeft(thisUCW, GlobalStuff.ApproachPointW.x- offset);
-                Canvas.SetTop(thisUCW, GlobalStuff.ApproachPointW.y);
+                Canvas.SetLeft(thisUCW, CityScapeGlobal.ApproachPointW.x- offset);
+                Canvas.SetTop(thisUCW, CityScapeGlobal.ApproachPointW.y);
             }
         }
         private RotateTransform GetRenderTransform(int angle,double width,double height)
@@ -1036,7 +1016,7 @@ namespace CatoriCity2025WPF.Controllers
         }
         private void SetupApproachPoints()
         {
-           var nextuc = GlobalStuff.GetNextFromHomeObject(); ;
+           var nextuc = CityScapeGlobal.GetNextFromHomeObject(); ;
             double nextx = Canvas.GetLeft(nextuc);
             double nexty = Canvas.GetTop(nextuc);
             double width = nextuc.Width;
@@ -1044,22 +1024,22 @@ namespace CatoriCity2025WPF.Controllers
             double centerx = nextx + (width / 2);
             double centery = nexty + (height / 2);
             double distancedivsor = 1.4;
-            GlobalStuff.ApproachPointN = new LocationXYEntity()
+            CityScapeGlobal.ApproachPointN = new LocationXYEntity()
             {
                 x = centerx ,
                 y = centery - (height / distancedivsor)
             };
-            GlobalStuff.ApproachPointE = new LocationXYEntity()
+            CityScapeGlobal.ApproachPointE = new LocationXYEntity()
             {
                 x = centerx + (width + (width / distancedivsor)),
                 y = centery + (height / distancedivsor)
             };
-            GlobalStuff.ApproachPointS = new LocationXYEntity()
+            CityScapeGlobal.ApproachPointS = new LocationXYEntity()
             {
                 x = centerx ,
                 y = centery + (height / 2 + (height / distancedivsor))
             };
-            GlobalStuff.ApproachPointW = new LocationXYEntity()
+            CityScapeGlobal.ApproachPointW = new LocationXYEntity()
             {
                 x = centerx - (width / distancedivsor),
                 y = centery 
@@ -1074,7 +1054,7 @@ namespace CatoriCity2025WPF.Controllers
         internal void RunPoliceCars()
         {
             //get financials and set below
-            var banks = GlobalStuff.Banks;
+            var banks = CityScapeGlobal.Banks;
             BankViewModel bank = banks.First();
             CarPoliiceControl foundPolice = UIHelper.FindChild<CarPoliiceControl>(_view,null);
             RobberyMessage robberyMessage = new RobberyMessage("Robber1",bank );

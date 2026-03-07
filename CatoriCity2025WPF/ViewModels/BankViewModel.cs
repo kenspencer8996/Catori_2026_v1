@@ -82,10 +82,10 @@ namespace CatoriCity2025WPF.ViewModels
                 if (string.IsNullOrEmpty(filename))
                     return filename;
 
-                if (filename.StartsWith(GlobalStuff.ImageFolder))
+                if (filename.StartsWith(CityScapeGlobal.ImageFolder))
                     filename = _imageFileName;
                 else
-                    filename = System.IO.Path.Combine(GlobalStuff.ImageFolder, _imageFileName);
+                    filename = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, _imageFileName);
 
                 return filename;
             }

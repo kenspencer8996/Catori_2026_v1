@@ -15,7 +15,7 @@ namespace CatoriCity2025WPF.Views.Controls
         public RealEstateControl()
         {
             InitializeComponent();
-            string tooltipimagepath = System.IO.Path.Combine(GlobalStuff.ImageFolder,"Houses", "ForSale.png");
+            string tooltipimagepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder,"Houses", "ForSale.png");
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {
@@ -32,7 +32,7 @@ namespace CatoriCity2025WPF.Views.Controls
       
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderThickness = new Thickness(2);
             }
@@ -102,7 +102,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void OfficeImage_MouseDown(object sender, MouseButtonEventArgs e)
         {
             RealestateInteriorView view = new RealestateInteriorView();
-            view.Owner = GlobalStuff.MainView;
+            view.Owner = CityScapeGlobal.CityScapeView;
             view.Show();
 
         }

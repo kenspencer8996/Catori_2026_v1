@@ -12,10 +12,10 @@ namespace CatoriCity2025WPF.Objects
             double teahgt, double teawdth)
         {
             double widthModifier = 160;
-            double mainwidth = GlobalStuff.MainViewWidth;
-            double mainheight = GlobalStuff.MainViewHeight;
+            double mainwidth = CityScapeGlobal.CityScapeViewWidth;
+            double mainheight = CityScapeGlobal.CityScapeViewHeight;
             double canvastopwstreet = 100 + youhgt;
-            double streetwidthhalf = (GlobalStuff.StreetWidth / 2);
+            double streetwidthhalf = (CityScapeGlobal.StreetWidth / 2);
             GlobalGeo.YouStreetloc.LocationStartXY.x = 100;
             GlobalGeo.YouStreetloc.LocationStartXY.y = 100;
             GlobalGeo.YouStreetloc.LocationEndXY.x = canvaswidth - widthModifier;
@@ -44,19 +44,19 @@ namespace CatoriCity2025WPF.Objects
             GlobalGeo.TeaStreetLoc.LocationEndXY.x = teastartx;
             GlobalGeo.TeaStreetLoc.LocationEndXY.y = GlobalGeo.MikAveLoc.LocationStartXY.y + youhgt;
 
-            GlobalStuff.IntersectuonYouYodel.x = GlobalGeo.YouStreetloc.LocationStartXY.x + streetwidthhalf;
-            GlobalStuff.IntersectuonYouTea.x = GlobalGeo.TeaStreetLoc.LocationEndXY.x + streetwidthhalf;
-            GlobalStuff.IntersectuonYouMoo.x = GlobalGeo.MooDrLoc.LocationEndXY.x + streetwidthhalf;
-            GlobalStuff.IntersectuonMikYodel.x = GlobalGeo.MikAveLoc.LocationEndXY.x + streetwidthhalf;
-            GlobalStuff.IntersectuonMikMoo.x = GlobalGeo.MooDrLoc.LocationEndXY.x + streetwidthhalf;
-            GlobalStuff.IntersectuonMikTea.x = GlobalGeo.TeaStreetLoc.LocationEndXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonYouYodel.x = GlobalGeo.YouStreetloc.LocationStartXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonYouTea.x = GlobalGeo.TeaStreetLoc.LocationEndXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonYouMoo.x = GlobalGeo.MooDrLoc.LocationEndXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikYodel.x = GlobalGeo.MikAveLoc.LocationEndXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikMoo.x = GlobalGeo.MooDrLoc.LocationEndXY.x + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikTea.x = GlobalGeo.TeaStreetLoc.LocationEndXY.x + streetwidthhalf;
 
-            GlobalStuff.IntersectuonYouYodel.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf; ;
-            GlobalStuff.IntersectuonYouTea.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf;
-            GlobalStuff.IntersectuonYouMoo.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf;
-            GlobalStuff.IntersectuonMikYodel.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
-            GlobalStuff.IntersectuonMikMoo.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
-            GlobalStuff.IntersectuonMikTea.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
+            CityScapeGlobal.IntersectuonYouYodel.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf; ;
+            CityScapeGlobal.IntersectuonYouTea.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf;
+            CityScapeGlobal.IntersectuonYouMoo.y = GlobalGeo.YouStreetloc.LocationEndXY.y + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikYodel.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikMoo.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
+            CityScapeGlobal.IntersectuonMikTea.y = GlobalGeo.MikAveLoc.LocationEndXY.y + streetwidthhalf;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace CatoriCity2025WPF.Views
             int counter = 1;
             do
             {
-               var found = from l in GlobalStuff.LandscapeObjects where l.Name == testname select l;
+               var found = from l in CityScapeGlobal.LandscapeObjects where l.Name == testname select l;
                if (found.Count() == 0)
                 {
                     result = testname;
@@ -55,7 +55,7 @@ namespace CatoriCity2025WPF.Views
             {
                 Title = "Select a File",
                 Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg|All Files (*.*)|*.*",
-                InitialDirectory = GlobalStuff.ImageFolder,
+                InitialDirectory = CityScapeGlobal.ImageFolder,
                 Multiselect = false // Set to true if you want to allow multiple file selection
             };
 

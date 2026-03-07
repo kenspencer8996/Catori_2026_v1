@@ -14,7 +14,7 @@ namespace CatoriCity2025WPF.Views.Controls.Digging
         {
             InitializeComponent();
 
-            personControl = new PersonControl(GlobalStuff.CurrentPerson, dragManager, hostCanvas);
+            personControl = new PersonControl(GlobalAllApps.CurrentPerson, dragManager, hostCanvas);
             MainLayoutForTreasure.Children.Add(personControl);
             personControl.DiggerCycleComplete += PersonControl_DiggerCycleComplete;
             Canvas.SetLeft(personControl, 50);

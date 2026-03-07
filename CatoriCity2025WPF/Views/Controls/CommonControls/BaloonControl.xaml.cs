@@ -79,8 +79,8 @@ namespace CatoriCity2025WPF.Views.Controls
                     PathPointRightBottom.Visibility = Visibility.Collapsed;
                     PathPointLeftBottom.Visibility = Visibility.Collapsed;
                     PathPointLeftTop.Visibility = Visibility.Collapsed;
-                    double mainWidth = GlobalStuff.MainViewWidth;
-                    double mainHeight = GlobalStuff.MainViewHeight;
+                    double mainWidth = CityScapeGlobal.CityScapeViewWidth;
+                    double mainHeight = CityScapeGlobal.CityScapeViewHeight;
                     double mainwidthhalf = mainWidth / 2;
                     double mainheighthalf = mainHeight / 2;
                     double baloonLeft = mainwidthhalf - (baloonWidth / 2);

@@ -35,7 +35,7 @@ namespace CatoriCity2025WPF.Controllers
         {
             _view = view;
 
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 _view.MainBorder.BorderThickness = new Thickness(2);
             }
@@ -53,20 +53,20 @@ namespace CatoriCity2025WPF.Controllers
             switch (ApproachPoint)
             {
                 case 1:
-                    approachx = Convert.ToInt32(GlobalStuff.ApproachPointN.x);
-                    approachy = Convert.ToInt32(GlobalStuff.ApproachPointN.y);
+                    approachx = Convert.ToInt32(CityScapeGlobal.ApproachPointN.x);
+                    approachy = Convert.ToInt32(CityScapeGlobal.ApproachPointN.y);
                     break;
                 case 2:
-                    approachx = Convert.ToInt32(GlobalStuff.ApproachPointE.x);
-                    approachy = Convert.ToInt32(GlobalStuff.ApproachPointE.y);
+                    approachx = Convert.ToInt32(CityScapeGlobal.ApproachPointE.x);
+                    approachy = Convert.ToInt32(CityScapeGlobal.ApproachPointE.y);
                     break;
                 case 3:
-                    approachx = Convert.ToInt32(GlobalStuff.ApproachPointS.x);
-                    approachy = Convert.ToInt32(GlobalStuff.ApproachPointS.y);
+                    approachx = Convert.ToInt32(CityScapeGlobal.ApproachPointS.x);
+                    approachy = Convert.ToInt32(CityScapeGlobal.ApproachPointS.y);
                     break;
                 case 4:
-                    approachx = Convert.ToInt32(GlobalStuff.ApproachPointW.x);
-                    approachy = Convert.ToInt32(GlobalStuff.ApproachPointW.y);
+                    approachx = Convert.ToInt32(CityScapeGlobal.ApproachPointW.x);
+                    approachy = Convert.ToInt32(CityScapeGlobal.ApproachPointW.y);
                     break;
                 default:
                     break;
@@ -76,7 +76,7 @@ namespace CatoriCity2025WPF.Controllers
             
             ReturnStackEntity = geometryHelper.GetShuffledDeckOfLandscapeObjects();
             LandscapeObjectsForPathHome = geometryHelper.SetupGeometryForPath(ReturnStackEntity.LandscapeObjectsStack, approachx, approachy);
-            ReturnStackEntity.BankVM = GlobalStuff.GetBankViewModelByName(ReturnStackEntity.financial.Name);
+            ReturnStackEntity.BankVM = CityScapeGlobal.GetBankViewModelByName(ReturnStackEntity.financial.Name);
             string info = "BadPersonControl constructor total stackedViewModels " + ReturnStackEntity.LandscapeObjectsStack.Count();
             ReturnStackEntity.BankVM.X= BankLocationX;
             ReturnStackEntity.BankVM.Y= BankLocationY;
@@ -97,13 +97,13 @@ namespace CatoriCity2025WPF.Controllers
         private int GetUnsedApproachPoint()
         {
              int approachPoint = geometryHelper.GetRandomIntAtOrBelowMax(4);
-            var found = from a in GlobalStuff.ApproachesUsed
+            var found = from a in CityScapeGlobal.ApproachesUsed
                         where a == approachPoint
                         select a;
             if (found.Any())
             {
                 var allPoints = Enumerable.Range(1, 4);
-                var unused = allPoints.Except(GlobalStuff.ApproachesUsed).ToList();
+                var unused = allPoints.Except(CityScapeGlobal.ApproachesUsed).ToList();
 
                 if (unused.Count == 0)
                 {
@@ -116,7 +116,7 @@ namespace CatoriCity2025WPF.Controllers
                     approachPoint = unused[rnd.Next(unused.Count)];
                 }
             }
-            GlobalStuff.ApproachesUsed.Add(approachPoint);
+            CityScapeGlobal.ApproachesUsed.Add(approachPoint);
 
             return approachPoint;
         }
@@ -126,7 +126,7 @@ namespace CatoriCity2025WPF.Controllers
             Storyboard storyboard = new Storyboard();
             storyboard.Completed += MovePersonOutToApproachAndSetupAnimation_Completed;
             SettingEntity badGuyTravelSpeedSetting = GlobalServices.GetSetting("badguytravelspeed");
-            GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = badGuyTravelSpeedSetting.IntSetting;
+            CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed = badGuyTravelSpeedSetting.IntSetting;
             TimeSpan duration = TimeSpan.FromSeconds(4); //
             double xstart = Canvas.GetLeft(_view);
             double xend = xstart + 75;
@@ -214,7 +214,7 @@ namespace CatoriCity2025WPF.Controllers
             switch (approachPoint)
             {
                 case 1:
-                    LocationXYEntity nextLocationN = GlobalStuff.ApproachPointN;
+                    LocationXYEntity nextLocationN = CityScapeGlobal.ApproachPointN;
                     DoubleAnimation moveNextX = new DoubleAnimation
                     {
                         From = xend,
@@ -238,7 +238,7 @@ namespace CatoriCity2025WPF.Controllers
                     storyboard.Children.Add(moveNextY);
                     break;
                 case 2:
-                    LocationXYEntity nextLocationE = GlobalStuff.ApproachPointE;
+                    LocationXYEntity nextLocationE = CityScapeGlobal.ApproachPointE;
                     DoubleAnimation moveNextEX = new DoubleAnimation
                     {
                         From = xend,
@@ -262,7 +262,7 @@ namespace CatoriCity2025WPF.Controllers
                     storyboard.Children.Add(moveNextEY);
                     break;
                 case 3:
-                    LocationXYEntity nextLocationS = GlobalStuff.ApproachPointS;
+                    LocationXYEntity nextLocationS = CityScapeGlobal.ApproachPointS;
                     DoubleAnimation moveNextSX = new DoubleAnimation
                     {
                         From = xend,
@@ -286,7 +286,7 @@ namespace CatoriCity2025WPF.Controllers
                     Storyboard.SetTarget(moveNextSY, _view);
                     Storyboard.SetTargetProperty(moveNextSY, new PropertyPath("(Canvas.Top)")); break;
                 case 4:
-                    LocationXYEntity nextLocationWest = GlobalStuff.ApproachPointW;
+                    LocationXYEntity nextLocationWest = CityScapeGlobal.ApproachPointW;
                     double firstx = xend - 150;
                     DoubleAnimation moveNextWX = new DoubleAnimation
                     {
@@ -396,7 +396,7 @@ namespace CatoriCity2025WPF.Controllers
             double lastendx = 0;
             double lastendy = 0;
             LandscapeObjectViewModel startmodel = null;
-            var models = from m in GlobalStuff.LandscapeObjects
+            var models = from m in CityScapeGlobal.LandscapeObjects
                          where m.HomeObject == true
                          select m;
             if (models.Count() > 0)

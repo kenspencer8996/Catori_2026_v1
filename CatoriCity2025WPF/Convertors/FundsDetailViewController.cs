@@ -40,7 +40,7 @@ namespace CatoriCity2025WPF.Convertors
             _view.DataContext = _fundsViewModel;
             depositservice = new DepositService();
             LoadDepositsForPerson(_personId);
-            var banks = GlobalStuff.Banks;
+            var banks = CityScapeGlobal.Banks;
             _view.BankStackComboBox.SelectedValuePath = "Name";
             _view.BankStackComboBox.DisplayMemberPath = "Name";
             _view.BankStackComboBox.ItemsSource =banks;
@@ -53,7 +53,7 @@ namespace CatoriCity2025WPF.Convertors
             WeakReferenceMessenger.Default.Register<MessageSaveDepositArgument>(this, (r, m) =>
             {
                 LoadDepositsForPerson(_personId);
-                var banks = GlobalStuff.Banks;
+                var banks = CityScapeGlobal.Banks;
             });
         }
 

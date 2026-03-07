@@ -52,7 +52,7 @@ namespace CatoriCity2025WPF.Controllers
             _startingX = startingX;
             _startingY = startingY;
             SetCurrentXY(startingX, startingY);
-            GlobalStuff.WriteDebugOutput("CarPoliceContentController startx " + startingX + "  starty " + startingY);
+            CityScapeGlobal.WriteDebugOutput("CarPoliceContentController startx " + startingX + "  starty " + startingY);
             //_controller = new CarPoliceContentViewController(this);
             //RobberyMessageDetailViewModel RobberyMessageDetail;
             _moveCarBackToStationTimer = new DispatcherTimer();
@@ -69,7 +69,7 @@ namespace CatoriCity2025WPF.Controllers
                 if (_view.RobberName == RobberyMessage.RobberName &&
                    HandledWeakReferenceRobbery == false)
                 {
-                    GlobalStuff.WriteDebugOutput("WeakReferenceMessenger pol car robber " + _view.RobberName);
+                    CityScapeGlobal.WriteDebugOutput("WeakReferenceMessenger pol car robber " + _view.RobberName);
                     arg = new PoliceCarMoveFiredEventArg(RobberyMessage.RobberName);
                     PoliceCarStartMove(RobberyMessage.RobberName);
                     HandledWeakReferenceRobbery = true;
@@ -93,7 +93,7 @@ namespace CatoriCity2025WPF.Controllers
             try
             {
                 SettingEntity policeCarspeedSetting = GlobalServices.GetSetting("policecarspeed");
-                GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = policeCarspeedSetting.IntSetting;
+                CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed = policeCarspeedSetting.IntSetting;
                 _currentDirectionParking = PositionsEWNSEnum.North;
                 _view.ChangeDirection(_currentDirectionParking);
                 double start = Canvas.GetTop(_view);
@@ -105,16 +105,16 @@ namespace CatoriCity2025WPF.Controllers
 
                 // Apply animations to the control
                 //endPoint = GlobalStuff.IntersectuonMikYodel.y + _view.Width/2;
-                endPoint = GlobalStuff.IntersectuonMikYodel.y;
+                endPoint = CityScapeGlobal.IntersectuonMikYodel.y;
 
-                cLogger.Log("MoveToPoliceStation_start: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveToPoliceStation_start: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveToPoliceStation_start: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Top
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -124,7 +124,7 @@ namespace CatoriCity2025WPF.Controllers
             }
             catch (Exception ex)
             {
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -145,17 +145,17 @@ namespace CatoriCity2025WPF.Controllers
                 double endPoint = 0;
                 // Apply animations to the control
                 Storyboard currentSB = new Storyboard();
-                endPoint = GlobalStuff.IntersectuonMikTea.x + GlobalStuff.StreetWidth / 2;
+                endPoint = CityScapeGlobal.IntersectuonMikTea.x + CityScapeGlobal.StreetWidth / 2;
                 currentSB.Completed += MoveEastDownMikSt_Completed_Next_Mik;
 
-                cLogger.Log("MoveEastDownMikSt: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveEastDownMikSt: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveEastDownMikSt: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Left
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -166,7 +166,7 @@ namespace CatoriCity2025WPF.Controllers
             }
             catch (Exception ex)
             {
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -189,14 +189,14 @@ namespace CatoriCity2025WPF.Controllers
                 Storyboard currentSB = new Storyboard();
                 currentSB.Completed += MoveUpToPoliceStation_Completed_Next_Tea;
 
-                cLogger.Log("MoveUpToPoliceStation: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveUpToPoliceStation: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveUpToPoliceStation: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Left
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -207,7 +207,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -230,14 +230,14 @@ namespace CatoriCity2025WPF.Controllers
                 Storyboard currentSB = new Storyboard();
                 currentSB.Completed += MoveToPoliceStation_Completed_Next_PoliceStation;
 
-                cLogger.Log("MoveToPoliceStation: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveToPoliceStation: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveToPoliceStation: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Left
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -249,7 +249,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -263,13 +263,13 @@ namespace CatoriCity2025WPF.Controllers
             {
                 _robberName = robberName;
 
-                BankControl bc =  GlobalStuff.GetFinancialBusinessControlForRobber(_view.RobberName);
+                BankControl bc =  CityScapeGlobal.GetFinancialBusinessControlForRobber(_view.RobberName);
 
                 _robberyLot = bc.Lot;
                 _currentX = _startingX;
                 //todo:setup switch for steet
-                GlobalStuff.WriteDebugOutput("PoliceCarStartMove robber " + _robberName);
-                GlobalStuff.WriteDebugOutput("PoliceCarStartMove " + "You next" + " x" + GlobalGeo.YouStreetloc.LocationStartXY.x + " y" + GlobalGeo.YouStreetloc.LocationStartXY.y);
+                CityScapeGlobal.WriteDebugOutput("PoliceCarStartMove robber " + _robberName);
+                CityScapeGlobal.WriteDebugOutput("PoliceCarStartMove " + "You next" + " x" + GlobalGeo.YouStreetloc.LocationStartXY.x + " y" + GlobalGeo.YouStreetloc.LocationStartXY.y);
 
                 GetStreetPathForPoliceCar();
 
@@ -280,7 +280,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -347,7 +347,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
 
         }
@@ -364,7 +364,7 @@ namespace CatoriCity2025WPF.Controllers
                 _robberyMessage = m;
                 bank = m.Bank;
                 Storyboard storyboard = new Storyboard();
-                TimeSpan duration = TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed); //
+                TimeSpan duration = TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed); //
 
                 DoubleAnimation fadeInAnimation = new DoubleAnimation()
                 { From = 0.0, To = 1.0, Duration = new Duration(duration) };
@@ -377,12 +377,12 @@ namespace CatoriCity2025WPF.Controllers
 
                 double xstart = Canvas.GetLeft(_view);
 
-                double xend = GlobalStuff.IntersectuonYouTea.x + _view.Width / 2;
+                double xend = CityScapeGlobal.IntersectuonYouTea.x + _view.Width / 2;
                 DoubleAnimation moveStartX = new DoubleAnimation
                 {
                     From = xstart,
                     To = xend,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
 
                 _currentDirectionYou = PositionsEWNSEnum.West;
@@ -401,7 +401,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -436,12 +436,12 @@ namespace CatoriCity2025WPF.Controllers
                 switch (_currentDirectionTea)
                 {
                     case PositionsEWNSEnum.North:
-                        yend = GlobalStuff.IntersectuonYouTea.y - _view.Width / 2;
+                        yend = CityScapeGlobal.IntersectuonYouTea.y - _view.Width / 2;
                         _currentDirectionYou = PositionsEWNSEnum.West;
                         storyboard2.Completed += MoveToBankOnTeaSt_Completed_Next_You; ;
                         break;
                     case PositionsEWNSEnum.South:
-                        yend = GlobalStuff.IntersectuonMikTea.y - _view.Width / 2;
+                        yend = CityScapeGlobal.IntersectuonMikTea.y - _view.Width / 2;
                         _currentDirectionMik = PositionsEWNSEnum.West;
                         storyboard2.Completed += MoveToBankOnTeaSt_Completed_Next_Mik;
                         break;
@@ -454,7 +454,7 @@ namespace CatoriCity2025WPF.Controllers
                 {
                     From = ystart,
                     To = yend,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 // Apply animations to the control
                 storyboard2.Children.Add(moveStartY);
@@ -465,7 +465,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
         #region Completed Events
@@ -516,7 +516,7 @@ namespace CatoriCity2025WPF.Controllers
                 switch (_currentDirectionYou)
                 {
                     case PositionsEWNSEnum.West:
-                        xend = GlobalStuff.IntersectuonYouMoo.x;
+                        xend = CityScapeGlobal.IntersectuonYouMoo.x;
                         sbYouSt.Completed += MoveOnYouSt_West_Completed_Next_Moo;
                         //if (straight == 1)
                         //{
@@ -530,7 +530,7 @@ namespace CatoriCity2025WPF.Controllers
                         //}
                         break;
                     case PositionsEWNSEnum.East:
-                        xend = GlobalStuff.IntersectuonYouMoo.x + (_view.Width / 2);
+                        xend = CityScapeGlobal.IntersectuonYouMoo.x + (_view.Width / 2);
                         sbYouSt.Completed += MoveOnYouSt_East_Completed_Next_Moo;
                         //if (straight == 1)
                         //{
@@ -546,7 +546,7 @@ namespace CatoriCity2025WPF.Controllers
                     default:
                         break;
                 }
-                xend = GlobalStuff.IntersectuonYouMoo.x;
+                xend = CityScapeGlobal.IntersectuonYouMoo.x;
                 sbYouSt.Completed += MoveDownMooDr; ;
                 //if (straight == 1)
                 //{
@@ -564,7 +564,7 @@ namespace CatoriCity2025WPF.Controllers
                 {
                     From = xstart,
                     To = xend,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 sbYouSt.Children.Add(moveStreet);
 
@@ -575,17 +575,17 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
         private void MoveOnTeaSt()
         {
-            GlobalStuff.WriteDebugOutput(" MoveOnTeaSt");
+            CityScapeGlobal.WriteDebugOutput(" MoveOnTeaSt");
         }
 
         private void MoveOnYodelDr()
         {
-            GlobalStuff.WriteDebugOutput(" MoveOnYodelDr");
+            CityScapeGlobal.WriteDebugOutput(" MoveOnYodelDr");
         }
         private void MoveOnMoo()
         {
@@ -600,25 +600,25 @@ namespace CatoriCity2025WPF.Controllers
                 switch (_currentDirectionParking)
                 {
                     case PositionsEWNSEnum.South:
-                        endPoint = GlobalStuff.IntersectuonMikMoo.y - GlobalStuff.StreetWidth / 2;
+                        endPoint = CityScapeGlobal.IntersectuonMikMoo.y - CityScapeGlobal.StreetWidth / 2;
                         currentSB.Completed += MoveOnMoo_South_Completed_Next_Mik;
                         break;
                     case PositionsEWNSEnum.North:
-                        endPoint = GlobalStuff.IntersectuonYouMoo.x + (_view.Width);
+                        endPoint = CityScapeGlobal.IntersectuonYouMoo.x + (_view.Width);
                         currentSB.Completed += MoveOnMoo_North_Completed_Next_You;
                         break;
                     default:
                         break;
                 }
 
-                cLogger.Log("MoveOnMoo: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveOnMoo: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveOnMoo: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Top
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -629,13 +629,13 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
         private void MoveOnMoo_North_Completed_Next_You(object? sender, EventArgs e)
         {
-            GlobalStuff.WriteDebugOutput(" MoveOnMoo_North_Completed_Next_You ");
+            CityScapeGlobal.WriteDebugOutput(" MoveOnMoo_North_Completed_Next_You ");
         }
 
         private void MoveOnMoo_South_Completed_Next_Mik(object? sender, EventArgs e)
@@ -658,14 +658,14 @@ namespace CatoriCity2025WPF.Controllers
                 endPoint = bank.X + 10;
                 currentSB.Completed += MoveToBankOn_West_Completed_Next_Mik;
 
-                cLogger.Log("MoveToBankOnMik: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveToBankOnMik: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveToBankOnMik: " + _currentDirectionParking + " end " + endPoint);
                 // Create the animation for Canvas.Top
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -676,7 +676,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -693,20 +693,20 @@ namespace CatoriCity2025WPF.Controllers
             {
                 double start = Canvas.GetTop(_view);
                 Random rnd = new Random();
-                var financialLot = GlobalStuff.FinancialLotCobtrols.FirstOrDefault();
+                var financialLot = CityScapeGlobal.FinancialLotCobtrols.FirstOrDefault();
                 double loty = Canvas.GetTop(financialLot);
                 double endPoint = loty;
                 // Apply animations to the control
                 Storyboard currentSB = new Storyboard();
                 currentSB.Completed += MoveToBankParking_South_Completed_Next;
-                cLogger.Log("MoveToBankParking: y " + GlobalStuff.IntersectuonMikMoo.y + " end " + endPoint);
+                cLogger.Log("MoveToBankParking: y " + CityScapeGlobal.IntersectuonMikMoo.y + " end " + endPoint);
                 cLogger.Log("MoveToBankParking: " + _currentDirectionParking);
                 // Create the animation for Canvas.Top
                 DoubleAnimation moveStreet = new DoubleAnimation
                 {
                     From = start,
                     To = endPoint,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 currentSB.Children.Add(moveStreet);
 
@@ -717,7 +717,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 
@@ -748,12 +748,12 @@ namespace CatoriCity2025WPF.Controllers
                 Storyboard storyboard2 = new Storyboard();
                 if (straight == 1)
                 {
-                    xend = GlobalStuff.IntersectuonYouMoo.x;
+                    xend = CityScapeGlobal.IntersectuonYouMoo.x;
                     storyboard2.Completed += MoveDownMooDr; ;
                 }
                 else if (straight == 2)
                 {
-                    xend = GlobalStuff.IntersectuonYouYodel.x + (_view.Width / 2);
+                    xend = CityScapeGlobal.IntersectuonYouYodel.x + (_view.Width / 2);
                     storyboard2.Completed += MoveDownYodelSt; ;
                 }
 
@@ -762,7 +762,7 @@ namespace CatoriCity2025WPF.Controllers
                 {
                     From = xstart,
                     To = xend,
-                    Duration = new Duration(TimeSpan.FromSeconds(GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed))
+                    Duration = new Duration(TimeSpan.FromSeconds(CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed))
                 };
                 storyboard2.Children.Add(moveStreet);
 
@@ -773,7 +773,7 @@ namespace CatoriCity2025WPF.Controllers
             catch (Exception ex)
             {
 
-                GlobalStuff.WriteDebugOutput(" exception " + ex.Message);
+                CityScapeGlobal.WriteDebugOutput(" exception " + ex.Message);
             }
         }
 

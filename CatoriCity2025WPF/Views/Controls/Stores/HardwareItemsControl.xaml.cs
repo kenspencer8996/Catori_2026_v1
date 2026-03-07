@@ -12,7 +12,7 @@ namespace CatoriCity2025WPF.Views.Controls.House
         {
             InitializeComponent();
             _models = models;
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderBrush = Brushes.Red;
                 MainBorder.BorderThickness = new Thickness(3);
@@ -20,7 +20,7 @@ namespace CatoriCity2025WPF.Views.Controls.House
             foreach (var model in _models)
             {
                 Image thisimage =  new Image();
-                string path = System.IO.Path.Combine(GlobalStuff.ImageFolder, model.ImageName);
+                string path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, model.ImageName);
                 thisimage.Source = UIUtility.GetImageControl(path, 20, 50, 0).Source;
                 thisimage.Width = 120;
                 thisimage.Height = 120;

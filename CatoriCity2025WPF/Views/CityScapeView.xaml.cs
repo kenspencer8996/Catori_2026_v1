@@ -8,9 +8,9 @@ namespace CatoriCity2025WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CityScapeView : Window
     {
-        MainWindowController _controller;
+        CityScapeViewController _controller;
         LandscapeObjectService _landscapeObjectService = new LandscapeObjectService();
         SettingService _settingService = new SettingService();
         internal bool ispagedirty = false;
@@ -39,7 +39,7 @@ namespace CatoriCity2025WPF
             }
         }
         System.Windows.Threading.DispatcherTimer statusUpdatedispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-        public MainWindow()
+        public CityScapeView()
         {
             InitializeComponent();
             this.Width = 1820;
@@ -52,14 +52,13 @@ namespace CatoriCity2025WPF
 
             string timestamp = now.ToString("yyyy-MM-dd_HH_mm_ss");
 
-            cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2026WPF" + timestamp + ".Log");
-            GlobalStuff.mainWindowViewModel = new MainWindowViewModel();
-            DataContext = GlobalStuff.mainWindowViewModel;
-            GlobalStuff.MainView = this;
+            CityScapeGlobal.mainWindowViewModel = new MainWindowViewModel();
+            DataContext = CityScapeGlobal.mainWindowViewModel;
+            CityScapeGlobal.CityScapeView = this;
             Title = "Catori City Game 2026";
-            _controller = new MainWindowController(this);
+            _controller = new CityScapeViewController(this);
 
-            string tooltipimagechest = System.IO.Path.Combine(GlobalStuff.ImageFolder, "Treasure","CHestClosed.png");
+            string tooltipimagechest = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Treasure","CHestClosed.png");
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {
@@ -94,36 +93,36 @@ namespace CatoriCity2025WPF
         {
             statusUpdatedispatcherTimer.Stop();
             decimal currentFunds = 0m;
-            var foundfunds = from d in GlobalStuff.Deposits
-                             where d.PersonId == GlobalStuff.CurrentUserPerson.PersonId
+            var foundfunds = from d in CityScapeGlobal.Deposits
+                             where d.PersonId == CityScapeGlobal.CurrentUserPerson.PersonId
                              select d;
             if (foundfunds.Count() > 0)
             {
                 currentFunds = foundfunds.First().Amount;
             }
-            currentFunds += GlobalStuff.CurrentUserPerson.CurrentPay + GlobalStuff.CurrentUserPerson.Funds;
+            currentFunds += CityScapeGlobal.CurrentUserPerson.CurrentPay + CityScapeGlobal.CurrentUserPerson.Funds;
             statusUC.FundsLabel.Content = currentFunds.ToString("C");
             statusUpdatedispatcherTimer.Start();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GlobalStuff.Screenwidth = this.ActualWidth;
-            GlobalStuff.Screenheight = this.ActualHeight;
-            GlobalStuff.WriteDebugOutput("screen  " + $"Width: {GlobalStuff.Screenwidth}, Height: {GlobalStuff.Screenheight}");
+            CityScapeGlobal.Screenwidth = this.ActualWidth;
+            CityScapeGlobal.Screenheight = this.ActualHeight;
+            CityScapeGlobal.WriteDebugOutput("screen  " + $"Width: {CityScapeGlobal.Screenwidth}, Height: {CityScapeGlobal.Screenheight}");
 
             GlobalServices.LoadSettings();
-            GlobalStuff.CurrentUserPerson = new PersonViewModel();
+            CityScapeGlobal.CurrentUserPerson = new PersonViewModel();
             SetCurrentUserPerson();
-            GlobalStuff.CurrentHouseName = GlobalServices.GetSetting("CurrentHouseName").StringSetting;
-            if (GlobalStuff.CurrentHouseName == null || GlobalStuff.CurrentHouseName == "")
+            CityScapeGlobal.CurrentHouseName = GlobalServices.GetSetting("CurrentHouseName").StringSetting;
+            if (CityScapeGlobal.CurrentHouseName == null || CityScapeGlobal.CurrentHouseName == "")
             {
                 // get 1st isuser
-                var founduser = from h in GlobalStuff.Houses
+                var founduser = from h in CityScapeGlobal.Houses
                                 select h;
                 if (founduser.Count() > 0)
                 {
-                   GlobalStuff.CurrentHouseName = founduser.First().Name;
+                   CityScapeGlobal.CurrentHouseName = founduser.First().Name;
                    statusUC.NameLabel.Content = founduser.First().Name;
                 }
             }
@@ -148,7 +147,7 @@ namespace CatoriCity2025WPF
                                   select p;
                 if (foundperson.Count() > 0)
                 {
-                    GlobalStuff.CurrentUserPerson = foundperson.First();
+                    CityScapeGlobal.CurrentUserPerson = foundperson.First();
                 }
             }
             else
@@ -158,16 +157,16 @@ namespace CatoriCity2025WPF
                                   select p;
                 if (foundperson.Count() > 0)
                 {
-                    GlobalStuff.CurrentUserPerson = foundperson.First();
+                    CityScapeGlobal.CurrentUserPerson = foundperson.First();
                 }
             }
-            statusUC.NameLabel.Content = GlobalStuff.CurrentUserPerson.Name;
+            statusUC.NameLabel.Content = CityScapeGlobal.CurrentUserPerson.Name;
         }
 
         private void SetTravelSpeed()
         {
-            GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSetting("PoliceCarTravelSpeed").IntSetting;
-            GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSetting("BadGuyTravelSpeed").IntSetting;
+            CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed = GlobalServices.GetSetting("PoliceCarTravelSpeed").IntSetting;
+            CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed = GlobalServices.GetSetting("BadGuyTravelSpeed").IntSetting;
         }
 
         private void SetSettings()
@@ -198,7 +197,7 @@ namespace CatoriCity2025WPF
                 //string imagePath = GlobalStuff.ImageFolder + "\\PrimaryPeople";
                 //string[] images = System.IO.Directory.GetFiles(imagePath, "*.*");
                 List<PersonViewModel> persons = new List<PersonViewModel>();
-                var personsPrimary = from p in GlobalStuff.AllPersons
+                var personsPrimary = from p in GlobalAllApps.AllPersons
                                      where p.IsUser == true
                                      select p;
                 //persons = personsPrimary.ToList();
@@ -208,13 +207,13 @@ namespace CatoriCity2025WPF
                     persons.Add(item);
                 }
 
-                var foundhousesimages = from i in GlobalStuff.AllPersons
+                var foundhousesimages = from i in GlobalAllApps.AllPersons
                                         where i.IsUser == false
                                         select i;
               
                 foreach (var item in foundhousesimages)
                 {
-                    item.Images = GlobalStuff.GetImagesForPerson(item.ImagesFolder);
+                    item.Images = CityScapeGlobal.GetImagesForPerson(item.ImagesFolder);
                     item.SetupImageLists();
                 }
             }
@@ -236,7 +235,7 @@ namespace CatoriCity2025WPF
                 ispagedirty = false;
                 LandscapeObjectViewModel model = new LandscapeObjectViewModel();
                 LandscapeObjectControl foundUC = null;
-                var models = from m in GlobalStuff.LandscapeObjects
+                var models = from m in CityScapeGlobal.LandscapeObjects
                              where m.HomeObject == true
                              select m;
                 if (models.Count() > 0)
@@ -250,7 +249,7 @@ namespace CatoriCity2025WPF
                         break;
                     }
                 }
-                var personsBad = from p in GlobalStuff.AllPersons
+                var personsBad = from p in GlobalAllApps.AllPersons
                                      where p.IsUser == false
                                      && p.PersonRole == PersonEnum.BadPerson
                                  select p;
@@ -263,8 +262,8 @@ namespace CatoriCity2025WPF
                     badPersonControl.AddPerson(item);
                     //double width = foundUC.Width;
                     //double height = foundUC.Height;
-                    double width = GlobalStuff.BadGuyWith;
-                    double height = GlobalStuff.BadGuyHeight;
+                    double width = CityScapeGlobal.BadGuyWith;
+                    double height = CityScapeGlobal.BadGuyHeight;
                     badPersonControl.Width = width;
                     badPersonControl.Height = height;
                     var locx = Canvas.GetLeft(foundUC);
@@ -288,8 +287,8 @@ namespace CatoriCity2025WPF
       
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            GlobalStuff.MainViewHeight = e.NewSize.Height - 50;
-            GlobalStuff.MainViewWidth = e.NewSize.Width;
+            CityScapeGlobal.CityScapeViewHeight = e.NewSize.Height - 50;
+            CityScapeGlobal.CityScapeViewWidth = e.NewSize.Width;
             SetStreetSizes();
             _controller.ResizeLots(e.PreviousSize, e.NewSize);
             //double groupsLabelTop = e.NewSize.Height;
@@ -390,7 +389,7 @@ namespace CatoriCity2025WPF
             {
                 double childleft = Canvas.GetLeft(child);
                 double childtop = Canvas.GetTop(child);
-                var models = from m in GlobalStuff.LandscapeObjects
+                var models = from m in CityScapeGlobal.LandscapeObjects
                              where m.Name == child.Name
                              select m;
                 if (models.Count() > 0)
@@ -406,7 +405,7 @@ namespace CatoriCity2025WPF
                     else
                     {
                         _landscapeObjectService.Delete(model.Entity);
-                        GlobalStuff.LandscapeObjects.Remove(model);
+                        CityScapeGlobal.LandscapeObjects.Remove(model);
                         ControlsToDelete.Add(child);
                     }
                 }
@@ -447,12 +446,12 @@ namespace CatoriCity2025WPF
         private void PoliceCarTravelSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ispagedirty = true;
-            GlobalStuff.mainWindowViewModel.PolicecarToravelSpeed = PoliceCarTravelSpeedSlider.Value;
+            CityScapeGlobal.mainWindowViewModel.PolicecarToravelSpeed = PoliceCarTravelSpeedSlider.Value;
         }
         private void BadGuyTravelSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ispagedirty = true;
-            GlobalStuff.mainWindowViewModel.BadGuyTravelSpeed = BadGuyTravelSpeedSlider.Value;
+            CityScapeGlobal.mainWindowViewModel.BadGuyTravelSpeed = BadGuyTravelSpeedSlider.Value;
         }
 
         private void MainWin_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -499,15 +498,15 @@ namespace CatoriCity2025WPF
             //Point relativePoint = e.GetPosition(MainLayout);
             //if (_dragManager.IsDragging) 
             //{ 
-            var p1 = e.GetPosition(GlobalStuff.MainView.MainLayout); 
-            var p2 = GlobalStuff.MainView.MainLayout.TranslatePoint(new Point(0, 0), Application.Current.MainWindow);
+            var p1 = e.GetPosition(CityScapeGlobal.CityScapeView.MainLayout); 
+            var p2 = CityScapeGlobal.CityScapeView.MainLayout.TranslatePoint(new Point(0, 0), Application.Current.MainWindow);
             //cLogger.Log($"mouse={p1} canvasToWindow={p2}");
 
             var cursor = e.GetPosition(MainLayout);
             if (isdragging == true)
             {
                 var screenPos = Mouse.GetPosition(null); // screen coords
-                var canvasPos = GlobalStuff.MainView.MainLayout.PointFromScreen(screenPos); // convert to canvas coords
+                var canvasPos = CityScapeGlobal.CityScapeView.MainLayout.PointFromScreen(screenPos); // convert to canvas coords
                 //_dragManager.UpdateDrag(canvasPos);
                // cLogger.Log($" UpdateDrag  cursor x y: {cursor.X}  cursor.Y {cursor.Y} ");
 

@@ -6,12 +6,12 @@ using System.Collections.ObjectModel;
 
 namespace CatoriCity2025WPF.Objects
 {
-    internal class GlobalStuff
+    internal class CityScapeGlobal
     {
       
-        public static MainWindow MainView { get; set; }   
-        public static double MainViewWidth = 0;
-        public static double MainViewHeight = 0;
+        public static CityScapeView CityScapeView { get; set; }   
+        public static double CityScapeViewWidth = 0;
+        public static double CityScapeViewHeight = 0;
         public static int buildingsize = 100;
         public static int BuildingLocationBuffer = 2;
         public static bool ShowAllBordersIfAvailable = false;
@@ -24,7 +24,6 @@ namespace CatoriCity2025WPF.Objects
         public static List<LandscapeObjectControl> LandscapeUCs;
         public static string Burglaralarmfile = "";
         public static List<PersonProductsOwnedEntity> ItemsOwned { get; set; }
-        public static  PersonViewModel CurrentPerson { get; set; } 
         public static HouseControl OwnedHouseControl { get; set; }    
         public static int BadGuyWith { get; set; } = 30;
         public static int BadGuyHeight { get; set; } = 70;
@@ -53,7 +52,7 @@ namespace CatoriCity2025WPF.Objects
         }
         public static List<BusinessViewModel> GetBusinessViewModels()
         {
-            var business = from b in GlobalStuff.Businesses
+            var business = from b in CityScapeGlobal.Businesses
                            where b.BusinessType == BusinessTypeEnum.Financial
                            select b;
             List<BusinessViewModel> results = business.ToList();
@@ -149,7 +148,7 @@ namespace CatoriCity2025WPF.Objects
         {
             get
             {
-                var badguys = from p in AllPersons
+                var badguys = from p in GlobalAllApps.AllPersons
                               where
                               p.PersonRole == PersonEnum.BadPerson
                               select p;
@@ -167,7 +166,6 @@ namespace CatoriCity2025WPF.Objects
             args.ShowPerson = true;
             WeakReferenceMessenger.Default.Send<PersonShowMessage>(args);
         }
-        public static List<PersonViewModel> AllPersons { get; set; } = new List<PersonViewModel>();
         public static List<PersonImageViewModel> PersonImages { get; set; } = new List<PersonImageViewModel>();
         public static List<ImageViewModel> Images { get; set; } = new List<ImageViewModel>();
         //  public List<ResidenceEntity> Residences { get; set; } = new List<ResidenceEntity>();
@@ -439,7 +437,7 @@ namespace CatoriCity2025WPF.Objects
             person.Add(name, girl, PersonEnum.Individual);
             person.Images = GetImagesForPerson(person.ImagesFolder);
             person.SetupImageLists();
-            GlobalStuff.AllPersons.Add(person);
+            GlobalAllApps.AllPersons.Add(person);
         }
 
         public static List<PersonImageViewModel> GetImagesForPerson(string imagesFolder)

@@ -20,7 +20,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             InitializeComponent();
 
-            if (GlobalStuff.ShowAllBordersIfAvailable)
+            if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
                 MainBorder.BorderThickness = new Thickness(2);
             }
@@ -130,7 +130,7 @@ namespace CatoriCity2025WPF.Views.Controls
             {
                 this.Height = tempheight;
             }
-            var models = from m in GlobalStuff.LandscapeObjects
+            var models = from m in CityScapeGlobal.LandscapeObjects
                          where m.Name == this.Name
                          select m;
             if (models.Count() > 0)

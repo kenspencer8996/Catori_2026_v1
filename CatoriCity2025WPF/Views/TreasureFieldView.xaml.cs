@@ -20,7 +20,7 @@ namespace CatoriCity2025WPF.Views
             this.Width = width;
             this.Height = height;
             _controller = new TreasureFieldViewController(this);
-            string imagePath = System.IO.Path.Combine(GlobalStuff.ImageFolder,"Fields", "FieldEmpty3D.png");
+            string imagePath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder,"Fields", "FieldEmpty3D.png");
             FieldImage.Source = UIUtility.GetImageControl(imagePath, width, height, 1).Source;
 
             landscapegroup = _controller.RandomInRangeInt(5, 6);
@@ -30,6 +30,10 @@ namespace CatoriCity2025WPF.Views
         {
             _controller.LoadLandscapeAsync(landscapegroup);
         }
-       
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
