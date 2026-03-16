@@ -211,25 +211,16 @@ namespace CatoriCity2025WPF.Views.Controls
 
         }
 
-        private void BusinessUC_Drop(object sender, DragEventArgs e)
-        {
-
-        }
-
+    
         private void BusinessUC_PreviewDrop(object sender, DragEventArgs e)
         {
             e.Handled = true;
         }
 
-        public void HandleDrop(UIElement droppedElement)
-        {
-        }
+     
 
        
-        void Drop(UIElement draggedElement)
-        {
- 
-        }
+       
 
         public void AddDroppedElement(UIElement element)
         {
@@ -240,6 +231,11 @@ namespace CatoriCity2025WPF.Views.Controls
             args.FactoryControlInstance = this;
             WeakReferenceMessenger.Default.Send<FactoryMouseMessage>(args);
 
+        }
+
+        public void AddDroppedElement(IDraggable element)
+        {
+            throw new NotImplementedException();
         }
     }
 }

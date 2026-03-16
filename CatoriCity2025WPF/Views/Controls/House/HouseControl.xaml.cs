@@ -301,5 +301,9 @@ namespace CatoriCity2025WPF.Views.Controls
             _personControl = element as PersonControl;
             element.Visibility = Visibility.Hidden;
         }
+
+        public void AddDroppedElement(IDraggable element)
+        {
+        }
     }
 }

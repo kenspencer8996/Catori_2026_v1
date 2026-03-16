@@ -55,7 +55,7 @@ namespace CatoriCity2025WPF.Views
             {
                 Title = "Select a File",
                 Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg|All Files (*.*)|*.*",
-                InitialDirectory = CityScapeGlobal.ImageFolder,
+                InitialDirectory = GlobalAllApps.ImageFolder,
                 Multiselect = false // Set to true if you want to allow multiple file selection
             };
 

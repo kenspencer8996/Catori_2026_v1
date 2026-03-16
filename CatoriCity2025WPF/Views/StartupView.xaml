@@ -4,18 +4,63 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Normal"
-        Title="StartupView"  Height="1080" Width="1920">
-    <Canvas>
-        <Image Source="/Images/StartWorld.png" Stretch="Fill" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Window}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Center" Canvas.Top="1" VerticalAlignment="Top" />
-        <Button x:Name="CityScapeButton" Style="{StaticResource MapHotspotButton}" Width="355" Height="280" Canvas.Left="750" Canvas.Top="253" 
-                Click="CityScapeButton_Click" ToolTip="Click to open CityScape"  />
-        <Button x:Name="TreasureHuntButton" Style="{StaticResource MapHotspotButton}" Width="355" Height="280" 
-                Canvas.Left="750" Canvas.Top="553" 
-            Click="TreasureHuntButton_Click" ToolTip="Click to open TreasureHunt"  />
-        <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
-                Click="ExitButton_Click" ToolTip="Click to exit"  />
+        mc:Ignorable="d"
+        Title="StartupView"
+        Width="1920"
+        Height="1080"
+        MinWidth="900"
+        MinHeight="600"
+        WindowState="Maximized" WindowStyle="None"
+        Background="Black">
 
 
-    </Canvas>
+
+    <Grid Background="Black">
+        <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas Width="1920" Height="1080" Background="Black">
+
+                <Image Source="/Images/StartWorld.png"
+                       Width="1920"
+                       Height="1080"
+                       Stretch="Fill"
+                       Canvas.Left="0"
+                       Canvas.Top="0" />
+
+                <Button x:Name="CityScapeButton"
+                        Style="{StaticResource MapHotspotButton}"
+                        Width="355"
+                        Height="280"
+                        Canvas.Left="750"
+                        Canvas.Top="253"
+                        Click="CityScapeButton_Click"
+                        ToolTip="Click to open CityScape" />
+
+                <Button x:Name="TreasureHuntButton"
+                        Style="{StaticResource MapHotspotButton}"
+                        Width="355"
+                        Height="280"
+                        Canvas.Left="750"
+                        Canvas.Top="553"
+                        Click="TreasureHuntButton_Click"
+                        ToolTip="Click to open Treasure Hunt" />
+
+                <Button x:Name="ExitButton"
+                        Style="{StaticResource MapHotspotButton}"
+                        Width="50"
+                        Height="50"
+                        Canvas.Left="5"
+                        Canvas.Top="5"
+                        Click="ExitButton_Click"
+                        ToolTip="Click to exit" />
+                <Button x:Name="TestButton"
+               Style="{StaticResource MapHotspotButton}"
+               Width="50"
+               Height="50"
+               Canvas.Left="65"
+               Canvas.Top="5"
+               Click="TestButton_Click"
+               ToolTip="Click to test" />
+            </Canvas>
+        </Viewbox>
+    </Grid>
 </Window>

@@ -171,19 +171,8 @@ namespace CatoriCity2025WPF.Objects
         //  public List<ResidenceEntity> Residences { get; set; } = new List<ResidenceEntity>();
         //public List<VehicleEntity> Vehicles { get; set; } = new List<VehicleEntity>();
         public static List<HouseViewModel> Houses { get; set; } = new List<HouseViewModel>();
-        public static string _imageFolder = "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images";
         
-        public static string ImageFolder
-        {
-            set
-            {
-                _imageFolder = value;
-            }
-            get
-            {
-                return _imageFolder;
-            }
-        }
+  
         public static int cityforest1x = 0;
         public static int cityforest1y = 0;
         public static int citybush1x = 0;

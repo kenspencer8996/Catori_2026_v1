@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
 using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.DragDrop;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
 using System.Windows.Media.Animation;
@@ -300,7 +301,7 @@ namespace CatoriCity2025WPF.Controllers
                 try
                 {
                     lotControl.AddBuilding(ucStore1, false);
-                    _dragManager.RegisterDropTarget(lotControl);
+                    _dragManager.RegisterDropTarget(lotControl  );
                 }
                 catch (Exception ex)
                 {
@@ -643,7 +644,7 @@ namespace CatoriCity2025WPF.Controllers
                 PostOfficeControl postOffice = new PostOfficeControl();
                 postOffice.Width = CityScapeGlobal.buildingsize;
                 postOffice.Height = CityScapeGlobal.buildingsize;
-                _dragManager.RegisterDropTarget( postOffice);
+                _dragManager.RegisterDropTarget(  postOffice);
                 Canvas.SetZIndex(postOffice, 100);
                 Canvas.SetLeft(postOffice, left);
                 Canvas.SetTop(postOffice, top);
@@ -902,7 +903,7 @@ namespace CatoriCity2025WPF.Controllers
                     thisUC = GetLandscapeObject(landscapeObject,landscapeObject.Name);
                     x = landscapeObject.xActual;
                     y = landscapeObject.yActual;
-                    _dragManager.RegisterDropTarget(thisUC);
+                    _dragManager.RegisterDropTarget( thisUC);
 
                     CityScapeGlobal.LandscapeUCs.Add(thisUC);
                     Canvas.SetZIndex(thisUC, 1101);

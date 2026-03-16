@@ -1,6 +1,7 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Views.Controls
@@ -208,13 +209,42 @@ namespace CatoriCity2025WPF.Views.Controls
             }
         }
        
-        public bool CanDrop(UIElement element)
+        public bool CanDrop(IDraggable element)
         {
             return true;
         }
 
-        public void OnDrop(UIElement element)
+        public void OnDrop(IDraggable element)
         {
+        }
+        public void HighlightOn()
+        {
+            // Example glow
+            this.Effect = new DropShadowEffect
+            {
+                Color = Colors.Gold,
+                BlurRadius = 25,
+                ShadowDepth = 0,
+                Opacity = 0.8
+            };
+        }
+
+        public void HighlightOff()
+        {
+            this.Effect = null;
+        }
+
+        public Point GetSnapPoint(UIElement dragged)
+        {
+            var feDragged = (FrameworkElement)dragged;
+            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
+            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
+            return new Point(x, y);
+        }
+
+        public Point GetSnapPoint(IDraggable dragged)
+        {
+            throw new NotImplementedException();
         }
     }
 }

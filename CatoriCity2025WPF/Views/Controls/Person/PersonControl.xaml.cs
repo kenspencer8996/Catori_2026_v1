@@ -1,4 +1,5 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
+using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.IO;
@@ -10,7 +11,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for PersonControl.xaml
     /// </summary>
-    public partial class PersonControl : UserControl
+    public partial class PersonControl : UserControl,IDraggable
     {
         public event EventHandler<PrimaryPrsonDragArgg> PersonMouseDown;
         public event EventHandler<PrimaryPrsonDragArgg> PersonMouseUp;
@@ -41,11 +42,30 @@ namespace CatoriCity2025WPF.Views.Controls
         DragManager _dragManager;
         Canvas _hostCanvas;
         public Point ClickOffset;
+        public bool isCarryingChest = false;
         public TimeSpan AnimationFrameInterval
         {
             get => _animation_timer.Interval;
             set => _animation_timer.Interval = value;
         }
+
+        public UIElement Visual 
+            { 
+            get
+            { 
+                return this; 
+            }
+        }
+
+        public Point OriginalPosition     {
+            get
+            {
+                double left = Canvas.GetLeft(this);
+                double top = Canvas.GetTop(this);
+                return new Point(left, top);
+            }
+        }
+
         public PersonControl(PersonViewModel person, 
             DragManager dragManager,Canvas hostCanvas)
         {
@@ -113,8 +133,11 @@ namespace CatoriCity2025WPF.Views.Controls
                 cLogger.Log(this.Name + " WeakReferenceMessenger called : ");
                
             });
-            
 
+            WeakReferenceMessenger.Default.Register<PersonValuablesMessage>(this, (r, m) =>
+            {
+                person.Funds += m.ValuableAmount;
+            });
         }
 
         public void ShowPerson()
@@ -131,29 +154,29 @@ namespace CatoriCity2025WPF.Views.Controls
             string path;
             //path = System.IO.Path.Combine(GlobalStuff.ImageFolder, "PrimaryPeople\\Digging", "GirlDigDownDirt1.png");
             //_diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDown.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDown.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigDownShovelDirt1.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigDownShovelDirt1.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDirt2.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDirt2.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDIrt3.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDIrt3.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDirt4.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelDownDirt4.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GIrlDigShovelPartialDownDirt.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GIrlDigShovelPartialDownDirt.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigBackDirt1.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigBackDirt1.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigBackDirt2.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigBackDirt2.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt2.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt2.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt3.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt3.png");
             _diggerpositions.Add(path);
-            path = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt4.png");
+            path = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", "GirlDigShovelOverDhoulderDirt4.png");
             _diggerpositions.Add(path);
 
 
@@ -179,7 +202,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
 
             cLogger.Log("event hit");
-            FundsDetailView fundsDetailView = new FundsDetailView(_person);
+            FundsDetailView fundsDetailView = new FundsDetailView();
             fundsDetailView.Owner = CityScapeGlobal.CityScapeView;
             fundsDetailView.ShowDialog();
         }
@@ -231,6 +254,7 @@ namespace CatoriCity2025WPF.Views.Controls
         public void StartDiggingAnimation(int dirtindex)
         {
             _dirtindex = dirtindex;
+            isCarryingChest = true;
             _digMode = true;
             _currentDiggerIndex = 0;
             Opacity = 1;
@@ -248,7 +272,7 @@ namespace CatoriCity2025WPF.Views.Controls
             {
                 try
                 {
-                    string filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople\\Digging", _diggerpositions[_currentDiggerIndex]);
+                    string filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", _diggerpositions[_currentDiggerIndex]);
 
                     PersonImage.Source = UIUtility.GetImageControl(filePath, 200, 80, 300).Source;
 
@@ -278,7 +302,7 @@ namespace CatoriCity2025WPF.Views.Controls
             {
                 try
                 {
-                    string filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", PickupTreasureImages[_currentDiggerIndex]);
+                    string filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", PickupTreasureImages[_currentDiggerIndex]);
                     PersonImage.Source = UIUtility.GetImageControl(filePath, 200, 80, 300).Source;
                 }
                 catch (Exception ex)
@@ -325,32 +349,32 @@ namespace CatoriCity2025WPF.Views.Controls
                 WalkingLeftImages.Clear();
                 WalkingLeftShovelImages.Clear();
                 WalkingRightShovelImages.Clear();
-                string filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople/WalkingRight");
+                string filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople/WalkingRight");
                 string[] images = Directory.GetFiles(filePath, "*.png");
                 WalkingRightImages.AddRange(images);
 
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople/WalkingLeft");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople/WalkingLeft");
                 string[] images2 = Directory.GetFiles(filePath, "*.png");
                 WalkingLeftImages.AddRange(images2);
 
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople/WalkingShovelLeft");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople/WalkingShovelLeft");
                 string[] images3 = Directory.GetFiles(filePath, "*.png");
                 WalkingLeftImages.AddRange(images3);
 
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople/WalkingShovelRight");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople/WalkingShovelRight");
                 string[] images4 = Directory.GetFiles(filePath, "*.png");
                 WalkingLeftImages.AddRange(images4);
 
                 PickupTreasureImages = new List<string>();
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest1.png");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest1.png");
                 PickupTreasureImages.Add(filePath);
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest2.png");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest2.png");
                 PickupTreasureImages.Add(filePath);
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest3.png");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest3.png");
                 PickupTreasureImages.Add(filePath);
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest4.png");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest4.png");
                 PickupTreasureImages.Add(filePath);
-                filePath = Path.Combine(CityScapeGlobal.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest.png");
+                filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "Digging", "GirlStandingChest.png");
                 PickupTreasureImages.Add(filePath);
 
 
@@ -447,6 +471,18 @@ namespace CatoriCity2025WPF.Views.Controls
         private void UserControl_MouseEnter_1(object sender, MouseEventArgs e)
         {
 
+        }
+        public void ShowPersonStandingNoChest()
+        {
+            try
+            {
+                string filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople", "GirlStandingLeft.png");
+                PersonImage.Source = UIUtility.GetImageControl(filePath, 200, 80, 300).Source;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log("Image Error : " + ex.Message);
+            }
         }
     }
 }

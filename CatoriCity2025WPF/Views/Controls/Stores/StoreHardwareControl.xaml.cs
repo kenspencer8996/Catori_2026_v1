@@ -106,7 +106,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             cLogger.Log("event hit PersonDroppedMessage");
-            ShowInterior();
+            ShowInterior(_personViewModel);
         }
 
         private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -123,14 +123,15 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             ShowHardwareStoreInteriorMessage msg = new ShowHardwareStoreInteriorMessage();
             msg.Model = person;
+            _personViewModel = person;
             originalLeft = Canvas.GetLeft(this);
             originalTop = Canvas.GetTop(this);
-            ShowInterior();
+            ShowInterior(person);
             //WeakReferenceMessenger.Default.Send<ShowHardwareStoreInteriorMessage>(msg);
         }
-        private void ShowInterior()
+        private void ShowInterior(PersonViewModel _model)
         {
-            StoreHardwareInteriorView view = new StoreHardwareInteriorView(originalLeft,originalTop);
+            StoreHardwareInteriorView view = new StoreHardwareInteriorView(originalLeft,originalTop, _model);
             view.Owner = CityScapeGlobal.CityScapeView;
             view.ShowDialog();
         }
@@ -143,6 +144,11 @@ namespace CatoriCity2025WPF.Views.Controls
                 if (person != null)
                     AddPerson(person._person);
             }
+        }
+
+        public void AddDroppedElement(IDraggable element)
+        {
+            throw new NotImplementedException();
         }
     }
 }

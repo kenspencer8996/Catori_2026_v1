@@ -145,7 +145,7 @@ namespace CatoriCity2025WPF.Objects
                 //string[] housefiles = System.IO.Directory.GetFiles(
                 //    GlobalStuff.ImageFolder + "\\House*", "*.png");
                 string searchPattern = "bank*.*";
-                string[] imagefiles = System.IO.Directory.GetFiles(CityScapeGlobal.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
+                string[] imagefiles = System.IO.Directory.GetFiles(GlobalAllApps.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
                 cLogger.Log("bank count " + imagefiles.Length.ToString());
                 // Create a Random instance
                 Random random = new Random();
@@ -202,7 +202,7 @@ namespace CatoriCity2025WPF.Objects
                 //string[] housefiles = System.IO.Directory.GetFiles(
                 //    GlobalStuff.ImageFolder + "\\House*", "*.png");
                 string searchPattern = "factory*.*";
-                string[] imagefiles = System.IO.Directory.GetFiles(CityScapeGlobal.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
+                string[] imagefiles = System.IO.Directory.GetFiles(GlobalAllApps.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
                 cLogger.Log("factory count " + imagefiles.Length.ToString());
                 // Create a Random instance
                 Random random = new Random();

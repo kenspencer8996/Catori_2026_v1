@@ -9,7 +9,8 @@
         mc:Ignorable="d" x:Name="MainWin" 
         Title="Catori City View" Height="1080" Width="1920" Closing="MainWin_Closing" GiveFeedback="MainWin_GiveFeedback"
         MouseDown="MainWin_MouseDown" SizeChanged="Window_SizeChanged" MouseMove="MainWin_MouseMove" MouseUp="MainWin_MouseUp"
-        WindowStartupLocation="CenterScreen" WindowState="Normal" Loaded="Window_Loaded">
+        WindowState="Maximized" WindowStyle="None"
+         Loaded="Window_Loaded">
     <Window.Resources>
     </Window.Resources>
     <Grid Background="#FBF5DE">

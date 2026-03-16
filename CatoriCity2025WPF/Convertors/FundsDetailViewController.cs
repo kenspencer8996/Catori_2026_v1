@@ -24,11 +24,11 @@ namespace CatoriCity2025WPF.Convertors
         private SynchronizationContext _uiContext;
 
 
-        public FundsDetailViewController(FundsDetailView view, PersonViewModel person)
+        public FundsDetailViewController(FundsDetailView view)
         {
             _view = view;
-            _personId = person.PersonId;
-            _personViewModel = person;
+            _personViewModel = GlobalAllApps.CurrentPerson;
+            _personId = _personViewModel.PersonId;
             _view.DepositButton.IsEnabled = false;
             depositservice = new DepositService();
             _fundsViewModel = new FundsViewModel

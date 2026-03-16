@@ -1,4 +1,5 @@
 ﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -45,8 +46,9 @@ namespace CatoriCity2025WPF
             this.Width = 1820;
             this.Height = 980;
             DateTime now = DateTime.Now;
-
-            _dragManager = new DragManager(MainLayout);
+            Left = 0;
+            Top = 0;
+            _dragManager = GlobalCode.GetDragmanager(MainLayout);
             statusUpdatedispatcherTimer.Tick += new EventHandler(statusUpdatedispatcherTimer_Tick);
             statusUpdatedispatcherTimer.Interval = new TimeSpan(0, 0, 30);
 
@@ -58,7 +60,7 @@ namespace CatoriCity2025WPF
             Title = "Catori City Game 2026";
             _controller = new CityScapeViewController(this);
 
-            string tooltipimagechest = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Treasure","CHestClosed.png");
+            string tooltipimagechest = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Treasure","CHestClosed.png");
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {

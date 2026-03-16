@@ -1,8 +1,4 @@
 ﻿using CatoriCity2025WPF.Convertors;
-using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
-using System.Windows;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -12,10 +8,12 @@ namespace CatoriCity2025WPF.Views
     public partial class FundsDetailView : Window
     {
         FundsDetailViewController _controller;
-        public FundsDetailView(PersonViewModel person)
+        public FundsDetailView(Decimal depositAmount = 0)
         {
             InitializeComponent();
-            _controller = new FundsDetailViewController(this,person);
+
+            DepositAmountTextBox.Text = depositAmount.ToString();
+            _controller = new FundsDetailViewController(this);
         }
 
         private void DepositAmountTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

@@ -2,6 +2,7 @@
 using CatoriCity2025WPF.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
@@ -83,14 +84,39 @@ namespace CatoriCity2025WPF.Views.Controls
 
         }
 
-        public bool CanDrop(UIElement element)
+        public bool CanDrop(IDraggable element)
         {
             return true;
         }
 
-        public void OnDrop(UIElement element)
+        public void OnDrop(IDraggable element)
         {
-            throw new NotImplementedException();
+            
+        }
+        public void HighlightOn()
+        {
+            // Example glow
+            this.Effect = new DropShadowEffect
+            {
+                Color = Colors.Gold,
+                BlurRadius = 25,
+                ShadowDepth = 0,
+                Opacity = 0.8
+            };
+        }
+
+        public void HighlightOff()
+        {
+            this.Effect = null;
+        }
+
+       
+        public Point GetSnapPoint(IDraggable dragged)
+        {
+            var feDragged = (FrameworkElement)dragged;
+            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
+            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
+            return new Point(x, y);
         }
     }
 }

@@ -18,11 +18,11 @@ namespace CatoriCity2025WPF.Views.Controls
         public CardboardBoxUC()
         {
             InitializeComponent();
-            string imagepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "DroneShipping", "BoxShippingOpen.png");
+            string imagepath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "DroneShipping", "BoxShippingOpen.png");
             ImageSourceOpen = UIUtility.GetImageControl(imagepath,h,w,3010);
-            imagepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "DroneShipping", "BoxShippingCLosing3.png");
+            imagepath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "DroneShipping", "BoxShippingCLosing3.png");
             ImageSourceOpen = UIUtility.GetImageControl(imagepath, h, w, 3010);
-            imagepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "DroneShipping", "BoxShippingShipping2.png");
+            imagepath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "DroneShipping", "BoxShippingShipping2.png");
             ImageSourcePartialOpen = UIUtility.GetImageControl(imagepath, h, w, 3010);
 
             openBoxTimer = new DispatcherTimer();

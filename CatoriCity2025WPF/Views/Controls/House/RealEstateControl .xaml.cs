@@ -15,7 +15,7 @@ namespace CatoriCity2025WPF.Views.Controls
         public RealEstateControl()
         {
             InitializeComponent();
-            string tooltipimagepath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder,"Houses", "ForSale.png");
+            string tooltipimagepath = System.IO.Path.Combine(GlobalAllApps.ImageFolder,"Houses", "ForSale.png");
 
             ImageTextToolTip toolTip = new ImageTextToolTip
             {

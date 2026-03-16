@@ -2,7 +2,7 @@
 {
     public interface IDropAddToUC
     {
-        public void AddDroppedElement(UIElement element);
+        public void AddDroppedElement(IDraggable element);
 
     }
 }

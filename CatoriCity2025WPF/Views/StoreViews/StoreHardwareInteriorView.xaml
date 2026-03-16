@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls"
         xmlns:Controls="clr-namespace:CatoriCity2025WPF.Views.Controls" 
-        mc:Ignorable="d"  WindowStartupLocation="CenterOwner"
-        Loaded="Window_Loaded" Closing="Window_Closing" WindowStyle="None"
+        mc:Ignorable="d"  WindowStyle="None"
+        Loaded="Window_Loaded" Closing="Window_Closing" 
+        WindowState="Maximized"
         Title="StoreHardwareView" Height="1080" Width="1620">
     <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
           Width="{Binding ElementName=UC, Path=ActualWidth}" 
@@ -23,7 +24,7 @@
             <Image x:Name="DragImage" Source="/Images/gear_.png" Panel.ZIndex="3001" 
     Canvas.Left="500" Canvas.Top="200" Width="250" Height="150" Visibility="Visible"/>
             <!--<local:DroneDeliver1UC x:Name="DroneDeliver111UC" Canvas.Left="350" Canvas.Top="1280" Width="188" Height="110" Panel.ZIndex="4000"/>-->
-            <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
+            <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" Panel.ZIndex="5000"
           Click="ExitButton_Click" ToolTip="Click to exit"  />
 
         </Canvas>

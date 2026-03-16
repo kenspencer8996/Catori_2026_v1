@@ -8,11 +8,11 @@
             string thisImage = "";
             try
             {
-                if (filename != null && filename.StartsWith(CityScapeGlobal.ImageFolder) == false)
+                if (filename != null && filename.StartsWith(GlobalAllApps.ImageFolder) == false)
                 {
                     try
                     {
-                        filename = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, filename);
+                        filename = System.IO.Path.Combine(GlobalAllApps.ImageFolder, filename);
                         thisImage = filename;
                     }
                     catch (Exception)

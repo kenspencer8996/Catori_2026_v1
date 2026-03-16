@@ -114,7 +114,7 @@
         }
         public string FilePathAbsolute
         {
-            get => System.IO.Path.Combine(CityScapeGlobal.ImageFolder, _filePath);
+            get => System.IO.Path.Combine(GlobalAllApps.ImageFolder, _filePath);
         }
         public double Height
         {

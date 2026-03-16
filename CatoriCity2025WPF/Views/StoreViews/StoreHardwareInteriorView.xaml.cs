@@ -12,16 +12,18 @@ namespace CatoriCity2025WPF.Views
     {
         StoreHardwareInteriorViewController _controller;
         bool overrobot = false;
-        PersonViewModel _personViewModel;
         RobotCartControl robotMover;
         double _personOriginalLeft;
         double _personOriginalTop;
-        public StoreHardwareInteriorView(double personLeft,double personTop)
+        PersonViewModel _model;
+        public StoreHardwareInteriorView(double personLeft,double personTop,
+            PersonViewModel personViewModel)
         {
             InitializeComponent();
             _personOriginalLeft = personLeft;
             _personOriginalTop = personTop;
             _controller = new StoreHardwareInteriorViewController(this);
+            Model = personViewModel;
 
             robotMover = new RobotCartControl();
             //DroneDeliver1UC.Visibility = Visibility.Hidden;
@@ -85,7 +87,6 @@ namespace CatoriCity2025WPF.Views
             // If you need clarification, please provide the correct object that should handle CheckOut.
         }
 
-        PersonViewModel _model;
         public PersonViewModel Model
         {
             get
@@ -187,21 +188,30 @@ namespace CatoriCity2025WPF.Views
             //set in mainwindowsontroller
             cLogger.Log(" ShopItemMouse Up");
 
-
-            if (overrobot)
+            try
             {
-                _controller._isShopItemDragging = false;
-                _controller._isShopItemMouseDown = false;
-                _controller._draggedShopItemControl = null;
-                DragImage.Visibility = Visibility.Hidden;
 
-                string modelstring = UIUtility.GetFromClipboard();
-                ShopItemViewModel model = GenericSerializer.Deserialize<ShopItemViewModel>(modelstring);
-                ShoppingCartItemViewModel shoppingCartItem = new ShoppingCartItemViewModel(_controller.HardwareStoreName);
-                shoppingCartItem.ShopItem = model;
-                shoppingCartItem.Quantity = 1;
-                POSUC.AddItemToCart(shoppingCartItem);
-                //AddShoppingItem(shoppingCartItem);
+           
+                if (overrobot)
+                {
+                    _controller._isShopItemDragging = false;
+                    _controller._isShopItemMouseDown = false;
+                    _controller._draggedShopItemControl = null;
+                    DragImage.Visibility = Visibility.Hidden;
+
+                    string modelstring = UIUtility.GetFromClipboard();
+                    ShopItemViewModel model = GenericSerializer.Deserialize<ShopItemViewModel>(modelstring);
+                    ShoppingCartItemViewModel shoppingCartItem = new ShoppingCartItemViewModel(_controller.HardwareStoreName);
+                    shoppingCartItem.ShopItem = model;
+                    shoppingCartItem.Quantity = 1;
+                    POSUC.AddItemToCart(shoppingCartItem);
+                    //AddShoppingItem(shoppingCartItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log("Error in ShopItemMouseUp: " + ex.Message); 
+
             }
         }
 

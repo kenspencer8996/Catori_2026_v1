@@ -1,7 +1,4 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Views.Controls.Digging;
-using CatoriCity2025WPF.Views.Controls.Treasure;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -20,7 +17,7 @@ namespace CatoriCity2025WPF.Views
             this.Width = width;
             this.Height = height;
             _controller = new TreasureFieldViewController(this);
-            string imagePath = System.IO.Path.Combine(CityScapeGlobal.ImageFolder,"Fields", "FieldEmpty3D.png");
+            string imagePath = System.IO.Path.Combine(GlobalAllApps.ImageFolder,"Fields", "FieldEmpty3D.png");
             FieldImage.Source = UIUtility.GetImageControl(imagePath, width, height, 1).Source;
 
             landscapegroup = _controller.RandomInRangeInt(5, 6);

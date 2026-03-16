@@ -1,6 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-using System.Windows.Controls;
-using System.Windows.Threading;
+﻿using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
@@ -12,13 +10,13 @@ namespace CatoriCity2025WPF.Views.Controls
         readonly DispatcherTimer _animation_timer;
         List <string> robotImagePaths = new List<string>();
         public string SearchPattern { get; set; } = "05*.png";
-        public string ImagesFolderLeft = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Factories", "RobotArms", "Left");
-        public string restImageLeft = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Factories", "RobotArms", "00RobotArmStart.png");
+        public string ImagesFolderLeft = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factories", "RobotArms", "Left");
+        public string restImageLeft = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factories", "RobotArms", "00RobotArmStart.png");
 
 
         public string SearchPatternRight { get; set; } = "*.png";
-        public string ImagesFolderRight = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Factories", "RobotArms", "RightDrilling");
-        public string restImageRight = System.IO.Path.Combine(CityScapeGlobal.ImageFolder, "Factories", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
+        public string ImagesFolderRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factories", "RobotArms", "RightDrilling");
+        public string restImageRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factories", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
         //C:\Develpoment\Games\Images\Factories\RobotArms\RightDrilling
 
         public FactoryInterior_1UC()

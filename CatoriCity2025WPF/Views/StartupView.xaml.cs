@@ -8,6 +8,7 @@ namespace CatoriCity2025WPF.Views
     public partial class StartupView : Window
     {
         StartupViewController _controller;
+        string _version = "1.0.1";
         public StartupView()
         {
             InitializeComponent();
@@ -15,6 +16,9 @@ namespace CatoriCity2025WPF.Views
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss");
 
             cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2026WPF" + timestamp + ".Log");
+            cLogger.Log("CatoriCity2026WPF Version: " + _version);
+            Left = 0;
+            Top = 0;
         }
 
         private void CityScapeButton_Click(object sender, RoutedEventArgs e)
@@ -40,6 +44,11 @@ namespace CatoriCity2025WPF.Views
             view.Owner = this;
             view.ShowDialog();
             view.Close();
+        }
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Test button clicked!");
         }
     }
 }

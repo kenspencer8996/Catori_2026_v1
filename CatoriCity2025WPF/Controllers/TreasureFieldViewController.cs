@@ -1,7 +1,6 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views;
-using CatoriCity2025WPF.Views.Controls.Digging;
 using CatoriCity2025WPF.Views.Controls.Treasure;
 
 namespace CatoriCity2025WPF.Controllers
@@ -11,7 +10,8 @@ namespace CatoriCity2025WPF.Controllers
         TreasureFieldView _view;
         double viewMainwidth;
         double viewMainheight;
-        double startOfTopLayout = 600;
+        double topfieldboundryleft = 680;
+        double topfieldboundryright = 720;
         DragManager _dragManager;
         PersonControl person;
 
@@ -59,39 +59,83 @@ namespace CatoriCity2025WPF.Controllers
                 }
             }
             //AddTreasureSpot();
-            AddPersonControls();
+            AddPersonAndTreasureControls();
         }
 
-        private void AddPersonControls()
+        private void AddPersonAndTreasureControls()
         {
-            DigInHoleControl digInHoleControl = new DigInHoleControl(_dragManager, _view.MainLayoutField    ); 
-            _view.MainLayoutField.Children.Add(digInHoleControl);
-            double left = GetRandomInRangeDouble(1, viewMainwidth - digInHoleControl.Width);
-            double top = GetRandomInRangeDouble(startOfTopLayout, (viewMainheight - (digInHoleControl.Height-50)));
-            Canvas.SetLeft(digInHoleControl, left);
-            Canvas.SetTop(digInHoleControl, top);
-            Canvas.SetZIndex(digInHoleControl, 1100);
-            _dragManager.RegisterDropTarget(digInHoleControl);
-
+            Random rnd = new Random();
+            int randomNumber = rnd.Next(1, 10); // Generates a random number between 1 and 3 (inclusive)
+            TreasureSpotControl treasurespotControl = null;
+            double left;
+            double top;
+            cLogger.Log($"workbench width {_view.workbench.Width} _view.workbench height {_view.workbench.Height}");
+            _dragManager.RegisterDropTarget(_view.workbench);
+            
+            for (int i = 1; i <= randomNumber; i++)
+            {
+                treasurespotControl = new TreasureSpotControl();
+                _view.MainLayoutField.Children.Add(treasurespotControl);
+                left = GetRandomInRangeDouble(1, viewMainwidth - treasurespotControl.Width);
+                double topCalculationStart;
+                if (left < (viewMainwidth /2))
+                    topCalculationStart = topfieldboundryleft;
+                else
+                    topCalculationStart = topfieldboundryright;
+                cLogger.Log("Treasure spot " + i + " top calculation start: " + topCalculationStart);
+                top = GetRandomInRangeDouble(topfieldboundryleft, (viewMainheight - (treasurespotControl.Height - 50)));
+                Point point = GetValidPointForTreasureSpot(left, top, _view.workbench);
+                cLogger.Log("Treasure spot " + i + " x: " + point.X + " point: " + point.Y);
+                left = point.X;
+                top = point.Y;
+                Canvas.SetLeft(treasurespotControl, left);
+                Canvas.SetTop(treasurespotControl, top);
+                Canvas.SetZIndex(treasurespotControl, 1100);
+                _dragManager.RegisterDropTarget(treasurespotControl); 
+            }
+            
             _view.MainLayoutField.Children.Add(person);
+            Canvas.SetZIndex(person, 1102);
             left = GetRandomInRangeDouble(1, viewMainwidth - person.Width);
-            top = GetRandomInRangeDouble(startOfTopLayout, viewMainheight - digInHoleControl.Height);
+            top = GetRandomInRangeDouble(topfieldboundryright, viewMainheight - treasurespotControl.Height);
+            double personmaxtop = viewMainheight - person.Height;
+            if (top > personmaxtop)
+                    top = personmaxtop; 
             Canvas.SetLeft(person, left);
             Canvas.SetTop(person, top);
+            Canvas.SetZIndex(person, 1102);
             person.ShowPerson();
 
         }
-     
-        private void AddTreasureSpot()
+     private Point GetValidPointForTreasureSpot(double treasurespotleft, 
+         double treasurespottop,TreasureWorkBench workbench)
         {
-            TreasureSpotControl treasureSpotControl = new TreasureSpotControl();
-            _view.MainLayoutField.Children.Add(treasureSpotControl);
-             Canvas.SetZIndex(treasureSpotControl, 1100);
-            double left = GetRandomInRangeDouble(1, viewMainwidth - treasureSpotControl.Width);
-            double top = GetRandomInRangeDouble(startOfTopLayout, viewMainheight - treasureSpotControl.Height);
-            Canvas.SetLeft(treasureSpotControl, left);
-            Canvas.SetTop(treasureSpotControl, top);
+            cLogger.Log("GetValidPointForTreasureSpot - treasurespotleft: " + treasurespotleft + " treasurespottop: " + treasurespottop);
+            double workbenchoffset = 75;
+            Point resultPoint = new Point();
+            double workbenchleft = Canvas.GetLeft(_view.workbench);
+            double workbenchtop = Canvas.GetTop(_view.workbench);
+            double workbenchright = workbenchleft + _view.workbench.TableHeight;
+            double workbenchbottom = workbenchtop + _view.workbench.TableWidth;
+
+            double treasurespotmaxtopdist = workbenchtop - treasurespottop;
+            double treasurespotmaxleftdist = workbenchleft - treasurespotleft;
+            if (treasurespotmaxtopdist > 0 && treasurespotmaxtopdist < workbenchoffset)
+                treasurespottop = workbenchtop - workbenchoffset;
+            if (treasurespotmaxleftdist > 0 && treasurespotmaxleftdist < workbenchoffset)
+                treasurespotleft = workbenchleft - workbenchoffset;
+            if (treasurespotmaxtopdist > 0 && treasurespotmaxtopdist < workbenchtop)
+                treasurespottop = workbenchtop - workbenchoffset;
+            if (treasurespotmaxleftdist < workbenchoffset)
+                treasurespotleft = workbenchleft - workbenchoffset;
+
+            resultPoint.X = treasurespotleft;
+            resultPoint.Y = treasurespottop;
+
+            cLogger.Log("GetValidPointForTreasureSpot - result point x: " + resultPoint.X + " result point y: " + resultPoint.Y);
+            return resultPoint;
         }
+        
 
         private LandscapeObjectControl GetLandscapeObject(LandscapeObjectViewModel landscapeObject,
             string name)
