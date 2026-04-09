@@ -19,6 +19,15 @@ namespace CatoriCity2025WPF.Views
             cLogger.Log("CatoriCity2026WPF Version: " + _version);
             Left = 0;
             Top = 0;
+            string tooltipimagechest = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Treasure", "CHestClosed.png");
+
+            ImageTextToolTip toolTip = new ImageTextToolTip
+            {
+                Title = "Treasure Field",
+                Description = "View the treasure field to see the clues and information about the bad guys hidden treasure.",
+                Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
+            };
+            TreasureHuntButton.ToolTip = toolTip;
         }
 
         private void CityScapeButton_Click(object sender, RoutedEventArgs e)
@@ -46,9 +55,37 @@ namespace CatoriCity2025WPF.Views
             view.Close();
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Test button clicked!");
+            SettingsView view = new SettingsView();
+            view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void Factory1Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(1);
+        }
+
+        private void Factory2Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(2);
+        }
+
+        private void Factory3Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(3);
+        }
+
+        private void Factory4Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(4);
+        }
+        private void ShowFactoryView(int factoryNumber)
+        {
+            FactoryView view = new FactoryView(factoryNumber);
+            view.Owner = this;
+            view.ShowDialog();
         }
     }
 }

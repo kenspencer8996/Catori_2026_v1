@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CatoriCity2025WPF"
-             mc:Ignorable="d" x:Name="UC"
-             d:DesignHeight="450" d:DesignWidth="800" >
+             mc:Ignorable="d" x:Name="UC" 
+             d:DesignHeight="450" d:DesignWidth="800"  >
 
     <Border Padding="6" CornerRadius="6" Background="#1E1E1E" Width="{Binding ActualWidth, ElementName=UC}"
-         Height="{Binding ActualHeight, ElementName=UC}">
-        <ItemsControl ItemsSource="{Binding Lights, ElementName=root}">
+         Height="{Binding ActualHeight, ElementName=UC}" MouseDown="Border_MouseDown">
+        <ItemsControl ItemsSource="{Binding Lights, ElementName=root}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="1"/>

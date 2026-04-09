@@ -1,9 +1,7 @@
 ﻿using CatoriCity2025WPF.ExtensionMethods;
 using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Controllers
@@ -216,6 +214,7 @@ namespace CatoriCity2025WPF.Controllers
 
         private void StartupTimer_Tick(object? sender, EventArgs e)
         {
+            _startupTimer?.Stop();
             ResetPrimaryPerson(120, 120);
         }
 
@@ -943,12 +942,10 @@ namespace CatoriCity2025WPF.Controllers
         }
         private void Person_PersonMouseUp(object? sender, PrimaryPrsonDragArgg e)
         {
-            _view.isdragging = false;
         }
 
         private void Person_PersonMouseDown(object? sender, Objects.Arguments.PrimaryPrsonDragArgg e)
         {
-            _view.isdragging = true;
         }
 
         private void SetupApproachSettingPoints(LandscapeObjectViewModel featureModel)

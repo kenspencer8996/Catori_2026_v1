@@ -9,7 +9,7 @@ namespace CatoriCity2025WPF
         private readonly DispatcherTimer _timer = new();
         private readonly Random _rng = new();
         private int _chaseIndex;
-
+        public event EventHandler<EventArgs>? MouseDown;
         public LedPanel()
         {
             InitializeComponent();
@@ -18,7 +18,11 @@ namespace CatoriCity2025WPF
             Loaded += (_, __) => RebuildLights();
             Unloaded += (_, __) => _timer.Stop();
         }
-
+        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (MouseDown != null)
+                MouseDown(sender, e);
+        }
         // Exposed collection for ItemsControl binding
         public ObservableCollection<LedLight> Lights { get; } = new();
 
@@ -174,5 +178,7 @@ namespace CatoriCity2025WPF
                     }
             }
         }
+
+      
     }
 }

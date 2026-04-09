@@ -18,6 +18,8 @@
     <Grid Background="Black">
         <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Canvas Width="1920" Height="1080" Background="Black">
+                <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
+                    Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="1002" />
 
                 <Image Source="/Images/StartWorld.png"
                        Width="1920"
@@ -44,22 +46,65 @@
                         Click="TreasureHuntButton_Click"
                         ToolTip="Click to open Treasure Hunt" />
 
-                <Button x:Name="ExitButton"
-                        Style="{StaticResource MapHotspotButton}"
-                        Width="50"
-                        Height="50"
-                        Canvas.Left="5"
-                        Canvas.Top="5"
-                        Click="ExitButton_Click"
-                        ToolTip="Click to exit" />
-                <Button x:Name="TestButton"
-               Style="{StaticResource MapHotspotButton}"
-               Width="50"
-               Height="50"
-               Canvas.Left="65"
-               Canvas.Top="5"
-               Click="TestButton_Click"
-               ToolTip="Click to test" />
+
+                <Button x:Name="SettingsButton"
+                    Style="{StaticResource MapHotspotButton}"
+                    Width="250"
+                    Height="70"
+                    Canvas.Left="1430"
+                    Canvas.Top="693"
+                    Click="SettingsButton_Click"
+                    ToolTip="Click to open settings" />
+
+                <Button x:Name="Factory1Button"  Style="{StaticResource MapHotspotButton}"
+                    Width="100" Height="30" Canvas.Left="1394" Canvas.Top="183"
+                    Click="Factory1Button_Click" ToolTip="Click to open Factory 1" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="19.415"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="Factory2Button"  Style="{StaticResource MapHotspotButton}"
+             Width="145" Height="50" Canvas.Left="1582" Canvas.Top="167"
+             Click="Factory2Button_Click" ToolTip="Click to open Factory 2" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-13.749"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="Factory3Button"  Style="{StaticResource MapHotspotButton}"
+             Width="100" Height="51" Canvas.Left="1665" Canvas.Top="230"
+             Click="Factory3Button_Click" ToolTip="Click to open Factory 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-25.283"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+
+                <Button x:Name="Factory4Button"  Style="{StaticResource MapHotspotButton}"
+             Width="113" Height="30" Canvas.Left="1705" Canvas.Top="165"
+             Click="Factory4Button_Click" ToolTip="Click to open Factory 4" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="0.209"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
             </Canvas>
         </Viewbox>
     </Grid>

@@ -3,16 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views" xmlns:Treasure="clr-namespace:CatoriCity2025WPF.Views.Controls.Treasure" x:Class="CatoriCity2025WPF.Views.TreasureFieldView"
+        xmlns:local="clr-namespace:CatoriCity2025WPF.Views" xmlns:Treasure="clr-namespace:CatoriCity2025WPF.Views.Controls.Treasure" xmlns:Controls="clr-namespace:CatoriCity2025WPF.Views.Controls" x:Class="CatoriCity2025WPF.Views.TreasureFieldView"
         WindowStyle="None"
         mc:Ignorable="d" x:Name="TreasureField1View" WindowStartupLocation="CenterOwner"
         Title="TreasureFile1View" WindowState="Maximized"  Loaded="TreasureField1View_Loaded">
-    <Canvas x:Name="MainLayoutField"  Width="{Binding ActualWidth, ElementName=TreasureField1View}"
+    <Viewbox Stretch="Fill" StretchDirection="Both">
+        <Grid x:Name="MainLayout" Width="1920" Height="1080">
+            <Canvas x:Name="MainLayoutField"  Width="{Binding ActualWidth, ElementName=TreasureField1View}"
         Height="{Binding ActualHeight, ElementName=TreasureField1View}">
-        <Image x:Name="FieldImage" Source="/Images/FieldEmpty3D.png" Stretch="Fill" StretchDirection="Both"  Width="{Binding ActualWidth, ElementName=MainLayout}"
+                <Image x:Name="FieldImage" Source="/Images/FieldEmpty3D.png" Stretch="Fill" StretchDirection="Both"  Width="{Binding ActualWidth, ElementName=MainLayout}"
         Height="{Binding ActualHeight, ElementName=MainLayout}"  />
-        <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
+                <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
            Click="ExitButton_Click" ToolTip="Click to exit"  />
-        <Treasure:TreasureWorkBench x:Name="workbench" Canvas.Left="1434" Canvas.Top="598" Panel.ZIndex="1100"/>
-    </Canvas>
+                <Button x:Name="SettingsButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="60" Canvas.Top="5">
+                    <Image Source="/Images/LearnedStepsButton.png" Stretch="Uniform"/>
+                </Button>
+                <Treasure:TreasureWorkBench x:Name="workbench" Canvas.Left="1434" Canvas.Top="598" Panel.ZIndex="1100"/>
+             </Canvas>
+        </Grid>
+    </Viewbox>
 </Window>

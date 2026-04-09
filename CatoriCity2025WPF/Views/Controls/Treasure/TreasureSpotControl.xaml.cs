@@ -1,5 +1,6 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
+using System.Diagnostics;
 using System.Windows.Media.Effects;
 namespace CatoriCity2025WPF.Views.Controls.Treasure
 {
@@ -112,13 +113,7 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
             this.Effect = null;
         }
 
-        public Point GetSnapPoint(UIElement dragged)
-        {
-            var feDragged = (FrameworkElement)dragged;
-            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
-            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
-            return new Point(x, y);
-        }
+       
 
         public bool CanDrop(IDraggable element)
         {
@@ -127,17 +122,22 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
 
         public Point GetSnapPoint(IDraggable dragged)
         {
-            var feDragged = (FrameworkElement)dragged;
-            if (feDragged != null)
-            {
-                double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
-                double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
-                return new Point(x, y);
-            }
-            else
-            {
-                return new Point(0, 0);
-            }
+            FrameworkElement root = this;
+
+            // Walk up until we hit the Canvas child
+            while (root.Parent is FrameworkElement feParent && !(feParent is Canvas))
+                root = feParent;
+
+            var feDragged = (FrameworkElement)dragged.Visual;
+
+            double x = Canvas.GetLeft(root) + (root.ActualWidth - feDragged.ActualWidth) / 2;
+            double y = Canvas.GetTop(root) + (root.ActualHeight - feDragged.ActualHeight) / 2;
+            cLogger.Log($"TreasureSpotControl LEFT={Canvas.GetLeft(this)} TOP={Canvas.GetTop(this)}");
+            cLogger.Log($"Parent LEFT={Canvas.GetLeft((FrameworkElement)this.Parent)} TOP={Canvas.GetTop((FrameworkElement)this.Parent)}");
+
+            return new Point(x, y);
+
+          
         }
     }
 }

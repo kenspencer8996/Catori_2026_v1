@@ -46,8 +46,19 @@ public abstract class DropTargetUserControlBase : UserControl, IDropTarget
     public virtual Point GetSnapPoint(IDraggable draggable)
     {
         // Default: snap to top-left of this control
-        double x = Canvas.GetLeft(this);
-        double y = Canvas.GetTop(this);
+        //double x = Canvas.GetLeft(this);
+        //double y = Canvas.GetTop(this);
+        FrameworkElement root = this;
+
+        // Walk up until we hit the Canvas child
+        while (root.Parent is FrameworkElement feParent && !(feParent is Canvas))
+            root = feParent;
+
+        var feDragged = (FrameworkElement)draggable.Visual;
+
+        double x = Canvas.GetLeft(root) + (root.ActualWidth - feDragged.ActualWidth) / 2;
+        double y = Canvas.GetTop(root) + (root.ActualHeight - feDragged.ActualHeight) / 2;
+
         return new Point(x, y);
     }
 

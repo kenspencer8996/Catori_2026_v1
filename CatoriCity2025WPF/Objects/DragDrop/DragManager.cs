@@ -1,8 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using CatoriCity2025WPF.Objects.DragDrop;
 using System.Windows.Input;
-using System.Windows.Media;
-using CatoriCity2025WPF.Objects.DragDrop;
 
 public class DragManager
 {
@@ -124,6 +121,7 @@ public class DragManager
 
         bool wasDragging = _isDragging;
         _isDragging = false;
+        _currentDraggable.OnDragMouseup();
 
         _canvas.ReleaseMouseCapture();
         _physics.Stop();
@@ -243,6 +241,7 @@ public class DragManager
                 if (elementBounds.IntersectsWith(targetBounds))
                 {
                     newTarget = target;
+
                     break;
                 }
             }

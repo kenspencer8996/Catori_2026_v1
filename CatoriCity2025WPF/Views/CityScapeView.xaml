@@ -8,8 +8,7 @@
         xmlns:localUC="clr-namespace:CatoriCity2025WPF.Views.Controls"
         mc:Ignorable="d" x:Name="MainWin" 
         Title="Catori City View" Height="1080" Width="1920" Closing="MainWin_Closing" GiveFeedback="MainWin_GiveFeedback"
-        MouseDown="MainWin_MouseDown" SizeChanged="Window_SizeChanged" MouseMove="MainWin_MouseMove" MouseUp="MainWin_MouseUp"
-        WindowState="Maximized" WindowStyle="None"
+        SizeChanged="Window_SizeChanged"  WindowState="Maximized" WindowStyle="None"
          Loaded="Window_Loaded">
     <Window.Resources>
     </Window.Resources>
@@ -24,7 +23,9 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
         <StackPanel Orientation="Horizontal" Grid.Row="0"    Width="300" Height="25" x:Name="BadGuySpeedStackPanel" VerticalAlignment="Center">
-            <Label Content="Bad Guy Speed:" VerticalAlignment="Center" />
+                <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
+                    Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="10002" />
+                <Label Content="Bad Guy Speed:" VerticalAlignment="Center" />
             <Slider x:Name="BadGuyTravelSpeedSlider" Minimum="0" Foreground="Blue"
            Maximum="40"
            TickFrequency="1"
@@ -47,32 +48,11 @@
             </StackPanel>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="TreasureFieldViewButton" Width="25" Click="TreasureFile1ViewButton_Click" Margin="25,0,0,0" >
-                    <Image x:Name="UpsttowTF1Image" Source="/Images/Uparrow.png" Width="25" Height="25"/>
-                </Button>
-                <Button x:Name="SettingsViewButton" Width="25" Click="SettingsViewButton_Click" Margin="25,0,0,0" ToolTip="Settings">
-                    <Image x:Name="GearImage" Source="/Images/gear_.png" Width="25" Height="25"/>
-                </Button>
-                <Button x:Name="AboutViewButton" Content="?" Width="25" Click="AboutViewButton_Click" Margin="25,0,0,0" ToolTip="About" Background="{x:Null}">
-                </Button>
-
-                <Button x:Name="ResetButton"  Width="25" Click="ResetButton_Click" Margin="25,0,0,0" ToolTip="About" Background="{x:Null}">
-                    <Image x:Name="ResetImage" Source="/Images/ResetBlue.png" Width="25" Height="25"/>
-                </Button>
-                <localUC:TrashCanUC x:Name="TrashControl" Canvas.Left="1865" Canvas.Top="10" Height="25" Width="25"/>
-            </StackPanel>
-       
-        </StackPanel>
-        <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" 
+             <Canvas x:Name="MainLayout" Grid.Row="2" AllowDrop="True" 
                 Width="{Binding ElementName=MainWin, Path=ActualWidth}"
         Height="{Binding ElementName=MainWin, Path=ActualHeight}" 
                 Background="#FFE2F2F7" >
-        <Button x:Name="SaveLayoutButton"  Width="50" Click="SaveLayoutButton_Click">
-            <Image x:Name="SaveImage" Source="/Images/SaveButtonCool.png" Width="1720" Height="50"/>
-        </Button>
-           <Rectangle x:Name="YouStRect" Width="1720" Height="50" Fill="#FF99999E"
+        <Rectangle x:Name="YouStRect" Width="1720" Height="50" Fill="#FF99999E"
                    Canvas.Left="110" Canvas.Top="110" RadiusX="0.5" />
         <Label x:Name="YouStLabel" Content="You St" FontWeight="Bold"  Canvas.ZIndex="200" Foreground="White" Canvas.Left="300" Canvas.Top="120"/>
         <Rectangle x:Name="MikStRect" Width="1640" Height="50" Fill="#FF99999E"

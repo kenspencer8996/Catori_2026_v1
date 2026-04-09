@@ -54,12 +54,16 @@
     <None Remove="Images\HelpIcon.png" />
     <None Remove="Images\HouseDoor.png" />
     <None Remove="Images\information.png" />
+    <None Remove="Images\LearnedStepsButton.png" />
+    <None Remove="Images\Left4.png" />
     <None Remove="Images\MailBox.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
     <None Remove="Images\RealEstateOfficeExterior.png" />
     <None Remove="Images\RealEstateOfficeInterior.png" />
     <None Remove="Images\ResetBlue.png" />
+    <None Remove="Images\Right3.png" />
+    <None Remove="Images\RightRest.png" />
     <None Remove="Images\SaveButtonCool.png" />
     <None Remove="Images\Saw.png" />
     <None Remove="Images\SawChain.png" />
@@ -126,6 +130,8 @@
     <Resource Include="Images\GirlStandingRight.png" />
     <Resource Include="Images\GrasswithTreasureSpot.png" />
     <Resource Include="Images\HouseDoor.png" />
+    <Resource Include="Images\LearnedStepsButton.png" />
+    <Resource Include="Images\Left4.png" />
     <Resource Include="Images\MailBox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -136,6 +142,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\ResetBlue.png" />
+    <Resource Include="Images\Right3.png" />
+    <Resource Include="Images\RightRest.png" />
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
     <Resource Include="Images\Shovel.png" />

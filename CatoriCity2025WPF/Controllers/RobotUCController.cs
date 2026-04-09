@@ -1,7 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Views.Controls;
-
-namespace CatoriCity2025WPF.Controllers
+﻿namespace CatoriCity2025WPF.Controllers
 {
     public class RobotUCController: ControllerBase
     {

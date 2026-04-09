@@ -1,12 +1,6 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
 using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.ViewModels;
-using CityAppServices;
-using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -26,12 +20,6 @@ namespace CatoriCity2025WPF.Views
             Settingsgrid.ItemsSource = GlobalServices.Settings;
             LoadLandscapeGroups(GlobalServices.LandscapeObjecGroupid);
             SetControls();
-            ScreenBackgroundColorPicker.OnColorChanged += ScreenBackgroundColorPicker_OnColorChanged; ;
-        }
-
-        private void ScreenBackgroundColorPicker_OnColorChanged(object? sender, ColorChangedArgs e)
-        {
-            ScreenBackgroundColor = e.ColorName;
         }
 
         internal Button GetButton()
@@ -129,8 +117,7 @@ namespace CatoriCity2025WPF.Views
 
         }
         #region Color events and properties
-        public string ScreenBackgroundColor { get; set; } 
-      
+     
 
         #endregion
 
@@ -138,15 +125,7 @@ namespace CatoriCity2025WPF.Views
         {
             if (IsDirty)
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to save your setting changes?", "Save Changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Yes)
-                {
-                    _controller.SaveSettings();
-                }
-                else if (result == MessageBoxResult.Cancel)
-                {
-                    e.Cancel = true; // Cancel the closing event
-                }
+                _controller.SaveSettings();
             }
         }
 

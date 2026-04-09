@@ -244,7 +244,7 @@ namespace CatoriCity2025WPF.Views.Controls
 
         public Point GetSnapPoint(IDraggable dragged)
         {
-            throw new NotImplementedException();
+            return new Point(0, 0);
         }
     }
 }

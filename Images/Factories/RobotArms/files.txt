@@ -1,0 +1,16 @@
+ Volume in drive C is Windows
+ Volume Serial Number is EAC2-1E22
+
+ Directory of C:\Development\Gaming\Catori2026\Catori_2026_v1\Images\Factories\RobotArms
+
+RobotArmHandBlue.png       RobotArmHandGray.png
+RobotArmHandRed.png        RobotArmHandYellow.png
+RobotArmLong.png           RobotArmMediumGray.png
+RobotArmMediumRed.png      RobotArmMediumYellow.png
+robotArmShortBlue.png      robotArmShortGray.png
+robotArmShortRed.png       RobotArmShortYellow.png
+RobotBase.png              RobotBaseBlue.png
+RobotBaseGray.png          RobotBaseRed.png
+RobotBaseYellow.png        
+              17 File(s)        748,368 bytes
+               0 Dir(s)  555,447,717,888 bytes free

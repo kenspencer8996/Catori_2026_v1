@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-
-namespace CatoriCity2025WPF.ExtensionMethods
+﻿namespace CatoriCity2025WPF.ExtensionMethods
 {
     public static class UIHelper
     {
@@ -57,6 +49,30 @@ namespace CatoriCity2025WPF.ExtensionMethods
                 }
             }
             return foundChild;
+        }
+        public static List<T> FindChildrenByNamePrefix<T>(DependencyObject parent, string prefix) where T : FrameworkElement
+        {
+            var result = new List<T>();
+
+            if (parent == null || string.IsNullOrEmpty(prefix))
+                return result;
+
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T element && !string.IsNullOrEmpty(element.Name) &&
+                    element.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(element);
+                }
+
+                // Recursively search in child
+                result.AddRange(FindChildrenByNamePrefix<T>(child, prefix));
+            }
+
+            return result;
         }
     }
 }

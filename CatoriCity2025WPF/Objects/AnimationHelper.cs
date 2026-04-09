@@ -69,5 +69,7 @@ namespace CatoriCity2025WPF.Objects
             return doubleAnimation;
         }
     }
+
+
 }
 

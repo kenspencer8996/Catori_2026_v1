@@ -11,7 +11,7 @@ namespace CatoriCity2025WPF.Views.Controls
     /// <summary>
     /// Interaction logic for PersonControl.xaml
     /// </summary>
-    public partial class PersonControl : UserControl,IDraggable
+    public partial class PersonControl : UserControl, IDraggable
     {
         public event EventHandler<PrimaryPrsonDragArgg> PersonMouseDown;
         public event EventHandler<PrimaryPrsonDragArgg> PersonMouseUp;
@@ -223,17 +223,7 @@ namespace CatoriCity2025WPF.Views.Controls
                 PersonMouseUp(this, arg);
             }
         }
-        private void CaptureMouse(bool capture)
-        {
-            if (capture)
-            {
-                this.CaptureMouse();
-            }
-            else
-            {
-                this.ReleaseMouseCapture();
-            }
-        }
+       
     
 
         private void UserControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -402,10 +392,10 @@ namespace CatoriCity2025WPF.Views.Controls
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             cLogger.Log("Canvas pos: " + e.GetPosition(_hostCanvas)); 
-            var element = (UIElement)sender; 
-            element.BeginAnimation(Canvas.LeftProperty, null); 
-            element.BeginAnimation(Canvas.TopProperty, null);
-            _hostCanvas.CaptureMouse();
+            //var element = (UIElement)sender; 
+            //element.BeginAnimation(Canvas.LeftProperty, null); 
+            //element.BeginAnimation(Canvas.TopProperty, null);
+            //_hostCanvas.CaptureMouse();
             //CaptureMouse();
             _isDragging = true;
             // 1. Get click offset relative to the control
@@ -436,15 +426,15 @@ namespace CatoriCity2025WPF.Views.Controls
             //Debug.WriteLine($"Left={Canvas.GetLeft(element)}, Top={Canvas.GetTop(element)}");
 
             //_dragManager.BeginDrag(this, mouseOnCanvas, ClickOffset);
-            var mouseOnCanvas = e.GetPosition(_hostCanvas);
-            var elementTopLeft = new Point(Canvas.GetLeft(sender as UIElement),
-                                           Canvas.GetTop(sender as UIElement));
+            //var mouseOnCanvas = e.GetPosition(_hostCanvas);
+            //var elementTopLeft = new Point(Canvas.GetLeft(sender as UIElement),
+            //                               Canvas.GetTop(sender as UIElement));
 
-            _grabOffset = new Point(mouseOnCanvas.X - elementTopLeft.X,
-                                    mouseOnCanvas.Y - elementTopLeft.Y);
+            //_grabOffset = new Point(mouseOnCanvas.X - elementTopLeft.X,
+            //                        mouseOnCanvas.Y - elementTopLeft.Y);
 
-            //_dragManager.BeginDrag(this, mouseOnCanvas, _grabOffset);
-            PersonMouseDown?.Invoke(this, new PrimaryPrsonDragArgg());
+            ////_dragManager.BeginDrag(this, mouseOnCanvas, _grabOffset);
+            //PersonMouseDown?.Invoke(this, new PrimaryPrsonDragArgg());
         }
 
         private void UserControl_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -483,6 +473,10 @@ namespace CatoriCity2025WPF.Views.Controls
             {
                 cLogger.Log("Image Error : " + ex.Message);
             }
+        }
+
+        public void OnDragMouseup()
+        {
         }
     }
 }

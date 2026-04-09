@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
         xmlns:uc="clr-namespace:CatoriCity2025WPF.Views.Controls"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Settings View" Height="600" Width="1024" Closing="Window_Closing" Background="{DynamicResource MainGradient}">
+        Title="Settings View" Height="300" Width="1024" Closing="Window_Closing" Background="{DynamicResource MainGradient}">
     <Grid Background="{DynamicResource MainGradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -90,46 +90,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Colors">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200" />
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="UI Element"/>
-                            <Label Content="Color" Grid.Column="1"/>
-                            <Label Content="Screen Background Color" Grid.Row="1"/>
-                            <uc:ColorPickerUC x:Name="ScreenBackgroundColorPicker" Grid.Row="1" Grid.Column="1" />
-                        </Grid>
-                    </TabItem>
-            <TabItem Header="Tests">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="PoliceCarsButton" Content="Police Cars" Click="PoliceCarsButton_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
-                    <Button x:Name="BadPersonButton" Content="Bad person" Grid.Row="1" Click="BadPersonButton_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}"/>
-                </Grid>
-            </TabItem>
+       
             <TabItem Header="Misc">
                 <Grid>
                     <Grid>

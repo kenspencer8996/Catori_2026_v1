@@ -1,5 +1,4 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views;
 using CatoriCity2025WPF.Views.Controls.Treasure;
 
@@ -14,7 +13,13 @@ namespace CatoriCity2025WPF.Controllers
         double topfieldboundryright = 720;
         DragManager _dragManager;
         PersonControl person;
+        double workbenchleft;
+        double workbenchtop;
+        double workbenchright ;
+        double workbenchbottom ;
 
+        //get list of treasure spots  for the field
+        //have flag for whether the person has found the treasure spot or not
         public TreasureFieldViewController(TreasureFieldView view)
         {
             _view = view;
@@ -27,6 +32,11 @@ namespace CatoriCity2025WPF.Controllers
         {
             viewMainwidth = _view.Width;
             viewMainheight = _view.Height;
+            workbenchleft = Canvas.GetLeft(_view.workbench);
+            workbenchtop = Canvas.GetTop(_view.workbench);
+            workbenchright = workbenchleft + _view.workbench.TableHeight;
+            workbenchbottom = workbenchtop + _view.workbench.TableWidth;
+
             CityScapeGlobal.LandscapeUCs = new List<LandscapeObjectControl>();
             LandscapeObjectService landscapeservice = new LandscapeObjectService();
             CityScapeGlobal.LandscapeObjects = await landscapeservice.GetLandscapeObjectsAsync(landscapegroup);
@@ -71,7 +81,8 @@ namespace CatoriCity2025WPF.Controllers
             double top;
             cLogger.Log($"workbench width {_view.workbench.Width} _view.workbench height {_view.workbench.Height}");
             _dragManager.RegisterDropTarget(_view.workbench);
-            
+            Random _rand = new Random();
+
             for (int i = 1; i <= randomNumber; i++)
             {
                 treasurespotControl = new TreasureSpotControl();
@@ -82,12 +93,19 @@ namespace CatoriCity2025WPF.Controllers
                     topCalculationStart = topfieldboundryleft;
                 else
                     topCalculationStart = topfieldboundryright;
-                cLogger.Log("Treasure spot " + i + " top calculation start: " + topCalculationStart);
+                //cLogger.Log("Treasure spot " + i + " top calculation start: " + topCalculationStart);
                 top = GetRandomInRangeDouble(topfieldboundryleft, (viewMainheight - (treasurespotControl.Height - 50)));
                 Point point = GetValidPointForTreasureSpot(left, top, _view.workbench);
-                cLogger.Log("Treasure spot " + i + " x: " + point.X + " point: " + point.Y);
+                //cLogger.Log("Treasure spot " + i + " x: " + point.X + " point: " + point.Y);
                 left = point.X;
                 top = point.Y;
+                double treasurespotWidth = 200;
+                double treasurespotHeight = 65;
+                double percent = _rand.Next(5, 100) / 100.0;   // 5% to 100%
+                double wsize = treasurespotWidth * percent;
+                double hsize = treasurespotHeight * percent;
+                treasurespotControl.Width = wsize;
+                treasurespotControl.Height = hsize;
                 Canvas.SetLeft(treasurespotControl, left);
                 Canvas.SetTop(treasurespotControl, top);
                 Canvas.SetZIndex(treasurespotControl, 1100);
@@ -113,10 +131,6 @@ namespace CatoriCity2025WPF.Controllers
             cLogger.Log("GetValidPointForTreasureSpot - treasurespotleft: " + treasurespotleft + " treasurespottop: " + treasurespottop);
             double workbenchoffset = 75;
             Point resultPoint = new Point();
-            double workbenchleft = Canvas.GetLeft(_view.workbench);
-            double workbenchtop = Canvas.GetTop(_view.workbench);
-            double workbenchright = workbenchleft + _view.workbench.TableHeight;
-            double workbenchbottom = workbenchtop + _view.workbench.TableWidth;
 
             double treasurespotmaxtopdist = workbenchtop - treasurespottop;
             double treasurespotmaxleftdist = workbenchleft - treasurespotleft;

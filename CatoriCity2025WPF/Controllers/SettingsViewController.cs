@@ -1,10 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.Views;
-using CityAppServices;
-using CityAppServices.Objects.Entities;
-using System.Windows;
-using System.Windows.Controls;
+﻿using CatoriCity2025WPF.Views;
 
 namespace CatoriCity2025WPF.Controllers
 {
@@ -22,7 +16,10 @@ namespace CatoriCity2025WPF.Controllers
         }
         private void LoadGroupList()
         {
-            foreach (var landscapeObject in CityScapeGlobal.landscapeObjectGroupIds)
+            LandscapeObjectRepository repository = new LandscapeObjectRepository();
+            List<Int32> landscapeObjectGroupIds = repository.GetLandscapeObjectsGroupIds();
+
+            foreach (var landscapeObject in landscapeObjectGroupIds)
             {
                 Button landscapeObjectButton = _view.GetButton();
 

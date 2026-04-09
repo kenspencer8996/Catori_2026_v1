@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.Robots.RobotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls.Robots" 
+             mc:Ignorable="d" x:Name="RobotUC" Width="350" Height="280" Background="#01FFFFFF" >
+    <Border x:Name="MainBorder" BorderBrush="Red" BorderThickness="0" Height="{Binding ActualHeight, ElementName=RobotUC}"
+   Width="{Binding ActualWidth, ElementName=RobotUC}">
+        <Grid x:Name="MainGrid" Height="{Binding ActualHeight, ElementName=MainBorder}"
+   Width="{Binding ActualWidth, ElementName=MainBorder}">
+        <Image x:Name="RobotControlImage" Height="{Binding ActualHeight, ElementName=MainGrid}"
+            Width="{Binding ActualWidth, ElementName=MainGrid}" Source="/Images/RightRest.png" Stretch="Fill" />
+    </Grid>
+    </Border>
+</UserControl>

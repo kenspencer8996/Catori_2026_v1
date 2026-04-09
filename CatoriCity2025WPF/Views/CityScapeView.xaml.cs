@@ -1,5 +1,4 @@
 ﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -18,8 +17,6 @@ namespace CatoriCity2025WPF
         DepositService _depositService = new DepositService();
         StatusControl1 statusUC = new StatusControl1();
         Point mouseOffset;
-        public bool isdragging = false;
-        public bool isMouseDown = false;
         private Point _previousPosition; // Stores the last mouse position
         private bool _isFirstMove = true; // To skip direction check on first move
         private readonly DispatcherTimer _mouseStopTimer;
@@ -60,16 +57,8 @@ namespace CatoriCity2025WPF
             Title = "Catori City Game 2026";
             _controller = new CityScapeViewController(this);
 
-            string tooltipimagechest = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Treasure","CHestClosed.png");
 
-            ImageTextToolTip toolTip = new ImageTextToolTip
-            {
-                Title = "Treasure Field",
-                Description = "View the treasure field to see the clues and information about the bad guys hidden treasure.",
-                Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
-            };
-            TreasureFieldViewButton.ToolTip = toolTip;
-            
+             
             _mouseStopTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(500) // delay after last movement
@@ -350,31 +339,10 @@ namespace CatoriCity2025WPF
     
         private void SettingsViewButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsView view = new SettingsView();
-            view.Owner = this;
-            view.OnLandscapeGroupChange += View_OnLandscapeGroupChange;
-            view.ShowDialog();
-            if (view.ScreenBackgroundColor != null)
-            {
-                MainLayoutBackground = UIUtility.GetSolidColorBrush(view.ScreenBackgroundColor);
-                SettingEntity setting = new SettingEntity();
-                setting.Name = "ScreenBackgroundColor";
-                setting.StringSetting = view.ScreenBackgroundColor;
-                GlobalServices.Settings.Add(setting);
-            }
+           
         }
 
-        private void View_OnLandscapeGroupChange(object? sender, Objects.Arguments.ReloadLandscapeSettingsArg e)
-        {
-            var childrenToRemove = MainLayout.Children.OfType<LandscapeObjectControl>().ToList();
-
-            // Remove each child from the canvas
-            foreach (var child in childrenToRemove)
-            {
-                MainLayout.Children.Remove(child);
-            }
-            _controller.LoadLandscapeObjects();
-        }
+       
 
         private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
         {
@@ -488,154 +456,13 @@ namespace CatoriCity2025WPF
             view.ShowDialog();
         }
         #region Mouse events 
-      
+
         private void MainWin_MouseMove(object sender, MouseEventArgs e)
         {
-            //var pt = e.GetPosition(this);
-            //_mouseStopTimer.Stop();  // reset timer to detect if mouse stopped
-            //_mouseStopTimer.Start();
-
-            //cLogger.Log("MainWin_MouseMove main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
-            // Get mouse position relative to the window
-            //Point relativePoint = e.GetPosition(MainLayout);
-            //if (_dragManager.IsDragging) 
-            //{ 
-            var p1 = e.GetPosition(CityScapeGlobal.CityScapeView.MainLayout); 
-            var p2 = CityScapeGlobal.CityScapeView.MainLayout.TranslatePoint(new Point(0, 0), Application.Current.MainWindow);
-            //cLogger.Log($"mouse={p1} canvasToWindow={p2}");
-
-            var cursor = e.GetPosition(MainLayout);
-            if (isdragging == true)
-            {
-                var screenPos = Mouse.GetPosition(null); // screen coords
-                var canvasPos = CityScapeGlobal.CityScapeView.MainLayout.PointFromScreen(screenPos); // convert to canvas coords
-                //_dragManager.UpdateDrag(canvasPos);
-               // cLogger.Log($" UpdateDrag  cursor x y: {cursor.X}  cursor.Y {cursor.Y} ");
-
-            }
-            //}
-            //double xpos = relativePoint.X;
-            //double toppos = relativePoint.Y;
-            //Point personpoint = e.GetPosition(_controller.primaryPerson);
-            //Point currentPosition = e.GetPosition(this);
-
-            //double deltaX = currentPosition.X - _previousPosition.X;
-            //double deltaY = currentPosition.Y - _previousPosition.Y;
-            // Skip direction detection on the very first move
-            //if (_isFirstMove)
-            //{
-            //    //_previousPosition = currentPosition;
-            //    //_isFirstMove = false;
-            //    //deltaX = 0;
-            //    //deltaY = 0;
-            //    //_controller.primaryPerson.StopAnimation();
-            //    return;
-            //}
-
-
-            //if (isdragging== false && isMouseDown)
-            //    isdragging = UIUtility.CheckMouseMoveForDrag(relativePoint, personpoint);
-            //if (isdragging)
-            //{
-            //     var cursorPerson = e.GetPosition(MainLayout);
-            //   _dragManager.UpdateDrag(cursorPerson);
-            //}
-            //if (_controller.MovePerson)
-            //{ 
-            //if (isMouseDown == false)
-            //    isdragging = false;
-            //if (isdragging == true && _controller.primaryPerson != null)
-            //{
-            //double personwidth = _controller.primaryPerson.PersonImage.ActualWidth;
-            //double personheight = _controller.primaryPerson.PersonImage.ActualHeight;
-            //double halfwidth = personwidth / 2;
-            //double halfheight = personheight / 2;
-            //double finalx = xpos - halfwidth;
-            //double finaltop = toppos - halfheight;
-            //SetTop(_controller.primaryPerson, finaltop);
-            //MouseDirectionEnum direction = GetDirection(deltaX, deltaY);
-            //switch (direction)
-            //{
-            //    case MouseDirectionEnum.Up:
-            //    case MouseDirectionEnum.Down:
-            //    case MouseDirectionEnum.Left:
-            //        _controller.primaryPerson.WalkLeft();
-            //        break;
-            //    case MouseDirectionEnum.Right:
-            //        _controller.primaryPerson.WalkRight();
-            //        break;
-            //    case MouseDirectionEnum.UpLeft:
-            //        _controller.primaryPerson.WalkLeft();
-            //        break;
-            //    case MouseDirectionEnum.UpRight:
-            //        _controller.primaryPerson.WalkRight();
-            //        break;
-            //    case MouseDirectionEnum.DownLeft:
-            //        _controller.primaryPerson.WalkLeft();
-            //        break;
-            //    case MouseDirectionEnum.DownRight:
-            //        _controller.primaryPerson.WalkRight();
-            //        break;
-            //    case MouseDirectionEnum.None:
-            //        _controller.primaryPerson.StopAnimation();
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //}
-
-        }
-        /// <summary>
-        /// Determines the direction based on X and Y deltas.
-        /// </summary>
-        private MouseDirectionEnum GetDirection(double deltaX, double deltaY)
-        {
-            MouseDirectionEnum result = MouseDirectionEnum.None;
-            const double threshold = 1.0; // Ignore tiny movements
-            bool isset = false;
-            if (Math.Abs(deltaX) < threshold && Math.Abs(deltaY) < threshold)
-            {
-                result = MouseDirectionEnum.None;
-                return result; // No significant movement
-            }
-
-            if (Math.Abs(deltaX) > Math.Abs(deltaY))
-            {
-                isset = true;
-                if (deltaX > 0)
-                    result = MouseDirectionEnum.Right;
-                else
-                {
-                    result = MouseDirectionEnum.Left;
-                }
-            }
-            else if( isset == false)
-            {
-                if (deltaY > 0)
-                    result = MouseDirectionEnum.Down;
-                else
-                {
-                    result = MouseDirectionEnum.Up;
-                }
-            }
-            if (isset == false)
-            {
-                // Diagonal movement
-                if (deltaX > 0 && deltaY > 0) result = MouseDirectionEnum.DownRight;
-                if (deltaX < 0 && deltaY > 0) result = MouseDirectionEnum.DownLeft;
-                if (deltaX > 0 && deltaY < 0) result = MouseDirectionEnum.UpRight ;
-                if (deltaX < 0 && deltaY < 0) result = MouseDirectionEnum.UpLeft;
-            }
-            return result;
         }
         private void MainWin_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var pt = e.GetPosition(this);
-            isMouseDown = true;
-            mouseOffset = e.GetPosition(_controller.primaryPerson);
-            isdragging = true;
-            //cLogger.Log("MainWin_MouseDown main x y" + pt.X.ToString() + "  " + pt.Y.ToString());
-
+ 
         }
         #endregion
 
@@ -643,14 +470,7 @@ namespace CatoriCity2025WPF
 
         private void MainWin_MouseUp(object sender, MouseButtonEventArgs e)
         {
-           // isMouseDown = false;
-           // GlobalStuff.MainView.MainLayout.ReleaseMouseCapture();
-           //_dragManager.EndDrag(e.GetPosition(MainLayout));
-           // _dragManager.
-           //if (isdragging)
-           // {
-           //     //Mouse.Capture(null);
-           // }
+           
         }
 
         private void MainWin_GiveFeedback(object sender, GiveFeedbackEventArgs e)
@@ -661,10 +481,11 @@ namespace CatoriCity2025WPF
 
         private void MainLayout_MouseMove(object sender, MouseEventArgs e)
         {
-            //if (!isdragging || _controller.primaryPerson == null) return; 
-            //var p = e.GetPosition(MainLayout); 
-            //Canvas.SetLeft(_controller.primaryPerson, p.X - _controller.primaryPerson._grabOffset.X);
-            //Canvas.SetTop(_controller.primaryPerson, p.Y - _controller.primaryPerson._grabOffset.Y);
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 
