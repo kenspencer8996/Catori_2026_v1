@@ -7,6 +7,18 @@ namespace CatoriCity2025WPF.Objects
     {
 
         private static string SavedClipboard = "";
+
+        public static Point GetCenteredCanvasPoint(FrameworkElement item)
+        {
+            Point CenteredPoint = new Point();
+            double left = Canvas.GetLeft(item);
+            double top = Canvas.GetTop(item);
+            left = left + item.Width / 2;
+            top = top + item.Height / 2;
+            CenteredPoint = new Point(left, top);
+
+            return CenteredPoint;
+        }
         public static bool CheckMouseMoveForDrag(Point current, Point startposition)
         {
             bool result = false;
@@ -121,6 +133,31 @@ namespace CatoriCity2025WPF.Objects
         {
             Brush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(screenBackgroundColor));
             return brush;
+        }
+
+        /// <summary>
+        /// Finds the first parent of the specified type in the visual tree.
+        /// </summary>
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            if (child == null) return null;
+
+            // Get the immediate parent
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            // If no parent, return null
+            if (parentObject == null) return null;
+
+            // Check if the parent matches the type
+            if (parentObject is T parent)
+            {
+                return parent;
+            }
+            else
+            {
+                // Recursively search up the tree
+                return FindParent<T>(parentObject);
+            }
         }
     }
 }

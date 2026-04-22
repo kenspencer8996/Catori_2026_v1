@@ -29,18 +29,14 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Learn Mode"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       Margin="0,0,0,8"/>
-
-                <CheckBox Grid.Row="1"
-                      Content="Auto Run"
-                      IsChecked="{Binding IsAutoRunEnabled}"
-                      Margin="0,0,0,10"/>
-
+                <TextBlock Text="Learn Mode" FontSize="22"
+                       FontWeight="Bold" Margin="0,0,0,8"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <CheckBox x:Name="SelectAllCheckBox" VerticalAlignment="Center"
+                      Content="Select All" Margin="20,0,0,0" Checked="SelectAllCheckBox_Checked"/>
+                </StackPanel>
                 <GroupBox Grid.Row="2" Header="Current Steps" Margin="0,0,0,10">
-                    <ListBox ItemsSource="{Binding LearnedSteps}"
+                    <ListBox x:Name="RecordedStepsListbox" ItemsSource="{Binding LearnedSteps}" MinHeight="100" SelectionChanged="RecordedStepsListbox_SelectionChanged"
                          SelectedItem="{Binding SelectedStep}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -58,19 +54,19 @@
 
                 <StackPanel Grid.Row="3" Margin="0,0,0,10">
                     <WrapPanel>
-                        <Button Content="Run Step" Width="90" Margin="4"/>
-                        <Button Content="Run All" Width="90" Margin="4"/>
-                        <Button Content="Add" Width="70" Margin="4"/>
-                        <Button Content="Remove" Width="70" Margin="4"/>
-                        <Button Content="Clear" Width="70" Margin="4"/>
+                        <Button Content="Run Step" x:Name="RunStepButton" Click="RunStepButton_Click" Width="90" Margin="4"/>
+                        <Button Content="Run All" x:Name="RunAllButton" Click="RunAllButton_Click" Width="90" Margin="4"/>
+                        <Button Content="Save" x:Name="SaveButton" Width="70" Margin="4" Click="SaveButton_Click" />
+                        <Button Content="Remove" x:Name="RemoveButton" Click="RemoveButton_Click" Width="70" Margin="4"/>
+                        <TextBox x:Name="numberOfSpotsToRunTextbox" MinWidth="50" Text="0" VerticalAlignment="Center" />
+                        <Label Content="running:" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                        <Label x:Name="RunningCountLabel" Content="0" VerticalAlignment="Center" Margin="4,0,0,0"/>
                     </WrapPanel>
                 </StackPanel>
 
-                <GroupBox Grid.Row="4" Header="Money">
+                <GroupBox Grid.Row="4" Header="Money from treasure">
                     <StackPanel Margin="6">
                         <TextBlock Text="{Binding CashDisplay}" Margin="0,2"/>
-                        <TextBlock Text="{Binding SavingsDisplay}" Margin="0,2"/>
-                        <TextBlock Text="{Binding InterestDisplay}" Margin="0,2"/>
                     </StackPanel>
                 </GroupBox>
             </Grid>

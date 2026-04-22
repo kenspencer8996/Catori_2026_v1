@@ -20,6 +20,7 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         string openChest2;
         string openChestFullOpen;
         double currentValue;
+        bool spothastreasure;
         public TreasureWorkBench()
         {
             InitializeComponent();
@@ -44,6 +45,11 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
             SetValuableImage();
             currentValue = GetTreasureValue();
             ValuablesImage.ToolTip = currentValue.ToString();
+
+            WeakReferenceMessenger.Default.Register<WorkbenchArgs>(this, (r, m) =>
+            {
+                spothastreasure = m.HasTreasure;
+            });
         }
 
         private void SetValuableImage()
@@ -198,7 +204,12 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
                     person.ShowPersonStandingNoChest();
                     SetupTreasureChest();
                     person.isCarryingChest = false;
-                }
+                    TreasureStepArgs args = new TreasureStepArgs();
+                    args.Name = this.Name;
+                    args.TreasureStep = TreasureStepEnum.WalkToWorkbench;
+                    WeakReferenceMessenger.Default.Send(args);
+                 }
+            
             }
             catch (Exception ex)
             {

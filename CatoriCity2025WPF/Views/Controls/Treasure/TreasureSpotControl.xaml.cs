@@ -1,6 +1,7 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
-using System.Diagnostics;
+using CommunityToolkit.Mvvm.Messaging;
+using System.Windows.Input;
 using System.Windows.Media.Effects;
 namespace CatoriCity2025WPF.Views.Controls.Treasure
 {
@@ -14,12 +15,23 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         public List<string> DirtSpots { get; set; }
  
         string RawSpot = "";
-        public TreasureSpotControl()
+        public bool HasTreasure { get; set; }= true;
+        public Canvas _hostCanvas;
+        Point _locOnParent;
+        public TreasureSpotControl(Canvas hostCanvas)
         {
             InitializeComponent();
+            _hostCanvas = hostCanvas;
+            if (GlobalAllApps.showDebugInfo)
+                DebugLabel.Visibility = Visibility.Visible;
+            else
+                DebugLabel.Visibility = Visibility.Collapsed;
             LoadDirtSpots();
         }
-
+        private void UC_Loaded(object sender, RoutedEventArgs e)
+        {
+            TreasureSpotImage.Source = UIUtility.GetImageControl(System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Fields", "DirtSpot.png"), 50, 50, 0).Source;
+        }
         private void LoadDirtSpots()
         {
             DirtSpots = new List<string>();
@@ -65,11 +77,7 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
             }
         }
 
-        private void UC_Loaded(object sender, RoutedEventArgs e)
-        {
-            TreasureSpotImage.Source = UIUtility.GetImageControl(System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Fields", "DirtSpot.png"), 50, 50, 0).Source;
-
-        }
+       
 
         internal void DiggerCycleComplete()
         {
@@ -93,8 +101,14 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
                 double personTop = thisTop - 110;
                 Canvas.SetLeft(person, personLeft);
                 Canvas.SetTop(person, personTop);
-                person.StartDiggingAnimation(totalSpotsCount); 
-            }
+                person.StartDiggingAsync();
+
+                TreasureStepArgs args = new TreasureStepArgs();
+                args.ClearList = true;
+                args.Name = this.Name;
+                args.TreasureStep = TreasureStepEnum.WalkToTreasureSpot;
+                WeakReferenceMessenger.Default.Send(args);
+              }
         }
         public void HighlightOn()
         {
@@ -138,6 +152,33 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
             return new Point(x, y);
 
           
+        }
+        public void ShowPositon(Point thisloc)
+        { 
+            _locOnParent = thisloc;
+            string debugInfo = $"loc: X={thisloc.X.ToString("F4")} Y={thisloc.Y.ToString("F4")}";
+            DebugLabel.Content = debugInfo;
+
+        }
+        private void MainLayoutTreasureSpot_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            ShowPositon(e.GetPosition(_hostCanvas));
+        }
+
+        private void GlowBorder_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UC_Loaded_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DebugLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText($"TreasureSpotControl: {DebugLabel.Content}");
+
         }
     }
 }

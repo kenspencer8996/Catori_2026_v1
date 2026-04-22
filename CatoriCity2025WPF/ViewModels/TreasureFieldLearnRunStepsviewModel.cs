@@ -1,10 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CatoriCity2025WPF.Objects.Arguments;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 namespace CatoriCity2025WPF.ViewModels
 {
     public class TreasureFieldLearnRunStepsviewModel : ObservableObject
     {
-        public ObservableCollection<LearnedStepModel> LearnedSteps { get; } = new();
+        private ObservableCollection<LearnedStepModel> _learnedSteps = new();
+        public ObservableCollection<LearnedStepModel> LearnedSteps
+        {
+            get => _learnedSteps;
+            set => SetProperty(ref _learnedSteps, value);
+        }
         public bool IsStickyAcrossRuns { get; set; } = true;
 
         private LearnedStepModel? _selectedStep;
@@ -32,5 +38,44 @@ namespace CatoriCity2025WPF.ViewModels
             }
         }
         public string CashDisplay => $"Cash: {CashTreasure:C}";
-      }
+
+        internal void AddStep(TreasureStepArgs value)
+        {
+            if (value.ClearList == true)
+            {
+                LearnedSteps.Clear();
+            }
+            LearnedStepModel learnedStep = new LearnedStepModel();
+            learnedStep = GetLearnedStepModel(value);
+           
+            // LearnedSteps.Add(learnedStepwalk);
+            LearnedSteps.Add(learnedStep);
+            cLogger.Log($"Adding step: {value.StepNumber} - {value.Name} - {LearnedSteps.Count}", value.StepNumber.ToString(), value.Name, LearnedSteps.Count);
+
+        }
+        private LearnedStepModel GetLearnedStepModel(TreasureStepArgs value)
+        {
+            LearnedStepModel learnedStep = new LearnedStepModel();
+            learnedStep.Name = value.Name;
+            learnedStep.TreasureStep = value.TreasureStep;
+            switch (value.TreasureStep)
+            {
+                case TreasureStepEnum.WalkToTreasureSpot:
+                    learnedStep.DisplayName = "Walk to Treasure Spot";
+                    learnedStep.StepNumber = 1;
+                    break;
+                  case TreasureStepEnum.WalkToWorkbench:
+                    learnedStep.DisplayName = "Workbench";
+                    learnedStep.StepNumber = 3;
+                    break;
+                  case TreasureStepEnum.Bank:
+                    learnedStep.DisplayName = "Bank";
+                    learnedStep.StepNumber = 5;
+                    break;
+                default:
+                    break;
+            }
+            return learnedStep;
+        }
+    }
 }

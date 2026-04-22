@@ -43,6 +43,8 @@ namespace CatoriCity2025WPF.Views.Controls
         Canvas _hostCanvas;
         public Point ClickOffset;
         public bool isCarryingChest = false;
+        Point _locOnParent;
+
         public TimeSpan AnimationFrameInterval
         {
             get => _animation_timer.Interval;
@@ -80,8 +82,14 @@ namespace CatoriCity2025WPF.Views.Controls
                 MainBorder.BorderThickness = new Thickness(1);
                 MainBorder.BorderBrush = Brushes.Red;
             }
+
             LoadImageLists();
-            CurrentImages= WalkingRightImages;
+            if (GlobalAllApps.showDebugInfo)
+                DebugLabel.Visibility = Visibility.Visible;
+            else
+                DebugLabel.Visibility = Visibility.Collapsed;
+
+            CurrentImages = WalkingRightImages;
             _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
             LoadDiggerImagesList();
             _animation_timer.Tick += _animation_timer_Tick;
@@ -240,16 +248,83 @@ namespace CatoriCity2025WPF.Views.Controls
 
         }
 
-       
-        public void StartDiggingAnimation(int dirtindex)
+        private TaskCompletionSource<bool>? _digTcs;
+        private DispatcherTimer? _digTimer;
+        private int _digFrame;
+
+        public Task StartDiggingAsync()
         {
-            _dirtindex = dirtindex;
             isCarryingChest = true;
             _digMode = true;
             _currentDiggerIndex = 0;
             Opacity = 1;
-            _animationDigger_timer.Start();
+            if (_digTcs != null && !_digTcs.Task.IsCompleted)
+                return _digTcs.Task;
+
+            _digTcs = new TaskCompletionSource<bool>();
+            _digFrame = 0;
+
+            _digTimer ??= new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(120)
+            };
+
+            _digTimer.Stop();
+            _digTimer.Tick -= DigTimer_Tick;
+            _digTimer.Tick += DigTimer_Tick;
+            _digTimer.Start();
+
+            return _digTcs.Task;
         }
+
+        private void DigTimer_Tick(object? sender, EventArgs e)
+        {
+            int totalPositions = _diggerpositions.Count();
+            if (_currentDiggerIndex <= totalPositions - 1)
+            {
+                try
+                {
+                    string filePath = Path.Combine(GlobalAllApps.ImageFolder, "PrimaryPeople\\Digging", _diggerpositions[_currentDiggerIndex]);
+
+                    PersonImage.Source = UIUtility.GetImageControl(filePath, 200, 80, 300).Source;
+
+                }
+                catch (Exception ex)
+                {
+                    cLogger.Log("Image Error : " + ex.Message);
+                }
+                if (_currentDiggerIndex == totalPositions - 1)
+                {
+                    _animationDigger_timer.Stop();
+                    _currentDiggerIndex = 0;
+                    _animationLiftChest_timer.Start();
+                    _digTimer?.Stop();
+                    _digTcs?.TrySetResult(true);
+                    if (DiggerCycleComplete != null)
+                    {
+                        DiggerCompleteCycleArgs args = new DiggerCompleteCycleArgs();
+                        DiggerCycleComplete(this, args);
+                    }
+                }
+            }
+
+            _currentDiggerIndex++;
+
+            //if (_currentDiggerIndex >= 8)
+            //{
+            //    _digTimer?.Stop();
+            //    _digTcs?.TrySetResult(true);
+            //}
+        }
+        //public void StartDiggingAnimation(int dirtindex)
+        //{
+        //    _dirtindex = dirtindex;
+        //    isCarryingChest = true;
+        //    _digMode = true;
+        //    _currentDiggerIndex = 0;
+        //    Opacity = 1;
+        //    _animationDigger_timer.Start();
+        //}
         public void StopDigging()
         {
             _digMode = false;
@@ -478,5 +553,18 @@ namespace CatoriCity2025WPF.Views.Controls
         public void OnDragMouseup()
         {
         }
+
+        private void DebugLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText($"PersonControl: {DebugLabel.Content}");
+        }
+        public void ShowPositon(Point thisloc)
+        {
+            _locOnParent = thisloc;
+            string debugInfo = $"loc: X={thisloc.X.ToString("F4")} Y={thisloc.Y.ToString("F4")}";
+            DebugLabel.Content = debugInfo;
+
+        }
+
     }
 }

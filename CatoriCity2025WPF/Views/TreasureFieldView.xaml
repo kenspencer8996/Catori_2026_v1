@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriCity2025WPF.Views" xmlns:Treasure="clr-namespace:CatoriCity2025WPF.Views.Controls.Treasure" xmlns:Controls="clr-namespace:CatoriCity2025WPF.Views.Controls" x:Class="CatoriCity2025WPF.Views.TreasureFieldView"
-        WindowStyle="None"
+        WindowStyle="None" MouseMove="TreasureField1View_MouseMove"
         mc:Ignorable="d" x:Name="TreasureField1View" WindowStartupLocation="CenterOwner"
         Title="TreasureFile1View" WindowState="Maximized"  Loaded="TreasureField1View_Loaded">
     <Viewbox Stretch="Fill" StretchDirection="Both">
@@ -15,7 +15,7 @@
         Height="{Binding ActualHeight, ElementName=MainLayout}"  />
                 <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="5" Canvas.Top="5" 
            Click="ExitButton_Click" ToolTip="Click to exit"  />
-                <Button x:Name="SettingsButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="60" Canvas.Top="5">
+                <Button x:Name="ShowStepsButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="60" Canvas.Top="5" Click="ShowStepsButton_Click" ToolTip="Show learned steps panel">
                     <Image Source="/Images/LearnedStepsButton.png" Stretch="Uniform"/>
                 </Button>
                 <Treasure:TreasureWorkBench x:Name="workbench" Canvas.Left="1434" Canvas.Top="598" Panel.ZIndex="1100"/>

@@ -3,7 +3,8 @@
     internal class GlobalAllApps
     {
         public static string _imageFolder = "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images";
-
+        public static bool showDebugInfo = false;
+        public static bool LearnMode { get; set; } = false;
         public static PersonViewModel CurrentPerson { get; set; }
         public static List<PersonViewModel> AllPersons { get; set; } = new List<PersonViewModel>();
         public static string ImageFolder

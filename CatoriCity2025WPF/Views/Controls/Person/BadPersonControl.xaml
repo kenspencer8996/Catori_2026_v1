@@ -10,6 +10,9 @@
         <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderBrush="#FFF11111" SizeChanged="MainBorder_SizeChanged" >
             <Image x:Name="MainImage" 
                    Height="{Binding ElementName=BadPersonControlUC,Path=ActualHeight}" Width="{Binding ElementName=BadPersonControlUC,Path=ActualWidth}" />
+            
         </Border>
+        <Label x:Name="DebugLabel" Visibility="Hidden" Content="Debug" FontSize="14" Panel.ZIndex="1020" Foreground="#FFF9F9F9" Background="#FFFD0707" Height="28"/>
+
     </Canvas>
 </UserControl>

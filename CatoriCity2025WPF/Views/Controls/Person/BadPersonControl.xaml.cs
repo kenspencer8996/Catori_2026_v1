@@ -21,6 +21,7 @@ namespace CatoriCity2025WPF.Views.Controls
         readonly DispatcherTimer _animation_timer;
         internal BadPersonImageTypeEnum _currentImageType = BadPersonImageTypeEnum.WalkingLeft;
         int _imageindex;
+        //DebugLabel.Visibility = Visibility.Hidden;
         BankViewModel CurrentTargetBank;
         /// <summary>
         /// Interval between frames. Default 500ms.

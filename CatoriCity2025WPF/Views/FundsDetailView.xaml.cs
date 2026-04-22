@@ -12,8 +12,9 @@ namespace CatoriCity2025WPF.Views
         {
             InitializeComponent();
 
-            DepositAmountTextBox.Text = depositAmount.ToString();
             _controller = new FundsDetailViewController(this);
+            DepositAmountTextBox.Text = depositAmount.ToString();
+
         }
 
         private void DepositAmountTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

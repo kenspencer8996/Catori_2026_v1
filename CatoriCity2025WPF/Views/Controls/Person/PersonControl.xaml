@@ -17,6 +17,7 @@
                 </ContextMenu>
             </Canvas.ContextMenu>
             <Image x:Name="PersonImage" Width="80" Height="200" Source="/Images/GirlStandingRight.png"  />
+            <Label x:Name="DebugLabel" Visibility="Visible" Content="Debug" FontSize="14" Panel.ZIndex="1020" Foreground="#FFF9F9F9" Background="#FFFD0707" Height="28" MouseDown="DebugLabel_MouseDown"/>
         </Canvas>
     </Border>
 </UserControl>

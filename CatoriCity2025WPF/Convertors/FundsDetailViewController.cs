@@ -1,12 +1,6 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Views;
-using CatoriServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Net.WebSockets;
 
 namespace CatoriCity2025WPF.Convertors
 {
@@ -18,6 +12,8 @@ namespace CatoriCity2025WPF.Convertors
         List<DepositViewModel> _depositscurrent;
         PersonViewModel _personViewModel;
         PersonService _personService;
+        private BankService _bankService;
+
         int _personId;
         decimal _depositAmount;
         DepositService depositservice;
@@ -29,6 +25,7 @@ namespace CatoriCity2025WPF.Convertors
             _view = view;
             _personViewModel = GlobalAllApps.CurrentPerson;
             _personId = _personViewModel.PersonId;
+            _bankService = new BankService();
             _view.DepositButton.IsEnabled = false;
             depositservice = new DepositService();
             _fundsViewModel = new FundsViewModel
@@ -40,10 +37,10 @@ namespace CatoriCity2025WPF.Convertors
             _view.DataContext = _fundsViewModel;
             depositservice = new DepositService();
             LoadDepositsForPerson(_personId);
-            var banks = CityScapeGlobal.Banks;
+            var banks = _bankService.GetAllAsync();
             _view.BankStackComboBox.SelectedValuePath = "Name";
             _view.BankStackComboBox.DisplayMemberPath = "Name";
-            _view.BankStackComboBox.ItemsSource =banks;
+            _view.BankStackComboBox.ItemsSource =banks.Result;
 
       
             if (_depositViewModel != null)

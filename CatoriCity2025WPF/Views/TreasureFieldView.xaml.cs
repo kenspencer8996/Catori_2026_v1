@@ -32,5 +32,14 @@ namespace CatoriCity2025WPF.Views
         {
             this.Close();
         }
+        private void ShowStepsButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.ToggleStepsPanel();
+        }
+
+        private void TreasureField1View_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _controller.MouseMove(e);
+        }
     }
 }

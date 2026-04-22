@@ -91,6 +91,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Adapters\" />
     <Folder Include="Objects\Graphics\" />
     <Folder Include="Views\Controls\B\" />
     <Folder Include="Views\Controls\Digging\" />

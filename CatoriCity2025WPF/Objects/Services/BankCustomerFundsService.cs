@@ -1,8 +1,4 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriServices.Objects.database;
-using CatoriServices.Objects.Entities;
-
-namespace CatoriCity2025WPF.Objects.Services
+﻿namespace CatoriCity2025WPF.Objects.Services
 {
     /// <summary>
     /// Thin service forwarding calls to <see cref="BankCustomerFundsRepository"/>.

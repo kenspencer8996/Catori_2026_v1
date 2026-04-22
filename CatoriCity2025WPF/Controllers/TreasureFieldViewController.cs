@@ -1,12 +1,15 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriCity2025WPF.Controllers.Helpers;
+using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Views;
 using CatoriCity2025WPF.Views.Controls.Treasure;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace CatoriCity2025WPF.Controllers
 {
     public class TreasureFieldViewController
     {
-        TreasureFieldView _view;
+        internal TreasureFieldView _view;
         double viewMainwidth;
         double viewMainheight;
         double topfieldboundryleft = 680;
@@ -17,16 +20,52 @@ namespace CatoriCity2025WPF.Controllers
         double workbenchtop;
         double workbenchright ;
         double workbenchbottom ;
-
+        TreasureFieldViewControllerStepRunner runstepshelper;
+        List<TreasureSpotDetailModel> treasurespots = new List<TreasureSpotDetailModel>();
+        public TreasureFieldLearnRunStepsControl treasureFieldLearnRunSteps;
         //get list of treasure spots  for the field
         //have flag for whether the person has found the treasure spot or not
         public TreasureFieldViewController(TreasureFieldView view)
         {
             _view = view;
             _dragManager = GlobalCode.GetDragmanager(_view.MainLayoutField);
-
             person = new PersonControl(GlobalAllApps.CurrentPerson, _dragManager, _view.MainLayoutField);
+            runstepshelper= new TreasureFieldViewControllerStepRunner(person,this);
+            TreasureFieldLearnRunStepsviewModel model = new TreasureFieldLearnRunStepsviewModel();
+            treasureFieldLearnRunSteps = new TreasureFieldLearnRunStepsControl(model);
+            treasureFieldLearnRunSteps.Visibility = Visibility.Hidden;
+            _view.MainLayoutField.Children.Add(treasureFieldLearnRunSteps);
+             Canvas.SetZIndex(treasureFieldLearnRunSteps, 1200);
+             Canvas.SetLeft(treasureFieldLearnRunSteps, 50);
+             Canvas.SetTop(treasureFieldLearnRunSteps, 50);
+            treasureFieldLearnRunSteps.RunSteps += TreasureFieldLearnRunSteps_RunSteps;
+            
+            cLogger.Log("view width: " + _view.MainLayoutField.ActualWidth + ", view height: " + _view.MainLayoutField.ActualHeight);
         }
+
+        private async void TreasureFieldLearnRunSteps_RunSteps(object? sender, LearnedStepRunArgument e)
+        {
+            await runstepshelper.RunRecordedStepsAsync(e);
+        }
+
+        internal void ShowRunUpdate(string update)
+        {
+            treasureFieldLearnRunSteps.RunningCountLabel.Content = update;
+        }   
+        private void AddTreasureAmountToPersonFunds(decimal funds)
+        {
+            GlobalAllApps.CurrentPerson.Funds += funds;
+        }
+        private void StartDigging()
+        {
+            person.StartDiggingAsync();
+        }
+        private void OpenChest()
+        {
+            _view.workbench.OpenChest();
+        }
+
+ 
 
         public async Task LoadLandscapeAsync(int landscapegroup)
         {
@@ -36,6 +75,7 @@ namespace CatoriCity2025WPF.Controllers
             workbenchtop = Canvas.GetTop(_view.workbench);
             workbenchright = workbenchleft + _view.workbench.TableHeight;
             workbenchbottom = workbenchtop + _view.workbench.TableWidth;
+
 
             CityScapeGlobal.LandscapeUCs = new List<LandscapeObjectControl>();
             LandscapeObjectService landscapeservice = new LandscapeObjectService();
@@ -85,30 +125,36 @@ namespace CatoriCity2025WPF.Controllers
 
             for (int i = 1; i <= randomNumber; i++)
             {
-                treasurespotControl = new TreasureSpotControl();
+                treasurespotControl = new TreasureSpotControl(_view.MainLayoutField );
                 _view.MainLayoutField.Children.Add(treasurespotControl);
                 left = GetRandomInRangeDouble(1, viewMainwidth - treasurespotControl.Width);
                 double topCalculationStart;
+                treasurespotControl.Name = $"TreasureSpot_{i}";
                 if (left < (viewMainwidth /2))
                     topCalculationStart = topfieldboundryleft;
                 else
                     topCalculationStart = topfieldboundryright;
                 //cLogger.Log("Treasure spot " + i + " top calculation start: " + topCalculationStart);
                 top = GetRandomInRangeDouble(topfieldboundryleft, (viewMainheight - (treasurespotControl.Height - 50)));
-                Point point = GetValidPointForTreasureSpot(left, top, _view.workbench);
-                //cLogger.Log("Treasure spot " + i + " x: " + point.X + " point: " + point.Y);
-                left = point.X;
-                top = point.Y;
                 double treasurespotWidth = 200;
                 double treasurespotHeight = 65;
                 double percent = _rand.Next(5, 100) / 100.0;   // 5% to 100%
                 double wsize = treasurespotWidth * percent;
                 double hsize = treasurespotHeight * percent;
+                Point point = GetValidPointForTreasureSpot(left, top, _view.workbench, wsize,hsize, treasurespotControl.Name);
+                cLogger.Log("Treasure spot " + i + " x: " + point.X + " point: " + point.Y);
+                left = point.X;
+                top = point.Y;
                 treasurespotControl.Width = wsize;
                 treasurespotControl.Height = hsize;
                 Canvas.SetLeft(treasurespotControl, left);
                 Canvas.SetTop(treasurespotControl, top);
+                treasurespotControl.ShowPositon(new Point(left, top));
                 Canvas.SetZIndex(treasurespotControl, 1100);
+                TreasureSpotDetailModel treasureSpotDetail = new TreasureSpotDetailModel();
+                treasureSpotDetail.Treasurespot = treasurespotControl;
+                treasurespots.Add(treasureSpotDetail);
+
                 _dragManager.RegisterDropTarget(treasurespotControl); 
             }
             
@@ -126,9 +172,9 @@ namespace CatoriCity2025WPF.Controllers
 
         }
      private Point GetValidPointForTreasureSpot(double treasurespotleft, 
-         double treasurespottop,TreasureWorkBench workbench)
+         double treasurespottop,TreasureWorkBench workbench,double spotwidth,double spotheight,string name   )
         {
-            cLogger.Log("GetValidPointForTreasureSpot - treasurespotleft: " + treasurespotleft + " treasurespottop: " + treasurespottop);
+            cLogger.Log("GetValidPointForTreasureSpot - name: " + name + " treasurespotleft: " + treasurespotleft + " treasurespottop: " + treasurespottop);
             double workbenchoffset = 75;
             Point resultPoint = new Point();
 
@@ -142,7 +188,12 @@ namespace CatoriCity2025WPF.Controllers
                 treasurespottop = workbenchtop - workbenchoffset;
             if (treasurespotmaxleftdist < workbenchoffset)
                 treasurespotleft = workbenchleft - workbenchoffset;
-
+            var treasurespotbottommax =viewMainheight - spotheight;
+            var treasurespotleftmax = viewMainwidth - spotwidth;
+            if (treasurespotleft >= treasurespotleftmax )
+                treasurespotleft = treasurespotleftmax;
+            if (treasurespotbottommax >= treasurespotbottommax)
+                treasurespotbottommax = treasurespotbottommax;
             resultPoint.X = treasurespotleft;
             resultPoint.Y = treasurespottop;
 
@@ -163,8 +214,8 @@ namespace CatoriCity2025WPF.Controllers
             //thisUC.Width = 40;
             thisUC.AddImage(landscapeObject.ImageName, (int)thisUC.Width, (int)thisUC.Height);
             thisUC.OnDragDropChange += ThisUC_OnDragDropChange;
-
-            return thisUC;
+            
+             return thisUC;
         }
 
         private void ThisUC_OnDragDropChange(object? sender, DragDropChangeArgs e)
@@ -189,6 +240,47 @@ namespace CatoriCity2025WPF.Controllers
 
             Random random = new Random(); // For better randomness, reuse this in real apps
             return random.NextDouble() * (maxValue - minValue) + minValue;
+        }
+
+        internal void ToggleStepsPanel()
+        {
+            if (treasureFieldLearnRunSteps.Visibility == Visibility.Hidden)
+                treasureFieldLearnRunSteps.Visibility = Visibility.Visible;
+            else
+                treasureFieldLearnRunSteps.Visibility = Visibility.Hidden;
+
+        }
+
+        internal List<TreasureSpotDetailModel> GetAllTreasureSpotControls()
+        {
+            List<TreasureSpotDetailModel> treasureSpotControls;
+            try
+            {
+                treasureSpotControls = new List<TreasureSpotDetailModel>();
+
+                foreach (UIElement child in _view.MainLayoutField.Children)
+                {
+
+                    if (child is TreasureSpotControl treasureSpot)
+                    {
+                        TreasureSpotDetailModel model = new TreasureSpotDetailModel();
+                        model.Treasurespot = (TreasureSpotControl) child;
+                        treasureSpotControls.Add(model);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log("ex " + ex.Message);
+                throw;
+            }
+
+            return treasureSpotControls;
+        }
+
+        internal void MouseMove(MouseEventArgs e)
+        {
+            person.ShowPositon(e.GetPosition(_view.MainLayout));
         }
     }
 }

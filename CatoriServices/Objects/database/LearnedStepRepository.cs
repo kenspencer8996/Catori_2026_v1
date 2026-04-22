@@ -1,8 +1,7 @@
 using CatoriServices.Objects.Entities;
-using CityAppServices;
 using Microsoft.Data.Sqlite;
 
-namespace CatoriServices.Objects.database
+namespace CityAppServices.Objects.database
 {
     public class LearnedStepRepository
     {
@@ -13,202 +12,130 @@ namespace CatoriServices.Objects.database
             _connectionString = "Data Source=" + GlobalServices.Database + " ;";
         }
 
-        private SqliteConnection GetConnection()
+        public async Task<LearnedStepEntity?> GetByIdAsync(int learnedStepId)
         {
-            return new SqliteConnection(_connectionString);
-        }
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
-        public List<LearnedStepEntity> GetAll()
-        {
-            var list = new List<LearnedStepEntity>();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT LearnedStepId, Name, StepNumber, DisplayName, IsComplete, TreasureStep, ParentName
+                FROM LearnedStep
+                WHERE LearnedStepId = @LearnedStepId";
+            command.Parameters.AddWithValue("@LearnedStepId", learnedStepId);
 
-            using (var conn = GetConnection())
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
             {
-                conn.Open();
-                string sql = "SELECT FactoryInteriorId, FactoryInteriorName, StepNumber, DisplayName, IsComplete FROM LearnedStep";
-
-                using (var cmd = new SqliteCommand(sql, conn))
-                using (var reader = cmd.ExecuteReader())
+                return new LearnedStepEntity
                 {
-                    while (reader.Read())
-                    {
-                        list.Add(new LearnedStepEntity
-                        {
-                            FactoryInteriorId = reader.GetInt32(0),
-                            FactoryInteriorName = reader.GetString(1),
-                            StepNumber = reader.GetInt32(2),
-                            DisplayName = reader.GetString(3),
-                            IsComplete = reader.GetInt32(4) == 1
-                        });
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        public List<LearnedStepEntity> GetByFactoryInteriorFactoryName(string factoryInteriorname)
-        {
-            var list = new List<LearnedStepEntity>();
-
-            using (var conn = GetConnection())
-            {
-                conn.Open();
-                string sql = "SELECT FactoryInteriorId, FactoryInteriorName, StepNumber, DisplayName, IsComplete FROM LearnedStep WHERE FactoryInteriorId = @FactoryInteriorId ORDER BY StepNumber";
-
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@factoryInteriorname", factoryInteriorname);
-                    
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            list.Add(new LearnedStepEntity
-                            {
-                                FactoryInteriorId = reader.GetInt32(0),
-                                FactoryInteriorName = reader.GetString(1),
-                                StepNumber = reader.GetInt32(2),
-                                DisplayName = reader.GetString(3),
-                                IsComplete = reader.GetInt32(4) == 1
-                            });
-                        }
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        public LearnedStepEntity? GetByFactoryInteriorIdAndStepNumber(int factoryInteriorId, int stepNumber)
-        {
-            using (var conn = GetConnection())
-            {
-                conn.Open();
-                string sql = "SELECT FactoryInteriorId, FactoryInteriorName, StepNumber, DisplayName, IsComplete FROM LearnedStep WHERE FactoryInteriorId = @FactoryInteriorId AND StepNumber = @StepNumber";
-
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", factoryInteriorId);
-                    cmd.Parameters.AddWithValue("@StepNumber", stepNumber);
-                    
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new LearnedStepEntity
-                            {
-                                FactoryInteriorId = reader.GetInt32(0),
-                                FactoryInteriorName = reader.GetString(1),
-                                StepNumber = reader.GetInt32(2),
-                                DisplayName = reader.GetString(3),
-                                IsComplete = reader.GetInt32(4) == 1
-                            };
-                        }
-                    }
-                }
+                    LearnedStepId = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    StepNumber = reader.GetInt32(2),
+                    DisplayName = reader.GetString(3),
+                    IsComplete = reader.GetBoolean(4),
+                    TreasureStep = reader.GetString(5),
+                    ParentName = reader.GetString(6)
+                };
             }
 
             return null;
         }
 
-        public void Insert(LearnedStepEntity step)
+        public async Task<List<LearnedStepEntity>> GetAllAsync()
         {
-            using (var conn = GetConnection())
+            var steps = new List<LearnedStepEntity>();
+
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT LearnedStepId, Name, StepNumber, DisplayName, IsComplete, TreasureStep, ParentName
+                FROM LearnedStep
+                ORDER BY StepNumber";
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
             {
-                conn.Open();
+                var stepentity = new LearnedStepEntity();
 
-                string sql = "INSERT INTO LearnedStep (FactoryInteriorId, FactoryInteriorName, StepNumber, DisplayName, IsComplete) " +
-                            "VALUES (@FactoryInteriorId, @FactoryInteriorName, @StepNumber, @DisplayName, @IsComplete)";
-
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", step.FactoryInteriorId);
-                    cmd.Parameters.AddWithValue("@FactoryInteriorName", step.FactoryInteriorName);
-                    cmd.Parameters.AddWithValue("@StepNumber", step.StepNumber);
-                    cmd.Parameters.AddWithValue("@DisplayName", step.DisplayName);
-                    cmd.Parameters.AddWithValue("@IsComplete", step.IsComplete ? 1 : 0);
-                    
-                    cmd.ExecuteNonQuery();
-                }
+                stepentity.LearnedStepId = reader.GetInt32(0);
+                stepentity.Name = reader.GetString(1);
+                stepentity.StepNumber = reader.GetInt32(2);
+                stepentity.DisplayName = reader.GetString(3);
+                stepentity.IsComplete = reader.GetBoolean(4);
+                stepentity.TreasureStep = reader.GetString(5);
+                stepentity.ParentName = reader.GetString(6);
+            
+                steps.Add(stepentity);
             }
+
+            return steps;
         }
 
-        public void Update(LearnedStepEntity step)
+        public async Task<int> InsertAsync(LearnedStepEntity step)
         {
-            using (var conn = GetConnection())
-            {
-                conn.Open();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
-                string sql = "UPDATE LearnedStep SET " +
-                            "FactoryInteriorName = @FactoryInteriorName, " +
-                            "DisplayName = @DisplayName, " +
-                            "IsComplete = @IsComplete " +
-                            "WHERE FactoryInteriorId = @FactoryInteriorId AND StepNumber = @StepNumber";
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO LearnedStep (Name, StepNumber, DisplayName, IsComplete, TreasureStep, ParentName)
+                VALUES (@Name, @StepNumber, @DisplayName, @IsComplete, @TreasureStep, @ParentName);
+                SELECT last_insert_rowid();";
 
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", step.FactoryInteriorId);
-                    cmd.Parameters.AddWithValue("@FactoryInteriorName", step.FactoryInteriorName);
-                    cmd.Parameters.AddWithValue("@StepNumber", step.StepNumber);
-                    cmd.Parameters.AddWithValue("@DisplayName", step.DisplayName);
-                    cmd.Parameters.AddWithValue("@IsComplete", step.IsComplete ? 1 : 0);
-                    
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            command.Parameters.AddWithValue("@Name", step.Name ?? string.Empty);
+            command.Parameters.AddWithValue("@StepNumber", step.StepNumber);
+            command.Parameters.AddWithValue("@DisplayName", step.DisplayName);
+            command.Parameters.AddWithValue("@IsComplete", step.IsComplete);
+            command.Parameters.AddWithValue("@TreasureStep", step.TreasureStep ?? string.Empty);
+            command.Parameters.AddWithValue("@ParentName", step.ParentName ?? string.Empty);
+
+            var result = await command.ExecuteScalarAsync();
+            step.LearnedStepId = Convert.ToInt32(result);
+            return step.LearnedStepId;
         }
 
-        public void UpdateIsComplete(int factoryInteriorId, int stepNumber, bool isComplete)
+        public async Task<int> UpdateAsync(LearnedStepEntity step)
         {
-            using (var conn = GetConnection())
-            {
-                conn.Open();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
-                string sql = "UPDATE LearnedStep SET IsComplete = @IsComplete " +
-                            "WHERE FactoryInteriorId = @FactoryInteriorId AND StepNumber = @StepNumber";
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE LearnedStep
+                SET Name = @Name,
+                    StepNumber = @StepNumber,
+                    DisplayName = @DisplayName,
+                    IsComplete = @IsComplete,
+                    TreasureStep = @TreasureStep,
+                    ParentName = @ParentName
+                WHERE LearnedStepId = @LearnedStepId";
 
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", factoryInteriorId);
-                    cmd.Parameters.AddWithValue("@StepNumber", stepNumber);
-                    cmd.Parameters.AddWithValue("@IsComplete", isComplete ? 1 : 0);
-                    
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            command.Parameters.AddWithValue("@LearnedStepId", step.LearnedStepId);
+            command.Parameters.AddWithValue("@Name", step.Name);
+            command.Parameters.AddWithValue("@StepNumber", step.StepNumber);
+            command.Parameters.AddWithValue("@DisplayName", step.DisplayName);
+            command.Parameters.AddWithValue("@IsComplete", step.IsComplete);
+            command.Parameters.AddWithValue("@TreasureStep", step.TreasureStep ?? string.Empty);
+            command.Parameters.AddWithValue("@ParentName", step.ParentName ?? string.Empty);
+
+            return await command.ExecuteNonQueryAsync();
         }
 
-        public void Delete(int factoryInteriorId, int stepNumber)
+        public async Task<int> DeleteAsync(int learnedStepId)
         {
-            using (var conn = GetConnection())
-            {
-                conn.Open();
-                string sql = "DELETE FROM LearnedStep WHERE FactoryInteriorId = @FactoryInteriorId AND StepNumber = @StepNumber";
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", factoryInteriorId);
-                    cmd.Parameters.AddWithValue("@StepNumber", stepNumber);
-                    
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
+            using var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM LearnedStep WHERE LearnedStepId = @LearnedStepId";
+            command.Parameters.AddWithValue("@LearnedStepId", learnedStepId);
 
-        public void DeleteAllByFactoryInteriorId(int factoryInteriorId)
-        {
-            using (var conn = GetConnection())
-            {
-                conn.Open();
-                string sql = "DELETE FROM LearnedStep WHERE FactoryInteriorId = @FactoryInteriorId";
-
-                using (var cmd = new SqliteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@FactoryInteriorId", factoryInteriorId);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            return await command.ExecuteNonQueryAsync();
         }
     }
+
+
 }

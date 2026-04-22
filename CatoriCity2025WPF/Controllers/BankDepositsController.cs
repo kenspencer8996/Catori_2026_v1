@@ -1,12 +1,10 @@
-﻿using CatoriCity2025WPF.Objects.Services;
-using CatoriCity2025WPF.ViewModels;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 namespace CatoriCity2025WPF.Controllers
 {
     public class BankDepositsController
     {
         private readonly DepositService _depositService;
-        private readonly BankService _bamkService;
+        private readonly BankService _bankService;
         private readonly Views.BankDepositsView _view;
         private BankViewModel _bankViewModel;
         public ObservableCollection<DepositViewModel> Deposits { get; } = new ObservableCollection<DepositViewModel>();

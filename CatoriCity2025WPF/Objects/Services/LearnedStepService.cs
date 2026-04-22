@@ -1,101 +1,140 @@
-namespace CatoriCity2025WPF.Objects.Services
+
+using CityAppServices.Objects.database;
+
+namespace CatoriCity2025WPF.Services
 {
     public class LearnedStepService
     {
-        private readonly LearnedStepRepository _repo;
+        private readonly LearnedStepRepository _repository;
 
         public LearnedStepService()
         {
-            _repo = new LearnedStepRepository();
+            _repository = new LearnedStepRepository();
         }
 
-        public void Create(LearnedStepEntity step) => _repo.Insert(step);
-
-        public void Update(LearnedStepEntity step) => _repo.Update(step);
-
-        public void UpdateStepCompletion(int factoryInteriorId, int stepNumber, bool isComplete)
+        public LearnedStepService(LearnedStepRepository repository)
         {
-            _repo.UpdateIsComplete(factoryInteriorId, stepNumber, isComplete);
+            _repository = repository;
         }
 
-        public void Delete(int factoryInteriorId, int stepNumber) => _repo.Delete(factoryInteriorId, stepNumber);
-
-        public void DeleteAllByFactoryInterior(int factoryInteriorId) => _repo.DeleteAllByFactoryInteriorId(factoryInteriorId);
-
-        public LearnedStepEntity? GetStep(int factoryInteriorId, int stepNumber)
+        public async Task<LearnedStepModel?> GetByIdAsync(int learnedStepId)
         {
-            return _repo.GetByFactoryInteriorIdAndStepNumber(factoryInteriorId, stepNumber);
+            var entity = await _repository.GetByIdAsync(learnedStepId);
+            return entity != null ? MapToViewModel(entity) : null;
         }
-
-        public List<LearnedStepEntity> GetAllSteps()
+        public List<LearnedStepModel> GetAll()
         {
-            return _repo.GetAll();
-        }
-
-        /// <summary>
-        /// Populates the TreasureFieldLearnRunStepsviewModel with steps for the specified factory interior
-        /// </summary>
-        public TreasureFieldLearnRunStepsviewModel LoadStepsIntoViewModel(TreasureFieldLearnRunStepsviewModel viewModel, string factoryInteriorname)
-        {
-            viewModel.LearnedSteps.Clear();
-            
-            var steps = _repo.GetByFactoryInteriorFactoryName(factoryInteriorname);
-            
-            foreach (var step in steps)
+            List<LearnedStepModel> learnedSteps = new List<LearnedStepModel>();
+            var entities = _repository.GetAllAsync();
+            foreach (var entity in entities.Result)
             {
-                LearnedStepModel model = new LearnedStepModel();
-                model.FromEntity(step);
-
-                viewModel.LearnedSteps.Add(model);
+                learnedSteps.Add(MapToViewModel(entity));
             }
-            return viewModel;
+            return learnedSteps;
+        }
+        public async Task<List<LearnedStepModel>> GetAllAsync()
+        {
+            var entities = await _repository.GetAllAsync();
+            return entities.Select(MapToViewModel).ToList();
         }
 
-        /// <summary>
-        /// Converts entity list to viewmodel
-        /// </summary>
-        public TreasureFieldLearnRunStepsviewModel ToViewModel(List<LearnedStepEntity> steps)
+        public async Task CreateAsync(List<LearnedStepModel> viewModels)
         {
-            var viewModel = new TreasureFieldLearnRunStepsviewModel();
-            
-            foreach (var step in steps)
+            foreach (var viewModel in viewModels)
             {
-                LearnedStepModel model = new LearnedStepModel();
-                model.FromEntity(step);
-
-                viewModel.LearnedSteps.Add(model);
+                var entity = MapToEntity(viewModel);
+                await _repository.InsertAsync(entity);
             }
-            
-            return viewModel;
         }
 
-        /// <summary>
-        /// Converts viewmodel back to entity list
-        /// </summary>
-        public List<LearnedStepModel> FromViewModel(TreasureFieldLearnRunStepsviewModel viewModel)
+        public async Task UpdateAsync(List<LearnedStepModel> viewModels)
         {
-            return viewModel.LearnedSteps.ToList();
-        }
-
-        /// <summary>
-        /// Saves all steps from the viewmodel to the database
-        /// </summary>
-        public void SaveViewModelSteps(TreasureFieldLearnRunStepsviewModel viewModel)
-        {
-            foreach (var step in viewModel.LearnedSteps)
+            cLogger.Log("Updating learned steps...");
+            foreach (var viewModel in viewModels)
             {
-                var existing = _repo.GetByFactoryInteriorIdAndStepNumber(step.FactoryInteriorId, step.StepNumber);
-                LearnedStepEntity entity = new LearnedStepEntity();
-                 entity = step.ToEntity();
-                if (existing != null)
-                {
-                    _repo.Update(entity);
-                }
+                var entity = MapToEntity(viewModel);
+                if (entity != null && entity.LearnedStepId != 0)
+                    try
+                    {
+                        await _repository.UpdateAsync(entity);
+                    }
+                    catch (Exception ex)
+                    {
+                        cLogger.Log("UpdateAsync... " + ex.Message);
+                    }                
                 else
-                {
-                    _repo.Insert(entity);
-                }
+
+                    try
+                    {
+                        await _repository.InsertAsync(entity);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        cLogger.Log("InsertAsync exception... " + ex.Message);
+                    }
             }
+        }
+
+        public async Task<int> DeleteAsync(int learnedStepId)
+        {
+            return await _repository.DeleteAsync(learnedStepId);
+        }
+
+        public async Task<int> MarkAsCompleteAsync(int learnedStepId)
+        {
+            var entity = await _repository.GetByIdAsync(learnedStepId);
+            if (entity == null)
+                return 0;
+
+            entity.IsComplete =true;
+            return await _repository.UpdateAsync(entity);
+        }
+
+        public async Task<int> MarkAsIncompleteAsync(int learnedStepId)
+        {
+            var entity = await _repository.GetByIdAsync(learnedStepId);
+            if (entity == null)
+                return 0;
+
+            entity.IsComplete = false;
+            return await _repository.UpdateAsync(entity);
+        }
+
+        private static LearnedStepModel MapToViewModel(LearnedStepEntity entity)
+        {
+            TreasureStepEnum treasureStepEnum = TreasureStepEnum.WalkToTreasureSpot;
+            if (!string.IsNullOrEmpty(entity.TreasureStep) && 
+                Enum.TryParse<TreasureStepEnum>(entity.TreasureStep, out var parsedEnum))
+            {
+                treasureStepEnum = parsedEnum;
+            }
+
+            LearnedStepModel result = new LearnedStepModel
+            {
+                LearnedStepId = entity.LearnedStepId,
+                Name = entity.Name,
+                StepNumber = entity.StepNumber,
+                DisplayName = entity.DisplayName,
+                IsComplete = entity.IsComplete,
+                TreasureStep = treasureStepEnum,
+                ParentName = entity.ParentName
+            };
+            return result;
+        }
+
+        private static LearnedStepEntity MapToEntity(LearnedStepModel viewModel)
+        {
+            return new LearnedStepEntity
+            {
+                LearnedStepId = viewModel.LearnedStepId,
+                Name = viewModel.Name,
+                StepNumber = viewModel.StepNumber,
+                DisplayName = viewModel.DisplayName,
+                IsComplete = viewModel.IsComplete,
+                TreasureStep = viewModel.TreasureStep.ToString(),
+                ParentName = viewModel.ParentName
+            };
         }
     }
 }

@@ -7,9 +7,10 @@
              mc:Ignorable="d" x:Name="UC" Width="200" Height="65" Background="Transparent" >
     <Border x:Name="GlowBorder" Background="Transparent" >
         <Canvas x:Name="MainLayoutTreasureSpot" HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
+                VerticalAlignment="Stretch" MouseMove="MainLayoutTreasureSpot_MouseMove">
         <Image x:Name="TreasureSpotImage" Stretch="Fill" StretchDirection="Both"  Width="{Binding ActualWidth, ElementName=MainLayoutTreasureSpot}"
                    Height="{Binding ActualHeight, ElementName=MainLayoutTreasureSpot}" Source="/Images/DirtSpot.png" Panel.ZIndex="200" Canvas.Left="0" Canvas.Top="0" Margin="0,0,0,0" />
-    </Canvas>
+            <Label x:Name="DebugLabel" Content="Debug" FontSize="16" Panel.ZIndex="1020" Foreground="#FFF9F9F9" Background="#FFFD0707"  MouseDown="DebugLabel_MouseDown"/>
+        </Canvas>
     </Border>
 </UserControl>
