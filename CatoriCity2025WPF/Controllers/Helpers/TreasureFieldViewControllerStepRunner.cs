@@ -1,10 +1,6 @@
 ﻿using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Views.Controls.Treasure;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Media.Animation;
-using CatoriCity2025WPF.Objects;
 namespace CatoriCity2025WPF.Controllers.Helpers
 {
     internal class TreasureFieldViewControllerStepRunner
@@ -20,11 +16,12 @@ namespace CatoriCity2025WPF.Controllers.Helpers
             this._controller = controller;
         }
         private bool _isRunning;
-        internal async Task RunRecordedStepsAsync(LearnedStepRunArgument stepsModel)
+        internal async Task<decimal> RunRecordedStepsAsync(LearnedStepRunArgument stepsModel)
         {
-            if (_isRunning) return; // prevent multiple simultaneous runs
+            if (_isRunning) return 0; // prevent multiple simultaneous runs
             _isRunning = true;
             int i = 0;
+            decimal totalTreasureValue = 0;
             var spots = GetAllTreasureSpotControls();
             cLogger.Log($"------  start {spots.Count} ------");
 
@@ -46,10 +43,12 @@ namespace CatoriCity2025WPF.Controllers.Helpers
 
                 await AnimateLeftTopAsync(100, toploc, personLeft, persontop, 2, RunAfterAnimation.None);
 
+                totalTreasureValue += item.TreasureValue;
                 i++;
             }
 
             _isRunning = false;
+            return totalTreasureValue;
         }
         private async Task RunStepsAsync(
             TreasureSpotDetailModel model,LearnedStepRunArgument runArgs,

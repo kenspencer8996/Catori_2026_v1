@@ -1,0 +1,14 @@
+﻿<Window x:Class="CatoriCity2025WPF.Views.Controls.Robots.RobotArm.RobotTestView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls.Robots.RobotArm"
+        mc:Ignorable="d" WindowState="Maximized"
+        Title="RobotTestView" Height="450" Width="800">
+    <Grid>
+        <local:RobotArmControl x:Name="Robotarm" HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Click="CloseButton_Click" RenderTransformOrigin="-11.899,0.309"/>
+
+    </Grid>
+</Window>

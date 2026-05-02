@@ -9,7 +9,7 @@
     <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Canvas x:Name="MainCanvas" Width="{Binding ElementName=UC, Path=ActualWidth}" 
              Height="{Binding ElementName=UC, Path=ActualHeight}">
-            <Image x:Name="Factory1InteriorImage" Stretch="UniformToFill" Source="/Images/FactoryInterior4.png"
+            <Image x:Name="Factory1InteriorImage" Stretch="UniformToFill" Source="/Images/FactoryTables1.png"
                             Height="{Binding ActualHeight, ElementName=MainCanvas}"
                 Width="{Binding ActualWidth, ElementName=MainCanvas}"/>
             <local:RobotUC x:Name="RobotLeftUC" HorizontalAlignment="Left" Canvas.Left="324" Canvas.Top="95" VerticalAlignment="Top" Width="50" Height="80"/>

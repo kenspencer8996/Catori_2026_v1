@@ -1,11 +1,7 @@
-﻿namespace CatoriServices.Objects.Entities
+﻿public class FactoryEntity
 {
-    public class FactoryEntity
-    {
-        public int FactoryId { get; set; }
-        public int BusinessId { get; set; }
-        public string InteriorName { get; set; } = string.Empty;
-        public string? FactoryName { get; set; }
-        public string? Description { get; set; }
-    }
+    public long FactoryId { get; set; }
+    public string FactoryName { get; set; } = "";
+    public string? BackgroundImagePath { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

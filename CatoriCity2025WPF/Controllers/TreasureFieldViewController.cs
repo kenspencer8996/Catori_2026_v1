@@ -3,7 +3,6 @@ using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Views;
 using CatoriCity2025WPF.Views.Controls.Treasure;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace CatoriCity2025WPF.Controllers
 {
@@ -45,7 +44,11 @@ namespace CatoriCity2025WPF.Controllers
 
         private async void TreasureFieldLearnRunSteps_RunSteps(object? sender, LearnedStepRunArgument e)
         {
-            await runstepshelper.RunRecordedStepsAsync(e);
+            decimal totalFundsEarned = 0;
+            totalFundsEarned = await runstepshelper.RunRecordedStepsAsync(e);
+            AddTreasureAmountToPersonFunds(totalFundsEarned);
+            treasureFieldLearnRunSteps.CashTreasure = totalFundsEarned;
+
         }
 
         internal void ShowRunUpdate(string update)
@@ -55,6 +58,8 @@ namespace CatoriCity2025WPF.Controllers
         private void AddTreasureAmountToPersonFunds(decimal funds)
         {
             GlobalAllApps.CurrentPerson.Funds += funds;
+            PersonService personService = new PersonService();
+            personService.UpsertPerson(GlobalAllApps.CurrentPerson);
         }
         private void StartDigging()
         {
@@ -282,5 +287,6 @@ namespace CatoriCity2025WPF.Controllers
         {
             person.ShowPositon(e.GetPosition(_view.MainLayout));
         }
+
     }
 }

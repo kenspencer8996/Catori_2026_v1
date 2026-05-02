@@ -71,13 +71,7 @@ namespace CatoriCity2025WPF.Views.Controls
             this.Effect = null;
         }
 
-        public Point GetSnapPoint(UIElement dragged)
-        {
-            var feDragged = (FrameworkElement)dragged;
-            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
-            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
-            return new Point(x, y);
-        }
+       
 
         
         public bool CanDrop(IDraggable element)
@@ -90,9 +84,20 @@ namespace CatoriCity2025WPF.Views.Controls
             // Building.AddDroppedElement(element) ;
             BuildingUC.AddDroppedElement(element);
         }
+        public Point GetSnapPoint(UIElement dragged)
+        {
+            var feDragged = (FrameworkElement)dragged;
+            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
+            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
+            return new Point(x, y);
+        }
         public Point GetSnapPoint(IDraggable dragged)
         {
-            throw new NotImplementedException();
+            var feDragged = (FrameworkElement)dragged;
+            double x = Canvas.GetLeft(this) + (this.ActualWidth - feDragged.ActualWidth) / 2;
+            double y = Canvas.GetTop(this) + (this.ActualHeight - feDragged.ActualHeight) / 2;
+            return new Point(x, y);
+
         }
     }
 }

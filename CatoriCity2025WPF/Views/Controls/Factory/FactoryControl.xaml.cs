@@ -24,7 +24,6 @@ namespace CatoriCity2025WPF.Views.Controls
         public FactoryControl(int interiorSelector)
         {
             InitializeComponent();
-            GearsImage.Visibility = Visibility.Hidden;
             InteriorSelector = interiorSelector;
 
             WeakReferenceMessenger.Default.Register<PersonMouseMessage>(this, (r, m) =>
@@ -67,8 +66,7 @@ namespace CatoriCity2025WPF.Views.Controls
                     //border.Background = ;
                 }
                 string path = Imagehelper.GetImagePath("gearanimated.gif");
-                GearsImage.Source = UIUtility.GetImageControl(path, 50, 50, 0).Source;
-
+    
             }
             catch (Exception ex)
             {
@@ -84,22 +82,6 @@ namespace CatoriCity2025WPF.Views.Controls
         }   
         private void DispatcherTimer_Tick(object? sender, EventArgs e)
         {
-            if (_personViewModel != null)
-            {
-                _personViewModel.CurrentPay += PayRate;
-                if (_worktimer >= _worktimerMax)
-                {
-                    _payTimer.Stop();
-                    _personViewModel.CurrentPay = 0;
-                    _worktimer = 0;
-                    LeaveWork();
-                }
-                else
-                {
-                    _worktimer++;
-
-                }
-            }
         }
         private void BusinessContent_SizeChanged(object? sender, EventArgs e)
         {
@@ -139,10 +121,6 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             CityScapeGlobal.SetFactoryWorking(_personViewModel.StaticImageFilePath, InteriorSelector);
 
-            //string _personcurrentImage = _personViewModel.StaticImageFilePath;
-            //PersonImage.Source = UIUtility.GetImageControl(_personcurrentImage, 50, 50, 0).Source;
-            StartPay();
-
         }
         private void MainLayout_Drop(object sender, DragEventArgs e)
         {
@@ -168,27 +146,7 @@ namespace CatoriCity2025WPF.Views.Controls
             //    StartPay();
             //}
         }
-        public void StartPay()
-        {
-            GearsImage.Visibility = Visibility.Visible;
-            _payTimer.Start();
-        }
-        public void LeaveWork()
-        {
-            cLogger.Log("FactoryControl LeaveWork");
-
-            GearsImage.Visibility = Visibility.Hidden;
-            _payTimer.Stop();
-            _personViewModel.Funds += _payRate;
-            LeaveWorkArg detail = new LeaveWorkArg(_personViewModel);
-            WeakReferenceMessenger.Default.Send(detail);
-            PersonImage.Source = null;
-            CityScapeGlobal.SetFactoryNotWorking(InteriorSelector);
-
-            CityScapeGlobal.ShowPrimaryPerson();
-          
-
-        }
+      
 
         private void FactoryControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -200,10 +158,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             IsPersonMouseUp = false;
             cLogger.Log("FactoryControl_Leave");
-            FactoryMouseMessage args = new FactoryMouseMessage();
-            args.LeaveEnter = LeaveEnerEnum.Leave;
-            WeakReferenceMessenger.Default.Send<FactoryMouseMessage>(args);
-        }
+         }
 
         private void FactoryControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -226,7 +181,7 @@ namespace CatoriCity2025WPF.Views.Controls
         {
             _personViewModel = (element as PersonControl)._person;
             AddPerson(_personViewModel);
-            FactoryMouseMessage args = new FactoryMouseMessage();
+             FactoryMouseMessage args = new FactoryMouseMessage();
             args.LeaveEnter = LeaveEnerEnum.Enter;
             args.FactoryControlInstance = this;
             WeakReferenceMessenger.Default.Send<FactoryMouseMessage>(args);
@@ -235,7 +190,9 @@ namespace CatoriCity2025WPF.Views.Controls
 
         public void AddDroppedElement(IDraggable element)
         {
-            throw new NotImplementedException();
+            FactoryView view = new FactoryView(InteriorSelector);
+            view.Owner = Application.Current.MainWindow;
+            view.ShowDialog();
         }
     }
 }

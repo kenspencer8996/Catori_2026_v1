@@ -13,7 +13,7 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         public event EventHandler<StartDiggingArgs> StartDiggingEvent;
         public int SpotIndex { get; set; }
         public List<string> DirtSpots { get; set; }
- 
+        public decimal Funds { get; set; } = 0;
         string RawSpot = "";
         public bool HasTreasure { get; set; }= true;
         public Canvas _hostCanvas;
@@ -27,6 +27,16 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
             else
                 DebugLabel.Visibility = Visibility.Collapsed;
             LoadDirtSpots();
+
+            Random rnd = new Random();
+            double min = 0.01;
+            double max = 0.9;
+
+            // Generate random number in range [min, max)
+            double randomValue = min + (rnd.NextDouble() * (max - min));
+            HasTreasure = IsTreasure(randomValue);
+
+            Funds = HasTreasure ? GetTreasureAmount(randomValue) : 0;
         }
         private void UC_Loaded(object sender, RoutedEventArgs e)
         {
@@ -179,6 +189,26 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         {
             Clipboard.SetText($"TreasureSpotControl: {DebugLabel.Content}");
 
+        }
+
+        bool IsTreasure(double spotQuality)
+        {
+            var rand = new Random();
+
+            // Clamp between 0 and 1
+            spotQuality = Math.Max(0, Math.Min(1, spotQuality));
+
+            return rand.NextDouble() < spotQuality;
+        }
+
+        int GetTreasureAmount(double quality)
+        {
+            Random _rand = new Random();
+            int baseAmount = _rand.Next(5, 20);
+
+            double multiplier = 1 + (quality * 2); // up to 3x
+
+            return (int)(baseAmount * multiplier);
         }
     }
 }

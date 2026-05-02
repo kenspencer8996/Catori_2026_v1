@@ -2,7 +2,6 @@
 using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views.Controls.Factory;
-using System.Diagnostics;
 
 namespace CatoriCity2025WPF.Views.Controls
 {

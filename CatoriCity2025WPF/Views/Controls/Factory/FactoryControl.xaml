@@ -32,21 +32,10 @@
                    Width="{Binding ActualWidth, ElementName=MainBorder}"
                    Height="{Binding ActualHeight, ElementName=MainBorder}" />
 
-            <!-- Person icon -->
-            <Image x:Name="PersonImage"
-                   Width="25"
-                   Height="25"
-                   Canvas.Left="65"
-                   Canvas.Top="0"
-                   IsHitTestVisible="False" />
+         
 
             <!-- Gears icon -->
-            <Image x:Name="GearsImage"
-                   Width="10"
-                   Height="10"
-                   Canvas.Left="65"
-                   Canvas.Top="25"
-                   IsHitTestVisible="False" />
+         
 
         </Canvas>
     </Border>

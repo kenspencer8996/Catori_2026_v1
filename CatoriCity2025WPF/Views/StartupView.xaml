@@ -105,6 +105,19 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
+                <Button x:Name="ProductMaintenanceButton"  Style="{StaticResource MapHotspotButton}"
+          Width="145" Height="50" Canvas.Left="1738" Canvas.Top="257"
+          Click="ProductMaintenanceButton_Click" ToolTip="Click to open Product View" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleX="-0.66"/>
+                            <RotateTransform Angle="-13.749"/>
+                            <TranslateTransform X="-0.28" Y="0.068"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="RobotArmButton" Content="RobotArm" Canvas.Left="1708" Canvas.Top="954" Click="RobotArmButton_Click"/>
             </Canvas>
         </Viewbox>
     </Grid>

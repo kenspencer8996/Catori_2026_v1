@@ -1,4 +1,5 @@
 ﻿using CatoriCity2025WPF.Controllers;
+using CatoriCity2025WPF.Views.Controls.Robots.RobotArm;
 
 namespace CatoriCity2025WPF.Views
 {
@@ -85,6 +86,19 @@ namespace CatoriCity2025WPF.Views
         {
             FactoryView view = new FactoryView(factoryNumber);
             view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void RobotArmButton_Click(object sender, RoutedEventArgs e)
+        {
+            RobotTestView view = new RobotTestView();
+            view.ShowDialog();
+        }
+
+        private void ProductMaintenanceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            ProductBuilderView view = new ProductBuilderView();
             view.ShowDialog();
         }
     }

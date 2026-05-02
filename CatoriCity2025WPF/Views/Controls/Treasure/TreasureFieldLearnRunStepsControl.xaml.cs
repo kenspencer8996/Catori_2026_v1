@@ -40,6 +40,16 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
                 args = m;
             });
         }
+
+        public decimal CashTreasure
+        {
+            get => _controller._model.CashTreasure;
+            set
+            {
+                _controller._model.CashTreasure = value;
+                TotalTreasureTextBlock.Text = _controller._model.CashDisplay;
+            }
+        }   
         private  void LoadSteps()
         {//“You taught how to handle a treasure spot!”
             var results =  learnedStepService.GetAll();
