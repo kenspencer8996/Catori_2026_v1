@@ -33,77 +33,32 @@ namespace CatoriServices.Objects.database
         private static string GetInlineCreateScript()
         {
             return @"
-                CREATE TABLE IF NOT EXISTS Factories (
-                    factory_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    business_id INTEGER NULL,
-                    factory_name TEXT NOT NULL,
-                    background_image_path TEXT NULL,
-                    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+                CREATE TABLE IF NOT EXISTS Factory (
+                    FactoryId INTEGER PRIMARY KEY AUTOINCREMENT,
+                    FactoryName TEXT NOT NULL,
+                    BackgroundImagePath TEXT NULL,
+                    CreatedAt TEXT NOT NULL DEFAULT (datetime('now'))
                 );
-                CREATE TABLE IF NOT EXISTS FactoryLayouts (
-                    factory_layout_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    factory_id INTEGER NOT NULL,
-                    layout_name TEXT NOT NULL,
-                    canvas_width REAL NOT NULL DEFAULT 1920,
-                    canvas_height REAL NOT NULL DEFAULT 1080,
-                    is_active INTEGER NOT NULL DEFAULT 1,
-                    notes TEXT NULL,
-                    created_at TEXT NOT NULL DEFAULT (datetime('now')),
-                    FOREIGN KEY (factory_id) REFERENCES Factories(factory_id) ON DELETE CASCADE
+                CREATE TABLE IF NOT EXISTS FactoryLayoutObject (
+                    LayoutObjectId INTEGER PRIMARY KEY AUTOINCREMENT,
+                    FactoryId INTEGER NOT NULL,
+                    ObjectName TEXT NOT NULL,
+                    ObjectType TEXT NOT NULL,
+                    ImagePath TEXT NULL,
+                    ZIndex INTEGER NOT NULL DEFAULT 0,
+                    IsInteractive INTEGER NOT NULL DEFAULT 1,
+                    IsVisible INTEGER NOT NULL DEFAULT 1,
+                    Notes TEXT NULL,
+                    FOREIGN KEY (FactoryId) REFERENCES Factory(FactoryId) ON DELETE CASCADE
                 );
-                CREATE TABLE IF NOT EXISTS FactoryLayoutItems (
-                    factory_layout_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    factory_layout_id INTEGER NOT NULL,
-                    item_name TEXT NOT NULL,
-                    item_type TEXT NOT NULL,
-                    x REAL NOT NULL DEFAULT 0,
-                    y REAL NOT NULL DEFAULT 0,
-                    z REAL NOT NULL DEFAULT 0,
-                    width REAL NOT NULL DEFAULT 0,
-                    height REAL NOT NULL DEFAULT 0,
-                    rotation_degrees REAL NOT NULL DEFAULT 0,
-                    z_index INTEGER NOT NULL DEFAULT 0,
-                    is_locked INTEGER NOT NULL DEFAULT 0,
-                    image_path TEXT NULL,
-                    metadata_json TEXT NULL,
-                    FOREIGN KEY (factory_layout_id) REFERENCES FactoryLayouts(factory_layout_id) ON DELETE CASCADE
-                );
-                CREATE TABLE IF NOT EXISTS FactoryLayoutPoints (
-                    factory_layout_point_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    factory_layout_item_id INTEGER NOT NULL,
-                    point_index INTEGER NOT NULL,
-                    point_role TEXT NULL,
-                    x REAL NOT NULL,
-                    y REAL NOT NULL,
-                    z REAL NOT NULL DEFAULT 0,
-                    segment_kind TEXT NOT NULL DEFAULT 'Line',
-                    control1_x REAL NULL,
-                    control1_y REAL NULL,
-                    control2_x REAL NULL,
-                    control2_y REAL NULL,
-                    rotation_degrees REAL NULL,
-                    FOREIGN KEY (factory_layout_item_id) REFERENCES FactoryLayoutItems(factory_layout_item_id) ON DELETE CASCADE
-                );
-                CREATE TABLE IF NOT EXISTS FactoryPartRoutes (
-                    factory_part_route_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    factory_layout_id INTEGER NOT NULL,
-                    route_name TEXT NOT NULL,
-                    product_id INTEGER NULL,
-                    from_item_id INTEGER NULL,
-                    to_item_id INTEGER NULL,
-                    is_active INTEGER NOT NULL DEFAULT 1,
-                    created_at TEXT NOT NULL DEFAULT (datetime('now')),
-                    FOREIGN KEY (factory_layout_id) REFERENCES FactoryLayouts(factory_layout_id) ON DELETE CASCADE
-                );
-                CREATE TABLE IF NOT EXISTS FactoryPartRoutePoints (
-                    factory_part_route_point_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    factory_part_route_id INTEGER NOT NULL,
-                    point_index INTEGER NOT NULL,
-                    x REAL NOT NULL,
-                    y REAL NOT NULL,
-                    z REAL NOT NULL DEFAULT 0,
-                    seconds_from_start REAL NOT NULL DEFAULT 0,
-                    FOREIGN KEY (factory_part_route_id) REFERENCES FactoryPartRoutes(factory_part_route_id) ON DELETE CASCADE
+                CREATE TABLE IF NOT EXISTS FactoryLayoutObjectPoint (
+                    LayoutObjectPointId INTEGER PRIMARY KEY AUTOINCREMENT,
+                    LayoutObjectId INTEGER NOT NULL,
+                    PointIndex INTEGER NOT NULL,
+                    X REAL NOT NULL,
+                    Y REAL NOT NULL,
+                    PointRole TEXT NULL,
+                    FOREIGN KEY (LayoutObjectId) REFERENCES FactoryLayoutObject(LayoutObjectId) ON DELETE CASCADE
                 );";
         }
     }

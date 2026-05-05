@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:CatoriUCLibrary" xmlns:robotarmuc="clr-namespace:CatoriUCLibrary.Views.RobotArmUC"
     x:Class="CatoriUCLibrary.Views.RobotArmUC.RoboticArmUC"
              mc:Ignorable="d" MouseMove="UserControl_MouseMove" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp"
-             d:DesignHeight="450" 
+             d:DesignHeight="450" Background="Transparent"
              d:DesignWidth="800">
     <Viewbox Stretch="Uniform">
-        <Canvas x:Name="RobotRoot" Width="800" Height="600" Background="White">
+        <Canvas x:Name="RobotRoot" Width="800" Height="600" Background="Transparent">
 
             <!--<Image x:Name="RobotBaseImage"
                     Canvas.Left="0"

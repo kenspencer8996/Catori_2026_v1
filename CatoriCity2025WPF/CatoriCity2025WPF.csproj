@@ -116,6 +116,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CatoriUCLibrary">
+      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\badguy_6_wcash.png" />
     <Resource Include="Images\BagOfrocks.png" />
     <Resource Include="Images\BoxShippingShipping3.png" />

@@ -99,12 +99,14 @@ namespace CatoriCity2025WPF.Views.Controls
             {
                 try
                 {
-                    _houseViewModel = m.House;
-                    if (_houseViewModel.Name == m.House.Name)
+                    if (_houseViewModel.HouseId == m.House.HouseId)
                     {
-                        LoadOwnerImage();
+                        _houseViewModel = m.House;
+                        if (_houseViewModel.Name == m.House.Name)
+                        {
+                            LoadOwnerImage();
+                        }
                     }
-                   
                 }
                 catch (Exception ex)
                 {

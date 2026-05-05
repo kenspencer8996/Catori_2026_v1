@@ -668,6 +668,9 @@ namespace CatoriUCLibrary.Views.RobotArmUC
         }
         private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(
+                $" angle1 " + _angle1 + " 2 " + _angle2 + " 3 " + _angle3 + " 4 " + _angle4);
+
             _isDragging = false;
             Mouse.Capture(null);
             RobotRoot.ReleaseMouseCapture();

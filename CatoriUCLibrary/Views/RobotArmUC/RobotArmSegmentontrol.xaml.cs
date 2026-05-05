@@ -48,5 +48,10 @@ namespace CatoriUCLibrary.Views.RobotArmUC
             SegmentMouseDown?.Invoke(this, seg);
             e.Handled = true;
         }
+
+        private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"Mouse up on {this.Name} angle " + SegmentRotate.Angle);
+        }
     } 
 }

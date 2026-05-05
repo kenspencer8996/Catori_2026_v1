@@ -63,7 +63,7 @@ namespace CatoriServices.Data
             ShopItemEntity item = new ShopItemEntity();
             try
             {
-                string sql = $"SELECT ShopItemId, Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree, X, Y FROM ShopItem WHERE ShopItemId = {id}";
+                string sql = $"SELECT ShopItemId, Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree FROM ShopItem WHERE ShopItemId = {id}";
                 IDataReader reader = sqlhelper.GetReader(sql);
 
                 int idxId = reader.GetOrdinal("ShopItemId");
@@ -107,7 +107,7 @@ namespace CatoriServices.Data
             try
             {
                 var connection = adoNetHelper.GetConnection();
-                var sql = "SELECT ShopItemId, Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree, X, Y FROM ShopItem WHERE Name = @Name";
+                var sql = "SELECT ShopItemId, Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree FROM ShopItem WHERE Name = @Name";
                 var results = await connection.QueryAsync<ShopItemEntity>(sql, new { Name = name });
                 if (results != null && results.Any())
                 {
@@ -159,7 +159,7 @@ namespace CatoriServices.Data
                 {
                     // Insert
                     using var command = connection.CreateCommand();
-                    command.CommandText = "INSERT INTO ShopItem (Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree, X, Y) VALUES (@Name, @Description, @Price, @ImageName, @Storetype, @FilePath, @Height, @Width, @RotationDegree, @X, @Y)";
+                    command.CommandText = "INSERT INTO ShopItem (Name, Description, Price, ImageName, Storetype, FilePath, Height, Width, RotationDegree) VALUES (@Name, @Description, @Price, @ImageName, @Storetype, @FilePath, @Height, @Width, @RotationDegree)";
                     command.Parameters.Add(new SqliteParameter("@Name", entity.Name ?? string.Empty));
                     command.Parameters.Add(new SqliteParameter("@Description", entity.Description ?? string.Empty));
                     command.Parameters.Add(new SqliteParameter("@Price", entity.Price));

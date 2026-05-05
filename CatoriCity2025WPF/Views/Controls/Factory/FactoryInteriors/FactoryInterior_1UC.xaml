@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uslib="clr-namespace:CatoriUCLibrary.Views.RobotArmUC;assembly=CatoriUCLibrary"
              xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls" xmlns:FactoryInteriors="clr-namespace:CatoriCity2025WPF.Views.Controls.Factory.FactoryInteriors" xmlns:CatoriCity2025WPF="clr-namespace:CatoriCity2025WPF" xmlns:Robots="clr-namespace:CatoriCity2025WPF.Views.Controls.Robots" x:Class="CatoriCity2025WPF.Views.Controls.FactoryInterior_1UC"
              MouseDown="UC_MouseDown" MouseMove="UC_MouseMove"
              mc:Ignorable="d" Width="450" Height="320" x:Name="UC" Loaded="UC_Loaded">
@@ -24,6 +25,7 @@
             <Label x:Name="RobotConveyorBLabel" Content="B" Canvas.Left="200" Canvas.Top="50" Foreground="White" FontSize="24"/>
             <Label x:Name="RobotConveyorCLabel" Content="C: Idle" Canvas.Left="200" Canvas.Top="50" Foreground="White" FontSize="24"/>
             <local:LightPanel x:Name="lightPanel" Canvas.Left="200" Canvas.Top="100" Width="100" Height="100" Panel.ZIndex="1202"/>
-          </Canvas>
+            <uslib:RoboticArmUC x:Name="RobotArmNew" Canvas.Left="300" Canvas.Top="200" Width="100" Height="100" Panel.ZIndex="1201"/>
+        </Canvas>
     </Viewbox>
 </UserControl>

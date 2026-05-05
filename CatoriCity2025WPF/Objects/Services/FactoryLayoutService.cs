@@ -98,7 +98,8 @@ namespace CatoriCity2025WPF.Objects.Services
 
         public FactoryLayoutViewModel? GetByFactoryInteriorName(string factoryInteriorName)
         {
-            return GetByFactoryInteriorNameAsync(factoryInteriorName).GetAwaiter().GetResult();
+            FactoryLayoutViewModel model = GetByFactoryInteriorNameAsync(factoryInteriorName).GetAwaiter().GetResult();
+            return model;
         }
 
         public async Task<FactoryLayoutViewModel?> GetByFactoryInteriorNameAsync(string factoryInteriorName)

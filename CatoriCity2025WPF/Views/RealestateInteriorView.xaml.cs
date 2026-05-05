@@ -8,17 +8,23 @@ namespace CatoriCity2025WPF.Views
     public partial class RealestateInteriorView : Window
     {
         RealestateInteriorViewontroller _controller;
+        PersonService _personService;
+        public PersonViewModel _catori;
         public RealestateInteriorView()
         {
             InitializeComponent();
             _controller = new RealestateInteriorViewontroller(this);
-            Loaded += RealestateInteriorView_Loaded;
+            _personService = new PersonService();
+            Loaded += RealestateInteriorView_LoadedAsync;
         }
 
-        private void RealestateInteriorView_Loaded(object sender, RoutedEventArgs e)
+        private async void RealestateInteriorView_LoadedAsync(object sender, RoutedEventArgs e)
         {
             //string filepath = Imagehelper.GetImagePath(model.ImageName);
             //officei.MainImage.Source = UIUtility.GetImageControl(filepath, 100, 100, 0).Source;
+            _catori = await _personService.GetPersonbyNameAsync("Catori");
+            CurrentFundsText.Text = _catori.Funds.ToString("C");
+
 
             _controller.LoadHouses();
         }

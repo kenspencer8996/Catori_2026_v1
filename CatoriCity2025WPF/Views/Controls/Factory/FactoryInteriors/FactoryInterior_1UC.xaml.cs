@@ -2,6 +2,7 @@
 using CatoriCity2025WPF.Objects.Arguments;
 using CatoriCity2025WPF.Objects.DragDrop;
 using CatoriCity2025WPF.Views.Controls.Factory;
+using System.Windows.Threading;
 
 namespace CatoriCity2025WPF.Views.Controls
 {
@@ -24,10 +25,12 @@ namespace CatoriCity2025WPF.Views.Controls
         public PartSimpleUserControl part4SimpleUC;
         public PartSimpleUserControl part5SimpleUC;
         DragManager _dragManager;
+        readonly DispatcherTimer _animation_timer;
         public FactoryInterior_1UC()
         {
             InitializeComponent();
             _dragManager = GlobalCode.GetDragmanager(MainCanvas);
+            _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
 
             // Debug.WriteLine("RobotControl is now the source: " + e.Source);
             _controller = new FactoryInterior_1UCController(this);
@@ -39,6 +42,11 @@ namespace CatoriCity2025WPF.Views.Controls
             Canvas.SetLeft(lightPanel, 1476);
             Canvas.SetTop(lightPanel, 815);
 
+            RobotArmNew.Width = 400;
+            RobotArmNew.Height = 400;
+            Canvas.SetLeft(RobotArmNew, 976);
+            Canvas.SetTop(RobotArmNew, 760);
+            
             Canvas.SetLeft(RobotConveyorALabel, 930);
             Canvas.SetTop(RobotConveyorALabel, 840);
             Canvas.SetLeft(RobotConveyorBLabel, 1404);
@@ -60,6 +68,17 @@ namespace CatoriCity2025WPF.Views.Controls
             outPutItems.Add("No Paint");
             RobotPanel.LoadData("Yellow Builder Robot", conveyors,conveyors,outPutItems);
             _controller.RobotBuilder.MouseUpAfterRobotMove += RobotBuilder_MoveRobotComplete;
+            _animation_timer.Interval = TimeSpan.FromMilliseconds(1000);
+            _animation_timer.Tick += Animation_timer_Tick;
+            _animation_timer.Start();
+
+        }
+
+        private void Animation_timer_Tick(object? sender, EventArgs e)
+        {
+            _animation_timer.Stop();
+            RunRobot();
+            _animation_timer.Start();
         }
 
         private void RobotBuilder_MoveRobotComplete(object? sender, RobotArg e)
@@ -102,12 +121,34 @@ namespace CatoriCity2025WPF.Views.Controls
                PartSimpleUserControl(120, 80, -100,-50, 0, "SawBlade.png");
             part2SimpleUC.Opacity = 0;
             MainCanvas.Children.Add(part2SimpleUC);
-            
+            //RunRobot();
         }
+        public void RunRobot()
+        {
+            Random rnd = new Random();
+            double j1 = rnd.Next(30,130) * -1;
+            double j2 = rnd.Next(70, 120) ;
+            double j3 = rnd.Next(2, 110) ;
+            double j4 = rnd.Next(1, 80);
+            int i = rnd.Next(1, 2000);
+            if (is_odd(i))
+            {
+                j4 = j4 * -1;
+                j2 = j2 * -1;
+            }
+            CatoriUCLibrary.Views.RobotArmUC.RobotPose targetPose =
+                new CatoriUCLibrary.Views.RobotArmUC.RobotPose(j1, j2, j3, j4);
 
+            RobotArmNew.MoveToPoseAsync(targetPose);
+
+        }
+        bool is_odd(int n)
+        {
+            return n % 2 != 0;
+        }
         public void StartWorking(string workerImagePath)
         {
-            //RobotLeftUC.StartWorking();
+             //RobotLeftUC.StartWorking();
             //RobotRightUC.StartWorking();
             //WorkerImage.Source = UIUtility.GetImageControl(workerImagePath, 10, 5, 0).Source; ;
         }

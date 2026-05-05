@@ -21,10 +21,10 @@ namespace CatoriServices.Objects.database
             using var conn = GetConnection();
             await conn.OpenAsync();
 
-            using var cmd = new SqliteCommand("SELECT * FROM FactoryLayoutItems WHERE factory_layout_item_id = @ItemId", conn);
+            using var cmd = new SqliteCommand("SELECT * FROM FactoryLayoutObject WHERE LayoutObjectId = @ItemId", conn);
             cmd.Parameters.AddWithValue("@ItemId", itemId);
             using var reader = await cmd.ExecuteReaderAsync();
-            return await reader.ReadAsync() ? MapItem(reader) : null;
+            return await reader.ReadAsync() ? await MapItemAsync(reader) : null;
         }
 
         public async Task<List<FactoryLayoutItemEntity>> GetByLayoutIdAsync(long factoryLayoutId)
@@ -32,14 +32,14 @@ namespace CatoriServices.Objects.database
             using var conn = GetConnection();
             await conn.OpenAsync();
 
-            string sql = "SELECT * FROM FactoryLayoutItems WHERE factory_layout_id = @FactoryLayoutId ORDER BY z_index, factory_layout_item_id";
+            const string sql = "SELECT * FROM FactoryLayoutObject WHERE FactoryId = @FactoryId ORDER BY ZIndex, LayoutObjectId";
             using var cmd = new SqliteCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@FactoryLayoutId", factoryLayoutId);
+            cmd.Parameters.AddWithValue("@FactoryId", factoryLayoutId);
             using var reader = await cmd.ExecuteReaderAsync();
 
             var list = new List<FactoryLayoutItemEntity>();
             while (await reader.ReadAsync())
-                list.Add(MapItem(reader));
+                list.Add(await MapItemAsync(reader));
 
             return list;
         }
@@ -49,17 +49,22 @@ namespace CatoriServices.Objects.database
             using var conn = GetConnection();
             await conn.OpenAsync();
 
-            string sql = @"
-                INSERT INTO FactoryLayoutItems
-                    (factory_layout_id, item_name, item_type, x, y, z, width, height, rotation_degrees, z_index, is_locked, image_path, metadata_json)
+            const string sql = @"
+                INSERT INTO FactoryLayoutObject
+                    (FactoryId, ObjectName, ObjectType, ImagePath, ZIndex, IsInteractive, IsVisible, Notes)
                 VALUES
-                    (@FactoryLayoutId, @ItemName, @ItemType, @X, @Y, @Z, @Width, @Height, @RotationDegrees, @ZIndex, @IsLocked, @ImagePath, @MetadataJson);
+                    (@FactoryId, @ObjectName, @ObjectType, @ImagePath, @ZIndex, @IsInteractive, @IsVisible, @Notes);
                 SELECT last_insert_rowid();";
 
             using var cmd = new SqliteCommand(sql, conn);
             AddItemParameters(cmd, item);
             var result = await cmd.ExecuteScalarAsync();
-            return Convert.ToInt32(result);
+            var itemId = Convert.ToInt32(result);
+
+            if (item.X != 0 || item.Y != 0)
+                await UpsertAnchorPointAsync(conn, itemId, item.X, item.Y);
+
+            return itemId;
         }
 
         public async Task<bool> UpdateAsync(FactoryLayoutItemEntity item)
@@ -67,27 +72,25 @@ namespace CatoriServices.Objects.database
             using var conn = GetConnection();
             await conn.OpenAsync();
 
-            string sql = @"
-                UPDATE FactoryLayoutItems
-                SET factory_layout_id = @FactoryLayoutId,
-                    item_name = @ItemName,
-                    item_type = @ItemType,
-                    x = @X,
-                    y = @Y,
-                    z = @Z,
-                    width = @Width,
-                    height = @Height,
-                    rotation_degrees = @RotationDegrees,
-                    z_index = @ZIndex,
-                    is_locked = @IsLocked,
-                    image_path = @ImagePath,
-                    metadata_json = @MetadataJson
-                WHERE factory_layout_item_id = @FactoryLayoutItemId";
+            const string sql = @"
+                UPDATE FactoryLayoutObject
+                SET FactoryId = @FactoryId,
+                    ObjectName = @ObjectName,
+                    ObjectType = @ObjectType,
+                    ImagePath = @ImagePath,
+                    ZIndex = @ZIndex,
+                    IsInteractive = @IsInteractive,
+                    IsVisible = @IsVisible,
+                    Notes = @Notes
+                WHERE LayoutObjectId = @LayoutObjectId";
 
             using var cmd = new SqliteCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@FactoryLayoutItemId", item.FactoryLayoutItemId);
+            cmd.Parameters.AddWithValue("@LayoutObjectId", item.FactoryLayoutItemId);
             AddItemParameters(cmd, item);
-            return await cmd.ExecuteNonQueryAsync() > 0;
+            var rows = await cmd.ExecuteNonQueryAsync();
+
+            await UpsertAnchorPointAsync(conn, item.FactoryLayoutItemId, item.X, item.Y);
+            return rows > 0;
         }
 
         public async Task<bool> DeleteAsync(long itemId)
@@ -95,49 +98,96 @@ namespace CatoriServices.Objects.database
             using var conn = GetConnection();
             await conn.OpenAsync();
 
-            using var cmd = new SqliteCommand("DELETE FROM FactoryLayoutItems WHERE factory_layout_item_id = @ItemId", conn);
+            using var cmd = new SqliteCommand("DELETE FROM FactoryLayoutObject WHERE LayoutObjectId = @ItemId", conn);
             cmd.Parameters.AddWithValue("@ItemId", itemId);
             return await cmd.ExecuteNonQueryAsync() > 0;
         }
 
         private static void AddItemParameters(SqliteCommand cmd, FactoryLayoutItemEntity item)
         {
-            cmd.Parameters.AddWithValue("@FactoryLayoutId", item.FactoryLayoutId);
-            cmd.Parameters.AddWithValue("@ItemName", item.ItemName);
-            cmd.Parameters.AddWithValue("@ItemType", item.ItemType.ToString());
-            cmd.Parameters.AddWithValue("@X", item.X);
-            cmd.Parameters.AddWithValue("@Y", item.Y);
-            cmd.Parameters.AddWithValue("@Z", item.Z);
-            cmd.Parameters.AddWithValue("@Width", item.Width);
-            cmd.Parameters.AddWithValue("@Height", item.Height);
-            cmd.Parameters.AddWithValue("@RotationDegrees", item.RotationDegrees);
-            cmd.Parameters.AddWithValue("@ZIndex", item.ZIndex);
-            cmd.Parameters.AddWithValue("@IsLocked", item.IsLocked ? 1 : 0);
+            cmd.Parameters.AddWithValue("@FactoryId", item.FactoryLayoutId);
+            cmd.Parameters.AddWithValue("@ObjectName", item.ItemName);
+            cmd.Parameters.AddWithValue("@ObjectType", item.ItemType.ToString());
             cmd.Parameters.AddWithValue("@ImagePath", item.ImagePath ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@MetadataJson", item.MetadataJson ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@ZIndex", item.ZIndex);
+            cmd.Parameters.AddWithValue("@IsInteractive", item.IsLocked ? 0 : 1);
+            cmd.Parameters.AddWithValue("@IsVisible", 1);
+            cmd.Parameters.AddWithValue("@Notes", item.MetadataJson ?? (object)DBNull.Value);
         }
 
-        private static FactoryLayoutItemEntity MapItem(SqliteDataReader reader)
+        private static async Task<FactoryLayoutItemEntity> MapItemAsync(SqliteDataReader reader)
         {
-            int idxImagePath = reader.GetOrdinal("image_path");
-            int idxMetadata = reader.GetOrdinal("metadata_json");
-            return new FactoryLayoutItemEntity
+            var itemId = reader.GetInt64(reader.GetOrdinal("LayoutObjectId"));
+            var item = new FactoryLayoutItemEntity
             {
-                FactoryLayoutItemId = reader.GetInt64(reader.GetOrdinal("factory_layout_item_id")),
-                FactoryLayoutId = reader.GetInt64(reader.GetOrdinal("factory_layout_id")),
-                ItemName = reader.GetString(reader.GetOrdinal("item_name")),
-                ItemType = Enum.Parse<FactoryLayoutItemType>(reader.GetString(reader.GetOrdinal("item_type"))),
-                X = reader.GetDouble(reader.GetOrdinal("x")),
-                Y = reader.GetDouble(reader.GetOrdinal("y")),
-                Z = reader.GetDouble(reader.GetOrdinal("z")),
-                Width = reader.GetDouble(reader.GetOrdinal("width")),
-                Height = reader.GetDouble(reader.GetOrdinal("height")),
-                RotationDegrees = reader.GetDouble(reader.GetOrdinal("rotation_degrees")),
-                ZIndex = reader.GetInt32(reader.GetOrdinal("z_index")),
-                IsLocked = reader.GetInt32(reader.GetOrdinal("is_locked")) == 1,
-                ImagePath = reader.IsDBNull(idxImagePath) ? null : reader.GetString(idxImagePath),
-                MetadataJson = reader.IsDBNull(idxMetadata) ? null : reader.GetString(idxMetadata)
+                FactoryLayoutItemId = itemId,
+                FactoryLayoutId = reader.GetInt64(reader.GetOrdinal("FactoryId")),
+                ItemName = reader.GetString(reader.GetOrdinal("ObjectName")),
+                ItemType = ParseItemType(reader.GetString(reader.GetOrdinal("ObjectType"))),
+                ZIndex = reader.GetInt32(reader.GetOrdinal("ZIndex")),
+                IsLocked = reader.GetInt32(reader.GetOrdinal("IsInteractive")) == 0,
+                ImagePath = GetNullableString(reader, "ImagePath"),
+                MetadataJson = GetNullableString(reader, "Notes")
             };
+
+            var point = await GetAnchorPointAsync(itemId);
+            if (point is not null)
+            {
+                item.X = point.Value.X;
+                item.Y = point.Value.Y;
+            }
+
+            return item;
+        }
+
+        private static FactoryLayoutItemType ParseItemType(string objectType)
+            => Enum.TryParse<FactoryLayoutItemType>(objectType, true, out var itemType)
+                ? itemType
+                : FactoryLayoutItemType.Decoration;
+
+        private static string? GetNullableString(SqliteDataReader reader, string columnName)
+        {
+            var ordinal = reader.GetOrdinal(columnName);
+            return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
+        }
+
+        private static async Task<(double X, double Y)?> GetAnchorPointAsync(long itemId)
+        {
+            using var conn = new SqliteConnection("Data Source=" + GlobalServices.Database + " ;");
+            await conn.OpenAsync();
+
+            const string sql = @"
+                SELECT X, Y
+                FROM FactoryLayoutObjectPoint
+                WHERE LayoutObjectId = @ItemId
+                ORDER BY CASE WHEN PointRole = 'Anchor' THEN 0 ELSE 1 END, PointIndex
+                LIMIT 1";
+            using var cmd = new SqliteCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@ItemId", itemId);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+            return await reader.ReadAsync()
+                ? (reader.GetDouble(reader.GetOrdinal("X")), reader.GetDouble(reader.GetOrdinal("Y")))
+                : null;
+        }
+
+        private static async Task UpsertAnchorPointAsync(SqliteConnection conn, long itemId, double x, double y)
+        {
+            const string deleteSql = "DELETE FROM FactoryLayoutObjectPoint WHERE LayoutObjectId = @ItemId AND PointIndex = 0 AND (PointRole IS NULL OR PointRole = 'Anchor')";
+            using (var deleteCmd = new SqliteCommand(deleteSql, conn))
+            {
+                deleteCmd.Parameters.AddWithValue("@ItemId", itemId);
+                await deleteCmd.ExecuteNonQueryAsync();
+            }
+
+            const string insertSql = @"
+                INSERT INTO FactoryLayoutObjectPoint (LayoutObjectId, PointIndex, X, Y, PointRole)
+                VALUES (@ItemId, 0, @X, @Y, 'Anchor')";
+            using var insertCmd = new SqliteCommand(insertSql, conn);
+            insertCmd.Parameters.AddWithValue("@ItemId", itemId);
+            insertCmd.Parameters.AddWithValue("@X", x);
+            insertCmd.Parameters.AddWithValue("@Y", y);
+            await insertCmd.ExecuteNonQueryAsync();
         }
     }
 }

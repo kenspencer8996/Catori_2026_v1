@@ -9,20 +9,22 @@ namespace CatoriCity2025WPF.Controllers
         private readonly RealestateInteriorView _view;
         private readonly HouseService _houseService;
         private readonly PersonService _personService;
-        private HouseViewModel _selectedHouse;
-        private PersonViewModel _currentOwner;
-
+        PersonViewModel _catori;
+        HouseViewModel _selectedHouse;
             public RealestateInteriorViewontroller(RealestateInteriorView view)
             {
                 _view = view;
+      
                 _houseService = new HouseService();
                 _personService = new PersonService();
             }
 
-            public void LoadHouses()
+            public async Task LoadHouses()
             {
                 try
                 {
+                    _catori = await _personService.GetPersonbyNameAsync("Catori");
+                    
                     // Load houses owned by current player
                     var allHouses = _houseService.GetHouses();
                     var housesForSale   = from h in allHouses

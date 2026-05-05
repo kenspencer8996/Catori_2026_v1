@@ -12,11 +12,14 @@ namespace CatoriCity2025WPF.Views.Controls
         private Border _border = new Border();
         public event EventHandler<BuildingOpenEventArgs> OnBuildingOpenContent;
         private string PersonName = "";
+        public HouseViewModel _selectedHouse;
+        public PersonViewModel _catori;
+        private readonly PersonService _personService;
         public RealEstateControl()
         {
             InitializeComponent();
             string tooltipimagepath = System.IO.Path.Combine(GlobalAllApps.ImageFolder,"Houses", "ForSale.png");
-
+            _personService = new PersonService();
             ImageTextToolTip toolTip = new ImageTextToolTip
             {
                 Title = "Realestate office",
@@ -30,7 +33,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private LotEntity ContentLocationLot;
 
       
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async Task UserControl_LoadedAsync(object sender, RoutedEventArgs e)
         {
             if (CityScapeGlobal.ShowAllBordersIfAvailable)
             {
@@ -108,6 +111,11 @@ namespace CatoriCity2025WPF.Views.Controls
         }
 
         private void HouseUC_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
