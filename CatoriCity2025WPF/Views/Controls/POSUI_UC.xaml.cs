@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for POSUI_UC.xaml
@@ -44,3 +44,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

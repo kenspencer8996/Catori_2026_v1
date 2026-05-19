@@ -1,11 +1,11 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.ViewModels;
+using CatoriApp.Views.Controls;
 using CatoriServices.Objects;
 using CatoriServices.Objects.Entities;
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class GeometryHelper
     {
@@ -382,4 +382,5 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     internal class POCArgs
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
 
     }
 }
+

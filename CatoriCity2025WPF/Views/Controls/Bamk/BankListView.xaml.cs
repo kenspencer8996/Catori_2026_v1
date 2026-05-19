@@ -1,4 +1,4 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for BankListView.xaml
@@ -77,3 +77,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

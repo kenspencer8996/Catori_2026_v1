@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Viewmodels;
+using CatoriApp.ViewModels;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class LandScapeWithBank_ReturnEntity
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

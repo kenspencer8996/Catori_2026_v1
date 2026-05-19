@@ -1,7 +1,6 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Views.Controls.Robots.RobotArm;
+﻿using CatoriApp.Controllers;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for StartupView.xaml
@@ -63,36 +62,36 @@ namespace CatoriCity2025WPF.Views
             view.ShowDialog();
         }
 
-        private void Factory1Button_Click(object sender, RoutedEventArgs e)
-        {
-            ShowFactoryView(1);
-        }
-
-        private void Factory2Button_Click(object sender, RoutedEventArgs e)
+        private void Location1Button_Click(object sender, RoutedEventArgs e)
         {
             ShowFactoryView(2);
         }
 
-        private void Factory3Button_Click(object sender, RoutedEventArgs e)
+        private void Location2Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(1);
+        }
+
+        private void Location3Button_Click(object sender, RoutedEventArgs e)
         {
             ShowFactoryView(3);
         }
 
-        private void Factory4Button_Click(object sender, RoutedEventArgs e)
+        private void Location4Button_Click(object sender, RoutedEventArgs e)
         {
             ShowFactoryView(4);
         }
-        private void ShowFactoryView(int factoryNumber)
+        private void ShowFactoryView(int locationNumber)
         {
-            FactoryView view = new FactoryView(factoryNumber);
+            FactoryView view = new FactoryView(locationNumber);
             view.Owner = this;
             view.ShowDialog();
         }
 
         private void RobotArmButton_Click(object sender, RoutedEventArgs e)
         {
-            RobotTestView view = new RobotTestView();
-            view.ShowDialog();
+            //RobotTestView view = new RobotTestView();
+            //view.ShowDialog();
         }
 
         private void ProductMaintenanceButton_Click(object sender, RoutedEventArgs e)
@@ -103,3 +102,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

@@ -1,6 +1,6 @@
 ﻿using CatoriServices.Data;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     internal class ShopItemService
     {
@@ -59,5 +59,6 @@ namespace CatoriCity2025WPF.Objects.Services
         }
     }
 }
+
 
 

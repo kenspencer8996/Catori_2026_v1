@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for SettingsView.xaml
@@ -102,7 +102,7 @@ namespace CatoriCity2025WPF.Views
         {
             var dataGrid = sender as DataGrid;
             SettingEntity selectedItem =(SettingEntity)dataGrid.SelectedItem;
-            SetingDetailView view = new SetingDetailView(selectedItem);
+            SettingDetailView view = new SettingDetailView(selectedItem);
             view.Owner = this;
             view.ShowDialog();
         }
@@ -111,7 +111,7 @@ namespace CatoriCity2025WPF.Views
         {
             IsDirty = true;
             SettingEntity selectedItem = new SettingEntity();
-            SetingDetailView view = new SetingDetailView(selectedItem);
+            SettingDetailView view = new SettingDetailView(selectedItem);
             view.Owner = this;
             view.ShowDialog();
 
@@ -155,3 +155,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

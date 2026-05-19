@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Objects;
+using CatoriApp.ViewModels;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Viewmodels
+namespace CatoriApp.Viewmodels
 {
     public class CityappViewmodel
     {
@@ -32,3 +32,4 @@ namespace CatoriCity2025WPF.Viewmodels
         public List<SettingEntity> Settings { get; internal set; }
     }
 }
+

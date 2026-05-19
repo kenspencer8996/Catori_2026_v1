@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.ViewModels
+﻿namespace CatoriApp.ViewModels
 {
     public class PersonProductsOwnedViewModel:ViewmodelBase
     {
@@ -106,3 +106,4 @@
         }
     }
 }
+

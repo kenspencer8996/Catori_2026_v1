@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Views.Controls.Treasure;
+﻿using CatoriApp.Views.Controls.Treasure;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class TreasureSpotDetailModel
     {
@@ -28,3 +28,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

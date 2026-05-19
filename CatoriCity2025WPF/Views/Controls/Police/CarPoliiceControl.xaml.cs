@@ -1,5 +1,5 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects;
 using CatoriServices.Objects;
 using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.Messaging;
@@ -8,12 +8,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for CarPo_ice.xaml
     /// </summary>
-    public partial class CarPoliiceControl : UserControl
+    public partial class CarPoliceControl : UserControl
     {
         RobberyMessage _robberyMessage;
         CarPoliceContentController _controller;
@@ -27,7 +27,7 @@ namespace CatoriCity2025WPF.Views.Controls
         private DispatcherTimer _startMoveTimer;
 
         int _carNumber = -1;
-        public CarPoliiceControl(string imageName,double width,double height, int carNumber)
+        public CarPoliceControl(string imageName,double width,double height, int carNumber)
         {
             InitializeComponent();
             _carNumber = carNumber; 
@@ -137,3 +137,4 @@ namespace CatoriCity2025WPF.Views.Controls
       
     }
 }
+

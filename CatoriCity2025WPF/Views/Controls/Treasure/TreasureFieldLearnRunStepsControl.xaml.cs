@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Services;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
+using CatoriApp.Services;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace CatoriCity2025WPF.Views.Controls.Treasure
+namespace CatoriApp.Views.Controls.Treasure
 {
     /// <summary>
     /// Interaction logic for TreasureFieldLearnRunStepsControl.xaml
@@ -112,3 +112,4 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         }
     }
 }
+

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects.Extensions
+namespace CatoriApp.Objects.Extensions
 {
     public static class UIElementExtensions
     {
@@ -22,3 +22,4 @@ namespace CatoriCity2025WPF.Objects.Extensions
 
     }
 }
+

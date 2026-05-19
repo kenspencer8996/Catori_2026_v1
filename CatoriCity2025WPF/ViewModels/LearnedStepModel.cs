@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class LearnedStepModel : INotifyPropertyChanged
     {
@@ -106,3 +106,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

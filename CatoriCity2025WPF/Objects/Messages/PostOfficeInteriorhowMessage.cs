@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.Objects
+﻿namespace CatoriApp.Objects
 {
     internal class PostOfficeInteriorhowMessage
     {
@@ -10,3 +10,4 @@
         public PersonViewModel Model { get; internal set; }
     }
 }
+

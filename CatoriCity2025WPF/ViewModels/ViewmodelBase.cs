@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class ViewmodelBase : INotifyPropertyChanged
     {
@@ -25,3 +25,4 @@ namespace CatoriCity2025WPF.ViewModels
 
     }
 }
+

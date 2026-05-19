@@ -1,4 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 
 namespace CityAppServices.Objects.Entities
 {
@@ -15,3 +15,4 @@ namespace CityAppServices.Objects.Entities
         public int Degrees { get; set; }
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Objects.Arguments;
 using System;
 using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for SHopItemControl.xaml
@@ -133,3 +133,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

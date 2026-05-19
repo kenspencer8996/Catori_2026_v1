@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class LearnedStepRunArgument
     {
@@ -9,3 +9,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
         public int NumberOfSpotsToRun { get; set; } = 0;
     }
 }
+

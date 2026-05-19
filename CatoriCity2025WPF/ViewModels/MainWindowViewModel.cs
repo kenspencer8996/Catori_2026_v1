@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 using CityAppServices;
 using System.ComponentModel;
 using System.Xml.Linq;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class MainWindowViewModel: INotifyPropertyChanged
     {
@@ -51,3 +51,4 @@ namespace CatoriCity2025WPF.ViewModels
 
     
 }
+

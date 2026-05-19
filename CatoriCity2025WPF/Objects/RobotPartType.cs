@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public enum RobotPartType
     {
@@ -13,3 +13,4 @@ namespace CatoriCity2025WPF.Objects
         Hand
     }
 }
+

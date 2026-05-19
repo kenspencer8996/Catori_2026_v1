@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Objects.Arguments;
 using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views.Controls.House
+namespace CatoriApp.Views.Controls.House
 {
     /// <summary>
     /// Interaction logic for EntryDoor.xaml
@@ -32,3 +32,4 @@ namespace CatoriCity2025WPF.Views.Controls.House
         }
     }
 }
+

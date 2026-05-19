@@ -1,4 +1,6 @@
-﻿namespace CatoriCity2025WPF.Views.Controls.Factory.FactoryInteriors
+using CatoriApp.Views.MachineLayoutDesigner;
+
+namespace CatoriApp.Views.Controls.Robots
 {
     /// <summary>
     /// Interaction logic for RobotControlPanel.xaml
@@ -11,6 +13,8 @@
         public event EventHandler? TeachRequested;
         private List<string> _secondaryItems;
         bool _DesignMode = false;
+        public long LocationId { get; set; }
+        public string LocationBackgroundImagePath { get; set; } = "";
         public RobotControlPanel()
         {
             InitializeComponent();
@@ -48,14 +52,13 @@
                 comboBox.SelectedIndex = 0;
         }
 
-       
         private void RunButton_Click_1(object sender, RoutedEventArgs e)
         {
             RobotControlPanelSelectionsArg args = new RobotControlPanelSelectionsArg();
             args.InputA = SelectedInputA;
             args.InputB = SelectedInputB;
             args.Output = SelectedOutput;
-            RunRequested(this, args );
+            RunRequested(this, args);
         }
         private void TeachButton_Click(object sender, RoutedEventArgs e)
         {
@@ -70,16 +73,16 @@
         string Designbuttontext = "Design";
         private void DesignModeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_DesignMode) //turn off since its already set
+            if (_DesignMode)
             {
                 UpdateStatus("Design mode disabled");
                 DesignModeButton.Content = Designbuttontext;
                 RunButton.IsEnabled = true;
                 _DesignMode = false;
-                DesignModeEndRequested(this,e);
+                DesignModeEndRequested(this, e);
                 RunButton.IsEnabled = true;
             }
-            else //Designmode not set so turn it out
+            else
             {
                 Designbuttontext = DesignModeButton.Content.ToString();
                 DesignModeButton.Content = "End Design";
@@ -91,19 +94,35 @@
             }
         }
 
-
         private void InputAComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             List<string> list = new List<string>();
             string selectedA = InputAComboBox.SelectedValue.ToString();
             var found = from f in _secondaryItems where f != selectedA select f;
             List<string> foundItems = new List<string>();
-            foreach(var item in found)
+            foreach (var item in found)
             {
                 foundItems.Add(item);
             }
             LoadComboBox(InputBComboBox, foundItems);
 
         }
+
+        private void RobotDesignButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Rect sourcerectangle = new Rect(0, 0, 500, 500);
+                MachineLayoutDesignerWindow view = new MachineLayoutDesignerWindow(LocationId, LocationBackgroundImagePath, sourcerectangle);
+                view.Owner = Window.GetWindow(this);
+                view.Show();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }
+

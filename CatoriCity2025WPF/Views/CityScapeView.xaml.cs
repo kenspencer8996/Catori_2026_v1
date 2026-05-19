@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Views;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Views;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF
+namespace CatoriApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

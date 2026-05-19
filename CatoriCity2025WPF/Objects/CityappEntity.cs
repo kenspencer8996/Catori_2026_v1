@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class CityappEntity
     {
@@ -20,3 +20,4 @@ namespace CatoriCity2025WPF.Objects
         public List<HouseEntity> Houses { get; set; } = new List<HouseEntity>();
     }
 }
+

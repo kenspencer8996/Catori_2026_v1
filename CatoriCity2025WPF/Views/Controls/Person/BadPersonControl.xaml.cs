@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for BadPersonControl.xaml
@@ -412,3 +412,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.Objects
+﻿namespace CatoriApp.Objects
 {
     internal class StorageFolder
     {

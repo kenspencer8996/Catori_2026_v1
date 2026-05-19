@@ -1,6 +1,6 @@
 ﻿using System.Windows.Shapes;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class GeometryObjectForAnimationsModel
     {
@@ -16,3 +16,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF
+namespace CatoriApp
 {
     public partial class LedPanel : UserControl
     {

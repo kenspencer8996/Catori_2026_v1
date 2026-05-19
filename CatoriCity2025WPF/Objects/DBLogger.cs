@@ -1,7 +1,7 @@
 ﻿using CityAppServices.Objects.database;
 using System.IO;
 using System.Runtime.CompilerServices;
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class DBLogger
     {
@@ -57,3 +57,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

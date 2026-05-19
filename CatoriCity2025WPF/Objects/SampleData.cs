@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 using CityAppServices;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public static class SampleData
 
@@ -82,10 +82,10 @@ namespace CatoriCity2025WPF.Objects
                         insertedSomething.Information = "insertedSomething";
                         GlobalServices.InsertBusiness("Jones Fin.", 200, "bank_1.jpg", BusinessTypeEnum.Financial);
                         GlobalServices.InsertBusiness("123 Bank", 200, "bank_2.jpg", BusinessTypeEnum.Financial);
-                        GlobalServices.InsertBusiness("Iron Factory", 130, "factory_1.jpg", BusinessTypeEnum.Factory);
-                        GlobalServices.InsertBusiness("Auto Factory", 150, "factory_2.jpg", BusinessTypeEnum.Factory);
-                        GlobalServices.InsertBusiness("Auto Factory2", 150, "factory_3.jpg", BusinessTypeEnum.Factory);
-                        GlobalServices.InsertBusiness("Auto Factory3", 150, "factory_4.png", BusinessTypeEnum.Factory);
+                        GlobalServices.InsertBusiness("Iron Location", 130, "location_1.jpg", BusinessTypeEnum.Location);
+                        GlobalServices.InsertBusiness("Auto Location", 150, "location_2.jpg", BusinessTypeEnum.Location);
+                        GlobalServices.InsertBusiness("Auto Location2", 150, "location_3.jpg", BusinessTypeEnum.Location);
+                        GlobalServices.InsertBusiness("Auto Location3", 150, "location_4.png", BusinessTypeEnum.Location);
                     
                 }
                 catch (Exception ex2)
@@ -131,3 +131,4 @@ namespace CatoriCity2025WPF.Objects
     }
      
  }
+

@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Objects.Arguments;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class TreasureFieldLearnRunStepsviewModel : ObservableObject
     {
@@ -79,3 +79,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Views.Controls;
 using CityAppServices.Objects.Entities;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class DoorOpenEventArgs : EventArgs
     {
@@ -13,3 +13,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
         
     }
 }
+

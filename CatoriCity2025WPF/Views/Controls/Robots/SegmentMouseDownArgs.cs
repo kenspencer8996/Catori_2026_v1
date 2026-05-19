@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views.Controls.Robots
+namespace CatoriApp.Views.Controls.Robots
 {
     public class SegmentMouseDownArgs
     {
@@ -14,3 +14,4 @@ namespace CatoriCity2025WPF.Views.Controls.Robots
 
     }
 }
+

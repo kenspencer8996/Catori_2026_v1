@@ -1,6 +1,6 @@
 ﻿using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class ImageViewModel
     {
@@ -39,3 +39,4 @@ namespace CatoriCity2025WPF.ViewModels
 
     }
 }
+

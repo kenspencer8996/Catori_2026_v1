@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects.DTOs
+namespace CatoriApp.Objects.DTOs
 {
     public class BOMDto
     {
@@ -41,3 +41,4 @@ namespace CatoriCity2025WPF.Objects.DTOs
         }
     }
 }
+

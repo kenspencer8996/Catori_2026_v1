@@ -1,6 +1,6 @@
 ﻿using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class DataHelperforUI
     {
@@ -50,11 +50,11 @@ namespace CatoriCity2025WPF.Objects
                 }
 
             }
-            var foundfactoryimages = from i in CityScapeGlobal.Images
-                                     where i.ImageRole == ImageEnum.factory
+            var foundlocationimages = from i in CityScapeGlobal.Images
+                                     where i.ImageRole == ImageEnum.location
                                      && i.IsUsed == false
                                      select i;
-            foreach (var image in foundfactoryimages)
+            foreach (var image in foundlocationimages)
             {
                 var foundhouses = from h in CityScapeGlobal.Houses
                                   where h.HouseImageFileName == ""
@@ -89,3 +89,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

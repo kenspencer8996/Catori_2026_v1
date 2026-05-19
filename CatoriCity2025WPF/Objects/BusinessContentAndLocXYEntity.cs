@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Views.Controls;
 using CityAppServices.Objects;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class BusinessControlAndLocXYEntity
     {
@@ -10,3 +10,4 @@ namespace CatoriCity2025WPF.Objects
         public BankControl Business;
     }
 }
+

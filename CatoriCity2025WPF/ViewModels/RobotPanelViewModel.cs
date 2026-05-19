@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class RobotPanelViewModel
     {
@@ -13,3 +13,4 @@ namespace CatoriCity2025WPF.ViewModels
         public List<string> ModeItems { get; set; } = new();
     }
 }
+

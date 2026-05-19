@@ -1,12 +1,12 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.DragDrop;
+using CatoriApp.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for PersonControl.xaml
@@ -27,7 +27,7 @@ namespace CatoriCity2025WPF.Views.Controls
         PersonService personservice;
         PersonMouseTargetenum _PersonMouseTargetenum;
         public PersonViewModel _person;
-        FactoryControl _factoryControl;
+        FactoryControl _locationControl;
         int _imageindex;
         int _dirtindex = 0;
         public bool MovePerson = false;
@@ -129,8 +129,8 @@ namespace CatoriCity2025WPF.Views.Controls
                         _PersonMouseTargetenum = PersonMouseTargetenum.None;
                         break;
                     case LeaveEnerEnum.Enter:
-                        _PersonMouseTargetenum = PersonMouseTargetenum.Factory;
-                        _factoryControl = m.FactoryControlInstance;
+                        _PersonMouseTargetenum = PersonMouseTargetenum.Location;
+                        _locationControl = m.FactoryControlInstance;
                         break;
                     default:
                         break;
@@ -568,3 +568,4 @@ namespace CatoriCity2025WPF.Views.Controls
 
     }
 }
+

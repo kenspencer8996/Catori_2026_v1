@@ -3,7 +3,7 @@ using CityAppServices.Objects.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class SettingService
     {
@@ -51,4 +51,5 @@ namespace CatoriCity2025WPF.Objects.Services
         }
     }
 }
+
 

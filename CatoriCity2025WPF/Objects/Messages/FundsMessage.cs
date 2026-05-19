@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.ViewModels;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class FundsMessage
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

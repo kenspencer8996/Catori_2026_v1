@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.Objects
+﻿namespace CatoriApp.Objects
 {
     internal class ShowHardwareStoreInteriorMessage
     {
@@ -7,3 +7,4 @@
         public PersonViewModel Model { get; internal set; }
     }
 }
+

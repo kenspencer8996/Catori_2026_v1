@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriApp.Objects.DragDrop;
+using CatoriApp.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for BusinessControl.xaml
@@ -119,7 +119,7 @@ namespace CatoriCity2025WPF.Views.Controls
         }
         public void StartWork()
         {
-            CityScapeGlobal.SetFactoryWorking(_personViewModel.StaticImageFilePath, InteriorSelector);
+            //CityScapeGlobal.SetFactoryWorking(_personViewModel.StaticImageFilePath, InteriorSelector);
 
         }
         private void MainLayout_Drop(object sender, DragEventArgs e)
@@ -196,3 +196,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class ShoppingCartUtility
     {
@@ -46,3 +46,4 @@ namespace CatoriCity2025WPF.Objects
         
     }
 }
+

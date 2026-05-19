@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
-        xmlns:House="clr-namespace:CatoriCity2025WPF.Views.Controls.House" x:Class="CatoriCity2025WPF.Views.DetailHouseInsideView"
+        xmlns:local="clr-namespace:CatoriApp.Views"
+        xmlns:House="clr-namespace:CatoriApp.Views.Controls.House" x:Class="CatoriApp.Views.DetailHouseInsideView"
         mc:Ignorable="d" Loaded="Window_Loaded"
         Title="DetailHouseInsideView" Height="800" Width="1000" WindowStartupLocation="CenterOwner" WindowStyle="None">
     <Canvas x:Name="MainLayoutDetailHome" Width="{Binding ActualWidth, ElementName=DetailHouseInsideView}" 
@@ -20,3 +20,4 @@
         <House:EntryDoor x:Name="EntryDoorToGarage"  Panel.ZIndex="3000" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </Window>
+

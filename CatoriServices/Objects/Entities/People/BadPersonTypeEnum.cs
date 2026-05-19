@@ -1,0 +1,18 @@
+﻿namespace CatoriServices.Objects.Entities.People
+{
+    public enum BadPersonTypeEnum
+    {
+        Normal ,
+        Crying,
+        WithCash,
+        Sleeping,
+        Mad,
+        SittingOnLog,
+        WalkingNormal,
+        Walking1,
+        Walking2,
+        Walking3,
+        Walking4
+    }
+}
+

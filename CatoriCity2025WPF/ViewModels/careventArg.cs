@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Views.Controls;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class careventArg
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF.Objects
         public CarUserControl Car { get; set; }
     }
 }
+

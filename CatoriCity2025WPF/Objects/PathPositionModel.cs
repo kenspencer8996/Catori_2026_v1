@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.ViewModels;
 using CatoriServices.Objects;
 using System.Windows.Media.Animation;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class PathPositionModel
     {
@@ -39,3 +39,4 @@ namespace CatoriCity2025WPF.Objects
         public string GeometryType { get; set; } = "Line";  
     }
 }
+

@@ -1,12 +1,12 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.DragDrop;
+using CatoriApp.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 
-namespace CatoriCity2025WPF.Views.Controls.Treasure
+namespace CatoriApp.Views.Controls.Treasure
 {
     /// <summary>
     /// Interaction logic for TreasureWorkBench.xaml
@@ -234,3 +234,4 @@ namespace CatoriCity2025WPF.Views.Controls.Treasure
         }
     }
 }
+

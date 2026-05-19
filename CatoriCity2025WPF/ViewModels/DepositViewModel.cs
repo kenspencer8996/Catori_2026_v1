@@ -1,7 +1,7 @@
 ﻿using CatoriServices.Objects.Entities;
 using System.ComponentModel;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class DepositViewModel
     {
@@ -103,3 +103,4 @@ namespace CatoriCity2025WPF.ViewModels
 
     }
 }
+

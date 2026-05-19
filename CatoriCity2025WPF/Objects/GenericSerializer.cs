@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class GenericSerializer
     {
@@ -28,3 +28,4 @@ namespace CatoriCity2025WPF.Objects
     }
 }
 }
+

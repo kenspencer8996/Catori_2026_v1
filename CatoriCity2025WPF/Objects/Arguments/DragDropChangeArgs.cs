@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class DragDropChangeArgs
     {
     }
 }
+

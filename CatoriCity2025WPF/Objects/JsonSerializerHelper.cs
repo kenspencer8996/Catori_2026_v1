@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class JsonSerializerHelper
     {
@@ -25,3 +25,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

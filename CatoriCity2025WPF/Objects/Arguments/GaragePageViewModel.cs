@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Views.Controls;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Views.Controls;
+using CatoriApp.ViewModels;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class GaragePageViewModel : ViewmodelBase
     {
@@ -15,3 +15,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
         }
     }
 }
+

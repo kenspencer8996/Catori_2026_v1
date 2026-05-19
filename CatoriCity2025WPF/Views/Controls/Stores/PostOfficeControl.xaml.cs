@@ -1,10 +1,10 @@
-﻿using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriApp.Objects.DragDrop;
+using CatoriApp.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 using System.Windows.Media.Effects;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for StoreHardwareControl.xaml
@@ -120,3 +120,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

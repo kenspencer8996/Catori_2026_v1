@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class ComponentViewModel:ViewmodelBase
     {
@@ -29,3 +29,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

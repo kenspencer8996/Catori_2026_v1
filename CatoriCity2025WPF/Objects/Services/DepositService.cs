@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.ViewModels;
 using CatoriServices.Objects.database;
 using CatoriServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class DepositService
     {
@@ -139,3 +139,4 @@ namespace CatoriCity2025WPF.Objects.Services
         }
     }
 }
+

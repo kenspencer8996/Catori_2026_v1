@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views" xmlns:Treasure="clr-namespace:CatoriCity2025WPF.Views.Controls.Treasure" xmlns:Controls="clr-namespace:CatoriCity2025WPF.Views.Controls" x:Class="CatoriCity2025WPF.Views.TreasureFieldView"
+        xmlns:local="clr-namespace:CatoriApp.Views" xmlns:Treasure="clr-namespace:CatoriApp.Views.Controls.Treasure" xmlns:Controls="clr-namespace:CatoriApp.Views.Controls" x:Class="CatoriApp.Views.TreasureFieldView"
         WindowStyle="None" MouseMove="TreasureField1View_MouseMove"
         mc:Ignorable="d" x:Name="TreasureField1View" WindowStartupLocation="CenterOwner"
         Title="TreasureFile1View" WindowState="Maximized"  Loaded="TreasureField1View_Loaded">
@@ -23,3 +23,4 @@
         </Grid>
     </Viewbox>
 </Window>
+

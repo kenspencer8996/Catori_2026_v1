@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Objects;
+using CatoriApp.Views.Controls;
 using CatoriServices.Objects.Entities;
 using System.Windows.Controls;
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
 
     public class BankViewModel : ViewmodelBase
@@ -139,3 +139,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

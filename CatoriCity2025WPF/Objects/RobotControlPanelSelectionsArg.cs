@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class RobotControlPanelSelectionsArg
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF.Objects
         public string Output;
     }
 }
+

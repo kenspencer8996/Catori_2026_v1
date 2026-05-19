@@ -1,14 +1,14 @@
 ﻿using CityAppServices.Objects;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class GlobalGeo
     {
         public static StreetsModel Streets = new StreetsModel();  
         public static StreetsEnum HouseStreets = StreetsEnum.YouStreet;
         public static StreetsEnum FinancialStreets = StreetsEnum.YodelLane;
-        public static StreetsEnum FactoryStreets = StreetsEnum.Teastreet;
+        public static StreetsEnum LocationStreets = StreetsEnum.Teastreet;
         public static StreetsEnum GovStreets = StreetsEnum.MikAve;
         public static StreetsEnum PoliceStreets = StreetsEnum.YouStreet;
         private static LotEntity _policeStationLocation = new LotEntity();
@@ -50,3 +50,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

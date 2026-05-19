@@ -1,0 +1,98 @@
+<Window x:Class="CatoriApp.Views.MachineLayoutDesigner.MachineLayoutDesignerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uslib="clr-namespace:CatoriUCLibrary.Views.RobotArm;assembly=CatoriUCLibrary"
+        Title="Machine Layout Designer"
+        Height="860" Loaded="Window_Loaded"
+        Width="1200" WindowState="Maximized"
+        WindowStartupLocation="CenterOwner" Background="{DynamicResource MainGradient}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="Transparent">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Viewbox Stretch="Uniform">
+                    <Canvas x:Name="DesignerCanvas"
+                            Width="{Binding CanvasWidth}"
+                            Height="{Binding CanvasHeight}"
+                            Background="#101010">
+                        <Image x:Name="MainImage" Stretch="Fill" Panel.ZIndex="100" />
+
+                        <uslib:RoboticArmUC x:Name="RobotArmNew"
+                                            Canvas.Left="300"
+                                            Canvas.Top="200"
+                                            Width="400" 
+                                            Height="400"
+                                            Panel.ZIndex="1201"/>
+                    </Canvas>
+                </Viewbox>
+            </ScrollViewer>
+        </Border>
+
+        <Border Grid.Column="1" Background="Transparent" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Robot Sequence Name" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <TextBox x:Name="SequenceNameTextBox" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" />
+                    <UniformGrid Columns="2" Margin="0,0,0,8">
+                        <Label Content="Robot Position"/>
+                        <Label Content=""/>
+                        <Label Content="Left"/>
+                        <TextBox x:Name="RobotPositionLeftTextBox" TextChanged="RobotPositionLeftTextBox_TextChanged"/>
+                        <Label Content="Top"/>
+                        <TextBox x:Name="RobotPositionTopTextBox" TextChanged="RobotPositionTopTextBox_TextChanged"/>
+                    </UniformGrid>
+                    <UniformGrid Columns="2" Margin="0,0,0,8">
+                        <Button Content="Add Pose" Click="AddPose_Click" Margin="0,0,4,4" />
+                        <Button Content="Delete Pose" Click="DeletePose_Click" Margin="4,0,0,4" />
+                        <Button Content="Move Pose Up" Click="MovePoseUp_Click" Margin="0,4,4,4" />
+                        <Button Content="Move Pose Down" Click="MovePoseDown_Click" Margin="4,4,0,4" />
+                    </UniformGrid>
+                </StackPanel>
+
+                <ListView Grid.Row="1"
+                          ItemsSource="{Binding Poses}"
+                          SelectedItem="{Binding SelectedPose}"
+                          Margin="0,0,0,8">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="#" Width="34" DisplayMemberBinding="{Binding PoseIndex}" />
+                            <GridViewColumn Header="Name" Width="140">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding PoseName, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             MinWidth="120" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="J1" Width="42" DisplayMemberBinding="{Binding Joint1}" />
+                            <GridViewColumn Header="J2" Width="42" DisplayMemberBinding="{Binding Joint2}" />
+                            <GridViewColumn Header="J3" Width="42" DisplayMemberBinding="{Binding Joint3}" />
+                            <GridViewColumn Header="Hand" Width="52" DisplayMemberBinding="{Binding JointHand}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Grid.Row="2">
+                    <UniformGrid Columns="2">
+                        <Button Content="Save" x:Name="SaveButton" Click="SaveButton_Click" Margin="0,0,4,4" />
+                    </UniformGrid>
+                    <Button Content="Play Sequence" Click="PlaySequence_Click" Margin="0,4,0,8" />
+                    <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+

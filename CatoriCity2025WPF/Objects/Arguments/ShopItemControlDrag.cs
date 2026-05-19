@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class ShopItemControlDrag
     {
@@ -9,3 +9,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
         public Point OriginalLocation;
     }
 }
+

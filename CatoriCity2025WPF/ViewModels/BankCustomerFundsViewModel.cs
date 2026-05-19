@@ -1,6 +1,6 @@
 ﻿using CatoriServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class BankCustomerFundsViewModel :ViewmodelBase
     {
@@ -83,3 +83,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

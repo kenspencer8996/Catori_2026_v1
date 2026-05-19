@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 using Microsoft.Win32;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for ProductBuilderView.xaml
@@ -128,3 +128,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

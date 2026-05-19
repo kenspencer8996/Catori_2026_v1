@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for GrassWithBareTreasureControl.xaml
@@ -18,3 +18,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

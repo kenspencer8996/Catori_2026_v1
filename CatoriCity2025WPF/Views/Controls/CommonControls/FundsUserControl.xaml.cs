@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for FundsUSERCONTROL.xaml
@@ -25,3 +25,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

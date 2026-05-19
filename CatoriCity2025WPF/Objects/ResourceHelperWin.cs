@@ -1,7 +1,7 @@
 ﻿using CityAppServices.Objects.Entities;
 using System.IO;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class ResourceHelperWin
     {
@@ -51,10 +51,10 @@ namespace CatoriCity2025WPF.Objects
                             imageType.Imagetype = ImageContentEnum.carlot;
                             GlobalStuff.ClassroomImageList.Add(imageType);
                         }
-                        else if (filename.StartsWith("factory"))
+                        else if (filename.StartsWith("location"))
                         {
-                            imageType.Imagetype = ImageContentEnum.factory;
-                            GlobalStuff.FactoryImageList.Add(imageType);
+                            imageType.Imagetype = ImageContentEnum.location;
+                            GlobalStuff.LocationImageList.Add(imageType);
                         }
                         else if (filename.StartsWith("garage"))
                         {
@@ -106,3 +106,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

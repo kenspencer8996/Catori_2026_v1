@@ -1,7 +1,7 @@
 ﻿
 using System.Drawing;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     
     /// <summary>
@@ -22,3 +22,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

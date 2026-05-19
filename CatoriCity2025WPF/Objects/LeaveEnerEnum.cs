@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public enum LeaveEnerEnum
     {
@@ -10,3 +10,4 @@ namespace CatoriCity2025WPF.Objects
         Enter
     }
 }
+

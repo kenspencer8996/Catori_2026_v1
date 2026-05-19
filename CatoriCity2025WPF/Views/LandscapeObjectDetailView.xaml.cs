@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Objects;
+using CatoriApp.ViewModels;
 using Microsoft.Win32;
 using System.Windows;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for LandscapeObjectDetailView.xaml
@@ -85,3 +85,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

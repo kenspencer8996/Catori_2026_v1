@@ -1,6 +1,6 @@
 ﻿using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class MapPositionEntity
     {
@@ -280,3 +280,4 @@ namespace CatoriCity2025WPF.Objects
        
     }
 }
+

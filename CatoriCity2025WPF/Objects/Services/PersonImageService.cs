@@ -1,5 +1,5 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Viewmodels;
+﻿using CatoriApp.ViewModels;
+using CatoriApp.Viewmodels;
 using CityAppServices.Objects.database;
 using CityAppServices.Objects.Entities;
 using System;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class PersonImageService
     {
@@ -68,3 +68,4 @@ namespace CatoriCity2025WPF.Objects.Services
 
     }
 }
+

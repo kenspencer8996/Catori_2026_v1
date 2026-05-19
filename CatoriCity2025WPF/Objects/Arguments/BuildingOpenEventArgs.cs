@@ -1,35 +1,36 @@
-﻿using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Views.Controls;
 using CityAppServices.Objects.Entities;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class BuildingOpenEventArgs : EventArgs
     {
         public HouseControl House { get; set; }
         public BankControl Business { get; set; }
-        public BuldingTypeEnum BuldingType { get; set; }
-        public BuildingOpenEventArgs(UserControl contentView, BuldingTypeEnum buldingType)
+        public BuildingTypeEnum BuldingType { get; set; }
+        public BuildingOpenEventArgs(UserControl contentView, BuildingTypeEnum buldingType)
         {
             BuldingType = buldingType;
             switch (buldingType)
             {
-                case BuldingTypeEnum.House:
+                case BuildingTypeEnum.House:
                     House = (HouseControl)contentView;
                     break;
-                case BuldingTypeEnum.Factory:
+                case BuildingTypeEnum.Location:
                     Business = (BankControl)contentView;
                     break;
-                case BuldingTypeEnum.Bank:
+                case BuildingTypeEnum.Bank:
                     Business = (BankControl)contentView;
                     break;
-                case BuldingTypeEnum.CarLot:
+                case BuildingTypeEnum.CarLot:
                     Business = (BankControl)contentView;
                     break;
-                case BuldingTypeEnum.Retail:
+                case BuildingTypeEnum.Retail:
                     Business = (BankControl)contentView;
                     break;
             }
         }
     }
 }
+

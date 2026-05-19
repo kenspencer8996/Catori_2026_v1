@@ -1,6 +1,6 @@
 ﻿using CityAppServices.Objects.database;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class HouseService
     {

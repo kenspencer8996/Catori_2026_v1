@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Objects.DragDrop;
+﻿using CatoriApp.Objects.DragDrop;
 using System.Windows.Media.Effects;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for LotContent.xaml
@@ -101,3 +101,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

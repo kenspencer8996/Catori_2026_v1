@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\RobotArmUC\RoboticArmUC.xaml.cs">
+    <Compile Update="Views\RobotArm\RoboticArmUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RobotArmUC\RobotArmSegmentontrol.xaml.cs">
+    <Compile Update="Views\RobotArm\RobotArmSegmentontrol.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

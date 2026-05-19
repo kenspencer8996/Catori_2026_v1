@@ -1,11 +1,11 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.ViewModels;
+using CatoriApp.Views.Controls;
 using CatoriServices.Objects.Entities;
 using CityAppServices.Objects.Entities;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class PersonViewModel : PersonViewModelBase
     {
@@ -314,3 +314,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

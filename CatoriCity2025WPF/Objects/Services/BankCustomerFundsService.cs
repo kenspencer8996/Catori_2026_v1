@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.Objects.Services
+﻿namespace CatoriApp.Objects.Services
 {
     /// <summary>
     /// Thin service forwarding calls to <see cref="BankCustomerFundsRepository"/>.
@@ -47,3 +47,4 @@
         }
     }
 }
+

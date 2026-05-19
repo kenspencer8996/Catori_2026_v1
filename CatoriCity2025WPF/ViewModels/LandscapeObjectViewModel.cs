@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 using CatoriServices.Objects.Entities;
 using System.ComponentModel;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class LandscapeObjectViewModel
     {
@@ -199,4 +199,5 @@ namespace CatoriCity2025WPF.ViewModels
         public LandscapeObjectEntity Entity => _entity;
     }
 }
+
 

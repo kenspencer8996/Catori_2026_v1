@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class ManufacturingViewModel : ViewmodelBase
     {
@@ -53,3 +53,4 @@ namespace CatoriCity2025WPF.ViewModels
 
     } 
 }
+

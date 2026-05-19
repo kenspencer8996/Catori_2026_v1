@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     internal class LandscapeObjectService
     {
@@ -42,3 +42,4 @@ namespace CatoriCity2025WPF.Objects.Services
         }
     }
 }
+

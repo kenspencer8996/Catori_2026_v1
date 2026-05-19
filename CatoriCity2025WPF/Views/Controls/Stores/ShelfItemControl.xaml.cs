@@ -1,5 +1,5 @@
 ﻿
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for ShelfItemControl.xaml
@@ -49,3 +49,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

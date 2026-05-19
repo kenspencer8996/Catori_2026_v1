@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 using CityAppServices.Objects.Entities;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class HouseViewModel : ViewmodelBase
     {

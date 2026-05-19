@@ -1,19 +1,19 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for RealestateInteriorView.xaml
     /// </summary>
     public partial class RealestateInteriorView : Window
     {
-        RealestateInteriorViewontroller _controller;
+        RealEstateInteriorViewController _controller;
         PersonService _personService;
         public PersonViewModel _catori;
         public RealestateInteriorView()
         {
             InitializeComponent();
-            _controller = new RealestateInteriorViewontroller(this);
+            _controller = new RealEstateInteriorViewController(this);
             _personService = new PersonService();
             Loaded += RealestateInteriorView_LoadedAsync;
         }
@@ -56,3 +56,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

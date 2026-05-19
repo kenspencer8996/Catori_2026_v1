@@ -1,6 +1,4 @@
-﻿using CatoriCity2025WPF.Objects;
-
-namespace CatoriServices.Objects.Entities
+﻿namespace CatoriServices.Objects.Entities
 {
     public class LandscapeObjectEntity
     {
@@ -19,3 +17,6 @@ namespace CatoriServices.Objects.Entities
         public string FeatureNote { get; set; } = "";
     }
 }
+
+
+

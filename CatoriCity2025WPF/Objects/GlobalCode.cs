@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Objects.DragDrop;
+﻿using CatoriApp.Objects.DragDrop;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class GlobalCode
     {
@@ -12,3 +12,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

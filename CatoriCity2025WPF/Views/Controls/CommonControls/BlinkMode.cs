@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF
+namespace CatoriApp
 {
     public enum BlinkMode
     {
@@ -11,3 +11,4 @@ namespace CatoriCity2025WPF
         Chase
     }
 }
+

@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Convertors;
+﻿using CatoriApp.Controllers;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for FundsDetailView.xaml
@@ -46,3 +46,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

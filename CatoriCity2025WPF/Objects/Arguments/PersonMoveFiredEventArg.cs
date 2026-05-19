@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Viewmodels;
+﻿using CatoriApp.Viewmodels;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
 
     public class PersonMoveFiredEventArg
@@ -18,3 +18,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
        
     }
 }
+

@@ -1,9 +1,9 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for StoreHardwareView.xaml
@@ -257,3 +257,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

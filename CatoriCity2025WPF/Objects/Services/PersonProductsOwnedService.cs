@@ -1,5 +1,5 @@
 ﻿using CatoriServices.Objects.Entities;
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class PersonProductsOwnedService
     {
@@ -244,3 +244,4 @@ namespace CatoriCity2025WPF.Objects.Services
 
     }
 }
+

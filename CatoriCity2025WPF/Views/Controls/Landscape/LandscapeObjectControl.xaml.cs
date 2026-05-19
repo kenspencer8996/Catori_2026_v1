@@ -1,10 +1,10 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.DragDrop;
 using System.Windows.Input;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for LandscapeObjectControl.xaml
@@ -248,3 +248,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

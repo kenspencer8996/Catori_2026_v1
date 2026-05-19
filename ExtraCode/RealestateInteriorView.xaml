@@ -1,9 +1,9 @@
-﻿<Window x:Class="CatoriCity2025WPF.Views.RealestateInteriorView"
+﻿<Window x:Class="CatoriApp.Views.RealestateInteriorView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        xmlns:local="clr-namespace:CatoriApp.Views"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="RealestateInteriorView" Height="1024" Width="1200">
     <Grid Margin="20">
@@ -114,3 +114,4 @@
     </Grid>
 
 </Window>
+

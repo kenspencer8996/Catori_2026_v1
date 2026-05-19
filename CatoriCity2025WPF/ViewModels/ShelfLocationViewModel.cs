@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CatoriServices.Objects.Entities;
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class ShelfLocationViewModel: ViewmodelBase
     {
@@ -193,3 +193,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

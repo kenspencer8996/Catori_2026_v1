@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class PointEntity
     {
@@ -12,3 +12,4 @@ namespace CatoriCity2025WPF.Objects
         internal double Y { get; set; }
     }
 }
+

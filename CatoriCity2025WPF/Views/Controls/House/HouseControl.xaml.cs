@@ -1,12 +1,12 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
-using CatoriCity2025WPF.Objects.Messages;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.DragDrop;
+using CatoriApp.Objects.Messages;
 using CatorisControlLibrary.Objects;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for HouseControl.xaml
@@ -309,3 +309,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

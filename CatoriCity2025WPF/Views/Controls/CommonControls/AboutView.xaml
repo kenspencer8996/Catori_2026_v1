@@ -1,9 +1,9 @@
-﻿<Window x:Class="CatoriCity2025WPF.Views.AboutView"
+﻿<Window x:Class="CatoriApp.Views.AboutView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        xmlns:local="clr-namespace:CatoriApp.Views"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="AboutView" Height="450" Width="800" Background="{DynamicResource MainGradient}">
     <Grid >
@@ -31,3 +31,4 @@
         <Image Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Center" Source="/Images/CatoriImage.png"/>
     </Grid>
 </Window>
+

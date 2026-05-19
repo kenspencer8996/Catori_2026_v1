@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class BillOfMaterialsService
     {
@@ -137,4 +137,5 @@ namespace CatoriCity2025WPF.Objects.Services
             }
         }
     }
+
 

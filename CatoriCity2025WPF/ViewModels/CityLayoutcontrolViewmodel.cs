@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     internal class CityLayoutcontrolViewmodel : ViewmodelBase
     {
@@ -96,3 +96,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

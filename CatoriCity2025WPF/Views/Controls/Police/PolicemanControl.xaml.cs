@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for PolicemanControl.xaml
@@ -13,3 +13,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

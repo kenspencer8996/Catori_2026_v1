@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class UIUtility
     {
@@ -161,3 +161,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

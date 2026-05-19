@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Viewmodels;
+﻿using CatoriApp.Viewmodels;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class DefaultSampleDataHelper
     {
@@ -14,8 +14,8 @@ namespace CatoriCity2025WPF.Objects
                 //GlobalStuff.Addbusinessntity("A bank", 210, BusinessTypeEnum.Financial);
                 //GlobalStuff.Addbusinessntity("My CU", 220, BusinessTypeEnum.Financial);
 
-                //GlobalStuff.Addbusinessntity("Iron W", 140, BusinessTypeEnum.Factory);
-                //GlobalStuff.Addbusinessntity("Smelter", 170, BusinessTypeEnum.Factory);
+                //GlobalStuff.Addbusinessntity("Iron W", 140, BusinessTypeEnum.Location);
+                //GlobalStuff.Addbusinessntity("Smelter", 170, BusinessTypeEnum.Location);
                 //GlobalStuff.Addbusinessntity("Hot Cars", 120, BusinessTypeEnum.Carlot);
 
                 //GlobalStuff.AddPersonViewModel("Catori", true, PersonImageTypeEnum.Normal);
@@ -33,3 +33,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

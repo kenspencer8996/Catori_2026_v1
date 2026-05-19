@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Controllers;
+using CatoriApp.ViewModels;
 using System.Windows;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for BankDepositsView.xaml
@@ -46,3 +46,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

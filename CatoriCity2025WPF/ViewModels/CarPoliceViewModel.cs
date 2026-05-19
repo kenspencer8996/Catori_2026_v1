@@ -2,7 +2,7 @@
 using CityAppServices.Objects.Entities;
 using System.Xml.Linq;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class CarPoliceViewModel : BaseViewModel
     {
@@ -31,3 +31,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

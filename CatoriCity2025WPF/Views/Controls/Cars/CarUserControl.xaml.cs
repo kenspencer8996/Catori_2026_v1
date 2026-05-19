@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for CarUserControl.xaml
@@ -31,3 +31,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

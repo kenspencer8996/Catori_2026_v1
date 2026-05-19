@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for HousePurchaseView.xaml
@@ -16,3 +16,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Objects.DragDrop;
+﻿using CatoriApp.Objects.DragDrop;
 using System.Windows.Media.Effects;
 
-namespace CatoriCity2025WPF.Views.Controls.House
+namespace CatoriApp.Views.Controls.House
 {
     /// <summary>
     /// Interaction logic for HardwareItemsControl.xaml
@@ -72,3 +72,4 @@ namespace CatoriCity2025WPF.Views.Controls.House
         }
     }
 }
+

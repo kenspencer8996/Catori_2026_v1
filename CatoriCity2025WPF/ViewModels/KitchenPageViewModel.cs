@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.ViewModels;
+using CatoriApp.Views.Controls;
 
-namespace CatoriCity2025WPF.Viewmodels
+namespace CatoriApp.Viewmodels
 {
     public class KitchenPageViewModel: ViewmodelBase
     {
@@ -15,3 +15,4 @@ namespace CatoriCity2025WPF.Viewmodels
         }
     }
 }
+

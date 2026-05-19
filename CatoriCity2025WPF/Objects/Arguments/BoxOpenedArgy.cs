@@ -1,8 +1,9 @@
 ﻿using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class BoxOpenedArg
     {
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for Crane1UC.xaml
@@ -36,3 +36,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

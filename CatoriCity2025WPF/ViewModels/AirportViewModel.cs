@@ -1,4 +1,4 @@
-﻿namespace CatoriCity2025WPF.ViewModels
+﻿namespace CatoriApp.ViewModels
 {
     public class AirportViewModel : ViewmodelBase
     {
@@ -30,3 +30,4 @@
         // public AirportPage ViewModel { get; internal set; }
     }
 }
+

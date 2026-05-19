@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.ViewModels;
+using CatoriApp.Views.Controls;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Viewmodels
+namespace CatoriApp.Viewmodels
 {
     public class BusinessViewModel: ViewmodelBase
     {
@@ -96,3 +96,4 @@ namespace CatoriCity2025WPF.Viewmodels
       
     }
 }
+

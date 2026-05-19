@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class PositionNavigationMasterModel
     {
@@ -8,3 +8,4 @@ namespace CatoriCity2025WPF.ViewModels
         public string PositionName { get; set; }
     }
 }
+

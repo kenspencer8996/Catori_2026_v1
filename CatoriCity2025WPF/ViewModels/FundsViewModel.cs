@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Objects;
+﻿using CatoriApp.Objects;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class FundsViewModel:ViewmodelBase
     {
@@ -29,3 +29,4 @@ namespace CatoriCity2025WPF.ViewModels
         public double Y { get; internal set; }
     }
 }
+

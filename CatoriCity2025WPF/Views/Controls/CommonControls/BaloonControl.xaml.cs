@@ -1,11 +1,11 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Objects;
+using CatoriApp.Objects.Arguments;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for BaloonControl.xaml
@@ -124,3 +124,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class StartDiggingArgs
     {
     }
 }
+

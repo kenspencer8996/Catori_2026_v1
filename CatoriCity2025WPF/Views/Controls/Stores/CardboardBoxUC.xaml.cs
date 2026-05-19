@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Objects.Arguments;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for CardboardBoxUC.xaml
@@ -70,3 +70,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

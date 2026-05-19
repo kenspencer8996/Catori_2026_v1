@@ -1,7 +1,7 @@
-
+﻿
 using CityAppServices.Objects.database;
 
-namespace CatoriCity2025WPF.Services
+namespace CatoriApp.Services
 {
     public class LearnedStepService
     {

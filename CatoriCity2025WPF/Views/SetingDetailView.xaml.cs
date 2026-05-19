@@ -1,15 +1,15 @@
 ﻿using CityAppServices.Objects.Entities;
 using System.Windows;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
-    /// Interaction logic for SetingDetailView.xaml
+    /// Interaction logic for SettingDetailView.xaml
     /// </summary>
-    public partial class SetingDetailView : Window
+    public partial class SettingDetailView : Window
     {
         SettingEntity _settingEntity;
-        public SetingDetailView(SettingEntity settingEntity)
+        public SettingDetailView(SettingEntity settingEntity)
         {
             InitializeComponent();
             _settingEntity = settingEntity;
@@ -17,3 +17,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

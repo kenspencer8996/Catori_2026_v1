@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Viewmodels;
+﻿using CatoriApp.Viewmodels;
 using CityAppServices.Objects.database;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class BusinessService
     {
@@ -59,4 +59,5 @@ namespace CatoriCity2025WPF.Objects.Services
 
     }
 }
+
 

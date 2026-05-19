@@ -1,9 +1,9 @@
 ﻿
-using CatoriCity2025WPF.Views.Controls.House;
+using CatoriApp.Views.Controls.House;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for DetailHouseInsideView.xaml
@@ -112,3 +112,4 @@ namespace CatoriCity2025WPF.Views
        
     }
 }
+

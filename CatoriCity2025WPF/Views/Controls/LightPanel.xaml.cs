@@ -1,6 +1,6 @@
 ﻿using System.Windows.Threading;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for LightPanel.xaml
@@ -90,4 +90,5 @@ namespace CatoriCity2025WPF.Views.Controls
 
             
  }
+
 

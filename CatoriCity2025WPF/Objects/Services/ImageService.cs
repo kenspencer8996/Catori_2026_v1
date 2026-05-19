@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.ViewModels;
 using CityAppServices.Objects.database;
 using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.Objects.Services
+namespace CatoriApp.Objects.Services
 {
     public class ImageService
     {
@@ -60,3 +60,4 @@ namespace CatoriCity2025WPF.Objects.Services
         }
     }
 }
+

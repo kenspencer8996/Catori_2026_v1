@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Controllers;
+﻿using CatoriApp.Controllers;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for TreasureFieldView.xaml
@@ -43,3 +43,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

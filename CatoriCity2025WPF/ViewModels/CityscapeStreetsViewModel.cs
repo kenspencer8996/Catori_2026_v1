@@ -1,6 +1,7 @@
-﻿namespace CatoriCity2025WPF.ViewModels
+﻿namespace CatoriApp.ViewModels
 {
     internal class CityscapeStreetsViewModel
     {
     }
 }
+

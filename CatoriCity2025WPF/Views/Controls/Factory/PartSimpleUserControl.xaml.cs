@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 
-namespace CatoriCity2025WPF.Views.Controls.Factory
+namespace CatoriApp.Views.Controls.Location
 {
     /// <summary>
     /// Interaction logic for PartSimpleUserControl.xaml
@@ -37,8 +37,9 @@ namespace CatoriCity2025WPF.Views.Controls.Factory
                 rotateTransform.CenterY = height / 2;
                 rotateTransform.Angle = rotation;
             }
-            string imagesPath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factories", imageName); 
+            string imagesPath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", imageName); 
             PartImage.Source = UIUtility.GetImageControl(imagesPath, width, height, 1).Source;
         }
     }
 }
+

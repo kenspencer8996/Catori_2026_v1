@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CatoriCity2025WPF.Views
+namespace CatoriApp.Views
 {
     /// <summary>
     /// Interaction logic for AboutView.xaml
@@ -23,7 +23,7 @@ namespace CatoriCity2025WPF.Views
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
                 .InformationalVersion;
 
-            _name = Assembly.GetExecutingAssembly().GetName().Name ?? "CatoriCity2025WPF";
+            _name = Assembly.GetExecutingAssembly().GetName().Name ?? "CatoriApp";
             _versionnumber = version.ToString();
 
             NameLabel.Content = _name;
@@ -31,3 +31,4 @@ namespace CatoriCity2025WPF.Views
         }
     }
 }
+

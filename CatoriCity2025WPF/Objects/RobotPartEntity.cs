@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CatoriUCLibrary;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class RobotPartEntity
     {
@@ -13,3 +11,4 @@ namespace CatoriCity2025WPF.Objects
         public RobotColorEnum Color { get; set; }
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for StatusControl1.xaml
@@ -26,3 +26,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

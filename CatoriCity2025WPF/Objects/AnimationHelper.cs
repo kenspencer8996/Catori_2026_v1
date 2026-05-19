@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class AnimationHelper
     {
@@ -72,4 +72,5 @@ namespace CatoriCity2025WPF.Objects
 
 
 }
+
 

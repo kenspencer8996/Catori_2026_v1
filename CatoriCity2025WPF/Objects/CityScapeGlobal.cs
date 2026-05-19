@@ -1,10 +1,10 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.Messages;
-using CatoriCity2025WPF.Viewmodels;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.Messages;
+using CatoriApp.Viewmodels;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     internal class CityScapeGlobal
     {
@@ -93,7 +93,7 @@ namespace CatoriCity2025WPF.Objects
         internal static List<ImageTypeEntity> VechileImageList { get; set; } = new List<ImageTypeEntity>();
         internal static List<ImageTypeEntity> CarlotImageList { get; set; } = new List<ImageTypeEntity>();
         internal static List<ImageTypeEntity> ClassroomImageList { get; set; } = new List<ImageTypeEntity>();
-        internal static List<ImageTypeEntity> FactoryImageList { get; set; } = new List<ImageTypeEntity>();
+        internal static List<ImageTypeEntity> LocationImageList { get; set; } = new List<ImageTypeEntity>();
         public static List<int> TimingsRandom { get; set; }
         internal static List<ImageTypeEntity> GarageImageList { get; set; } = new List<ImageTypeEntity>();
         private static Brush PathStrokBrush1 = Brushes.Black;
@@ -196,39 +196,39 @@ namespace CatoriCity2025WPF.Objects
             citybush2Width = 50;
             citybush2Height = 50;
         }
-        public static  List<UserControl> factoryInteriorControls = new List<UserControl>();
-        //public static FactoryInterior_1UC factoryInteriorControl = new FactoryInterior_1UC();
-        public static FactoryInterior_1UC GetFactoryInterior1()
-        {
-            var UC = factoryInteriorControls[0] as FactoryInterior_1UC;
-            return UC;
-        }
-        public static FactoryInterior_2UC GetFactoryInterior2()
-        {
-            var UC = factoryInteriorControls[1] as FactoryInterior_2UC;
-            return UC;
-        }
-        public static FactoryInterior_3UC GetFactoryInterior3()
-        {
-            var UC = factoryInteriorControls[2] as FactoryInterior_3UC;
-            return UC;
-        }
-        public static FactoryInterior_4UC GetFactoryInterior4()
-        {
-            var UC = factoryInteriorControls[3] as FactoryInterior_4UC;
-            return UC;
-        }
-        public static void LoadFactoryInteriorControls()
-        {
-            FactoryInterior_1UC factoryInteriorControl1 = new FactoryInterior_1UC();
-            factoryInteriorControls.Add(factoryInteriorControl1);
-            FactoryInterior_2UC factoryInteriorControl2 = new FactoryInterior_2UC();
-            factoryInteriorControls.Add(factoryInteriorControl2);
-            FactoryInterior_3UC factoryInteriorControl3 = new FactoryInterior_3UC();
-            factoryInteriorControls.Add(factoryInteriorControl3);
-            FactoryInterior_4UC factoryInteriorControl4 = new FactoryInterior_4UC();
-            factoryInteriorControls.Add(factoryInteriorControl4);
-        }
+        public static  List<UserControl> locationInteriorControls = new List<UserControl>();
+        //public static LocationInterior_1UC locationInteriorControl = new LocationInterior_1UC();
+        //public static LocationInterior_1UC GetLocationInterior1()
+        //{
+        //    var UC = locationInteriorControls[0] as LocationInterior_1UC;
+        //    return UC;
+        //}
+        //public static LocationInterior_2UC GetLocationInterior2()
+        //{
+        //    var UC = locationInteriorControls[1] as LocationInterior_2UC;
+        //    return UC;
+        //}
+        //public static LocationInterior_3UC GetLocationInterior3()
+        //{
+        //    var UC = locationInteriorControls[2] as LocationInterior_3UC;
+        //    return UC;
+        //}
+        //public static LocationInterior_4UC GetLocationInterior4()
+        //{
+        //    var UC = locationInteriorControls[3] as LocationInterior_4UC;
+        //    return UC;
+        //}
+        //public static void LoadLocationInteriorControls()
+        //{
+        //    LocationInterior_1UC locationInteriorControl1 = new LocationInterior_1UC();
+        //    locationInteriorControls.Add(locationInteriorControl1);
+        //    LocationInterior_2UC locationInteriorControl2 = new LocationInterior_2UC();
+        //    locationInteriorControls.Add(locationInteriorControl2);
+        //    LocationInterior_3UC locationInteriorControl3 = new LocationInterior_3UC();
+        //    locationInteriorControls.Add(locationInteriorControl3);
+        //    LocationInterior_4UC locationInteriorControl4 = new LocationInterior_4UC();
+        //    locationInteriorControls.Add(locationInteriorControl4);
+        //}
         public static string GetNameWithVersion()
         {
             string name = "Catori City 2025 WPF";
@@ -241,61 +241,61 @@ namespace CatoriCity2025WPF.Objects
             }
             return name;
         }   
-        public static void SetFactoryWorking(string personImagePath,int counter)
+        public static void SetLocationWorking(string personImagePath,int counter)
         {
             if ( counter <= 4)
             {
                 
-                switch (counter)
-                {
-                    case 1:
-                        var uc1 = GetFactoryInterior1();
-                        uc1.Visibility = System.Windows.Visibility.Visible;
-                        uc1.StartWorking(personImagePath);
-                        break;  
-                        case 2:
-                        var uc2 = GetFactoryInterior2();
-                        uc2.Visibility = System.Windows.Visibility.Visible;
-                        uc2.StartWorking(personImagePath);
-                        break;
-                        case 3:
-                        var uc3 = GetFactoryInterior3();
-                        uc3.Visibility = System.Windows.Visibility.Visible;
-                        uc3.StartWorking(personImagePath);
-                        break;
-                    case 4:
-                        var uc4 = GetFactoryInterior4();
-                        uc4.Visibility = System.Windows.Visibility.Visible;
-                        uc4.StartWorking(personImagePath);
-                        break;
-                    default:
-                        break;
-                }
+                //switch (counter)
+                //{
+                //    case 1:
+                //        var uc1 = GetLocationInterior1();
+                //        uc1.Visibility = System.Windows.Visibility.Visible;
+                //        uc1.StartWorking(personImagePath);
+                //        break;
+                //        case 2:
+                //        var uc2 = GetLocationInterior2();
+                //        uc2.Visibility = System.Windows.Visibility.Visible;
+                //        uc2.StartWorking(personImagePath);
+                //        break;
+                //        case 3:
+                //        var uc3 = GetLocationInterior3();
+                //        uc3.Visibility = System.Windows.Visibility.Visible;
+                //        uc3.StartWorking(personImagePath);
+                //        break;
+                //    case 4:
+                //        var uc4 = GetLocationInterior4();
+                //        uc4.Visibility = System.Windows.Visibility.Visible;
+                //        uc4.StartWorking(personImagePath);
+                //        break;
+                //    default:
+                //        break;
+                //}
             }
 
         }
-        public static void SetFactoryNotWorking(int counter)
+        public static void SetLocationNotWorking(int counter)
         {
             if (counter <= 3)
             {
 
-                switch (counter)
-                {
-                    case 1:
-                        var uc1 = GetFactoryInterior1();
-                        uc1.Visibility = System.Windows.Visibility.Hidden;
-                        break;
-                    case 2:
-                        var uc2 = GetFactoryInterior2();
-                        uc2.Visibility = System.Windows.Visibility.Hidden;
-                        break;
-                    case 3:
-                        var uc3 = GetFactoryInterior3();
-                        uc3.Visibility = System.Windows.Visibility.Hidden;
-                        break;
-                    default:
-                        break;
-                }
+                //switch (counter)
+                //{
+                //    case 1:
+                //        var uc1 = GetLocationInterior1();
+                //        uc1.Visibility = System.Windows.Visibility.Hidden;
+                //        break;
+                //    case 2:
+                //        var uc2 = GetLocationInterior2();
+                //        uc2.Visibility = System.Windows.Visibility.Hidden;
+                //        break;
+                //    case 3:
+                //        var uc3 = GetLocationInterior3();
+                //        uc3.Visibility = System.Windows.Visibility.Hidden;
+                //        break;
+                //    default:
+                //        break;
+                //}
             }
         }
         public static int BadGuyStartY
@@ -399,10 +399,10 @@ namespace CatoriCity2025WPF.Objects
                     //index = rand.Next(RetailImages.Count);
                     //imageType = RetailImages[index];
                     break;
-                case BusinessTypeEnum.Factory:
-                    index = rand.Next(FactoryImageList.Count);
-                    if (index > -1 && FactoryImageList.Any())
-                        imageType = FactoryImageList[index];
+                case BusinessTypeEnum.Location:
+                    index = rand.Next(LocationImageList.Count);
+                    if (index > -1 && LocationImageList.Any())
+                        imageType = LocationImageList[index];
                     break;
                 case BusinessTypeEnum.Carlot:
                     index = rand.Next(CarlotImageList.Count);
@@ -516,3 +516,4 @@ namespace CatoriCity2025WPF.Objects
 
     }
 }
+

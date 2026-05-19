@@ -1,6 +1,6 @@
-﻿using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Views.Controls;
 
-namespace CatoriCity2025WPF.Objects.Arguments
+namespace CatoriApp.Objects.Arguments
 {
     public class MovePolicemanWithMouseEventArg
     {
@@ -18,3 +18,4 @@ namespace CatoriCity2025WPF.Objects.Arguments
        
     }
 }
+

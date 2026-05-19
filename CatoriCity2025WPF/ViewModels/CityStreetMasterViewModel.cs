@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CatoriCity2025WPF.Viewmodels
+namespace CatoriApp.Viewmodels
 {
     public class CityStreetMasterViewModel
     {
@@ -8,3 +8,4 @@ namespace CatoriCity2025WPF.Viewmodels
         public Canvas CityLayout = new Canvas();
     }
 }
+

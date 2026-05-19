@@ -1,6 +1,6 @@
 ﻿using CityAppServices.Objects.Entities;
 
-namespace CatoriCity2025WPF.ViewModels
+namespace CatoriApp.ViewModels
 {
     public class PersonImageViewModel
     {
@@ -103,3 +103,4 @@ namespace CatoriCity2025WPF.ViewModels
         }
     }
 }
+

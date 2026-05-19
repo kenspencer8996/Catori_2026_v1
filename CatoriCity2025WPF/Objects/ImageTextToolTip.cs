@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media.Effects;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class ImageTextToolTip : ToolTip
     {
@@ -122,3 +122,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

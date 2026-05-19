@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
+﻿using CatoriApp.Viewmodels;
+using CatoriApp.ViewModels;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class RobberyMessage //: ValueChangedMessage<RobberyMessageDetailViewModel>
     {
@@ -14,3 +14,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

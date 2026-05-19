@@ -1,8 +1,8 @@
-﻿using CatoriCity2025WPF.Controllers;
-using CatoriCity2025WPF.Objects.Arguments;
+﻿using CatoriApp.Controllers;
+using CatoriApp.Objects.Arguments;
 using System.Xml.Serialization;
 
-namespace CatoriCity2025WPF.Views.Controls
+namespace CatoriApp.Views.Controls
 {
     /// <summary>
     /// Interaction logic for DroneDeliveryControl.xaml
@@ -36,3 +36,4 @@ namespace CatoriCity2025WPF.Views.Controls
         }
     }
 }
+

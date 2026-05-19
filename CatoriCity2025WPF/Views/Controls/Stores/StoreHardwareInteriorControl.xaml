@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="CatoriCity2025WPF.Views.Controls.StoreHardwareInteriorControl"
+﻿<UserControl x:Class="CatoriApp.Views.Controls.StoreHardwareInteriorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CatoriCity2025WPF.Views.Controls" MouseEnter="UC_MouseEnter"
+             xmlns:local="clr-namespace:CatoriApp.Views.Controls" MouseEnter="UC_MouseEnter"
              mc:Ignorable="d" x:Name="UC" Width="1820" Height="900"  Loaded="UC_Loaded"
              d:DesignHeight="1820" d:DesignWidth="900">
     <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
@@ -24,3 +24,4 @@
         </Canvas>
     </Border>
 </UserControl>
+

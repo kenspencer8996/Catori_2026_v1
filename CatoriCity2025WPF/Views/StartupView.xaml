@@ -1,9 +1,9 @@
-﻿<Window x:Class="CatoriCity2025WPF.Views.StartupView"
+﻿<Window x:Class="CatoriApp.Views.StartupView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriCity2025WPF.Views"
+        xmlns:local="clr-namespace:CatoriApp.Views"
         mc:Ignorable="d"
         Title="StartupView"
         Width="1920"
@@ -56,9 +56,9 @@
                     Click="SettingsButton_Click"
                     ToolTip="Click to open settings" />
 
-                <Button x:Name="Factory1Button"  Style="{StaticResource MapHotspotButton}"
+                <Button x:Name="Location1Button"  Style="{StaticResource MapHotspotButton}"
                     Width="100" Height="30" Canvas.Left="1394" Canvas.Top="183"
-                    Click="Factory1Button_Click" ToolTip="Click to open Factory 1" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                    Click="Location1Button_Click" ToolTip="Click to open Location 1" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -68,9 +68,9 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <Button x:Name="Factory2Button"  Style="{StaticResource MapHotspotButton}"
+                <Button x:Name="Location2Button"  Style="{StaticResource MapHotspotButton}"
              Width="145" Height="50" Canvas.Left="1582" Canvas.Top="167"
-             Click="Factory2Button_Click" ToolTip="Click to open Factory 2" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+             Click="Location2Button_Click" ToolTip="Click to open Location 2" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -80,9 +80,9 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <Button x:Name="Factory3Button"  Style="{StaticResource MapHotspotButton}"
+                <Button x:Name="Location3Button"  Style="{StaticResource MapHotspotButton}"
              Width="100" Height="51" Canvas.Left="1665" Canvas.Top="230"
-             Click="Factory3Button_Click" ToolTip="Click to open Factory 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+             Click="Location3Button_Click" ToolTip="Click to open Location 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -93,9 +93,9 @@
                     </Button.RenderTransform>
                 </Button>
 
-                <Button x:Name="Factory4Button"  Style="{StaticResource MapHotspotButton}"
+                <Button x:Name="Location4Button"  Style="{StaticResource MapHotspotButton}"
              Width="113" Height="30" Canvas.Left="1705" Canvas.Top="165"
-             Click="Factory4Button_Click" ToolTip="Click to open Factory 4" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
+             Click="Location4Button_Click" ToolTip="Click to open Location 4" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

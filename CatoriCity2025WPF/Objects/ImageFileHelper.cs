@@ -1,12 +1,12 @@
-﻿using CatoriCity2025WPF.Objects;
-using CatoriCity2025WPF.Viewmodels;
-using CatoriCity2025WPF.ViewModels;
-using CatoriCity2025WPF.Views.Controls;
+﻿using CatoriApp.Objects;
+using CatoriApp.Viewmodels;
+using CatoriApp.ViewModels;
+using CatoriApp.Views.Controls;
 using CatoriServices.Objects;
 using CityAppServices.Objects.Entities;
 using System.IO;
 
-namespace CatoriCity2025WPF.Objects
+namespace CatoriApp.Objects
 {
     public class ImageFileHelper
     {
@@ -26,12 +26,12 @@ namespace CatoriCity2025WPF.Objects
         //        Random random = new Random();
         //        List<int> numbers = new List<int>();
         //        int housecounter = 0;
-        //        cLogger.Log($"housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        cLogger.Log($"housefile ---------------"); // HouseControl: /CatoriApp; 100 100
         //        foreach (var housefile in housefiles)
         //        {
         //            numbers.Add(housecounter); // Add the index to the list
         //            housecounter++;
-        //            cLogger.Log($"housefile: {housefile}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //            cLogger.Log($"housefile: {housefile}"); // HouseControl: /CatoriApp; 100 100
         //        }
         //        Random rng = new Random();
         //        // Shuffle the list of numbers
@@ -42,7 +42,7 @@ namespace CatoriCity2025WPF.Objects
         //        }
         //        foreach (var number in numbers)
         //        {
-        //            cLogger.Log($"number: {number}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //            cLogger.Log($"number: {number}"); // HouseControl: /CatoriApp; 100 100
         //        }   
 
         //        // Randomly select items from housefiles
@@ -55,7 +55,7 @@ namespace CatoriCity2025WPF.Objects
         //            {
         //                ImageFileName = housefiles[index]
         //            };
-        //            cLogger.Log($"HouseEntity rand: {housefiles[index]}"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //            cLogger.Log($"HouseEntity rand: {housefiles[index]}"); // HouseControl: /CatoriApp; 100 100
         //            houses.Add(house);
         //            counter++;
         //        }
@@ -86,7 +86,7 @@ namespace CatoriCity2025WPF.Objects
         //            else
         //                i = 0;
         //        }
-        //        cLogger.Log($"end housefile ---------------"); // HouseControl: /CatoriCity2025WPF; 100 100
+        //        cLogger.Log($"end housefile ---------------"); // HouseControl: /CatoriApp; 100 100
 
         //    }
         //    catch (Exception)
@@ -193,7 +193,7 @@ namespace CatoriCity2025WPF.Objects
 
  
 
-        public static List<BusinessViewModel> GetFactories()
+        public static List<BusinessViewModel> GetLocations()
         {
             List<BusinessViewModel> viewModels = new List<BusinessViewModel>();
             List<BusinessEntity> business = new List<BusinessEntity>();
@@ -201,9 +201,9 @@ namespace CatoriCity2025WPF.Objects
             {
                 //string[] housefiles = System.IO.Directory.GetFiles(
                 //    GlobalStuff.ImageFolder + "\\House*", "*.png");
-                string searchPattern = "factory*.*";
+                string searchPattern = "location*.*";
                 string[] imagefiles = System.IO.Directory.GetFiles(GlobalAllApps.ImageFolder, searchPattern, SearchOption.TopDirectoryOnly).ToArray();
-                cLogger.Log("factory count " + imagefiles.Length.ToString());
+                cLogger.Log("location count " + imagefiles.Length.ToString());
                 // Create a Random instance
                 Random random = new Random();
                 List<int> numbers = new List<int>();
@@ -230,7 +230,7 @@ namespace CatoriCity2025WPF.Objects
                     int index = numbers[counter];
                     BusinessViewModel item = new BusinessViewModel();
                     item.SetImage(imagefiles[index]);
-                    item.BusinessType = BusinessTypeEnum.Factory;
+                    item.BusinessType = BusinessTypeEnum.Location;
                     viewModels.Add(item);
                     counter++;
                 }
@@ -246,3 +246,4 @@ namespace CatoriCity2025WPF.Objects
         }
     }
 }
+

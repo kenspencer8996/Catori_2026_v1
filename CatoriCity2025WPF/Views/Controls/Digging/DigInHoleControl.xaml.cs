@@ -1,7 +1,7 @@
-﻿using CatoriCity2025WPF.Objects.Arguments;
-using CatoriCity2025WPF.Objects.DragDrop;
+﻿using CatoriApp.Objects.Arguments;
+using CatoriApp.Objects.DragDrop;
 
-namespace CatoriCity2025WPF.Views.Controls.Digging
+namespace CatoriApp.Views.Controls.Digging
 {
     /// <summary>
     /// Interaction logic for DigInHoleControl.xaml
@@ -58,3 +58,4 @@ namespace CatoriCity2025WPF.Views.Controls.Digging
         }
     }
 }
+
