@@ -1,0 +1,11 @@
+global using CatoriApp.MachineLayoutDesigner.ViewModels.Shared;
+global using CatoriApp.Objects.Enums;
+global using CatoriApp.Objects.Services.Robots;
+global using CatoriApp.ViewModels.Robots;
+global using CatoriServices.Objects.database.Robots;
+global using CatoriServices.Objects.Entities.Robots;
+global using System.Windows;
+global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
+global using System.Windows.Media.Imaging;
+global using CatoriApp.Views.Robots.MachineLayoutDesigner;

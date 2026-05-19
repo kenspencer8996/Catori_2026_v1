@@ -45,9 +45,30 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
             }
             SetSequenceName();
             DataContext = ViewModel;
-            MainImage.Source = UIUtility.GetImageControl(_backgroundImagePath, 1000, 1000, 0).Source;
+            MainImage.Source = GetImageSource(_backgroundImagePath);
         }
 
+
+
+        private static BitmapImage? GetImageSource(string? path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
+            bitmap.EndInit();
+            return bitmap;
+        }
+        private void ArmSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ArmSelectorComboBox?.SelectedItem is not ComboBoxItem item || item.Content is not string colorName)
+                return;
+
+            if (Enum.TryParse<RobotColorEnum>(colorName, out var color))
+                RobotArmNew.SetupRobot(color);
+        }
         private void AddPose_Click(object sender, RoutedEventArgs e)
         {
             var pose = GetCurrentPose();

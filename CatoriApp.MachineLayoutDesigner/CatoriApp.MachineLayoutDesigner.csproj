@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>CatoriApp.MachineLayoutDesigner</AssemblyName>
+    <RootNamespace>CatoriApp.MachineLayoutDesigner</RootNamespace>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Reference Include="CatoriUCLibrary">
+      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

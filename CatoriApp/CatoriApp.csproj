@@ -123,6 +123,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
+    <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
   </ItemGroup>
 
   <ItemGroup>
