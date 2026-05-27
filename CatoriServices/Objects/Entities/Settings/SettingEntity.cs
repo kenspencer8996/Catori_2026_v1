@@ -1,9 +1,19 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 namespace CatoriServices.Objects.Entities.Settings
 {
     public class SettingEntity
     {
-        public SettingEntity() { }
+        public SettingEntity() {
+            try
+            {
+                 
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
         private int _settingID;
         private string _name = string.Empty;
         private string _stringSetting = string.Empty;
@@ -11,9 +21,17 @@ namespace CatoriServices.Objects.Entities.Settings
 
         public SettingEntity(string name,string stringSetting, int intSetting) 
         {
-            Name = name;
-            StringSetting = stringSetting;
-            IntSetting = intSetting;
+            try
+            {
+                            Name = name;
+                            StringSetting = stringSetting;
+                            IntSetting = intSetting;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public int SettingID
         {

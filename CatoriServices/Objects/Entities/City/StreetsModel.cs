@@ -1,23 +1,31 @@
-﻿namespace CatoriServices.Objects.Entities.City
+namespace CatoriServices.Objects.Entities.City
 {
     public class StreetsModel
     {
         public string GetStreet(StreetsEnum street)
         {
-            switch (street)
+            try
             {
-                case StreetsEnum.Teastreet:
-                    return TeastreetName;
-                case StreetsEnum.YouStreet:
-                    return YouStreetName;
-                case StreetsEnum.MikAve:
-                    return MikAveName;
-                case StreetsEnum.YodelLane:
-                    return YodelLaneName;
-                case StreetsEnum.MooDr:
-                    return MooDrName;
-                default:
-                    return "Unknown Street";
+                            switch (street)
+                            {
+                                case StreetsEnum.Teastreet:
+                                    return TeastreetName;
+                                case StreetsEnum.YouStreet:
+                                    return YouStreetName;
+                                case StreetsEnum.MikAve:
+                                    return MikAveName;
+                                case StreetsEnum.YodelLane:
+                                    return YodelLaneName;
+                                case StreetsEnum.MooDr:
+                                    return MooDrName;
+                                default:
+                                    return "Unknown Street";
+                            }
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
             }
         }
         private string TeastreetName

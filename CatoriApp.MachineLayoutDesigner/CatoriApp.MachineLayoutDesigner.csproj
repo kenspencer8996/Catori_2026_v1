@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
+    <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -13,11 +15,5 @@
     <RootNamespace>CatoriApp.MachineLayoutDesigner</RootNamespace>
   </PropertyGroup>
 
-
-  <ItemGroup>
-    <Reference Include="CatoriUCLibrary">
-      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 </Project>

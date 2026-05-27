@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.People
+namespace CatoriServices.Objects.Entities.People
 {
     public class PersonProductsOwnedEntity
     {
@@ -11,6 +11,15 @@
 
         public PersonProductsOwnedEntity()
         {
+            try
+            {
+                        
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         public int PersonProductsOwnedId
@@ -51,11 +60,19 @@
 
         public void Add(int personId, int shopItemId, int quantity, string name, string imagename)
         {
-            _personId = personId;
-            _shopItemId = shopItemId;
-            _quantity = quantity;
-            _name = name;
-            _imageName = imagename;
+            try
+            {
+                            _personId = personId;
+                            _shopItemId = shopItemId;
+                            _quantity = quantity;
+                            _name = name;
+                            _imageName = imagename;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

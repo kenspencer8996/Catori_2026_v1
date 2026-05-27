@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.database;
+using CatoriServices.Objects.database;
 using CatoriServices.Objects.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,15 @@ namespace CatoriServices.Objects.Services.Banking
 
         public DepositService()
         {
-            _repository = new DepositRepository();
+            try
+            {
+                            _repository = new DepositRepository();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         /// <summary>
@@ -21,10 +29,18 @@ namespace CatoriServices.Objects.Services.Banking
         /// </summary>
         public Task<List<DepositEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            // repository already exposes async method
-           
-            var deposits = _repository.GetDepositsAsync();
-            return deposits;
+            try
+            {
+                            // repository already exposes async method
+                           
+                            var deposits = _repository.GetDepositsAsync();
+                            return deposits;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         /// <summary>
@@ -32,7 +48,15 @@ namespace CatoriServices.Objects.Services.Banking
         /// </summary>
         public Task<DepositEntity> GetByIdAsync(int depositId, CancellationToken cancellationToken = default)
         {
-            return _repository.GetDepositByIdAsync(depositId);
+            try
+            {
+                            return _repository.GetDepositByIdAsync(depositId);
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         /// <summary>
@@ -43,10 +67,18 @@ namespace CatoriServices.Objects.Services.Banking
         /// </summary>
         public Task UpsertAsync(DepositEntity entity, CancellationToken cancellationToken = default)
         {
-            // repository.Upsert is async void; call it and return a completed Task.
-            // If the repository is changed to return Task, replace this with 'return _repository.UpsertAsync(entity);'
-            _repository.Upsert(entity);
-            return Task.CompletedTask;
+            try
+            {
+                            // repository.Upsert is async void; call it and return a completed Task.
+                            // If the repository is changed to return Task, replace this with 'return _repository.UpsertAsync(entity);'
+                            _repository.Upsert(entity);
+                            return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

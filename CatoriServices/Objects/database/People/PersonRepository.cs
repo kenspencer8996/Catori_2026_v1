@@ -1,4 +1,4 @@
-﻿using CatoriServices;
+using CatoriServices;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using static System.Net.Mime.MediaTypeNames;
@@ -52,6 +52,7 @@ namespace CatoriServices.Objects.database.People
                             }
                             catch (Exception ex)
                             {
+                                cLogger.Log(ex.ToString());
                                 throw;
                             }
                         }
@@ -91,6 +92,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -114,6 +116,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -155,6 +158,7 @@ namespace CatoriServices.Objects.database.People
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             } 
@@ -175,6 +179,7 @@ namespace CatoriServices.Objects.database.People
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }

@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.database;
+using CatoriServices.Objects.database;
 using CatoriServices.Objects.Entities;
 using System.Collections.ObjectModel;
 namespace CatoriServices.Objects.Core
@@ -11,8 +11,16 @@ namespace CatoriServices.Objects.Core
 
         public static void LoadSettings()
         {
-            SettingsRepo= new SettingsRepository();
-            Settings = SettingsRepo.GetSettings();
+            try
+            {
+                            SettingsRepo= new SettingsRepository();
+                            Settings = SettingsRepo.GetSettings();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         private static PersonImageRepository PersonImageRepo;
         private static PersonRepository PersonRepo;
@@ -25,106 +33,186 @@ namespace CatoriServices.Objects.Core
 
         public static void CreateInstances()
         {
-            AdoNetHelper adoNetHelper = new AdoNetHelper();
-            PersonRepo = new PersonRepository();
-            ImageRepo = new ImageRepository();
-            BusinessRepo = new BusinessRepository();
-            SettingsRepo = new SettingsRepository();
-            PersonImageRepo = new PersonImageRepository();
-            PoliceRepo = new PoliceCarRepository();
-            CheckOrCreateDB();
+            try
+            {
+                            AdoNetHelper adoNetHelper = new AdoNetHelper();
+                            PersonRepo = new PersonRepository();
+                            ImageRepo = new ImageRepository();
+                            BusinessRepo = new BusinessRepository();
+                            SettingsRepo = new SettingsRepository();
+                            PersonImageRepo = new PersonImageRepository();
+                            PoliceRepo = new PoliceCarRepository();
+                            CheckOrCreateDB();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static void CheckOrCreateDB()
         {
-            DatabaseHelper databaseHelper;
-
-            databaseHelper = new DatabaseHelper();
+            try
+            {
+                            DatabaseHelper databaseHelper;
+                
+                            databaseHelper = new DatabaseHelper();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static SettingEntity GetSettingByName(string name)
         {
-            SettingEntity setting = new SettingEntity();
-            var found = from s in Settings where s.Name == name select s;
-            if (found != null && found.Any())
+            try
             {
-                setting = found.First();
+                            SettingEntity setting = new SettingEntity();
+                            var found = from s in Settings where s.Name == name select s;
+                            if (found != null && found.Any())
+                            {
+                                setting = found.First();
+                            }
+                            if (setting.IntSetting == 0)
+                                setting.IntSetting = -1;
+                
+                            return setting;
             }
-            if (setting.IntSetting == 0)
-                setting.IntSetting = -1;
-
-            return setting;
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static SettingEntity GetSetting(string settingName)
         {
-            SettingEntity result = new SettingEntity();
-            var settingfound = from s in Settings where s.Name == settingName select s;
-            if (settingfound != null && settingfound.Any())
+            try
             {
-                result = settingfound.FirstOrDefault();
+                            SettingEntity result = new SettingEntity();
+                            var settingfound = from s in Settings where s.Name == settingName select s;
+                            if (settingfound != null && settingfound.Any())
+                            {
+                                result = settingfound.FirstOrDefault();
+                            }
+                            return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static void UpdateSetting(string settingName, string stringSetting, int intSetting)
         {
-            SettingEntity result = new SettingEntity();
-            var settingfound = from s in Settings where s.Name == settingName select s;
-            if (settingfound != null && settingfound.Any())
+            try
             {
-                result = settingfound.FirstOrDefault();
-                result.IntSetting = intSetting;
-                result.StringSetting = stringSetting;
+                            SettingEntity result = new SettingEntity();
+                            var settingfound = from s in Settings where s.Name == settingName select s;
+                            if (settingfound != null && settingfound.Any())
+                            {
+                                result = settingfound.FirstOrDefault();
+                                result.IntSetting = intSetting;
+                                result.StringSetting = stringSetting;
+                            }
+                            else
+                            {
+                               InsertSetting( settingName, stringSetting, intSetting);
+                            }
+                            LoadSettings();
             }
-            else
+            catch (Exception ex)
             {
-               InsertSetting( settingName, stringSetting, intSetting);
+                cLogger.Log(ex.ToString());
+                throw;
             }
-            LoadSettings();
         }
 
         public static void InsertSetting(string name, string stringSetting, int intSetting)
         {
-            SettingEntity setting = new SettingEntity(name, stringSetting, intSetting);
-            SettingsRepo.UpsertSetting(setting);
-            LoadSettings();
+            try
+            {
+                            SettingEntity setting = new SettingEntity(name, stringSetting, intSetting);
+                            SettingsRepo.UpsertSetting(setting);
+                            LoadSettings();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static void InsertBusiness(string name, decimal payrate,
             string imagenme, BusinessTypeEnum businessType)
         {
-            BusinessEntity bus1 = new BusinessEntity();
-            bus1.Add(name, payrate, imagenme, businessType);
-            BusinessRepo.UpsertBusiness(bus1);
-
+            try
+            {
+                            BusinessEntity bus1 = new BusinessEntity();
+                            bus1.Add(name, payrate, imagenme, businessType);
+                            BusinessRepo.UpsertBusiness(bus1);
+                
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static async Task<PersonEntity> InsertPersonAsync(string name,
             bool isUser, PersonEnum personRole, string imagesFolder)
         {
-            PersonEntity personEntity = new PersonEntity();
-            personEntity.Name = name;
-            //personEntity.IsUser = false;
-            personEntity.PersonRole = personRole;
-            personEntity.ImagesFolder = imagesFolder;
-            PersonEntity newpersonEntity = await PersonRepo.UpsertPerson(personEntity);
-
-            return newpersonEntity;
+            try
+            {
+                            PersonEntity personEntity = new PersonEntity();
+                            personEntity.Name = name;
+                            //personEntity.IsUser = false;
+                            personEntity.PersonRole = personRole;
+                            personEntity.ImagesFolder = imagesFolder;
+                            PersonEntity newpersonEntity = await PersonRepo.UpsertPerson(personEntity);
+                
+                            return newpersonEntity;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static void InsertPoliceCar(int id,string carName,
             string CarType, string currentImage)
         {
-            PoliceCarEntity policdCar = new PoliceCarEntity();
-            policdCar.CarName = carName;
-            policdCar.PoliceCarId = id;
-            policdCar.CarType = currentImage;
-            policdCar.ImageName = currentImage;
-            PoliceRepo.Upsert(policdCar);
-
+            try
+            {
+                            PoliceCarEntity policdCar = new PoliceCarEntity();
+                            policdCar.CarName = carName;
+                            policdCar.PoliceCarId = id;
+                            policdCar.CarType = currentImage;
+                            policdCar.ImageName = currentImage;
+                            PoliceRepo.Upsert(policdCar);
+                
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public static void InsertPersonImage(string Name, PersonImageTypeEnum personImageType, PersonImageStatusEnum PersonImageStatus,
          string FilePath, string ImageType,
          int fkpersonId)
         {
-            PersonImageEntity image1 = new PersonImageEntity();
-            image1.Add(Name, personImageType, PersonImageStatus,
-            FilePath, ImageType, fkpersonId);
-            PersonImageRepo.UpsertPersonImage(image1);
+            try
+            {
+                            PersonImageEntity image1 = new PersonImageEntity();
+                            image1.Add(Name, personImageType, PersonImageStatus,
+                            FilePath, ImageType, fkpersonId);
+                            PersonImageRepo.UpsertPersonImage(image1);
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     
         
@@ -147,6 +235,7 @@ namespace CatoriServices.Objects.Core
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }

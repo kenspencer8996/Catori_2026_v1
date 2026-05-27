@@ -1,7 +1,7 @@
-﻿global using CatoriApp.Objects;
-global using CatoriApp.Objects.Services;
-global using CatoriApp.ViewModels;
-global using CatoriApp.Views.Controls;
+global using CatoriApp.Core.Objects;
+global using CatoriApp.Game.Objects.Services.People;
+global using CatoriApp.Game.ViewModels.People;
+global using CatoriApp.Game.Views.Controls;
 global using CatoriServices.Objects;
 global using CatoriServices.Objects.database;
 global using CatoriServices.Objects.Entities;

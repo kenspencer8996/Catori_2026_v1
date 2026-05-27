@@ -1,4 +1,4 @@
-﻿namespace CatoriApp.Objects.Services.Robots
+namespace CatoriApp.MachineLayoutDesigner.Objects.Services.Robots
 {
     public class RobotPoseService
     {
@@ -29,13 +29,14 @@
             return new RobotPoseEntity
             {
                 RobotPoseId = vm.RobotPoseId,
+                RobotSequenceId = vm.RobotSequenceId,
                 LocationId = vm.LocationId,
                 PoseIndex = vm.PoseIndex,
                 PoseName = vm.PoseName,
                 Joint1 = vm.Joint1,
                 Joint2 = vm.Joint2,
                 Joint3 = vm.Joint3,
-                JointHand = vm.JointHand,
+                JointEnd = vm.JointEnd,
                 DurationMilliseconds = vm.DurationMilliseconds
             };
         }
@@ -45,13 +46,14 @@
             return new RobotPoseViewModel
             {
                 RobotPoseId = entity.RobotPoseId,
+                RobotSequenceId = entity.RobotSequenceId,
                 LocationId = entity.LocationId,
                 PoseIndex = entity.PoseIndex,
                 PoseName = entity.PoseName,
                 Joint1 = entity.Joint1,
                 Joint2 = entity.Joint2,
                 Joint3 = entity.Joint3,
-                JointHand = entity.JointHand,
+                JointEnd = entity.JointEnd,
                 DurationMilliseconds = entity.DurationMilliseconds
             };
         }

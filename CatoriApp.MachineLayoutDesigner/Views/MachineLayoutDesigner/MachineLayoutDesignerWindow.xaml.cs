@@ -1,15 +1,12 @@
-using CatoriApp.Objects.Enums;
 using CatoriUCLibrary;
 using CatoriUCLibrary.Views.RobotArm;
-using System.IO;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-namespace CatoriApp.Views.Robots.MachineLayoutDesigner
+namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
 {
     public partial class MachineLayoutDesignerWindow : Window
     {
         private readonly MachineLayoutDesignerService _service = new MachineLayoutDesignerService();
         private readonly string? _backgroundImagePath;
+        private bool _isMouseOverMaintenancePanel;
 
         public MachineLayoutDesignerViewModel ViewModel { get; private set; }
         bool loading = true;
@@ -43,10 +40,10 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
                 default:
                     break;
             }
-            SetSequenceName();
+            SetImageFromSequenceName();
             DataContext = ViewModel;
             MainImage.Source = GetImageSource(_backgroundImagePath);
-        }
+         }
 
 
 
@@ -92,17 +89,30 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
 
         private async void PlaySequence_Click(object sender, RoutedEventArgs e)
         {
+            ClearStatus();
             try
             {
-                foreach (var pose in ViewModel.Poses.OrderBy(p => p.PoseIndex))
+                var poses = ViewModel.Poses.OrderBy(p => p.PoseIndex).ToList();
+                if (poses.Count == 0)
                 {
-                    ViewModel.SelectedPose = pose;
-                    await RobotArmNew.MoveToPoseAsync(
-                        new RobotPose(pose.Joint1, pose.Joint2, pose.Joint3, pose.JointHand),
-                        pose.DurationMilliseconds);
+                    ViewModel.StatusMessage = "Play failed: no poses in sequence.";
+                    return;
                 }
 
-                ViewModel.StatusMessage = "Sequence played.";
+                for (int i = 0; i < poses.Count; i++)
+                {
+                    var pose = poses[i];
+                    ViewModel.SelectedPose = pose;
+                    ViewModel.StatusMessage = $"Playing pose {i + 1} of {poses.Count}: {pose.PoseName}";
+                    SetStatus(ViewModel.StatusMessage);
+                    await System.Windows.Threading.Dispatcher.Yield();
+
+                    await RobotArmNew.MoveToPoseAsync(
+                        new RobotPose(pose.Joint1, pose.Joint2, pose.Joint3, pose.JointEnd),
+                        Math.Max(100, pose.DurationMilliseconds));
+                }
+
+                ViewModel.StatusMessage = $"Sequence played ({poses.Count} poses).";
             }
             catch (Exception ex)
             {
@@ -110,13 +120,22 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
             }
         }
 
+        private void SetStatus(string message)
+        {
+            StatusListbox.Items.Add(message);
+            ViewModel.StatusMessage = message;
+        }
+        private void ClearStatus()
+        {
+            StatusListbox.Items.Clear();
+        }
         private void ApplyPose(RobotPoseViewModel pose)
         {
             RobotArmNew.SetPose(
                 (int)pose.Joint1,
                 (int)pose.Joint2,
                 (int)pose.Joint3,
-                (int)pose.JointHand);
+                (int)pose.JointEnd);
         }
 
         private RobotPose GetCurrentPose()
@@ -186,7 +205,7 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
         {
             try
             {
-                var loaded = await _service.LoadSequenceAsync(ViewModel.SequenceName);
+                var loaded = await _service.LoadByLocationIdAsync(ViewModel.LocationId, ViewModel.SequenceName);
                 if (loaded == null)
                 {
                     ViewModel.StatusMessage = "Sequence not found.";
@@ -208,7 +227,7 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
             }
         }
 
-        private void SetSequenceName()
+        private void SetImageFromSequenceName()
         {
             if (string.IsNullOrWhiteSpace(ViewModel.SequenceName) && !string.IsNullOrWhiteSpace(_backgroundImagePath))
                 ViewModel.SequenceName = System.IO.Path.GetFileNameWithoutExtension(_backgroundImagePath);
@@ -221,6 +240,57 @@ namespace CatoriApp.Views.Robots.MachineLayoutDesigner
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Load();
+        }
+
+        private void StatusListbox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            string status = "";
+            for(int i = 0; i <= StatusListbox.Items.Count -1; i++)
+            {
+                status += StatusListbox.Items[i].ToString() + "\n";
+            }
+            Clipboard.SetText(status);
+        }
+
+        private void MainImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+         }
+
+        private void MainImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        }
+
+        private void MaintenancePanel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _isMouseOverMaintenancePanel = true;
+        }
+
+        private void MaintenancePanel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        }
+
+        private void DesignerCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+        }
+
+        
+
+        private void MaintenancePanel_MachineCatalogRequested(object? sender, EventArgs e)
+        {
+            var window = new MachineCatalogEditorWindow
+            {
+                Owner = this
+            };
+            window.ShowDialog();
+        }
+
+        private void MaintenancePanel_MachineInstancesRequested(object? sender, EventArgs e)
+        {
+            var window = new MachineInstanceEditorWindow
+            {
+                Owner = this
+            };
+            window.ShowDialog();
         }
     }
 }

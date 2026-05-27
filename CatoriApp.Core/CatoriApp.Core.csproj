@@ -1,11 +1,85 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
     <AssemblyName>CatoriApp.Core</AssemblyName>
     <RootNamespace>CatoriApp.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CatoriUCLibrary">
+      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+  <ItemGroup Label="CoreLegacyExclusions">
+    <Compile Remove="Controllers\Locations\Factory\LocationInterior_1UCController.cs" />
+    <Compile Remove="Objects\DragDrop\DragManager - Copy.cs" />
+    <Compile Remove="Objects\BusinessContentAndLocXYEntity.cs" />
+    <Compile Remove="Objects\LandScapeWithBank_ReturnEntity.cs" />
+    <Compile Remove="Objects\LeaveWorkArg.cs" />
+    <Compile Remove="Objects\RobberyMessage.cs" />
+    <Compile Remove="Objects\PathPositionModel.cs" />
+    <Compile Remove="Objects\TreasureEntity.cs" />
+    <Compile Remove="Objects\TreasureSpotDetailModel.cs" />
+    <Compile Remove="Objects\Arguments\BadPersonDroppedFiredEventArg.cs" />
+    <Compile Remove="Objects\Arguments\BadPersonTimerFiredEventArg.cs" />
+    <Compile Remove="Objects\Arguments\BuildingOpenEventArgs.cs" />
+    <Compile Remove="Objects\Arguments\DeleteLandscapeArg.cs" />
+    <Compile Remove="Objects\Arguments\DepositMessageArgument.cs" />
+    <Compile Remove="Objects\Arguments\DoorOpenEventArgs.cs" />
+    <Compile Remove="Objects\Arguments\GaragePageViewModel.cs" />
+    <Compile Remove="Objects\Arguments\LearnedStepRunArsument.cs" />
+    <Compile Remove="Objects\Arguments\MovePolicemanWithMouseEventArg.cs" />
+    <Compile Remove="Objects\Arguments\MessageSaveDepositArgument.cs" />
+    <Compile Remove="Objects\Arguments\PersonBadTimerFiredEventArg.cs" />
+    <Compile Remove="Objects\Arguments\PersonMoveFiredEventArg.cs" />
+    <Compile Remove="Objects\Arguments\PersonTimerFiredEventArg.cs" />
+    <Compile Remove="Objects\Arguments\POCArgs.cs" />
+    <Compile Remove="Objects\Arguments\RObotMoverControlDrag .cs" />
+    <Compile Remove="Objects\Arguments\ShopItemControlDrag.cs" />
+    <Compile Remove="Objects\DragDrop\DragManager.cs" />
+    <Compile Remove="Objects\Messages\FactoryMouseMessage.cs" />
+    <Compile Remove="Objects\Messages\FundsMessage.cs" />
+    <Compile Remove="Objects\Messages\HouseSoldMessage.cs" />
+    <Compile Remove="Objects\Messages\PersonMouseMessage.cs" />
+    <Compile Remove="Objects\Messages\PostOfficeInteriorhowMessage.cs" />
+    <Compile Remove="Objects\Messages\ShopItemShowMessage.cs" />
+    <Compile Remove="Objects\Messages\ShowHardwareStoreInteriorMessage.cs" />
+    <Compile Remove="Objects\Shared\CityScapeGlobal.cs" />
+    <Compile Remove="Objects\Shared\CsvImportService.cs" />
+    <Compile Remove="Objects\Shared\DataHelperforUI.cs" />
+    <Compile Remove="Objects\Shared\ResourceHelperWin.cs" />
+    <Compile Remove="Objects\Shared\ReturnForInsertMethods.cs" />
+    <Compile Remove="Objects\Shared\SampleData.cs" />
+    <Compile Remove="Objects\Shared\DefaultSampleDataHelper.cs" />
+    <Compile Remove="Objects\Shared\GlobalCode.cs" />
+    <Compile Remove="Objects\Shared\GlobalGeo.cs" />
+    <Compile Remove="Objects\Shared\GeometryHelper.cs" />
+    <Compile Remove="Objects\Shared\Imagehelper.cs" />
+    <Compile Remove="Objects\Shared\ImageFileHelper.cs" />
+    <Compile Remove="Objects\Shared\ShoppingCartUtility.cs" />
+    <Compile Remove="Objects\Shared\StreetHelper.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,33 @@
+using CatoriApp.Core.Objects.Arguments;
+using System.Windows;
+using System.Windows.Controls;
+namespace CatoriApp.Game.Views.Controls.CommonControls
+{
+    /// <summary>
+    /// Interaction logic for TrashCanUC.xaml
+    /// </summary>
+    public partial class TrashCanUC : UserControl
+    {
+        public event EventHandler<DeleteLandscapeArg> OnDeleteUC;
+
+        public TrashCanUC()
+        {
+            InitializeComponent();
+        }
+
+        private void UserControl_Drop(object sender, DragEventArgs e)
+        {
+            LandscapeObjectControl landscapeObjectControl = (LandscapeObjectControl)sender;
+            DeleteLandscapeArg deleteUC = new DeleteLandscapeArg(landscapeObjectControl);
+            if (OnDeleteUC != null)
+                OnDeleteUC(this, deleteUC);
+        }
+
+        private void UserControl_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+    }
+}
+
+

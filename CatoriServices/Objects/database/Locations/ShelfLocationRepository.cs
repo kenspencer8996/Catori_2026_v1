@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using System;
@@ -53,8 +53,9 @@ namespace CatoriServices.Objects.database.Locations
 
                 reader.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -96,8 +97,9 @@ namespace CatoriServices.Objects.database.Locations
 
                 reader.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -117,8 +119,9 @@ namespace CatoriServices.Objects.database.Locations
                     locations = results.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -138,8 +141,9 @@ namespace CatoriServices.Objects.database.Locations
                     locations = results.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -188,8 +192,9 @@ namespace CatoriServices.Objects.database.Locations
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -205,8 +210,9 @@ namespace CatoriServices.Objects.database.Locations
                 command.Parameters.Add(new SqliteParameter("@Id", shelfLocationId));
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }

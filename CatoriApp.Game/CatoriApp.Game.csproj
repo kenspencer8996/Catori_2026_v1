@@ -1,11 +1,91 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
     <AssemblyName>CatoriApp.Game</AssemblyName>
     <RootNamespace>CatoriApp.Game</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
+    <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
+    <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CatoriUCLibrary">
+      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="GameLegacyExclusions">
+    <Compile Remove="ViewModels\Shared\ViewmodelBase.cs" />
+    <Compile Remove="ViewModels\Robots\RobotPoseViewModel.cs" />
+    <Compile Remove="Controllers\Locations\Factory\LocationInterior_1UCController.cs" />
+    <Compile Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_1UC.xaml.cs" />
+    <Compile Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_2UC.xaml.cs" />
+    <Compile Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_3UC.xaml.cs" />
+    <Compile Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_4UC.xaml.cs" />
+    <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_1UC.xaml" />
+    <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_2UC.xaml" />
+    <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_3UC.xaml" />
+    <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_4UC.xaml" />
+  </ItemGroup>
+
+  <ItemGroup Label="GameLayerCoreSources">
+    <Compile Include="..\CatoriApp.Core\Objects\BusinessContentAndLocXYEntity.cs" Link="Objects\BusinessContentAndLocXYEntity.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\LandScapeWithBank_ReturnEntity.cs" Link="Objects\LandScapeWithBank_ReturnEntity.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\LeaveWorkArg.cs" Link="Objects\LeaveWorkArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\RobberyMessage.cs" Link="Objects\RobberyMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\PathPositionModel.cs" Link="Objects\PathPositionModel.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\TreasureEntity.cs" Link="Objects\TreasureEntity.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\TreasureSpotDetailModel.cs" Link="Objects\TreasureSpotDetailModel.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\BadPersonDroppedFiredEventArg.cs" Link="Objects\Arguments\BadPersonDroppedFiredEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\BadPersonTimerFiredEventArg.cs" Link="Objects\Arguments\BadPersonTimerFiredEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\BuildingOpenEventArgs.cs" Link="Objects\Arguments\BuildingOpenEventArgs.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\DeleteLandscapeArg.cs" Link="Objects\Arguments\DeleteLandscapeArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\DepositMessageArgument.cs" Link="Objects\Arguments\DepositMessageArgument.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\DoorOpenEventArgs.cs" Link="Objects\Arguments\DoorOpenEventArgs.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\GaragePageViewModel.cs" Link="Objects\Arguments\GaragePageViewModel.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\LearnedStepRunArsument.cs" Link="Objects\Arguments\LearnedStepRunArsument.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\MovePolicemanWithMouseEventArg.cs" Link="Objects\Arguments\MovePolicemanWithMouseEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\MessageSaveDepositArgument.cs" Link="Objects\Arguments\MessageSaveDepositArgument.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\PersonBadTimerFiredEventArg.cs" Link="Objects\Arguments\PersonBadTimerFiredEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\PersonMoveFiredEventArg.cs" Link="Objects\Arguments\PersonMoveFiredEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\PersonTimerFiredEventArg.cs" Link="Objects\Arguments\PersonTimerFiredEventArg.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\POCArgs.cs" Link="Objects\Arguments\POCArgs.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\RObotMoverControlDrag .cs" Link="Objects\Arguments\RObotMoverControlDrag .cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Arguments\ShopItemControlDrag.cs" Link="Objects\Arguments\ShopItemControlDrag.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\DragDrop\DragManager.cs" Link="Objects\DragDrop\DragManager.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\FactoryMouseMessage.cs" Link="Objects\Messages\FactoryMouseMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\FundsMessage.cs" Link="Objects\Messages\FundsMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\HouseSoldMessage.cs" Link="Objects\Messages\HouseSoldMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\PersonMouseMessage.cs" Link="Objects\Messages\PersonMouseMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\PostOfficeInteriorhowMessage.cs" Link="Objects\Messages\PostOfficeInteriorhowMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\ShopItemShowMessage.cs" Link="Objects\Messages\ShopItemShowMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Messages\ShowHardwareStoreInteriorMessage.cs" Link="Objects\Messages\ShowHardwareStoreInteriorMessage.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\CityScapeGlobal.cs" Link="Objects\Shared\CityScapeGlobal.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\CsvImportService.cs" Link="Objects\Shared\CsvImportService.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\DataHelperforUI.cs" Link="Objects\Shared\DataHelperforUI.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\DefaultSampleDataHelper.cs" Link="Objects\Shared\DefaultSampleDataHelper.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\GlobalCode.cs" Link="Objects\Shared\GlobalCode.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\GlobalGeo.cs" Link="Objects\Shared\GlobalGeo.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\GeometryHelper.cs" Link="Objects\Shared\GeometryHelper.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\Imagehelper.cs" Link="Objects\Shared\Imagehelper.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\ImageFileHelper.cs" Link="Objects\Shared\ImageFileHelper.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\ShoppingCartUtility.cs" Link="Objects\Shared\ShoppingCartUtility.cs" />
+    <Compile Include="..\CatoriApp.Core\Objects\Shared\StreetHelper.cs" Link="Objects\Shared\StreetHelper.cs" />
+  </ItemGroup>
 
 </Project>

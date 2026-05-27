@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using Microsoft.Data.Sqlite;
 using System.Data;
 namespace CatoriServices.Objects.database.Police
@@ -40,12 +40,14 @@ namespace CatoriServices.Objects.database.Police
                    }
                    catch (Exception ex)
                    {
+                       cLogger.Log(ex.ToString());
                        throw;
                    }
                }
            }
            catch (Exception ex)
            {
+               cLogger.Log(ex.ToString());
 
                throw;
            }
@@ -84,12 +86,14 @@ namespace CatoriServices.Objects.database.Police
                    }
                   catch (Exception ex)
                    {
+                       cLogger.Log(ex.ToString());
                        throw;
                    }
                }
            }
           catch (Exception ex)
           {
+              cLogger.Log(ex.ToString());
 
               throw;
            }
@@ -119,6 +123,7 @@ namespace CatoriServices.Objects.database.Police
               }
               catch (Exception ex)
               {
+                  cLogger.Log(ex.ToString());
 
                    throw;
                 }
@@ -138,6 +143,7 @@ namespace CatoriServices.Objects.database.Police
               }
                catch (Exception ex)
                {
+                   cLogger.Log(ex.ToString());
 
                    throw;
                }
@@ -159,6 +165,7 @@ namespace CatoriServices.Objects.database.Police
            }
            catch (Exception ex)
            {
+               cLogger.Log(ex.ToString());
                throw;
            }
        }

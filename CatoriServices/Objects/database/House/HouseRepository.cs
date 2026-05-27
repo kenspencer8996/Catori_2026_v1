@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite;
 using System.Data;
 namespace CatoriServices.Objects.database.House
 {
@@ -54,6 +54,7 @@ namespace CatoriServices.Objects.database.House
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
 
@@ -101,8 +102,9 @@ namespace CatoriServices.Objects.database.House
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
 
@@ -150,8 +152,9 @@ namespace CatoriServices.Objects.database.House
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
 
@@ -199,8 +202,9 @@ namespace CatoriServices.Objects.database.House
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
 
@@ -254,6 +258,7 @@ namespace CatoriServices.Objects.database.House
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
 
@@ -330,8 +335,9 @@ namespace CatoriServices.Objects.database.House
                         command.ExecuteNonQuery();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }
@@ -346,8 +352,9 @@ namespace CatoriServices.Objects.database.House
                     command.Parameters.Add(new SqliteParameter("@Id", id));
                     command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }
@@ -372,8 +379,9 @@ namespace CatoriServices.Objects.database.House
                     command.Parameters.Add(new SqliteParameter("@Id", houseId));
                     command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }
@@ -389,8 +397,9 @@ namespace CatoriServices.Objects.database.House
                     command.Parameters.Add(new SqliteParameter("@Id", houseId));
                     command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }
@@ -406,8 +415,9 @@ namespace CatoriServices.Objects.database.House
                     command.Parameters.Add(new SqliteParameter("@Id", houseId));
                     command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw;
                 }
             }

@@ -1,19 +1,35 @@
-﻿namespace CatoriServices.Objects.Entities.House
+namespace CatoriServices.Objects.Entities.House
 {
     public class HouseEntity
     {
         public HouseEntity()
         {
-
+            try
+            {
+                        
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         public HouseEntity(string name, string frontImage, string livingRoomImage,
             string garageImage, string ownerName)
         {
-            _name = name;
-            _frontImage = frontImage?.ToLower() ?? "";
-            _livingRoomImage = livingRoomImage?.ToLower() ?? "";
-            _garageImage = garageImage?.ToLower() ?? "";
-            _ownerName = ownerName ?? "";
+            try
+            {
+                            _name = name;
+                            _frontImage = frontImage?.ToLower() ?? "";
+                            _livingRoomImage = livingRoomImage?.ToLower() ?? "";
+                            _garageImage = garageImage?.ToLower() ?? "";
+                            _ownerName = ownerName ?? "";
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         private string _name = "";
@@ -116,11 +132,19 @@
         public void Add(string name, string frontImage, string livingRoomImage,
             string garageImage, string ownerName)
         {
-            _name = name;
-            _frontImage = frontImage;
-            _livingRoomImage = livingRoomImage;
-            _garageImage = garageImage;
-            _ownerName = ownerName;
+            try
+            {
+                            _name = name;
+                            _frontImage = frontImage;
+                            _livingRoomImage = livingRoomImage;
+                            _garageImage = garageImage;
+                            _ownerName = ownerName;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

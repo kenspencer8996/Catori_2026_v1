@@ -1,0 +1,90 @@
+using CatoriApp.Core.Objects.Arguments;
+using CatoriApp.Core.Objects.DragDrop;
+namespace CatoriApp.Game.Views.Controls.Digging
+{
+    /// <summary>
+    /// Interaction logic for DigInHoleControl.xaml
+    /// </summary>
+    public partial class DigInHoleControl : UserControl,IDropTarget
+    {
+        PersonControl personControl;
+        public int totalSpotsCount;
+        public DigInHoleControl(DragManager dragManager,Canvas hostCanvas)
+        {
+            InitializeComponent();
+
+            personControl = new PersonControl(GlobalAllApps.CurrentPerson, dragManager, hostCanvas);
+            MainLayoutForTreasure.Children.Add(personControl);
+            personControl.DiggerCycleComplete += PersonControl_DiggerCycleComplete;
+            Canvas.SetLeft(personControl, 50);
+            Canvas.SetTop(personControl, 0);
+            personControl.HidePerson();
+
+            totalSpotsCount = SpotControl.DirtSpots.Count;
+            SpotControl.StartDiggingEvent += SpotControl_StartDiggingEvent;
+        }
+
+        private void PersonControl_DiggerCycleComplete(object? sender, DiggerCompleteCycleArgs e)
+        {
+            SpotControl.DiggerCycleComplete();
+        }
+
+        private void SpotControl_StartDiggingEvent(object? sender, StartDiggingArgs e)
+        {
+           StartDigging();  
+        }
+
+        public void StartDigging()
+        {
+            personControl.ShowPerson();
+            personControl.StartDiggingAnimation(totalSpotsCount);
+        }
+      
+
+        public bool CanDrop(UIElement element)
+        {
+            return true;
+        }
+
+        public void OnDrop(UIElement element)
+        {
+            PersonControl person = element as PersonControl;
+            if (person != null)
+            {
+                person.Opacity = 0;
+            }
+            StartDigging();
+        }
+
+        public bool CanDrop(IDraggable element)
+        {
+            return true;
+        }
+
+        public void OnDrop(IDraggable element)
+        {
+            PersonControl person = element as PersonControl;
+            if (person != null)
+            {
+                person.Opacity = 0;
+            }
+            StartDigging();
+        }
+
+        public void HighlightOn()
+        {
+            // Implement highlight logic here
+        }
+
+        public void HighlightOff()
+        {
+        }
+
+        public Point GetSnapPoint(IDraggable dragged)
+        {
+            return new Point();
+        }
+    }
+}
+
+

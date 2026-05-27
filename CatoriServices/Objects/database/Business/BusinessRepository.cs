@@ -1,4 +1,4 @@
-﻿using CatoriServices;
+using CatoriServices;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Data;
@@ -38,12 +38,14 @@ namespace CatoriServices.Objects.database.Business
                     }
                     catch (Exception ex)
                     {
+                        cLogger.Log(ex.ToString());
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -80,6 +82,7 @@ namespace CatoriServices.Objects.database.Business
                     }
                     catch (Exception ex)
                     {
+                        cLogger.Log(ex.ToString());
                         throw;
                     }
                 }
@@ -87,6 +90,7 @@ namespace CatoriServices.Objects.database.Business
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -119,6 +123,7 @@ namespace CatoriServices.Objects.database.Business
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }
@@ -138,6 +143,7 @@ namespace CatoriServices.Objects.database.Business
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }

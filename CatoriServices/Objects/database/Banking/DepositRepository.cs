@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using System.Data;
 namespace CatoriServices.Objects.database.Banking
 {
@@ -37,8 +37,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -73,8 +73,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -105,8 +105,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -156,6 +156,7 @@ namespace CatoriServices.Objects.database.Banking
             }
             catch(Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -189,8 +190,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 

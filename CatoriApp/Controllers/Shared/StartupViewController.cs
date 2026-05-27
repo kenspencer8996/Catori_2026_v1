@@ -1,4 +1,4 @@
-﻿using CatoriApp.Views;
+using CatoriApp.Views.Shared;
 namespace CatoriApp.Controllers.Shared
 {
     internal class StartupViewController

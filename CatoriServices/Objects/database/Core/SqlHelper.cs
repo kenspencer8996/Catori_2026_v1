@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects;
+using CatoriServices.Objects;
 using Microsoft.Data.Sqlite;
 using System.Data;
 namespace CatoriServices.Objects.database.Core
@@ -25,6 +25,7 @@ namespace CatoriServices.Objects.database.Core
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw ex;
             }
             return reader;

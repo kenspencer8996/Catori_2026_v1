@@ -11,6 +11,7 @@ namespace CatoriUCLibrary.Views.RobotArm
     public partial class RobotArmSegmentontrol : UserControl
     {
         public event EventHandler<SegmentMouseDownArgs> SegmentMouseDown;
+        public double SegmentLength { get; set; } = 124;
 
         public RobotArmSegmentontrol()
         {

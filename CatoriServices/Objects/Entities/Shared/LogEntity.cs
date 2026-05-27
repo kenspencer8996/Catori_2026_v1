@@ -1,4 +1,4 @@
-﻿
+
 public class LogEntity
 {
         private string _className = "";
@@ -55,10 +55,18 @@ public class LogEntity
         public void Add(string className,decimal runTime, string methodName,
             string message)
         {
-            _className = className;
-            _message = message;
-            _methodName = methodName;
-            _runTime = runTime;
+            try
+            {
+                            _className = className;
+                            _message = message;
+                            _methodName = methodName;
+                            _runTime = runTime;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 

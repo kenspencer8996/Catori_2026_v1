@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using System.Data;
 using System.Security.Cryptography;
 namespace CatoriServices.Objects.database.Banking
@@ -39,8 +39,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -48,27 +48,35 @@ namespace CatoriServices.Objects.database.Banking
         }
         private List<SqliteColumnEntity> GetBankColumns()
         {
-            List<SqliteColumnEntity> columns = new List<SqliteColumnEntity>();
-            string sql = "PRAGMA table_info(\"bank\");";
-            IDataReader reader = sqlhelper.GetReader(sql);
-            int idxcid = reader.GetOrdinal("cid");
-            int idxname = reader.GetOrdinal("name");
-            int idxType = reader.GetOrdinal("type");
-            int idxdflt_value = reader.GetOrdinal("dflt_value");
-            int idxpk = reader.GetOrdinal("pk");
-
-            while (reader.Read())
+            try
             {
-                SqliteColumnEntity entity = new SqliteColumnEntity();
-                if (!reader.IsDBNull(idxcid)) entity.cid = reader.GetInt32(idxcid);
-                if (!reader.IsDBNull(idxname)) entity.name = reader.GetString(idxname);
-                if (!reader.IsDBNull(idxType)) entity.type = reader.GetString(idxType);
-                if (!reader.IsDBNull(idxdflt_value)) entity.dflt_value = reader.GetString(idxdflt_value);
-                if (!reader.IsDBNull(idxpk)) entity.pk = reader.GetString(idxpk);
-
-                columns.Add(entity);
+                            List<SqliteColumnEntity> columns = new List<SqliteColumnEntity>();
+                            string sql = "PRAGMA table_info(\"bank\");";
+                            IDataReader reader = sqlhelper.GetReader(sql);
+                            int idxcid = reader.GetOrdinal("cid");
+                            int idxname = reader.GetOrdinal("name");
+                            int idxType = reader.GetOrdinal("type");
+                            int idxdflt_value = reader.GetOrdinal("dflt_value");
+                            int idxpk = reader.GetOrdinal("pk");
+                
+                            while (reader.Read())
+                            {
+                                SqliteColumnEntity entity = new SqliteColumnEntity();
+                                if (!reader.IsDBNull(idxcid)) entity.cid = reader.GetInt32(idxcid);
+                                if (!reader.IsDBNull(idxname)) entity.name = reader.GetString(idxname);
+                                if (!reader.IsDBNull(idxType)) entity.type = reader.GetString(idxType);
+                                if (!reader.IsDBNull(idxdflt_value)) entity.dflt_value = reader.GetString(idxdflt_value);
+                                if (!reader.IsDBNull(idxpk)) entity.pk = reader.GetString(idxpk);
+                
+                                columns.Add(entity);
+                            }
+                            return columns;
             }
-            return columns;
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
         public async Task<BankEntity> GetBankByIdAsync(int bankId)
@@ -96,8 +104,8 @@ namespace CatoriServices.Objects.database.Banking
 
                 reader.Close();
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -136,8 +144,8 @@ namespace CatoriServices.Objects.database.Banking
                     command.ExecuteNonQuery();
                 }
             }
-            catch
-            {
+            catch (Exception ex) {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }

@@ -1,0 +1,23 @@
+<UserControl x:Class="CatoriApp.Game.Views.Controls.Treasure.TreasureWorkBench"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriApp.Game.Views.Controls.Treasure"
+             mc:Ignorable="d" Width="315" Height="210">
+    <Canvas >
+        <Image x:Name="TableImage" Source="/Images/TableOutdoor.png" Canvas.Left="0" Canvas.Top="0"
+           Width="315" Stretch="UniformToFill"  Height="210"/>
+        <Image x:Name="ChestImage" Width="60" Source="/Images/CHestClosed.png" RenderTransformOrigin="0.47,0.462" Canvas.Left="113" Canvas.Top="30"   />
+        <Image x:Name="ValuablesImage" Width="35"  Source="/Images/BagOfrocks.png"  Canvas.Left="133" Canvas.Top="70"   >
+            <Image.ContextMenu>
+                <ContextMenu Name="cm" StaysOpen="true">
+                    <MenuItem x:Name="ATMMenu" Header="ATM" Click="ATMMenu_Click"/>
+                    <!--<MenuItem x:Name="AddToMyCashMenu" Header="Add to my cash" Click="AddToMyCashMenu_Click"/>-->
+                    <MenuItem x:Name="DiscardMenu" Header="Discard Treasure" Click="DiscardMenu_Click"/>
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+    </Canvas>
+</UserControl>
+

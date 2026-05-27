@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using Microsoft.Data.Sqlite;
 using System.Data;
 namespace CatoriServices.Objects.database.House
@@ -66,12 +66,14 @@ namespace CatoriServices.Objects.database.House
                     }
                     catch (Exception ex)
                     {
+                        cLogger.Log(ex.ToString());
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -94,12 +96,14 @@ namespace CatoriServices.Objects.database.House
                     }
                     catch (Exception ex)
                     {
+                        cLogger.Log(ex.ToString());
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -160,12 +164,14 @@ namespace CatoriServices.Objects.database.House
                     }
                     catch (Exception ex)
                     {
+                        cLogger.Log(ex.ToString());
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -203,6 +209,7 @@ namespace CatoriServices.Objects.database.House
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }
@@ -223,6 +230,7 @@ namespace CatoriServices.Objects.database.House
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }
@@ -244,6 +252,7 @@ namespace CatoriServices.Objects.database.House
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }

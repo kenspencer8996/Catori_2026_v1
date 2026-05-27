@@ -1,4 +1,5 @@
 ﻿using CatoriApp.Controllers;
+using CatoriApp.MachineLayoutDesigner.Views.MachineCatalog;
 namespace CatoriApp.Views.Shared
 {
     /// <summary>
@@ -27,6 +28,7 @@ namespace CatoriApp.Views.Shared
                 Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
             };
             TreasureHuntButton.ToolTip = toolTip;
+            toolsPanel.startupView = this;
         }
 
         private void CityScapeButton_Click(object sender, RoutedEventArgs e)
@@ -54,12 +56,7 @@ namespace CatoriApp.Views.Shared
             view.Close();
         }
 
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsView view = new SettingsView();
-            view.Owner = this;
-            view.ShowDialog();
-        }
+        
 
         private void Location1Button_Click(object sender, RoutedEventArgs e)
         {
@@ -93,11 +90,10 @@ namespace CatoriApp.Views.Shared
             //view.ShowDialog();
         }
 
-        private void ProductMaintenanceButton_Click(object sender, RoutedEventArgs e)
+       
+        private void SettingsPanelImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-
-            ProductBuilderView view = new ProductBuilderView();
-            view.ShowDialog();
+            toolsPanel.OpenPanel();
         }
     }
 }

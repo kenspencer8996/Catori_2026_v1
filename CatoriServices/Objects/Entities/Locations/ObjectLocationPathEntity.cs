@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +10,27 @@ namespace CatoriServices.Objects.Entities.Locations
         public List<LocationEnum> APath { get; set; } = new List<LocationEnum>();
         public void Add(LocationEnum aPath)
         {
-             APath.Add(aPath);
+            try
+            {
+                             APath.Add(aPath);
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
-        public void Clear() { 
-        APath = new List<LocationEnum>();
+        public void Clear() {
+            try
+            {
+                        APath = new List<LocationEnum>();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

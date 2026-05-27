@@ -1,7 +1,8 @@
-<Window x:Class="CatoriApp.Views.Robots.MachineLayoutDesigner.MachineLayoutDesignerWindow"
+<Window x:Class="CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner.MachineLayoutDesignerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:uslib="clr-namespace:CatoriUCLibrary.Views.RobotArm;assembly=CatoriUCLibrary"
+        xmlns:catalog="clr-namespace:CatoriApp.MachineLayoutDesigner.Views.MachineCatalog"
         Title="Machine Layout Designer"
         Height="860" Loaded="Window_Loaded"
         Width="1200" WindowState="Maximized"
@@ -18,8 +19,13 @@
                     <Canvas x:Name="DesignerCanvas"
                             Width="{Binding CanvasWidth}"
                             Height="{Binding CanvasHeight}"
-                            Background="#101010">
-                        <Image x:Name="MainImage" Stretch="Fill" Panel.ZIndex="100" />
+                            Background="#101010"
+                            MouseLeave="DesignerCanvas_MouseLeave">
+                        <Image x:Name="MainImage"
+                               Stretch="Fill"
+                               Panel.ZIndex="100"
+                               MouseEnter="MainImage_MouseEnter"
+                               MouseMove="MainImage_MouseMove" />
 
                         <uslib:RoboticArmUC x:Name="RobotArmNew"
                                             Canvas.Left="300"
@@ -64,32 +70,34 @@
                         <Button Content="Move Pose Down" Click="MovePoseDown_Click" Margin="4,4,0,4" />
                     </UniformGrid>
                 </StackPanel>
-
-                <ListView Grid.Row="1"
+                <StackPanel Grid.Row="1">
+                    <ListView Grid.Row="1" MinHeight="200"
                           ItemsSource="{Binding Poses}"
                           SelectedItem="{Binding SelectedPose}"
                           Margin="0,0,0,8">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="#" Width="34" DisplayMemberBinding="{Binding PoseIndex}" />
-                            <GridViewColumn Header="Name" Width="140">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding PoseName, UpdateSourceTrigger=PropertyChanged}"
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="#" Width="34" DisplayMemberBinding="{Binding PoseIndex}" />
+                                <GridViewColumn Header="Name" Width="140">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding PoseName, UpdateSourceTrigger=PropertyChanged}"
                                              BorderThickness="0"
                                              Background="Transparent"
                                              MinWidth="120" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="J1" Width="42" DisplayMemberBinding="{Binding Joint1}" />
-                            <GridViewColumn Header="J2" Width="42" DisplayMemberBinding="{Binding Joint2}" />
-                            <GridViewColumn Header="J3" Width="42" DisplayMemberBinding="{Binding Joint3}" />
-                            <GridViewColumn Header="Hand" Width="52" DisplayMemberBinding="{Binding JointHand}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="J1" Width="42" DisplayMemberBinding="{Binding Joint1}" />
+                                <GridViewColumn Header="J2" Width="42" DisplayMemberBinding="{Binding Joint2}" />
+                                <GridViewColumn Header="J3" Width="42" DisplayMemberBinding="{Binding Joint3}" />
+                                <GridViewColumn Header="End" Width="52" DisplayMemberBinding="{Binding JointEnd}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView >
+                    <ListBox x:Name="StatusListbox" MinHeight="200" MouseDoubleClick="StatusListbox_MouseDoubleClick"/>
 
+                </StackPanel>
                 <StackPanel Grid.Row="2">
                     <UniformGrid Columns="2">
                         <Button Content="Save" x:Name="SaveButton" Click="SaveButton_Click" Margin="0,0,4,4" />

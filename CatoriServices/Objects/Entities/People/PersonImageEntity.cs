@@ -1,9 +1,18 @@
-﻿namespace CatoriServices.Objects.Entities.People
+namespace CatoriServices.Objects.Entities.People
 {
     public class PersonImageEntity 
     {
         public PersonImageEntity()
         {
+            try
+            {
+                        
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         private PersonImageTypeEnum _personImageType;
         public PersonImageStatusEnum PersonImageStatus { get; set; }
@@ -75,12 +84,20 @@
          string FilePath, string ImageType,
          int fkpersonId)
         {
-            _personImageType = personImageType;
-            this.PersonImageStatus = PersonImageStatus;
-            _Name = Name;
-            _FilePath = FilePath;
-            _ImageType = ImageType;
-            _fkpersonId = fkpersonId;
+            try
+            {
+                            _personImageType = personImageType;
+                            this.PersonImageStatus = PersonImageStatus;
+                            _Name = Name;
+                            _FilePath = FilePath;
+                            _ImageType = ImageType;
+                            _fkpersonId = fkpersonId;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

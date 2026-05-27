@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.City
+namespace CatoriServices.Objects.Entities.City
 {
     public class StreetNavigationEntity
     {
@@ -15,16 +15,24 @@
             PositionsEWNSEnum travelDirection, double startX, 
             double startY, int index)
         {
-            StreetName = streetName;
-            StreetLocation = new LocationXYEntity();
-            StreetTraverse= streetTraverse;
-            StreetLocation.x = x;
-            StreetLocation.y = y;
-            TravelDirection = travelDirection;
-            StartX = startX;
-            StartY = startY;
-            Index = index;
-
+            try
+            {
+                            StreetName = streetName;
+                            StreetLocation = new LocationXYEntity();
+                            StreetTraverse= streetTraverse;
+                            StreetLocation.x = x;
+                            StreetLocation.y = y;
+                            TravelDirection = travelDirection;
+                            StartX = startX;
+                            StartY = startY;
+                            Index = index;
+                
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
 
     }

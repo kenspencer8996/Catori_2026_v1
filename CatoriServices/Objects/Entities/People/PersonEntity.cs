@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.People
+namespace CatoriServices.Objects.Entities.People
 {
     public class PersonEntity
     {
@@ -55,9 +55,17 @@
         public void Add(string name, decimal funds,
             PersonEnum role)
         {
-            _Name = name;
-            Funds = funds;
-            _personRole = role;
+            try
+            {
+                            _Name = name;
+                            Funds = funds;
+                            _personRole = role;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

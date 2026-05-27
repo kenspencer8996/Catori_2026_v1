@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -45,6 +45,7 @@
     <None Remove="Images\DronePortal.png" />
     <None Remove="Images\DroneWithBox.png" />
     <None Remove="Images\entrytogarage.png" />
+    <None Remove="Images\HouseGearMenuIcon.png" />
     <None Remove="Images\LocationConVeyorTable1.png" />
     <None Remove="Images\LocationInterior1.png" />
     <None Remove="Images\Locationinterior2.png" />
@@ -64,9 +65,12 @@
     <None Remove="Images\information.png" />
     <None Remove="Images\LearnedStepsButton.png" />
     <None Remove="Images\Left4.png" />
+    <None Remove="Images\machinebutton.png" />
+    <None Remove="Images\MachineInstancesButton.png" />
     <None Remove="Images\MailBox.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
+    <None Remove="Images\ProductsButton.png" />
     <None Remove="Images\RealEstateOfficeExterior.png" />
     <None Remove="Images\RealEstateOfficeInterior.png" />
     <None Remove="Images\ResetBlue.png" />
@@ -79,6 +83,7 @@
     <None Remove="Images\SaveButtonCool.png" />
     <None Remove="Images\Saw.png" />
     <None Remove="Images\SawChain.png" />
+    <None Remove="Images\SettingsButton.png" />
     <None Remove="Images\Shovel.png" />
     <None Remove="Images\StartWorld.png" />
     <None Remove="Images\StoreHardware_Doorspng.png" />
@@ -123,14 +128,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
+    <ProjectReference Include="..\CatoriApp.Game\CatoriApp.Game.csproj" />
     <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
     <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="CatoriUCLibrary">
-      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -152,11 +154,15 @@
     <Resource Include="Images\GirlStandingRight.png" />
     <Resource Include="Images\GrasswithTreasureSpot.png" />
     <Resource Include="Images\HouseDoor.png" />
+    <Resource Include="Images\HouseGearMenuIcon.png" />
     <Resource Include="Images\LearnedStepsButton.png" />
     <Resource Include="Images\Left4.png" />
+    <Resource Include="Images\machinebutton.png" />
+    <Resource Include="Images\MachineInstancesButton.png" />
     <Resource Include="Images\MailBox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\ProductsButton.png" />
     <Resource Include="Images\RealEstateOfficeExterior.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -172,6 +178,7 @@
     <Resource Include="Images\RobotBaseBlue.png" />
     <Resource Include="Images\Saw.png" />
     <Resource Include="Images\SawChain.png" />
+    <Resource Include="Images\SettingsButton.png" />
     <Resource Include="Images\Shovel.png" />
     <Resource Include="Images\StartWorld.png" />
     <Resource Include="Images\StoreHardware_Doorspng.png" />
@@ -216,6 +223,5 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-
 </Project>
 

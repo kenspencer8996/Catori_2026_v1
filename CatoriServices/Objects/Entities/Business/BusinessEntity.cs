@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.Business
+namespace CatoriServices.Objects.Entities.Business
 {
     public class BusinessEntity 
     {
@@ -56,10 +56,18 @@
         public void Add(string name, decimal employeePayHour, string imageName,
             BusinessTypeEnum business)
         {
-            Name = name;
-            EmployeePayHour = employeePayHour;
-            ImageName = imageName;
-            BusinessType = business;
+            try
+            {
+                            Name = name;
+                            EmployeePayHour = employeePayHour;
+                            ImageName = imageName;
+                            BusinessType = business;
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
     }
 }

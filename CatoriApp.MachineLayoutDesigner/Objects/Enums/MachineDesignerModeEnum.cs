@@ -1,4 +1,4 @@
-﻿namespace CatoriApp.Objects.Enums
+namespace CatoriApp.MachineLayoutDesigner.Objects.Enums
 {
     public enum MachineDesignerModeEnum
     {

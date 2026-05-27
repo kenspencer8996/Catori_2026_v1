@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Data;
@@ -50,6 +50,7 @@ namespace CatoriServices.Objects.database.Stores
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -91,8 +92,9 @@ namespace CatoriServices.Objects.database.Stores
 
                 reader.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -112,8 +114,9 @@ namespace CatoriServices.Objects.database.Stores
                     item = results.First();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -170,8 +173,9 @@ namespace CatoriServices.Objects.database.Stores
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }

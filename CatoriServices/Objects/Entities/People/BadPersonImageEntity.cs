@@ -1,9 +1,18 @@
-﻿namespace CatoriServices.Objects.Entities.People
+namespace CatoriServices.Objects.Entities.People
 {
     public class BadPersonImageEntity
     {
         public BadPersonImageEntity() 
-        { 
+        {
+            try
+            {
+                        
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
         }
         private BadPersonTypeEnum _personImageType;
         private string _Name = "";

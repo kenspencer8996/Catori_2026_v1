@@ -1,0 +1,31 @@
+<UserControl x:Class="CatoriApp.Game.Views.Controls.Stores.StoreHardwareInteriorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriApp.Game.Views.Controls.Stores"
+             xmlns:robotsDrones="clr-namespace:CatoriApp.Game.Views.Controls.RobotsDrones"
+             MouseEnter="UC_MouseEnter"
+             mc:Ignorable="d" x:Name="UC" Width="1820" Height="900"  Loaded="UC_Loaded"
+             d:DesignHeight="1820" d:DesignWidth="900">
+    <Border x:Name="MainBorder" Canvas.Left="0" Canvas.Top="0" BorderThickness="0" BorderBrush="#FFF11111" 
+             Width="{Binding ElementName=UC, Path=ActualWidth}" 
+            Height="{Binding ElementName=UC, Path=ActualHeight}" >
+        <Canvas x:Name="MainLayoutHardwareStoreInterior" MouseDown="MainLayout_MouseDown" MouseUp="MainLayout_MouseUp" MouseMove="MainLayout_MouseMove" Width="{Binding ElementName=MainBorder, Path=ActualWidth}" 
+            Height="{Binding ElementName=MainBorder, Path=ActualHeight}">
+            <Image x:Name="StoreInteriorImage" Stretch="Fill" Source="/Images/Store_hardware_Interior.png" Width="{Binding ElementName=UC, Path=ActualWidth}" 
+            Height="{Binding ElementName=MainBorder, Path=ActualHeight}" Panel.ZIndex="2"/>
+            <robotsDrones:RobotCartControl x:Name="robotMover" Canvas.Left="32" Canvas.Top="149" Panel.ZIndex="2000"/>
+            <local:POSUI_UC x:Name="POSUC" Canvas.Left="252" Canvas.Top="410" Width="320" Height="150" Panel.ZIndex="2500"/>
+            <!--<local:DroneDeliveryControl x:Name="DroneDeliveryUC" Canvas.Left="400" Canvas.Top="1280" Width="188" Height="110" Panel.ZIndex="4000"/>-->
+            <!--<Image x:Name="TrapazoidImage" Source="/Images/DronePortal.png" Panel.ZIndex="3001" 
+                  Canvas.Left="1630" Canvas.Top="70" Width="250" Height="120" Visibility="Hidden" IsEnabled="False"/>-->
+            <Image x:Name="DragImage" Source="/Images/gear_.png" Panel.ZIndex="3001" 
+       Canvas.Left="500" Canvas.Top="200" Width="250" Height="150" Visibility="Visible"/>
+            <!--<local:DroneDeliver1UC x:Name="DroneDeliver111UC" Canvas.Left="350" Canvas.Top="1280" Width="188" Height="110" Panel.ZIndex="4000"/>-->
+        </Canvas>
+    </Border>
+</UserControl>
+
+
+

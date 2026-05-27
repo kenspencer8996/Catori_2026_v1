@@ -1,4 +1,4 @@
-﻿using CatoriServices.Objects.Entities;
+using CatoriServices.Objects.Entities;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -55,6 +55,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -90,6 +91,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -125,6 +127,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -154,8 +157,9 @@ namespace CatoriServices.Objects.database.People
 
                 reader.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -185,8 +189,9 @@ namespace CatoriServices.Objects.database.People
 
                 reader.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
 
@@ -230,8 +235,9 @@ namespace CatoriServices.Objects.database.People
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -246,8 +252,9 @@ namespace CatoriServices.Objects.database.People
                 command.Parameters.Add(new SqliteParameter("@Id", id));
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -263,8 +270,9 @@ namespace CatoriServices.Objects.database.People
                 command.Parameters.Add(new SqliteParameter("@ShopItemId", shopItemId));
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -281,8 +289,9 @@ namespace CatoriServices.Objects.database.People
                 command.Parameters.Add(new SqliteParameter("@ShopItemId", shopItemId));
                 command.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }
@@ -311,8 +320,9 @@ namespace CatoriServices.Objects.database.People
                     Upsert(newEntity);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
         }

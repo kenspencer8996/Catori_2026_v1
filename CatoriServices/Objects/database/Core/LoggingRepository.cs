@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Microsoft.Data.Sqlite;
 namespace CatoriServices.Objects.database.Core
 {
@@ -21,6 +21,7 @@ namespace CatoriServices.Objects.database.Core
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
 
                 throw;
             }
@@ -45,6 +46,7 @@ namespace CatoriServices.Objects.database.Core
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }

@@ -29,8 +29,8 @@ public sealed class RobotPoseRepositoryTests
 
         var replacement = new List<RobotPoseEntity>
         {
-            new() { PoseName = "PickupPartA", Joint1 = 10, Joint2 = 20, Joint3 = 30, JointHand = 40, DurationMilliseconds = 500 },
-            new() { PoseName = "DropPartA", Joint1 = 50, Joint2 = 60, Joint3 = 70, JointHand = 80, DurationMilliseconds = 900 }
+            new() { PoseName = "PickupPartA", Joint1 = 10, Joint2 = 20, Joint3 = 30, JointEnd = 40, DurationMilliseconds = 500 },
+            new() { PoseName = "DropPartA", Joint1 = 50, Joint2 = 60, Joint3 = 70, JointEnd = 80, DurationMilliseconds = 900 }
         };
 
         await poseRepository.ReplaceForLocationAsync(locationId, replacement);
@@ -43,7 +43,7 @@ public sealed class RobotPoseRepositoryTests
         Assert.Equal(10, loaded[0].Joint1);
         Assert.Equal(20, loaded[0].Joint2);
         Assert.Equal(30, loaded[0].Joint3);
-        Assert.Equal(40, loaded[0].JointHand);
+        Assert.Equal(40, loaded[0].JointEnd);
         Assert.Equal(500, loaded[0].DurationMilliseconds);
         Assert.Equal("DropPartA", loaded[1].PoseName);
         Assert.Equal(1, loaded[1].PoseIndex);

@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.Images
+namespace CatoriServices.Objects.Entities.Images
 {
     public class ImageDetailEntity
     {
@@ -20,7 +20,17 @@
         public int SequenceNumber { get; set; } = 0;    
         public string TrailingPart { get; set; } = string.Empty;
         public ImageEnum ImageRole { get; set; }
-        public ImageDetailEntity() { }
+        public ImageDetailEntity() {
+            try
+            {
+                 
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
 
     }
 }

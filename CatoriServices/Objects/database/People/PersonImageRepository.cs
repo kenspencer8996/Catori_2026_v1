@@ -1,4 +1,4 @@
-﻿using CatoriServices;
+using CatoriServices;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Data;
@@ -47,6 +47,7 @@ namespace CatoriServices.Objects.database.People
                                 }
                                 catch (Exception ex)
                                 {
+                                    cLogger.Log(ex.ToString());
                                     throw;
                                 }
                             }
@@ -56,6 +57,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
                 return PersonImages;
@@ -105,6 +107,7 @@ namespace CatoriServices.Objects.database.People
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
                     throw ex;
                 }
                 finally
@@ -120,6 +123,7 @@ namespace CatoriServices.Objects.database.People
             }
             catch (Exception ex)
             {
+                cLogger.Log(ex.ToString());
                 throw;
             }
             //PersonImageEntity PersonImageout = new PersonImageEntity();
@@ -154,6 +158,7 @@ namespace CatoriServices.Objects.database.People
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }
@@ -173,6 +178,7 @@ namespace CatoriServices.Objects.database.People
                 }
                 catch (Exception ex)
                 {
+                    cLogger.Log(ex.ToString());
 
                     throw;
                 }

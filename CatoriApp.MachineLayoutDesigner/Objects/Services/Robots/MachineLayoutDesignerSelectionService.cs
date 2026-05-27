@@ -1,26 +1,37 @@
-using CatoriApp.Objects.Enums;
+using Path = System.IO.Path;
+using CatoriApp.MachineLayoutDesigner.Objects.Enums;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-namespace CatoriApp.Objects.Services.Robots
+
+namespace CatoriApp.MachineLayoutDesigner.Objects.Services.Robots
 {
     public class MachineLayoutDesignerSelectionService
     {
-        public MachineLayoutDesignerWindow OpenDesignerForImage(
+        private const string DesignerTypeName = "CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner.MachineLayoutDesignerWindow, CatoriApp.MachineLayoutDesigner";
+
+        public Window OpenDesignerForImage(
             string imagePath, Rect sourceSelection, MachineDesignerModeEnum mode)
         {
-            var window = new MachineLayoutDesignerWindow(0, 
-                imagePath, sourceSelection,mode);
+            var window = CreateDesignerWindow(0, imagePath, sourceSelection, mode);
             window.Show();
             return window;
         }
 
-        public MachineLayoutDesignerWindow CaptureSelectionAndOpen(FrameworkElement source, 
+        public Window CaptureSelectionAndOpen(FrameworkElement source,
             Rect selectionBounds, MachineDesignerModeEnum mode)
         {
             var imagePath = CaptureSelection(source, selectionBounds);
-            return OpenDesignerForImage(imagePath, selectionBounds,mode);
+            return OpenDesignerForImage(imagePath, selectionBounds, mode);
+        }
+
+        public Window CreateDesignerWindow(long locationId, string? imagePath,
+            Rect sourceSelection, MachineDesignerModeEnum mode)
+        {
+            var designerType = Type.GetType(DesignerTypeName, throwOnError: true);
+            return (Window)Activator.CreateInstance(designerType!, locationId, imagePath, sourceSelection, mode)!;
         }
 
         public string CaptureSelection(FrameworkElement source, Rect selectionBounds)
@@ -65,6 +76,3 @@ namespace CatoriApp.Objects.Services.Robots
         }
     }
 }
-
-
-
