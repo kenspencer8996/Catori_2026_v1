@@ -16,7 +16,21 @@ namespace CatoriApp.Core.ViewModels.Robots
         public long MachineDefinitionId { get => _machineDefinitionId; set => SetProperty(ref _machineDefinitionId, value); }
         public string InstanceName { get => _instanceName; set => SetProperty(ref _instanceName, value ?? ""); }
         public string DisplayName { get => _displayName; set => SetProperty(ref _displayName, value ?? ""); }
-        public double DefaultScale { get => _defaultScale; set => SetProperty(ref _defaultScale, value); }
+        public double DefaultScale
+        {
+            get => _defaultScale;
+            set
+            {
+                if (SetProperty(ref _defaultScale, value))
+                    OnPropertyChanged(nameof(DefaultScalePercent));
+            }
+        }
+
+        public double DefaultScalePercent
+        {
+            get => DefaultScale * 100;
+            set => DefaultScale = value / 100;
+        }
         public double DefaultWidth { get => _defaultWidth; set => SetProperty(ref _defaultWidth, value); }
         public double DefaultHeight { get => _defaultHeight; set => SetProperty(ref _defaultHeight, value); }
         public ObservableCollection<MachineInstanceSegmentViewModel> Segments { get; } = new();

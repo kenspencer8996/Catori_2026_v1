@@ -170,7 +170,7 @@ namespace CatoriApp.Game.Controllers.City
                 AddPoliceStation();
                 loadPoliceCars();
                 
-                primaryPerson = new PersonControl(GlobalAllApps.CurrentPerson, _dragManager, _view.MainLayout);
+                primaryPerson = new PersonControl(GlobalGame.CurrentPerson, _dragManager, _view.MainLayout);
                 primaryPerson.MovePersonStop += PrimaryPerson_MovePersonStop;
                 primaryPerson.MovePersonStart += PrimaryPerson_MovePersonStart;
                 _view.MainLayout.Children.Add(primaryPerson);
@@ -595,9 +595,9 @@ namespace CatoriApp.Game.Controllers.City
                     {
                         HouseControl houseControl = new HouseControl(house);
                         if (house.Name.Trim().ToLower() == CityScapeGlobal.CurrentHouseName.Trim().ToLower()
-                            && GlobalAllApps.CurrentPerson.Name != null && GlobalAllApps.CurrentPerson.Name != "")
+                            && GlobalGame.CurrentPerson.Name != null && GlobalGame.CurrentPerson.Name != "")
                         {
-                            houseControl.AddPersonModel(GlobalAllApps.CurrentPerson);
+                            houseControl.AddPersonModel(GlobalGame.CurrentPerson);
                             primaryPersonHouse = true;  
                         }
                         houseControl.Width = CityScapeGlobal.buildingsize;
@@ -673,7 +673,7 @@ namespace CatoriApp.Game.Controllers.City
                           select lot;   
            if (foundlot.Any())
             {
-                PersonViewModel model = GlobalAllApps.CurrentPerson;
+                PersonViewModel model = GlobalGame.CurrentPerson;
                 LotControl lotControl = foundlot.First();
                 lotControl.Building.Visibility = Visibility.Visible;
                 lotControl.Building.AddPersonModel(model);

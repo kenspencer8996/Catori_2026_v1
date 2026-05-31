@@ -42,7 +42,7 @@ namespace CatoriApp.Views.Controls
 
         private void MachineInstances_Click(object sender, RoutedEventArgs e)
         {
-            MachineInstanceEditorWindow view = new();
+            MachineInstanceEditorListView view = new();
             view.Owner = startupView;
             view.ShowDialog();
         }

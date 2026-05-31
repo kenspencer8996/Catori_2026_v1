@@ -1,4 +1,4 @@
-﻿<Window x:Class="CatoriApp.MachineLayoutDesigner.Views.MachineCatalog.AddMachineSegmentWindow"
+﻿<Window x:Class="CatoriApp.MachineLayoutDesigner.Views.MachineCatalog.MachineSegmentEditEditorView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -30,20 +30,13 @@
                 <Label Content="Color" Margin="0,10,0,0"/>
                 <ComboBox x:Name="ArmColorComboBox"
                           SelectionChanged="ArmColorComboBox_SelectionChanged">
-                    <ComboBoxItem Content="Blue"/>
-                    <ComboBoxItem Content="Red"/>
-                    <ComboBoxItem Content="Yellow"/>
-                    <ComboBoxItem Content="Steel"/>
-                    <ComboBoxItem Content="Black"/>
+                   
                 </ComboBox>
 
                 <Label Content="Length" Margin="0,10,0,0"/>
                 <ComboBox x:Name="ArmLengthComboBox"
-                          SelectionChanged="SelectionChanged">
-                    <ComboBoxItem Content="80"/>
-                    <ComboBoxItem Content="124"/>
-                    <ComboBoxItem Content="160"/>
-                    <ComboBoxItem Content="220"/>
+                          SelectionChanged="ArmLengthComboBox_SelectionChanged">
+                   
                 </ComboBox>
             </StackPanel>
 

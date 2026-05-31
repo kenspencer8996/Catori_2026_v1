@@ -2,18 +2,18 @@ using CatoriUCLibrary.Views.RobotArm;
 
 namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 {
-    public partial class MachineArmDesignerWindow : Window
+    public partial class MachineArmDesignerWindowListView : Window
     {
         private readonly MachineCatalogService _service = new();
         private readonly MachineArmDesignerViewModel _viewModel = new();
         private bool _loading = true;
 
-        public MachineArmDesignerWindow()
+        public MachineArmDesignerWindowListView()
             : this(CreateDefaultDefinition(), null)
         {
         }
 
-        public MachineArmDesignerWindow(MachineDefinitionViewModel definition, MachineInstanceViewModel? instance = null)
+        public MachineArmDesignerWindowListView(MachineDefinitionViewModel definition, MachineInstanceViewModel? instance = null)
         {
             InitializeComponent();
             _viewModel.Definition = definition;
@@ -30,13 +30,18 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 
         private void AddSegment_Click(object sender, RoutedEventArgs e)
         {
-            AddDefaultPart(_viewModel.Instance);
+            MachineSegmentEditEditorView view = new MachineSegmentEditEditorView(new MachineInstanceSegmentViewModel());
+            view.Owner = this;
+            view.Show();
+            _viewModel.Instance.Segments.Add(view.model);
+            //AddDefaultPart(_viewModel.Instance);
             ApplySegmentsToPreview();
         }
 
         private void ApplySegments_Click(object sender, RoutedEventArgs e)
         {
             ApplySegmentsToPreview();
+         
         }
 
         private void JointSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -13,7 +13,7 @@ namespace CatoriApp.Game.Views.Controls.Digging
         {
             InitializeComponent();
 
-            personControl = new PersonControl(GlobalAllApps.CurrentPerson, dragManager, hostCanvas);
+            personControl = new PersonControl(GlobalGame.CurrentPerson, dragManager, hostCanvas);
             MainLayoutForTreasure.Children.Add(personControl);
             personControl.DiggerCycleComplete += PersonControl_DiggerCycleComplete;
             Canvas.SetLeft(personControl, 50);

@@ -1,16 +1,16 @@
 namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 {
-    public partial class MachineInstanceEditorWindow : Window
+    public partial class MachineInstanceEditorListView : Window
     {
         private readonly MachineCatalogService _service = new();
         private readonly MachineInstanceEditorViewModel _viewModel = new();
         private readonly long _initialDefinitionId;
         private bool _isNew = false;
-        public MachineInstanceEditorWindow(MachineDefinitionViewModel? selectedDefinition = null)
+        public MachineInstanceEditorListView(MachineDefinitionViewModel? selectedDefinition = null)
         {
             InitializeComponent();
             _initialDefinitionId = selectedDefinition?.MachineDefinitionId ?? 0;
-            DataContext = _viewModel;
+            MainDataGrid.DataContext = _viewModel;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -41,35 +41,23 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 
             _viewModel.StatusMessage = "Machine instances loaded.";
 
-            if (_viewModel.Instances.Count == 0)
-            {
-                CreateNewInstance();
-
-            }
+            //if (_viewModel.Instances.Count == 0)
+            //{
+            //    CreateNewInstance();
+            //}
         }
 
         private void NewInstance_Click(object sender, RoutedEventArgs e)
         {
-            CreateNewInstance();
+            
+            MachineSegmentEditEditorView view = new MachineSegmentEditEditorView(new MachineInstanceSegmentViewModel());
+            view.Owner = this;
+            view.Show();
+//CreateNewInstance();
             
         }
 
-        private void CreateNewInstance()
-        {
-            var definition = _viewModel.SelectedDefinition ?? _viewModel.Definitions.FirstOrDefault();
-            if (definition == null)
-            {
-                _viewModel.StatusMessage = "Create a machine before adding an instance.";
-                return;
-            }
-
-            var instance = CreateInstanceFromDefinition(definition);
-            _viewModel.Instances.Add(instance);
-            _viewModel.SelectedInstance = instance;
-            _viewModel.StatusMessage = "New machine instance created.";
-            _isNew = true;
-            MachineComboBox.IsEnabled = true;
-        }
+       
         private async void SaveInstance_Click(object sender, RoutedEventArgs e)
         {
             if (_viewModel.SelectedInstance == null)
@@ -94,7 +82,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
             ApplySelectedDefinition(_viewModel.SelectedInstance);
             ApplySegmentImageNames(_viewModel.SelectedInstance);
 
-            var window = new MachineArmDesignerWindow(definition, _viewModel.SelectedInstance)
+            var window = new MachineArmDesignerWindowListView(definition, _viewModel.SelectedInstance)
             {
                 Owner = this
             };
@@ -274,46 +262,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
                 instance.Segments[i].SegmentIndex = i;
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedInstance = _viewModel.SelectedInstance;
-            if (selectedInstance == null || selectedInstance.MachineDefinitionId == 0)
-            {
-                selectedInstance = _viewModel.Instances.FirstOrDefault(i => i.MachineDefinitionId == _initialDefinitionId);
-            };
-            var SelectedDefinition = _viewModel.Definitions.FirstOrDefault(x => x.MachineDefinitionId == selectedInstance.MachineDefinitionId);
-            MachineComboBox.SelectedItem = SelectedDefinition;
-            MachineComboBox.IsEnabled = false;
-        }
-        private void HideDesignButtons()
-        {
-            EditDesignButton.Visibility = Visibility.Collapsed;
-            EditCraneButton.Visibility = Visibility.Collapsed;
-            EditDroneRollingButton.Visibility = Visibility.Collapsed;
-            EditPaintBoothButton.Visibility = Visibility.Collapsed;
-        }
-        private void ShowDesignButton(string name)
-        {
-            HideDesignButtons();
-            switch (name)
-            {
-                case "Robot Arm":
-                    EditDesignButton.Visibility = Visibility.Visible;
-                    break;
-                case "Crane":
-                    EditCraneButton.Visibility = Visibility.Visible;
-                    break;
-                case "DroneRolling":
-                    EditDroneRollingButton.Visibility = Visibility.Visible;
-                    break;
-                case "PaintBooth":
-                    EditPaintBoothButton.Visibility = Visibility.Visible;
-                    break;
-                default:
-                    break;
-            }
-        }
-
+       
         private void EditPaintBoothButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Edit PaintBooth Not implemented yet");
@@ -332,15 +281,48 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 
         private void MachineComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = MachineComboBox.SelectedItem as MachineDefinitionViewModel;
-            if (item != null)
+          
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            var instance = _viewModel.SelectedInstance;
+            var selectedInstance =
+            MainDataGrid.SelectedItem as MachineInstanceViewModel;
+
+            if (selectedInstance == null)
+                return;
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is DataGridRow row && row.Item is MachineInstanceViewModel instance)
             {
-                ShowDesignButton(item.MachineName);
+                EditMachineInstance(instance);
             }
-            else
-            {
-                HideDesignButtons();
-            }
+        }
+
+        private void EditMachineInstance(MachineInstanceViewModel instance)
+        {
+            MachineInstanceEditorView view = new
+                MachineInstanceEditorView(instance);
+            view.Owner = this;
+            view.Show();
+        }
+
+        private void NewInstanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MachineInstanceViewModel instance = new();
+            _viewModel.Instances.Add(instance);
+            EditMachineInstance(instance);
+            _viewModel.SelectedInstance = instance;
+
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

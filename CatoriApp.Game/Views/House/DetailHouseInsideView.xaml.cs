@@ -51,7 +51,7 @@ namespace CatoriApp.Game.Views.House
         private void LoadProducts()
         {
             PersonProductsOwnedService service = new PersonProductsOwnedService();
-            var products = service.GetByPersonIdWithShopItemDetailsAsync(GlobalAllApps.CurrentPerson.PersonId).Result;
+            var products = service.GetByPersonIdWithShopItemDetailsAsync(GlobalGame.CurrentPerson.PersonId).Result;
             hardwareItems = new HardwareItemsControl(products);
             MainLayoutDetailHome.Children.Add(hardwareItems);
             hardwareItems.Visibility = Visibility.Hidden;

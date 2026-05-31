@@ -8,8 +8,8 @@ namespace CatoriApp.Core.Objects.Shared
                 CityScapeGlobal.Images = await CityScapeGlobal.imageService.GetImagesAsync();
             if (CityScapeGlobal.Businesses.Count() == 0)
                 CityScapeGlobal.Businesses = await CityScapeGlobal.businessService.GetBusinesssAsync();
-            if (GlobalAllApps.AllPersons.Count() == 0)
-                GlobalAllApps.AllPersons = await CityScapeGlobal.personService.GetPersonsAsync();
+            if (GlobalGame.AllPersons.Count() == 0)
+                GlobalGame.AllPersons = await CityScapeGlobal.personService.GetPersonsAsync();
             if (CityScapeGlobal.PersonImages.Count() == 0)
                 CityScapeGlobal.PersonImages = await CityScapeGlobal.personimageService.GetPersonImagesAsync();
             //if (GlobalStuff.PersonImages.Count() == 0)
@@ -80,7 +80,7 @@ namespace CatoriApp.Core.Objects.Shared
 
                 }
             }
-            foreach (var item in GlobalAllApps.AllPersons)
+            foreach (var item in GlobalGame.AllPersons)
             {
                 //item.CurrentImage
             }

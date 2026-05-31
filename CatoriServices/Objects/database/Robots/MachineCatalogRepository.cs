@@ -128,13 +128,13 @@ namespace CatoriServices.Objects.database.Robots
         {
             try
             {
-                            if (instance.MachineInstanceId <= 0)
-                                instance.MachineInstanceId = await InsertInstanceAsync(instance);
-                            else
-                                await UpdateInstanceAsync(instance);
+                if (instance.MachineInstanceId <= 0)
+                    instance.MachineInstanceId = await InsertInstanceAsync(instance);
+                else
+                    await UpdateInstanceAsync(instance);
                 
-                            await ReplaceInstanceSegmentsAsync(instance.MachineInstanceId, instance.Segments);
-                            return instance.MachineInstanceId;
+                await ReplaceInstanceSegmentsAsync(instance.MachineInstanceId, instance.Segments);
+                return instance.MachineInstanceId;
             }
             catch (Exception ex)
             {

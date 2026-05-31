@@ -7,6 +7,7 @@ namespace CatoriApp.Core.Objects.Shared
     public class CityScapeGlobal
     {
       
+
         public static Window? CityScapeView { get; set; }   
         public static double CityScapeViewWidth = 0;
         public static double CityScapeViewHeight = 0;
@@ -146,7 +147,7 @@ namespace CatoriApp.Core.Objects.Shared
         {
             get
             {
-                var badguys = from p in GlobalAllApps.AllPersons
+                var badguys = from p in GlobalGame.AllPersons
                               where
                               p.PersonRole == PersonEnum.BadPerson
                               select p;
@@ -424,7 +425,7 @@ namespace CatoriApp.Core.Objects.Shared
             person.Add(name, girl, PersonEnum.Individual);
             person.Images = GetImagesForPerson(person.ImagesFolder);
             person.SetupImageLists();
-            GlobalAllApps.AllPersons.Add(person);
+            GlobalGame.AllPersons.Add(person);
         }
 
         public static List<PersonImageViewModel> GetImagesForPerson(string imagesFolder)

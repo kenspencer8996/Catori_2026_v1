@@ -26,7 +26,7 @@ namespace CatoriApp.Game.Controllers.Treasure
         {
             _view = view;
             _dragManager = GlobalCode.GetDragmanager(_view.MainLayoutField);
-            person = new PersonControl(GlobalAllApps.CurrentPerson, _dragManager, _view.MainLayoutField);
+            person = new PersonControl(GlobalGame.CurrentPerson, _dragManager, _view.MainLayoutField);
             runstepshelper= new TreasureFieldViewControllerStepRunner(person,this);
             TreasureFieldLearnRunStepsviewModel model = new TreasureFieldLearnRunStepsviewModel();
             treasureFieldLearnRunSteps = new TreasureFieldLearnRunStepsControl(model);
@@ -55,9 +55,9 @@ namespace CatoriApp.Game.Controllers.Treasure
         }   
         private void AddTreasureAmountToPersonFunds(decimal funds)
         {
-            GlobalAllApps.CurrentPerson.Funds += funds;
+            GlobalGame.CurrentPerson.Funds += funds;
             PersonService personService = new PersonService();
-            personService.UpsertPerson(GlobalAllApps.CurrentPerson);
+            personService.UpsertPerson(GlobalGame.CurrentPerson);
         }
         private void StartDigging()
         {

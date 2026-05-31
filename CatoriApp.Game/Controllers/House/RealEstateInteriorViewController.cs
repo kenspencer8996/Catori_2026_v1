@@ -64,7 +64,7 @@ namespace CatoriApp.Game.Controllers.House
                     cLogger.Log($"Error loading house image: {ex.Message}");
                 }
 
-                if (GlobalAllApps.CurrentPerson.Funds > house.Price)
+                if (GlobalGame.CurrentPerson.Funds > house.Price)
                 {
                     _view.StatusText.Text = "You can purchase this house";
                     _view.StatusText.Foreground = Brushes.Green;
@@ -86,13 +86,13 @@ namespace CatoriApp.Game.Controllers.House
         internal void BuyHouse()
         {
             _selectedHouse.ForSale = 0;
-            _selectedHouse.OwnerName = GlobalAllApps.CurrentPerson.Name;
+            _selectedHouse.OwnerName = GlobalGame.CurrentPerson.Name;
             _houseService.Upsert(_selectedHouse);
             var house = from h in CityScapeGlobal.Houses
                         where h.Name == _selectedHouse.Name
                         select h;
-            GlobalAllApps.CurrentPerson.Funds -= _selectedHouse.Price;
-            _personService.UpsertPerson(GlobalAllApps.CurrentPerson);
+            GlobalGame.CurrentPerson.Funds -= _selectedHouse.Price;
+            _personService.UpsertPerson(GlobalGame.CurrentPerson);
             WeakReferenceMessenger.Default.Send(new HouseSoldMessage(_selectedHouse));
         }
 

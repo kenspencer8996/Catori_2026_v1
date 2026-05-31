@@ -67,7 +67,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
 
         private void EditInstances_Click(object sender, RoutedEventArgs e)
         {
-            var window = new MachineInstanceEditorWindow(_viewModel.SelectedDefinition)
+            var window = new MachineInstanceEditorListView(_viewModel.SelectedDefinition)
             {
                 Owner = this
             };
@@ -138,6 +138,11 @@ namespace CatoriApp.MachineLayoutDesigner.Views.MachineCatalog
                 entity = selected;
                 _viewModel.SelectedDefinition.MachineType = entity.Name;
             }
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

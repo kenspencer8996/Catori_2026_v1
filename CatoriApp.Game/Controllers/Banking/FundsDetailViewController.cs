@@ -22,7 +22,7 @@ namespace CatoriApp.Game.Controllers.Banking
         public FundsDetailViewController(FundsDetailView view)
         {
             _view = view;
-            _personViewModel = GlobalAllApps.CurrentPerson;
+            _personViewModel = GlobalGame.CurrentPerson;
             _personId = _personViewModel.PersonId;
             _bankService = new BankService();
             _view.DepositButton.IsEnabled = false;

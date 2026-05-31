@@ -286,7 +286,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
 
         private void MaintenancePanel_MachineInstancesRequested(object? sender, EventArgs e)
         {
-            var window = new MachineInstanceEditorWindow
+            var window = new MachineInstanceEditorListView
             {
                 Owner = this
             };

@@ -206,7 +206,7 @@ namespace CatoriApp.Game.Controllers.Treasure
         }
         private void AddTreasureAmountToPersonFunds(decimal funds)
         {
-            GlobalAllApps.CurrentPerson.Funds += funds;
+            GlobalGame.CurrentPerson.Funds += funds;
         }
     }
 

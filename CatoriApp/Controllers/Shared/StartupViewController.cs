@@ -13,9 +13,9 @@ namespace CatoriApp.Controllers.Shared
         private void LoadPersons()
         {
             PersonService personService = new PersonService();
-            GlobalAllApps.AllPersons = personService.GetPersonsAsync().Result;
+            GlobalGame.AllPersons = personService.GetPersonsAsync().Result;
 
-            GlobalAllApps.CurrentPerson = GetCurrentPersonModel();
+            GlobalGame.CurrentPerson = GetCurrentPersonModel();
 
         }
         private PersonViewModel GetCurrentPersonModel()
@@ -23,7 +23,7 @@ namespace CatoriApp.Controllers.Shared
             PersonViewModel currentPerson = new PersonViewModel();
             
 
-                var person = from i in GlobalAllApps.AllPersons
+                var person = from i in GlobalGame.AllPersons
                              where i.Name == "Catori"
                              select i;
                 currentPerson = person.First();

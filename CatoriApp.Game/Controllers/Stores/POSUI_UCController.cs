@@ -31,7 +31,7 @@ namespace CatoriApp.Game.Controllers.Stores
             Items.Add(item);
 
             decimal total = CalculateandSetTotal();
-            if (total > GlobalAllApps.CurrentPerson.Funds)
+            if (total > GlobalGame.CurrentPerson.Funds)
                 _view.CheckoutButton.IsEnabled = false;
             else
                 _view.CheckoutButton.IsEnabled = true;

@@ -187,7 +187,7 @@ namespace CatoriApp.Game.Views.City
                 //string imagePath = GlobalStuff.ImageFolder + "\\PrimaryPeople";
                 //string[] images = System.IO.Directory.GetFiles(imagePath, "*.*");
                 List<PersonViewModel> persons = new List<PersonViewModel>();
-                var personsPrimary = from p in GlobalAllApps.AllPersons
+                var personsPrimary = from p in GlobalGame.AllPersons
                                      where p.IsUser == true
                                      select p;
                 //persons = personsPrimary.ToList();
@@ -197,7 +197,7 @@ namespace CatoriApp.Game.Views.City
                     persons.Add(item);
                 }
 
-                var foundhousesimages = from i in GlobalAllApps.AllPersons
+                var foundhousesimages = from i in GlobalGame.AllPersons
                                         where i.IsUser == false
                                         select i;
               
@@ -239,7 +239,7 @@ namespace CatoriApp.Game.Views.City
                         break;
                     }
                 }
-                var personsBad = from p in GlobalAllApps.AllPersons
+                var personsBad = from p in GlobalGame.AllPersons
                                      where p.IsUser == false
                                      && p.PersonRole == PersonEnum.BadPerson
                                  select p;
