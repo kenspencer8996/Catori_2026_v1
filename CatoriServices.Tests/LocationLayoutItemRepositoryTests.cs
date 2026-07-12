@@ -27,11 +27,11 @@ public sealed class LocationLayoutItemRepositoryTests
             LocationId = locationId,
             ItemName = "Robot A",
             ItemType = LocationLayoutItemType.Robot,
+            MajorItemType = "Production",
             X = 125.5,
             Y = 240.25,
             ZIndex = 12,
             IsLocked = true,
-            ImagePath = "robot.png",
             MetadataJson = "{\"station\":\"A\"}"
         });
 
@@ -41,11 +41,11 @@ public sealed class LocationLayoutItemRepositoryTests
         Assert.Equal(locationId, loaded.LocationId);
         Assert.Equal("Robot A", loaded.ItemName);
         Assert.Equal(LocationLayoutItemType.Robot, loaded.ItemType);
+        Assert.Equal("Production", loaded.MajorItemType);
         Assert.Equal(125.5, loaded.X);
         Assert.Equal(240.25, loaded.Y);
         Assert.Equal(12, loaded.ZIndex);
         Assert.True(loaded.IsLocked);
-        Assert.Equal("robot.png", loaded.ImagePath);
         Assert.Equal("{\"station\":\"A\"}", loaded.MetadataJson);
     }
 
@@ -72,6 +72,7 @@ public sealed class LocationLayoutItemRepositoryTests
             LocationId = locationId,
             ItemName = "Table B",
             ItemType = LocationLayoutItemType.Workstation,
+            MajorItemType = "Assembly",
             X = 30,
             Y = 40,
             ZIndex = 5,
@@ -85,6 +86,7 @@ public sealed class LocationLayoutItemRepositoryTests
         Assert.NotNull(loaded);
         Assert.Equal("Table B", loaded.ItemName);
         Assert.Equal(LocationLayoutItemType.Workstation, loaded.ItemType);
+        Assert.Equal("Assembly", loaded.MajorItemType);
         Assert.Equal(30, loaded.X);
         Assert.Equal(40, loaded.Y);
         Assert.Equal(5, loaded.ZIndex);

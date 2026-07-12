@@ -1,0 +1,1 @@
+SELECT LocationId FROM Location   WHERE backgroundimagepath = '{imagefilename}'

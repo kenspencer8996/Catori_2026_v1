@@ -60,12 +60,12 @@ namespace CatoriApp.Views.Shared
 
         private void Location1Button_Click(object sender, RoutedEventArgs e)
         {
-            ShowFactoryView(2);
+            ShowFactoryView(1);
         }
 
         private void Location2Button_Click(object sender, RoutedEventArgs e)
         {
-            ShowFactoryView(1);
+            ShowFactoryView(2);
         }
 
         private void Location3Button_Click(object sender, RoutedEventArgs e)

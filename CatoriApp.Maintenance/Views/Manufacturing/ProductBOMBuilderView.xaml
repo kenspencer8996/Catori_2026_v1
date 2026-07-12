@@ -1,0 +1,148 @@
+<Window x:Class="CatoriApp.Game.Views.Manufacturing.ProductBOMBuilderView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Product BOM Editor"
+        Height="760"
+        Width="1160"
+        WindowStartupLocation="CenterOwner"
+        Loaded="Window_Loaded"
+        Background="{DynamicResource MainGradient}">
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.ColumnSpan="2" Margin="0,0,0,12">
+            <Label Content="Product BOM Editor" Style="{DynamicResource RedBoldLabelStyle}" />
+            <Button DockPanel.Dock="Right"
+                    Content="Close"
+                    Width="80"
+                    Height="30"
+                    Click="CloseButton_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource ButtonForeground}" />
+        </DockPanel>
+
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Padding="10"
+                Margin="0,0,12,0"
+                BorderBrush="#809AA7B7"
+                BorderThickness="1">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="Products"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8" />
+
+                <ListBox x:Name="ProductsListBox"
+                         ItemsSource="{Binding Products}"
+                         SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+                         DisplayMemberPath="ProductName"
+                         SelectionChanged="ProductsListBox_SelectionChanged" />
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Padding="10"
+                BorderBrush="#809AA7B7"
+                BorderThickness="1">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="220" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="150" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding SelectedProduct.ProductName}"
+                               FontSize="18"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{Binding SelectedProduct.ProductCode}" />
+
+                    <ComboBox Grid.Column="1"
+                              Grid.RowSpan="2"
+                              Margin="0,0,8,0"
+                              VerticalAlignment="Center"
+                              ItemsSource="{Binding Components}"
+                              SelectedItem="{Binding NewBomComponent, Mode=TwoWay}"
+                              DisplayMemberPath="ProductName" />
+
+                    <Button Grid.Column="2"
+                            Grid.RowSpan="2"
+                            Content="Add Component"
+                            Margin="0,0,8,0"
+                            Click="AddComponentButton_Click"
+                            Background="{DynamicResource ButtonBackground}"
+                            Foreground="{DynamicResource ButtonForeground}" />
+
+                    <Button Grid.Column="3"
+                            Grid.RowSpan="2"
+                            Content="Delete Component"
+                            Margin="0,0,8,0"
+                            Click="DeleteComponentButton_Click"
+                            Background="{DynamicResource ButtonBackground}"
+                            Foreground="{DynamicResource ButtonForeground}" />
+
+                    <Button Grid.Column="4"
+                            Grid.RowSpan="2"
+                            Content="Save Changes"
+                            Click="SaveChangesButton_Click"
+                            Background="{DynamicResource ButtonBackground}"
+                            Foreground="{DynamicResource ButtonForeground}" />
+                </Grid>
+
+                <DataGrid x:Name="BomDataGrid"
+                          ItemsSource="{Binding SelectedProductBomItems}"
+                          SelectedItem="{Binding SelectedBomItem, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          Background="{DynamicResource MainGradient}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Component" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.Components, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                              SelectedValue="{Binding ComponentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="ProductId"
+                                              DisplayMemberPath="ProductName"
+                                              SelectionChanged="ComponentComboBox_SelectionChanged" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Qty" Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+                        <DataGridTextColumn Header="Scrap %" Binding="{Binding ScrapFactor, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+                        <DataGridTextColumn Header="Cost" Binding="{Binding ComponentCost}" Width="100" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Total Qty" Binding="{Binding QuantityIncludingScrap}" Width="100" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Ext Cost" Binding="{Binding ExtendedCost}" Width="110" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Effective" Binding="{Binding EffectiveDate, UpdateSourceTrigger=PropertyChanged}" Width="130" />
+                        <DataGridTextColumn Header="Expiry" Binding="{Binding ExpiryDate, UpdateSourceTrigger=PropertyChanged}" Width="130" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2"
+                   Grid.ColumnSpan="2"
+                   Text="{Binding StatusMessage}"
+                   TextWrapping="Wrap"
+                   Margin="0,8,0,0" />
+    </Grid>
+</Window>

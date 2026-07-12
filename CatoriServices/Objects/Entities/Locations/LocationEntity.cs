@@ -1,12 +1,14 @@
-﻿namespace CatoriServices.Objects.Entities.Locations
+namespace CatoriServices.Objects.Entities.Locations
 {
     public class LocationEntity
     {
         public int LocationId { get; set; }
         public int? BusinessId { get; set; }
         public string LocationName { get; set; } = "";
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string? Description { get; set; }
         public string BackgroundImagePath { get; set; } = "";
+
         public string InteriorType { get; set; } = "";
         public string? WorldMapImagePath { get; set; }
         public double HotspotLeft { get; set; }
@@ -19,8 +21,6 @@
         public double? DefaultRobotY { get; set; }
         public bool IsActive { get; set; } = true;
         public int SortOrder { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedDate { get; set; }
     }
 }
-

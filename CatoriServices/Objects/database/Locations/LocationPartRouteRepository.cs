@@ -6,8 +6,11 @@ namespace CatoriServices.Objects.database.Locations
         public Task<LocationPartRouteEntity?> GetByIdAsync(long routeId)
             => Task.FromResult<LocationPartRouteEntity?>(null);
 
-        public Task<List<LocationPartRouteEntity>> GetByLayoutIdAsync(long LocationId)
+        public Task<List<LocationPartRouteEntity>> GetByLocationIdAsync(long locationId)
             => Task.FromResult(new List<LocationPartRouteEntity>());
+
+        public Task<List<LocationPartRouteEntity>> GetByLayoutIdAsync(long locationId)
+            => GetByLocationIdAsync(locationId);
 
         public Task<int> InsertAsync(LocationPartRouteEntity route)
             => throw new NotSupportedException("Location part routes are not present in the live database schema.");

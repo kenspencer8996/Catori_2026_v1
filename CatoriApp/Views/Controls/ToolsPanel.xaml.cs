@@ -24,7 +24,7 @@ namespace CatoriApp.Views.Controls
         private void ProductMaintenanceButton_Click(object sender, RoutedEventArgs e)
         {
 
-            ProductBuilderView view = new ProductBuilderView();
+            ProductsListView view = new ProductsListView();
             view.ShowDialog();
         }
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -35,7 +35,7 @@ namespace CatoriApp.Views.Controls
         }
         private void MachineCatalog_Click(object sender, RoutedEventArgs e)
         {
-            MachineCatalogEditorWindow view = new();
+            MachineCatalogListView view = new();
             view.Owner = startupView;
             view.ShowDialog();
         }
@@ -94,6 +94,24 @@ namespace CatoriApp.Views.Controls
         private void UserControl_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             ClosePanel();
+        }
+
+        private void IventoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            InventoryListView view = new InventoryListView();
+            view.Show();
+        }
+
+        private void ComponentsMaintenanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            ComponentListView view = new ComponentListView();
+            view.Show();
+
+        }
+
+        private void ProductBOMButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

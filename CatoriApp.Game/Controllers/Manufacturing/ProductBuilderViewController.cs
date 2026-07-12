@@ -1,68 +1,75 @@
-using CatoriApp.Game.Views;
 using System.Collections.ObjectModel;
 namespace CatoriApp.Game.Controllers.Manufacturing
 {
     public class ProductBuilderViewController
     {
-        ProductBuilderView _view;
-        LocationInventoryService locationInventoryService;
-        ProductService productservice;
-        BillOfMaterialsService bomservice;
-        ComponentService componentService;
-        public ObservableCollection<ProductViewModel> products;
-        public ObservableCollection<InventoryItemViewModel> inventoryVM;
-        public ObservableCollection<ComponentViewModel> componentVM;
-        public ObservableCollection<BomItemViewModel> BomVM;
-        public ProductBuilderViewController(ProductBuilderView view)
+        private readonly LocationInventoryService locationInventoryService;
+        private readonly ProductService productservice;
+        private readonly BillOfMaterialsService bomservice;
+        private readonly ComponentService componentService;
+
+        public ObservableCollection<ProductViewModel> products = new();
+        public ObservableCollection<InventoryItemViewModel> inventoryVM = new();
+        public ObservableCollection<ComponentViewModel> componentVM = new();
+        public ObservableCollection<BomItemViewModel> BomVM = new();
+
+        public ProductBuilderViewController()
         {
-            _view = view;
             productservice = new ProductService();
             componentService = new ComponentService();
             locationInventoryService = new LocationInventoryService();
             bomservice = new BillOfMaterialsService();
         }
+
         public async Task LoadProductsAsync()
         {
             var productslist = await productservice.GetAllAsync();
-            products = new ObservableCollection<ProductViewModel>(productslist);    
+            products = new ObservableCollection<ProductViewModel>(productslist);
+        }
+        public async Task LoadComponentsAsync()
+        {
+            var components = await componentService.GetAllAsync();
+            componentVM = new ObservableCollection<ComponentViewModel>(components);
         }
         public async Task LoadBOM()
         {
             var bom = await bomservice.GetAllAsync();
             BomVM = new ObservableCollection<BomItemViewModel>(bom);
         }
-        public async Task LoadComponents()
+
+        public async Task LoadInventory()
         {
-            var inv =await locationInventoryService.GetAllAsync();
+            var inv = await locationInventoryService.GetAllAsync();
             inventoryVM = new ObservableCollection<InventoryItemViewModel>(inv);
         }
+
+        public async Task LoadComponents()
+        {
+            var components = await componentService.GetAllAsync();
+            componentVM = new ObservableCollection<ComponentViewModel>(components);
+        }
+
         public List<ProductViewModel> ImportProductsFromCsv(string filePath)
         {
-            List<ProductViewModel> results = new List<ProductViewModel>();
-            results = CsvImportService.LoadProducts(filePath);
-            return results;
+            return CsvImportService.LoadProducts(filePath);
         }
+
         public List<BomItemViewModel> ImportBOMCsv(string filePath)
         {
-            List<BomItemViewModel> results = new List<BomItemViewModel>();
-            results = CsvImportService.LoadBomItems(filePath);
-            return results;
+            return CsvImportService.LoadBomItems(filePath);
         }
+
         public List<InventoryItemViewModel> ImportInventoryCsv(string filePath)
         {
-            List<InventoryItemViewModel> results = new List<InventoryItemViewModel>();
-            results = CsvImportService.LoadInventory(filePath);
-            return results;
-
+            return CsvImportService.LoadInventory(filePath);
         }
+
         public List<ComponentViewModel> ImportComponentsCsv(string filePath)
         {
-            List<ComponentViewModel> results = new List<ComponentViewModel>();
-            results = CsvImportService.LoadComponents(filePath);
-            return results;
+            return CsvImportService.LoadComponents(filePath);
         }
 
-        public async Task UpdateProductAsync(ProductViewModel pm) 
+        public async Task UpdateProductAsync(ProductViewModel pm)
         {
             try
             {
@@ -73,6 +80,7 @@ namespace CatoriApp.Game.Controllers.Manufacturing
                 MessageBox.Show($"Error saving product: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public async Task RemoveProductAsync(ProductViewModel pm)
         {
             try
@@ -81,9 +89,10 @@ namespace CatoriApp.Game.Controllers.Manufacturing
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving product: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error deleting product: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public async Task UpdateBOMAsync(BomItemViewModel bom)
         {
             try
@@ -95,6 +104,7 @@ namespace CatoriApp.Game.Controllers.Manufacturing
                 MessageBox.Show($"Error saving bom: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public async Task RemoveBOMAsync(BomItemViewModel bom)
         {
             try
@@ -105,8 +115,32 @@ namespace CatoriApp.Game.Controllers.Manufacturing
             {
                 MessageBox.Show($"Error deleting bom: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
+
+        public async Task UpdateInventoryAsync(InventoryItemViewModel inventory)
+        {
+            try
+            {
+                await locationInventoryService.SaveAsync(inventory);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving inventory: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public async Task RemoveInventoryAsync(InventoryItemViewModel inventory)
+        {
+            try
+            {
+                await locationInventoryService.DeleteAsync(inventory);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting inventory: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         public async Task AddComponentToBOMAsync(ComponentViewModel cvm)
         {
             try
@@ -115,10 +149,11 @@ namespace CatoriApp.Game.Controllers.Manufacturing
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving product: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error saving component: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        public async Task RemoveComponentAsync(ComponentViewModel cvm)
+
+        public async Task UpdateComponentAsync(ComponentViewModel cvm)
         {
             try
             {
@@ -126,10 +161,20 @@ namespace CatoriApp.Game.Controllers.Manufacturing
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Error saving component: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public async Task RemoveComponentAsync(ComponentViewModel cvm)
+        {
+            try
+            {
+                await componentService.DeleteAsync(cvm);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show($"Error deleting component: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
-       
     }
 }

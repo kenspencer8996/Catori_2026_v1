@@ -66,8 +66,6 @@ global using CatoriApp.Game.Views.Controls.Stores;
 global using CatoriApp.Game.Views.Controls.Treasure;
 global using CatoriApp.Game.Views.House;
 global using CatoriApp.Game.Views.Locations.Factory;
-global using CatoriApp.Game.Views.Manufacturing;
-global using CatoriApp.Game.Views.Settings;
 global using CatoriApp.Game.Views.Stores;
 global using CatoriApp.Game.Views.Treasure;
 global using CatoriServices.Examples.Manufacturing;

@@ -4,7 +4,7 @@ namespace CatoriApp.Game.ViewModels.Locations
     public class LocationPartRouteViewModel : ViewmodelBase
     {
         private long _locationPartRouteId;
-        private long _locationLayoutId;
+        private long _locationId;
         private string _routeName = "";
         private int? _productId;
         private long? _fromItemId;
@@ -13,7 +13,7 @@ namespace CatoriApp.Game.ViewModels.Locations
         private DateTime _createdAt = DateTime.Now;
 
         public long LocationPartRouteId { get => _locationPartRouteId; set => SetProperty(ref _locationPartRouteId, value); }
-        public long LocationId { get => _locationLayoutId; set => SetProperty(ref _locationLayoutId, value); }
+        public long LocationId { get => _locationId; set => SetProperty(ref _locationId, value); }
         public string RouteName { get => _routeName; set => SetProperty(ref _routeName, value); }
         public int? ProductId { get => _productId; set => SetProperty(ref _productId, value); }
         public long? FromItemId { get => _fromItemId; set => SetProperty(ref _fromItemId, value); }

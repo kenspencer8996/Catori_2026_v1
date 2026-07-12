@@ -10,6 +10,7 @@ namespace CatoriApp.Game.ViewModels.Manufacturing
         private int _componentId;
         private string _componentName = "";
         private string _componentCode = "";
+        private decimal _componentCost;
         private decimal _quantity;
         private decimal _scrapFactor;
         private DateTime _effectiveDate = DateTime.Today;
@@ -45,13 +46,26 @@ namespace CatoriApp.Game.ViewModels.Manufacturing
             set => SetProperty(ref _componentCode, value);
         }
 
+        public decimal ComponentCost
+        {
+            get => _componentCost;
+            set
+            {
+                if (SetProperty(ref _componentCost, value))
+                    OnPropertyChanged(nameof(ExtendedCost));
+            }
+        }
+
         public decimal Quantity
         {
             get => _quantity;
             set
             {
                 if (SetProperty(ref _quantity, value))
+                {
                     OnPropertyChanged(nameof(QuantityIncludingScrap));
+                    OnPropertyChanged(nameof(ExtendedCost));
+                }
             }
         }
 
@@ -61,12 +75,18 @@ namespace CatoriApp.Game.ViewModels.Manufacturing
             set
             {
                 if (SetProperty(ref _scrapFactor, value))
+                {
                     OnPropertyChanged(nameof(QuantityIncludingScrap));
+                    OnPropertyChanged(nameof(ExtendedCost));
+                }
             }
         }
 
         public decimal QuantityIncludingScrap
             => Quantity + (Quantity * ScrapFactor / 100m);
+
+        public decimal ExtendedCost
+            => QuantityIncludingScrap * ComponentCost;
 
         public DateTime EffectiveDate
         {

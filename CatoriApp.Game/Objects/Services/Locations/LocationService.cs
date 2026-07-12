@@ -15,13 +15,13 @@ namespace CatoriApp.Game.Objects.Services.Locations
             _routeRepository = new LocationPartRouteRepository();
         }
 
-        public async Task<LocationDesignerViewModel?> GetDesignerByLayoutIdAsync(long LocationId)
+        public async Task<LocationDesignerViewModel?> GetDesignerByLayoutIdAsync(long locationId)
         {
-            var layout = await _locationRepository.GetLayoutByIdAsync(LocationId);
+            var layout = await _locationRepository.GetLayoutByIdAsync(locationId);
             if (layout == null)
                 return null;
 
-            var location = await _locationRepository.GetByIdAsync((int)layout.LocationId);
+            var location = await _locationRepository.GetByIdAsync(layout.LocationId);
             return await BuildDesignerAsync(location, layout);
         }
 
@@ -43,21 +43,20 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 LocationId = vm.LocationId,
                 LocationName = vm.LocationName,
                 BackgroundImagePath = vm.BackgroundImagePath ?? "",
-                InteriorType = nameof(LocationEntity),
-                DesignWidth = vm.CanvasWidth,
-                DesignHeight = vm.CanvasHeight,
-                IsActive = true,
                 CreatedAt = DateTime.Now
             };
 
             if (location.LocationId <= 0)
+            {
                 vm.LocationId = await _locationRepository.InsertAsync(location);
+                location.LocationId = (int)vm.LocationId;
+            }
             else
                 await _locationRepository.UpdateAsync(location);
 
             var layout = new LocationLayoutEntity
             {
-                 LocationId = vm.LocationId,
+                LocationId = (int)vm.LocationId,
                 LayoutName = vm.LayoutName,
                 CanvasWidth = vm.CanvasWidth,
                 CanvasHeight = vm.CanvasHeight,
@@ -65,10 +64,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 CreatedAt = DateTime.Now
             };
 
-            if (layout.LocationId <= 0)
-                vm.LocationId = await _locationRepository.InsertLayoutAsync(layout);
-            else
-                await _locationRepository.UpdateLayoutAsync(layout);
+            await _locationRepository.UpdateLayoutAsync(layout);
 
             foreach (var itemVm in vm.Items)
             {
@@ -85,7 +81,9 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 {
                     var point = ToEntity(itemVm.Points[i]);
                     point.LocationLayoutItemId = itemVm.LocationLayoutItemId;
+                    point.LocationId = vm.LocationId;
                     point.PointIndex = i;
+                    itemVm.Points[i].LocationId = vm.LocationId;
                     itemVm.Points[i].LocationLayoutPointId = await _pointRepository.InsertAsync(point);
                 }
             }
@@ -111,51 +109,19 @@ namespace CatoriApp.Game.Objects.Services.Locations
                     {
                         LocationName = locationName,
                         BackgroundImagePath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Factory", locationName + ".png"),
-                        InteriorType = nameof(LocationEntity),
-                        DesignWidth = 1920,
-                        DesignHeight = 1080,
-                        IsActive = true,
                         CreatedAt = DateTime.Now
                     };
                     location.LocationId = await _locationRepository.InsertAsync(location);
                 }
 
-                var layout = await _locationRepository.GetActiveLayoutByLocationIdAsync(location.LocationId);
-                if (layout == null)
-                {
-                    layout = new LocationLayoutEntity
-                    {
-                        LocationId = location.LocationId,
-                        LayoutName = locationName + " Layout",
-                        CanvasWidth = location.DesignWidth,
-                        CanvasHeight = location.DesignHeight,
-                        IsActive = true,
-                        CreatedAt = DateTime.Now
-                    };
-                    layout.LocationId = await _locationRepository.InsertLayoutAsync(layout);
-                }
-
                 return new LocationViewModel
                 {
-                     LocationId = layout.LocationId,
+                    LocationId = location.LocationId,
                     LocationName = locationName,
-                    Points = await GetLegacyConveyorPointsAsync(layout.LocationId),
+                    Points = await GetLegacyConveyorPointsAsync(location.LocationId),
                     Description = location.Description,
                     BackgroundImagePath = location.BackgroundImagePath,
-                    InteriorType = location.InteriorType,
-                    WorldMapImagePath = location.WorldMapImagePath  ,
-                    HotspotLeft = location.HotspotLeft,
-                    HotspotTop = location.HotspotTop,
-                    HotspotWidth = location.HotspotWidth,
-                    HotspotHeight = location.HotspotHeight,
-                    DesignWidth = location.DesignWidth,
-                    DesignHeight = location.DesignHeight,
-                    DefaultRobotX = location.DefaultRobotX,
-                    DefaultRobotY = location.DefaultRobotY,
-                    IsActive = location.IsActive,
-                    SortOrder = location.SortOrder,
-                    CreatedAt = location.CreatedAt,
-                    UpdatedDate = location.UpdatedDate
+                    CreatedAt = location.CreatedAt
                 };
             }
             catch (Exception ex)
@@ -184,18 +150,6 @@ namespace CatoriApp.Game.Objects.Services.Locations
                     LocationName = location.LocationName,
                     BackgroundImagePath = location.BackgroundImagePath,
                     Description = location.Description,
-                    InteriorType = location.InteriorType,
-                    WorldMapImagePath = location.WorldMapImagePath,
-                    HotspotLeft = location.HotspotLeft,
-                    HotspotTop = location.HotspotTop,
-                    HotspotWidth = location.HotspotWidth,
-                    HotspotHeight = location.HotspotHeight,
-                    DesignWidth = location.DesignWidth,
-                    DesignHeight = location.DesignHeight,
-                    DefaultRobotX = location.DefaultRobotX,
-                    DefaultRobotY = location.DefaultRobotY,
-                    IsActive = location.IsActive,
-                    SortOrder = location.SortOrder,
                     Points = await GetLegacyConveyorPointsAsync(location.LocationId)
                 };
             }
@@ -213,7 +167,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
         public async Task<List<LocationAssemblyRobotEntity>> GetRobotsForLocationAsync(long LocationId)
         {
-            var items = await _itemRepository.GetLayoutItemsByIdAsync(LocationId);
+            var items = await _itemRepository.GetByLocationIdAsync(LocationId);
 
             return items
                 .Where(i => i.ItemType == LocationLayoutItemType.Robot)
@@ -283,7 +237,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 ? "Conveyor"
                 : "Conveyor " + point.PointType.Trim();
 
-            var items = await _itemRepository.GetLayoutItemsByIdAsync(LocationId);
+            var items = await _itemRepository.GetByLocationIdAsync(LocationId);
             var item = items.FirstOrDefault(i =>
                 i.ItemType == LocationLayoutItemType.Conveyor &&
                 string.Equals(i.ItemName, conveyorName, StringComparison.OrdinalIgnoreCase));
@@ -309,7 +263,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 PointRole = point.PointType,
                 X = point.XLoc,
                 Y = point.YLoc,
-                SegmentKind = LocationLayoutSegmentKind.Line
+                RotationDegrees = point.RotationDegrees
             });
 
             await _pointRepository.InsertAsync(new LocationLayoutPointEntity
@@ -320,15 +274,17 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 PointRole = point.PointType,
                 X = point.XLocEnd,
                 Y = point.YLocEnd,
-                SegmentKind = LocationLayoutSegmentKind.Line
+                RotationDegrees = point.RotationDegrees
             });
         }
 
         private async Task<LocationDesignerViewModel> BuildDesignerAsync(LocationEntity? location, LocationLayoutEntity layout)
         {
+            var locationId = location?.LocationId > 0 ? location.LocationId : layout.LocationId;
+
             var vm = new LocationDesignerViewModel
             {
-                LocationId = layout.LocationId,
+                LocationId = locationId,
                 LocationName = location?.LocationName ?? "",
                 BackgroundImagePath = location?.BackgroundImagePath,
                 LayoutName = layout.LayoutName,
@@ -336,7 +292,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 CanvasHeight = layout.CanvasHeight
             };
 
-            var items = await _itemRepository.GetLayoutItemsByIdAsync(layout.LocationId);
+            var items = await _itemRepository.GetByLocationIdAsync(locationId);
             foreach (var item in items)
             {
                 var itemVm = ToViewModel(item);
@@ -347,7 +303,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 vm.Items.Add(itemVm);
             }
 
-            var routes = await _routeRepository.GetByLayoutIdAsync(layout.LocationId);
+            var routes = await _routeRepository.GetByLocationIdAsync(locationId);
             foreach (var route in routes)
             {
                 var routeVm = ToViewModel(route);
@@ -363,7 +319,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
         private async Task<List<LocationLayoutPointEntity>> GetLegacyConveyorPointsAsync(long LocationId)
         {
-            var items = await _itemRepository.GetLayoutItemsByIdAsync(LocationId);
+            var items = await _itemRepository.GetByLocationIdAsync(LocationId);
             var results = new List<LocationLayoutPointEntity>();
 
             foreach (var item in items.Where(i => i.ItemType == LocationLayoutItemType.Conveyor))
@@ -397,6 +353,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 LocationId = vm.LocationId,
                 ItemName = vm.ItemName,
                 ItemType = vm.ItemType,
+                MajorItemType = string.IsNullOrWhiteSpace(vm.MajorItemType) ? null : vm.MajorItemType.Trim(),
                 X = vm.X,
                 Y = vm.Y,
                 Z = vm.Z,
@@ -405,7 +362,6 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = vm.RotationDegrees,
                 ZIndex = vm.ZIndex,
                 IsLocked = vm.IsLocked,
-                ImagePath = vm.ImagePath,
                 MetadataJson = vm.MetadataJson
             };
         }
@@ -416,6 +372,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
             {
                 LocationLayoutPointId = vm.LocationLayoutPointId,
                 LocationLayoutItemId = vm.LocationLayoutItemId,
+                LocationId = vm.LocationId,
                 PointIndex = vm.PointIndex,
                 PointRole = vm.PointRole,
                 X = vm.X,
@@ -438,6 +395,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 LocationId = entity.LocationId,
                 ItemName = entity.ItemName,
                 ItemType = entity.ItemType,
+                MajorItemType = entity.MajorItemType,
                 X = entity.X,
                 Y = entity.Y,
                 Z = entity.Z,
@@ -446,7 +404,6 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = entity.RotationDegrees,
                 ZIndex = entity.ZIndex,
                 IsLocked = entity.IsLocked,
-                ImagePath = entity.ImagePath,
                 MetadataJson = entity.MetadataJson
             };
         }
@@ -457,6 +414,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
             {
                 LocationLayoutPointId = entity.LocationLayoutPointId,
                 LocationLayoutItemId = entity.LocationLayoutItemId,
+                LocationId = entity.LocationId,
                 PointIndex = entity.PointIndex,
                 PointRole = entity.PointRole,
                 X = entity.X,

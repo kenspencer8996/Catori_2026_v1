@@ -19,6 +19,7 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Content="Machine Instances" Style="{DynamicResource RedBoldLabelStyle}"  />
         <Button x:Name="NewInstanceButton" Grid.Column="1" Content="New" MinWidth="50" Width="100" Click="NewInstanceButton_Click" Height="25"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
 
         <Button x:Name="ExitButton" Grid.Column="2" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="1872" Canvas.Top="5" 

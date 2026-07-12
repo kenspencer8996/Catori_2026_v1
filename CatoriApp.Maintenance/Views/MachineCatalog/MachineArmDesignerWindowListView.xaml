@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <TextBlock Text="Machine Instance" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                <Label Grid.Row="0" Content="Robot Arm Detail" Style="{DynamicResource RedBoldLabelStyle}"  />
                 <UniformGrid Columns="2">
                     <Label Content="Machine Name" />
                     <TextBox Text="{Binding Definition.MachineName, UpdateSourceTrigger=PropertyChanged}" />

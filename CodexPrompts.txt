@@ -1,0 +1,29 @@
+Can you finish setting up the databinding in this form: LayoutItemEditView.
+This is the entity for binding:
+namespace LayoutDesignerTool.Objects.Data
+{
+    public class LocationLayoutItemEntity
+    {
+        public long LocationLayoutItemId { get; set; }
+        public long LocationId { get; set; }
+        public string ItemName { get; set; } = "";
+        public string? MajorItemType { get; set; }
+        public string ItemType { get; set; } = "";
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public double RotationDegrees { get; set; }
+        public long ZIndex { get; set; }
+        public bool IsLocked { get; set; }
+        public string? MetadataJson { get; set; }
+        public string? CreatedAt { get; set; }
+        public string? UpdatedAt { get; set; }
+        public string? Notes { get; set; }
+        public string? Color { get; set; }
+        public bool? IsVisible { get; set; }
+    }
+}
+
+Also there are a few comboboxs and the rest should be textboxs.

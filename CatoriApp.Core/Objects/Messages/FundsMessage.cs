@@ -1,9 +1,9 @@
 namespace CatoriApp.Core.Objects.Messages
 {
-    internal class FundsMessage
+    public class FundsMessage
     {
-        internal FundsViewModel Funds;
-        internal FundsMessage(FundsViewModel funds)
+        public FundsViewModel Funds;
+        public FundsMessage(FundsViewModel funds)
         {
             Funds = funds;
         }

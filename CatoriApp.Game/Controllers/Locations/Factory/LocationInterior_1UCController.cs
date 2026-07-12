@@ -10,11 +10,11 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
     public class LocationInterior_1UCController
     {
         LocationInterior_1UC _view;
-        LocationLayoutService layoutService = new LocationLayoutService();
+        LocationService layoutService = new LocationService();
         public List<RobotPoseViewModel> robotposes { get; private set; }
         private readonly RobotPoseService _poseservice = new RobotPoseService();
 
-        LocationLayoutViewModel viewModel = new LocationLayoutViewModel();    
+        LocationViewModel viewModel = new LocationViewModel();    
         readonly DispatcherTimer _animation_timer;
         public string ImagesFolderRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling");
         public string restImageRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
@@ -29,16 +29,16 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         private bool _isDrawingLine = false;
         private Line? _previewLine;
         Point _currentPoint;
-        LocationLayoutService _layoutService;
+        LocationService _layoutService;
         AnimationController moveXYOnControl;
         public LocationInterior_1UCController(LocationInterior_1UC view) 
         { 
             _view = view;
             moveXYOnControl = new AnimationController();
-            _layoutService = new LocationLayoutService();
+            _layoutService = new LocationService();
             _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
             string root = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "WIthSawBlade");
-            LoadViewModelAsync();
+            _ = LoadViewModelAsync();
             if (viewModel.Points.Count == 0)
             {
                 _view.ShowrobotControlPanel();
@@ -49,8 +49,12 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         }
         private async Task LoadViewModelAsync()
         {
-            viewModel = layoutService.GetByLocationName("LocationInterior1") ?? new LocationLayoutViewModel();
+            viewModel = layoutService.GetByLocationName("LocationInterior1") ?? new LocationViewModel();
             _view.RobotPanel.LocationId = viewModel.LocationId;
+            if (viewModel.Points.Count == 0)
+            {
+                _view.ShowrobotControlPanel();
+            }
             robotposes = viewModel.LocationId > 0
                 ? await _poseservice.GetByLocationIdAsync(viewModel.LocationId)
                 : new List<RobotPoseViewModel>();
@@ -165,14 +169,14 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                 LocationLayoutPointEntity newPoint = new LocationLayoutPointEntity
                 {
                     LocationLayoutPointId = 0, // Assuming 0 means new entry
-                    LocationLayoutId = viewModel.LocationLayoutId,
+                    LocationId = viewModel.LocationId,
                     XLoc = startPoint.X,
                     YLoc = startPoint.Y,
                     PointType = PointType,
                     XLocEnd = endPoint.X,
                     YLocEnd = endPoint.Y
                 };
-                layoutService.UpdatePoints(viewModel.LocationLayoutId, newPoint);
+                layoutService.UpdatePoints(viewModel.LocationId, newPoint);
             }
         }
         /// <summary>
@@ -192,7 +196,7 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
 
             _isDrawingLine = false;
             _view.MainCanvas.ReleaseMouseCapture();
-            LoadViewModelAsync();
+            _ = LoadViewModelAsync();
         }
 
         internal void HandleMouseDown(MouseButtonEventArgs e)
@@ -266,7 +270,7 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
             //if (thisrobot == null) 
             //{
 
-            ////    thisrobot = layoutService.CreateRobot(RobotBuilder.Name, viewModel.LocationLayoutId, 
+            ////    thisrobot = layoutService.CreateRobot(RobotBuilder.Name, viewModel.LocationId, 
             ////        "Arm",(long)arg.X,
             ////        (long)arg.Y, arg.Robot.ActualWidth,arg.Robot.ActualHeight);
             ////}

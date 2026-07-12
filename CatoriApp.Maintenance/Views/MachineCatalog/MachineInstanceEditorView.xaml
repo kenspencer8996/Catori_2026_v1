@@ -8,10 +8,12 @@
         Title="Machine Instance " Height="450" Width="1024">
     <Grid Background="{DynamicResource MainGradient}" >
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -20,26 +22,28 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Robot Arm Detail" Style="{DynamicResource RedBoldLabelStyle}"  />
+
+        <Label Grid.Row="1" Grid.Column="0"
            Content="Machine Definition:"/>
-        <ComboBox x:Name="MachineCatalogComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" MinWidth="200"
+        <ComboBox x:Name="MachineCatalogComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" MinWidth="200"
               SelectionChanged="MachineCatalogComboBox_SelectionChanged"
               SelectedValue="{Binding MachineDefinitionId}"
               SelectedValuePath="MachineDefinitionId"
               DisplayMemberPath="MachineName"/>
 
         <!-- InstanceName -->
-        <Label Grid.Row="1" Grid.Column="0"
+        <Label Grid.Row="2" Grid.Column="0"
            Content="Instance Name:"/>
-        <TextBox Grid.Row="1" Grid.Column="1"
+        <TextBox Grid.Row="2" Grid.Column="1"
              Text="{Binding InstanceName, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- DisplayName -->
-        <Label Grid.Row="2" Grid.Column="0"
+        <Label Grid.Row="3" Grid.Column="0"
            Content="Display Name:"/>
-        <TextBox Grid.Row="2" Grid.Column="1"
+        <TextBox Grid.Row="3" Grid.Column="1"
              Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
-        <Border  Grid.Column="1" Grid.Row="3" Margin="4,4,4,4" BorderThickness="2" BorderBrush="#FFEF332A" CornerRadius="5,5,5,5">
+        <Border  Grid.Column="1" Grid.Row="4" Margin="4,4,4,4" BorderThickness="2" BorderBrush="#FFEF332A" CornerRadius="5,5,5,5">
             <GroupBox Grid.Column="1" Grid.Row="3" >
                 <Grid>
                     <Grid.RowDefinitions>
@@ -108,7 +112,7 @@
                 </Grid>
             </GroupBox>
         </Border>
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" MinHeight="45" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" MinHeight="45" Grid.ColumnSpan="3" HorizontalAlignment="Right">
             <Button x:Name="OkButton" Content="Ok" MinWidth="50" Click="OkButton_Click" Height="25"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" Margin="0,0,31,0" />
 
             <Button x:Name="CancelButton" Content="Cancel"  MinWidth="50" Click="CancelButton_Click"  Height="25"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" Margin="0,0,30,0" />

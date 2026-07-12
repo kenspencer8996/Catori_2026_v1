@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:CatoriApp.Game.Views"
         mc:Ignorable="d" WindowState="Maximized" WindowStyle="None" Loaded="Window_Loaded"
         Title="LocationView" Height="450" Width="1920">
-    <Canvas x:Name="MainLayout">
-        <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="1870" Canvas.Top="5" 
-          Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="10002" />
-        <StackPanel x:Name="LocationUCPanel" Canvas.Left="10" Canvas.Top="0" Panel.ZIndex="900" Orientation="Horizontal"/>
-    </Canvas>
+    <Grid x:Name="MainLayout">
+        <ContentControl x:Name="LocationUCPanel" />
+        <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0"
+                Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="10002" />
+    </Grid>
 </Window>
 
 

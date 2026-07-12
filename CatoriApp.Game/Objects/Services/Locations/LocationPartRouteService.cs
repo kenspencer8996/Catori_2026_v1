@@ -11,9 +11,9 @@ namespace CatoriApp.Game.Objects.Services.Locations
             _repository = new LocationPartRouteRepository();
         }
 
-        public async Task<List<LocationPartRouteViewModel>> GetByLayoutIdAsync(long LocationId)
+        public async Task<List<LocationPartRouteViewModel>> GetByLocationIdAsync(long locationId)
         {
-            var routes = await _repository.GetByLayoutIdAsync(LocationId);
+            var routes = await _repository.GetByLocationIdAsync(locationId);
             var results = new List<LocationPartRouteViewModel>();
 
             foreach (var route in routes)
@@ -28,6 +28,9 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
             return results;
         }
+
+        public Task<List<LocationPartRouteViewModel>> GetByLayoutIdAsync(long locationId)
+            => GetByLocationIdAsync(locationId);
 
         public async Task<long> SaveAsync(LocationPartRouteViewModel vm)
         {
@@ -59,7 +62,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         private static void Validate(LocationPartRouteViewModel vm)
         {
             if (vm.LocationId <= 0)
-                throw new InvalidOperationException("Location layout is required.");
+                throw new InvalidOperationException("Location is required.");
 
             if (string.IsNullOrWhiteSpace(vm.RouteName))
                 throw new InvalidOperationException("Route name is required.");

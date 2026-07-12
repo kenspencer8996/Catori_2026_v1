@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriApp.MachineLayoutDesigner.Views.MachineCatalog"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStyle="None"
         Title="PsrtMaintenanceWindow" Height="450" Width="800">
     <Grid Background="{DynamicResource MainGradient}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -22,5 +22,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Content="Parts" Style="{DynamicResource RedBoldLabelStyle}"  />
+
     </Grid>
 </Window>

@@ -1,0 +1,31 @@
+First please create a wpf library named CatoriApp.Maintenance and add it to the CatoriApp solution. Before making other changes, find all xaml and related files that are listedit forms. Present those so i can verify they are correct. After approval move these into appropriate folders in the new project. 
+
+
+please create entity,viewmodel, repository, service, and entry views for the tables shown below.
+Views should be patterned on MachineCatalogListView and MachineCatalogEditorView
+
+
+CREATE TABLE [FactoryCapability] (
+  [FactoryCapabilityId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [LocationId] bigint NOT NULL
+, [CapabilityType] text NOT NULL
+, [CapabilityName] text NULL
+, [IsEnabled] bigint DEFAULT (1) NOT NULL
+);
+
+CREATE TABLE [ProductProduceRequirement] (
+  [ProductProduceRequirementIdId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [productId] bigint NOT NULL
+, [RequiredCapabilityType] text NOT NULL
+, [RequiredCapabilityName] text NULL
+, [MinimumFactoryLevel] bigint DEFAULT (1) NOT NULL
+);
+
+CREATE TABLE [LocationUnlockRule] (
+  [LocationUnlockRuleId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [LocationId] bigint NOT NULL
+, [RequiredMoney] real DEFAULT (0) NOT NULL
+, [Requiredproduct_idLocationId] bigint NULL
+, [RequiredProductCount] bigint DEFAULT (0) NOT NULL
+, [UnlockDescription] text NULL
+);

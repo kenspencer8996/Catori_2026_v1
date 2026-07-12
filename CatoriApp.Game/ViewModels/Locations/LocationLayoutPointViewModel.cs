@@ -4,6 +4,7 @@ namespace CatoriApp.Game.ViewModels.Locations
     {
         private long _locationLayoutPointId;
         private long _locationLayoutItemId;
+        private long _locationId;
         private int _pointIndex;
         private string? _pointRole;
         private double _x;
@@ -18,6 +19,7 @@ namespace CatoriApp.Game.ViewModels.Locations
 
         public long LocationLayoutPointId { get => _locationLayoutPointId; set => SetProperty(ref _locationLayoutPointId, value); }
         public long LocationLayoutItemId { get => _locationLayoutItemId; set => SetProperty(ref _locationLayoutItemId, value); }
+        public long LocationId { get => _locationId; set => SetProperty(ref _locationId, value); }
         public int PointIndex { get => _pointIndex; set => SetProperty(ref _pointIndex, value); }
         public string? PointRole { get => _pointRole; set => SetProperty(ref _pointRole, value); }
         public double X { get => _x; set => SetProperty(ref _x, value); }

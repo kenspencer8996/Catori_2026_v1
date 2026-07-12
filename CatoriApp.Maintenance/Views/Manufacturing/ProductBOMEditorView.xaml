@@ -1,0 +1,53 @@
+<Window x:Class="CatoriApp.Game.Views.Manufacturing.ProductBOMEditorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BOM Editor"
+        Height="420"
+        Width="680"
+        WindowStartupLocation="CenterOwner"
+        Loaded="Window_Loaded"
+        Background="{DynamicResource MainGradient}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="BOM Detail" Style="{DynamicResource RedBoldLabelStyle}"  />
+            <Label Grid.Row="1" Grid.Column="0" Content="Parent Product" />
+            <ComboBox x:Name="ParentProductComboBox" Grid.Row="1" Grid.Column="1" DisplayMemberPath="ProductName" SelectedValuePath="ProductId" SelectedValue="{Binding ParentProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="2" Grid.Column="0" Content="Component" />
+            <ComboBox x:Name="ComponentComboBox" Grid.Row="2" Grid.Column="1" DisplayMemberPath="ProductName" SelectedValuePath="ProductId" SelectedValue="{Binding ComponentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComponentComboBox_SelectionChanged" />
+            <Label Grid.Row="3" Grid.Column="0" Content="Quantity" />
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="4" Grid.Column="0" Content="Scrap %" />
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ScrapFactor, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="5" Grid.Column="0" Content="Effective Date" />
+            <DatePicker Grid.Row="5" Grid.Column="1" SelectedDate="{Binding EffectiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="6" Grid.Column="0" Content="Expiry Date" />
+            <DatePicker Grid.Row="6" Grid.Column="1" SelectedDate="{Binding ExpiryDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Cancel" Width="80" Margin="0,0,8,0" Click="CancelButton_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+            <Button Content="Ok" Width="80" Click="OkButton_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" />
+        </StackPanel>
+    </Grid>
+</Window>

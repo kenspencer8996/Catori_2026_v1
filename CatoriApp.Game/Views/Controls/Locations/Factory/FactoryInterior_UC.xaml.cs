@@ -1,7 +1,4 @@
-using CatoriApp.Core.Convertors;
-using CatoriApp.Core.Objects.DragDrop;
-using CatoriApp.MachineLayoutDesigner.Objects.Enums;
-using System.Windows.Input;
+using System.Diagnostics;
 using System.Windows.Threading;
 namespace CatoriApp.Game.Views.Controls.Locations.Factory
 {
@@ -24,6 +21,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
 
             // Debug.WriteLine("RobotControl is now the source: " + e.Source);
             _controller = new FactoryInterior_UController(this, locationId);
+            AddHandler(UIElement.MouseMoveEvent, new System.Windows.Input.MouseEventHandler(UserControl_MouseMove), true);
             RobotPanel.RunRequested += RobotPanel_RunRequested;
             RobotPanel.DesignModeRequested += RobotPanel_EditModeRequested; ;
             RobotPanel.DesignModeEndRequested += RobotPanel_EditModeEndRequested; ;
@@ -37,16 +35,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             Canvas.SetLeft(RobotArmNew, 976);
             Canvas.SetTop(RobotArmNew, 760);
 
-            //Canvas.SetLeft(RobotConveyorALabel, 930);
-            //Canvas.SetTop(RobotConveyorALabel, 840);
-            //Canvas.SetLeft(RobotConveyorBLabel, 1404);
-            //Canvas.SetTop(RobotConveyorBLabel, 1000);
-            //Canvas.SetLeft(RobotConveyorCLabel, 1705);
-            //Canvas.SetTop(RobotConveyorCLabel, 1000);
-
-            //Canvas.SetLeft(RobotConveyorCLabel, 1705);
-            //Canvas.SetTop(RobotConveyorCLabel, 1000);
-            lightPanel.PanelTriggered += LightPanel_PanelTriggered;
+                       lightPanel.PanelTriggered += LightPanel_PanelTriggered;
             lightPanel.StartFlicker();
 
 
@@ -62,6 +51,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             _animation_timer.Interval = TimeSpan.FromMilliseconds(1000);
             _animation_timer.Tick += Animation_timer_Tick;
             _animation_timer.Start();
+
 
         }
 
@@ -96,7 +86,14 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"Canvas size: {MainCanvas.ActualWidth}, {MainCanvas.ActualHeight}");
+                Debug.WriteLine($"Image size: {FactoryInteriorImage.ActualWidth}, {FactoryInteriorImage.ActualHeight}");
 
+                System.Diagnostics.Debug.WriteLine(
+                    $"FactoryInterior_UC arranged size: {ActualWidth}x{ActualHeight}; canvas: {MainCanvas.ActualWidth}x{MainCanvas.ActualHeight}");
+            }), DispatcherPriority.Loaded);
         }
         public void StartWorking(string workerImagePath)
         {
@@ -130,6 +127,11 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             }
 
         }
+        private void UserControl_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _controller.HandleMouseMove(e);
+        }
+
         public void OnDropped()
         {
         }
@@ -207,8 +209,16 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             }
         }
 
+        private void Zone1_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
+
+
+
+
 
 
 

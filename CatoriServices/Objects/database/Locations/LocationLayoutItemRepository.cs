@@ -41,7 +41,7 @@ namespace CatoriServices.Objects.database.Locations
             }
         }
 
-        public async Task<List<LocationLayoutItemEntity>> GetLayoutItemsByIdAsync(long locationId)
+        public async Task<List<LocationLayoutItemEntity>> GetByLocationIdAsync(long locationId)
         {
             try
             {
@@ -66,6 +66,9 @@ namespace CatoriServices.Objects.database.Locations
             }
         }
 
+        public Task<List<LocationLayoutItemEntity>> GetLayoutItemsByIdAsync(long locationId)
+            => GetByLocationIdAsync(locationId);
+
         public async Task<int> InsertAsync(LocationLayoutItemEntity item)
         {
             try
@@ -75,11 +78,11 @@ namespace CatoriServices.Objects.database.Locations
                 
                             const string sql = @"
                                 INSERT INTO LocationLayoutItem
-                                    (LocationId, ItemName, ItemType, X, Y, Z, Width, Height, RotationDegrees,
-                                     ZIndex, IsLocked, ImagePath, MetadataJson)
+                                    (LocationId, ItemName, ItemType, MajorItemType, X, Y, Z, Width, Height, RotationDegrees,
+                                     ZIndex, IsLocked, MetadataJson)
                                 VALUES
-                                    (@LocationId, @ItemName, @ItemType, @X, @Y, @Z, @Width, @Height, @RotationDegrees,
-                                     @ZIndex, @IsLocked, @ImagePath, @MetadataJson);
+                                    (@LocationId, @ItemName, @ItemType, @MajorItemType, @X, @Y, @Z, @Width, @Height, @RotationDegrees,
+                                     @ZIndex, @IsLocked, @MetadataJson);
                                 SELECT last_insert_rowid();";
                 
                             using var cmd = new SqliteCommand(sql, conn);
@@ -106,6 +109,7 @@ namespace CatoriServices.Objects.database.Locations
                                 SET LocationId = @LocationId,
                                     ItemName = @ItemName,
                                     ItemType = @ItemType,
+                                    MajorItemType = @MajorItemType,
                                     X = @X,
                                     Y = @Y,
                                     Z = @Z,
@@ -114,7 +118,6 @@ namespace CatoriServices.Objects.database.Locations
                                     RotationDegrees = @RotationDegrees,
                                     ZIndex = @ZIndex,
                                     IsLocked = @IsLocked,
-                                    ImagePath = @ImagePath,
                                     MetadataJson = @MetadataJson
                                 WHERE LocationLayoutItemId = @LocationLayoutItemId";
                 
@@ -155,6 +158,7 @@ namespace CatoriServices.Objects.database.Locations
                             cmd.Parameters.AddWithValue("@LocationId", item.LocationId);
                             cmd.Parameters.AddWithValue("@ItemName", item.ItemName);
                             cmd.Parameters.AddWithValue("@ItemType", item.ItemType.ToString());
+                            cmd.Parameters.AddWithValue("@MajorItemType", item.MajorItemType ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@X", item.X);
                             cmd.Parameters.AddWithValue("@Y", item.Y);
                             cmd.Parameters.AddWithValue("@Z", item.Z);
@@ -163,7 +167,6 @@ namespace CatoriServices.Objects.database.Locations
                             cmd.Parameters.AddWithValue("@RotationDegrees", item.RotationDegrees);
                             cmd.Parameters.AddWithValue("@ZIndex", item.ZIndex);
                             cmd.Parameters.AddWithValue("@IsLocked", item.IsLocked ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@ImagePath", item.ImagePath ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@MetadataJson", item.MetadataJson ?? (object)DBNull.Value);
             }
             catch (Exception ex)
@@ -183,6 +186,7 @@ namespace CatoriServices.Objects.database.Locations
                                 LocationId = reader.GetInt64(reader.GetOrdinal("LocationId")),
                                 ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
                                 ItemType = ParseItemType(reader.GetString(reader.GetOrdinal("ItemType"))),
+                                MajorItemType = GetNullableString(reader, "MajorItemType"),
                                 X = reader.GetDouble(reader.GetOrdinal("X")),
                                 Y = reader.GetDouble(reader.GetOrdinal("Y")),
                                 Z = reader.GetDouble(reader.GetOrdinal("Z")),
@@ -191,7 +195,6 @@ namespace CatoriServices.Objects.database.Locations
                                 RotationDegrees = reader.GetDouble(reader.GetOrdinal("RotationDegrees")),
                                 ZIndex = reader.GetInt32(reader.GetOrdinal("ZIndex")),
                                 IsLocked = reader.GetInt32(reader.GetOrdinal("IsLocked")) == 1,
-                                ImagePath = GetNullableString(reader, "ImagePath"),
                                 MetadataJson = GetNullableString(reader, "MetadataJson")
                             };
             }
@@ -205,14 +208,36 @@ namespace CatoriServices.Objects.database.Locations
         private static LocationLayoutItemType ParseItemType(string objectType)
             => Enum.TryParse<LocationLayoutItemType>(objectType, true, out var itemType)
                 ? itemType
-                : LocationLayoutItemType.Decoration;
+                : LocationLayoutItemType.Conveyor;
 
         private static string? GetNullableString(SqliteDataReader reader, string columnName)
         {
             try
             {
+                            if (!HasColumn(reader, columnName))
+                                return null;
+
                             var ordinal = reader.GetOrdinal(columnName);
                             return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
+
+        private static bool HasColumn(SqliteDataReader reader, string columnName)
+        {
+            try
+            {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                if (string.Equals(reader.GetName(i), columnName, StringComparison.OrdinalIgnoreCase))
+                                    return true;
+                            }
+
+                            return false;
             }
             catch (Exception ex)
             {

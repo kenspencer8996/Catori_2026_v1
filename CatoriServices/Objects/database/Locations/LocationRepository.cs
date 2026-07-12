@@ -10,7 +10,7 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            _connectionString = "Data Source=" + GlobalServices.Database + " ;";
+                _connectionString = "Data Source=" + GlobalServices.Database + " ;";
             }
             catch (Exception ex)
             {
@@ -39,7 +39,6 @@ namespace CatoriServices.Objects.database.Locations
             catch (Exception ex)
             {
                 cLogger.Log(ex.ToString());
-
                 throw;
             }
         }
@@ -51,8 +50,8 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            var location = await GetByIdAsync((int)locationId);
-                            return location is null ? null : MapLocationAsLayout(location);
+                var location = await GetByIdAsync((int)locationId);
+                return location is null ? null : MapLocationAsLayout(location);
             }
             catch (Exception ex)
             {
@@ -65,8 +64,8 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            var layout = await GetActiveLayoutByLocationIdAsync(locationId);
-                            return layout is null ? new List<LocationLayoutEntity>() : new List<LocationLayoutEntity> { layout };
+                var layout = await GetActiveLayoutByLocationIdAsync(locationId);
+                return layout is null ? new List<LocationLayoutEntity>() : new List<LocationLayoutEntity> { layout };
             }
             catch (Exception ex)
             {
@@ -79,8 +78,7 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            // LocationId is intentionally the LocationId in the live schema.
-                            return Task.FromResult(layout.LocationId);
+                return Task.FromResult(layout.LocationId);
             }
             catch (Exception ex)
             {
@@ -93,8 +91,7 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            // Canvas/name metadata is stored on Location in the live schema.
-                            return Task.FromResult(true);
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
@@ -107,8 +104,7 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            // Deleting a layout would mean deleting the Location row in the live schema.
-                            return Task.FromResult(false);
+                return Task.FromResult(false);
             }
             catch (Exception ex)
             {
@@ -121,16 +117,15 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            var locationNameColumn = await GetLocationNameColumnAsync(conn);
-                            var orderBy = await GetLocationOrderByAsync(conn, locationNameColumn);
-                            using var cmd = new SqliteCommand($"SELECT * FROM Location WHERE {locationNameColumn} = @LocationName ORDER BY {orderBy} LIMIT 1", conn);
-                            cmd.Parameters.AddWithValue("@LocationName", locationName);
-                
-                            using var reader = await cmd.ExecuteReaderAsync();
-                            return await reader.ReadAsync() ? MapLocation(reader) : null;
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                var locationNameColumn = await GetLocationNameColumnAsync(conn);
+                using var cmd = new SqliteCommand($"SELECT * FROM Location WHERE {locationNameColumn} = @LocationName ORDER BY {locationNameColumn} LIMIT 1", conn);
+                cmd.Parameters.AddWithValue("@LocationName", locationName);
+
+                using var reader = await cmd.ExecuteReaderAsync();
+                return await reader.ReadAsync() ? MapLocation(reader) : null;
             }
             catch (Exception ex)
             {
@@ -143,19 +138,18 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            var locationNameColumn = await GetLocationNameColumnAsync(conn);
-                            var orderBy = await GetLocationOrderByAsync(conn, locationNameColumn);
-                            using var cmd = new SqliteCommand($"SELECT * FROM Location ORDER BY {orderBy}", conn);
-                            using var reader = await cmd.ExecuteReaderAsync();
-                
-                            var list = new List<LocationEntity>();
-                            while (await reader.ReadAsync())
-                                list.Add(MapLocation(reader));
-                
-                            return list;
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                var locationNameColumn = await GetLocationNameColumnAsync(conn);
+                using var cmd = new SqliteCommand($"SELECT * FROM Location ORDER BY {locationNameColumn}", conn);
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                var list = new List<LocationEntity>();
+                while (await reader.ReadAsync())
+                    list.Add(MapLocation(reader));
+
+                return list;
             }
             catch (Exception ex)
             {
@@ -168,20 +162,19 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            var locationNameColumn = await GetLocationNameColumnAsync(conn);
-                            var orderBy = await GetLocationOrderByAsync(conn, locationNameColumn);
-                            using var cmd = new SqliteCommand($"SELECT * FROM Location WHERE BusinessId = @BusinessId ORDER BY {orderBy}", conn);
-                            cmd.Parameters.AddWithValue("@BusinessId", businessId);
-                            using var reader = await cmd.ExecuteReaderAsync();
-                
-                            var list = new List<LocationEntity>();
-                            while (await reader.ReadAsync())
-                                list.Add(MapLocation(reader));
-                
-                            return list;
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                var locationNameColumn = await GetLocationNameColumnAsync(conn);
+                using var cmd = new SqliteCommand($"SELECT * FROM Location WHERE BusinessId = @BusinessId ORDER BY {locationNameColumn}", conn);
+                cmd.Parameters.AddWithValue("@BusinessId", businessId);
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                var list = new List<LocationEntity>();
+                while (await reader.ReadAsync())
+                    list.Add(MapLocation(reader));
+
+                return list;
             }
             catch (Exception ex)
             {
@@ -194,25 +187,21 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            const string sql = @"
-                                INSERT INTO Location
-                                    (BusinessId, LocationName, Description, BackgroundImagePath, InteriorType, WorldMapImagePath,
-                                     HotspotLeft, HotspotTop, HotspotWidth, HotspotHeight, DesignWidth, DesignHeight,
-                                     DefaultRobotX, DefaultRobotY, IsActive, SortOrder, CreatedAt, UpdatedDate)
-                                VALUES
-                                    (@BusinessId, @LocationName, @Description, @BackgroundImagePath, @InteriorType, @WorldMapImagePath,
-                                     @HotspotLeft, @HotspotTop, @HotspotWidth, @HotspotHeight, @DesignWidth, @DesignHeight,
-                                     @DefaultRobotX, @DefaultRobotY, @IsActive, @SortOrder, @CreatedAt, @UpdatedDate);
-                                SELECT last_insert_rowid();";
-                
-                            using var cmd = new SqliteCommand(sql, conn);
-                            AddParameters(cmd, location);
-                
-                            var result = await cmd.ExecuteScalarAsync();
-                            return Convert.ToInt32(result);
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                const string sql = @"
+                    INSERT INTO Location
+                        (LocationName, CreatedAt, BusinessId, Description, BackgroundImagePath)
+                    VALUES
+                        (@LocationName, @CreatedAt, @BusinessId, @Description, @BackgroundImagePath);
+                    SELECT last_insert_rowid();";
+
+                using var cmd = new SqliteCommand(sql, conn);
+                AddParameters(cmd, location);
+
+                var result = await cmd.ExecuteScalarAsync();
+                return Convert.ToInt32(result);
             }
             catch (Exception ex)
             {
@@ -225,36 +214,22 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            const string sql = @"
-                                UPDATE Location
-                                SET BusinessId = @BusinessId,
-                                    LocationName = @LocationName,
-                                    Description = @Description,
-                                    BackgroundImagePath = @BackgroundImagePath,
-                                    InteriorType = @InteriorType,
-                                    WorldMapImagePath = @WorldMapImagePath,
-                                    HotspotLeft = @HotspotLeft,
-                                    HotspotTop = @HotspotTop,
-                                    HotspotWidth = @HotspotWidth,
-                                    HotspotHeight = @HotspotHeight,
-                                    DesignWidth = @DesignWidth,
-                                    DesignHeight = @DesignHeight,
-                                    DefaultRobotX = @DefaultRobotX,
-                                    DefaultRobotY = @DefaultRobotY,
-                                    IsActive = @IsActive,
-                                    SortOrder = @SortOrder,
-                                    UpdatedDate = @UpdatedDate
-                                WHERE LocationId = @LocationId";
-                
-                            using var cmd = new SqliteCommand(sql, conn);
-                            cmd.Parameters.AddWithValue("@LocationId", location.LocationId);
-                            location.UpdatedDate = DateTime.Now;
-                            AddParameters(cmd, location);
-                
-                            await cmd.ExecuteNonQueryAsync();
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                const string sql = @"
+                    UPDATE Location
+                    SET LocationName = @LocationName,
+                        BusinessId = @BusinessId,
+                        Description = @Description,
+                        BackgroundImagePath = @BackgroundImagePath
+                    WHERE LocationId = @LocationId";
+
+                using var cmd = new SqliteCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@LocationId", location.LocationId);
+                AddParameters(cmd, location);
+
+                await cmd.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -267,12 +242,12 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
-                
-                            using var cmd = new SqliteCommand("DELETE FROM Location WHERE LocationId = @LocationId", conn);
-                            cmd.Parameters.AddWithValue("@LocationId", locationId);
-                            await cmd.ExecuteNonQueryAsync();
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                using var cmd = new SqliteCommand("DELETE FROM Location WHERE LocationId = @LocationId", conn);
+                cmd.Parameters.AddWithValue("@LocationId", locationId);
+                await cmd.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -285,24 +260,11 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            cmd.Parameters.AddWithValue("@BusinessId", location.BusinessId ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@LocationName", location.LocationName);
-                            cmd.Parameters.AddWithValue("@Description", location.Description ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@BackgroundImagePath", location.BackgroundImagePath ?? "");
-                            cmd.Parameters.AddWithValue("@InteriorType", string.IsNullOrWhiteSpace(location.InteriorType) ? nameof(LocationEntity) : location.InteriorType);
-                            cmd.Parameters.AddWithValue("@WorldMapImagePath", location.WorldMapImagePath ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@HotspotLeft", location.HotspotLeft);
-                            cmd.Parameters.AddWithValue("@HotspotTop", location.HotspotTop);
-                            cmd.Parameters.AddWithValue("@HotspotWidth", location.HotspotWidth);
-                            cmd.Parameters.AddWithValue("@HotspotHeight", location.HotspotHeight);
-                            cmd.Parameters.AddWithValue("@DesignWidth", location.DesignWidth);
-                            cmd.Parameters.AddWithValue("@DesignHeight", location.DesignHeight);
-                            cmd.Parameters.AddWithValue("@DefaultRobotX", location.DefaultRobotX ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@DefaultRobotY", location.DefaultRobotY ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@IsActive", location.IsActive ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@SortOrder", location.SortOrder);
-                            cmd.Parameters.AddWithValue("@CreatedAt", (location.CreatedAt == default ? DateTime.Now : location.CreatedAt).ToString("yyyy-MM-dd HH:mm:ss"));
-                            cmd.Parameters.AddWithValue("@UpdatedDate", location.UpdatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@LocationName", location.LocationName);
+                cmd.Parameters.AddWithValue("@CreatedAt", (location.CreatedAt == default ? DateTime.Now : location.CreatedAt).ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@BusinessId", location.BusinessId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Description", location.Description ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@BackgroundImagePath", location.BackgroundImagePath ?? "");
             }
             catch (Exception ex)
             {
@@ -315,28 +277,15 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            return new LocationEntity
-                            {
-                                LocationId = GetRequiredInt(reader, "LocationId", "FactoryId"),
-                                BusinessId = GetNullableInt(reader, "BusinessId"),
-                                LocationName = GetRequiredString(reader, "LocationName", "FactoryName"),
-                                Description = GetNullableString(reader, "Description"),
-                                BackgroundImagePath = GetNullableString(reader, "BackgroundImagePath") ?? "",
-                                InteriorType = GetNullableString(reader, "InteriorType") ?? nameof(LocationEntity),
-                                WorldMapImagePath = GetNullableString(reader, "WorldMapImagePath"),
-                                HotspotLeft = GetDoubleOrDefault(reader, "HotspotLeft", 0),
-                                HotspotTop = GetDoubleOrDefault(reader, "HotspotTop", 0),
-                                HotspotWidth = GetDoubleOrDefault(reader, "HotspotWidth", 100),
-                                HotspotHeight = GetDoubleOrDefault(reader, "HotspotHeight", 100),
-                                DesignWidth = GetDoubleOrDefault(reader, "DesignWidth", 1920),
-                                DesignHeight = GetDoubleOrDefault(reader, "DesignHeight", 1080),
-                                DefaultRobotX = GetNullableDouble(reader, "DefaultRobotX"),
-                                DefaultRobotY = GetNullableDouble(reader, "DefaultRobotY"),
-                                IsActive = GetIntOrDefault(reader, "IsActive", 1) == 1,
-                                SortOrder = GetIntOrDefault(reader, "SortOrder", 0),
-                                CreatedAt = GetDateTimeOrDefault(reader, "CreatedAt", DateTime.Now),
-                                UpdatedDate = GetNullableDateTime(reader, "UpdatedDate")
-                            };
+                return new LocationEntity
+                {
+                    LocationId = GetRequiredInt(reader, "LocationId", "FactoryId"),
+                    BusinessId = GetNullableInt(reader, "BusinessId"),
+                    LocationName = GetRequiredString(reader, "LocationName", "FactoryName"),
+                    Description = GetNullableString(reader, "Description"),
+                    BackgroundImagePath = GetNullableString(reader, "BackgroundImagePath") ?? "",
+                    CreatedAt = GetDateTimeOrDefault(reader, "CreatedAt", DateTime.Now)
+                };
             }
             catch (Exception ex)
             {
@@ -349,15 +298,15 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            return new LocationLayoutEntity
-                            {
-                                LocationId = location.LocationId,
-                                LayoutName = location.LocationName + " Layout",
-                                CanvasWidth = location.DesignWidth,
-                                CanvasHeight = location.DesignHeight,
-                                IsActive = location.IsActive,
-                                CreatedAt = location.CreatedAt
-                            };
+                return new LocationLayoutEntity
+                {
+                    LocationId = location.LocationId,
+                    LayoutName = location.LocationName + " Layout",
+                    CanvasWidth = 1920,
+                    CanvasHeight = 1080,
+                    IsActive = true,
+                    CreatedAt = location.CreatedAt
+                };
             }
             catch (Exception ex)
             {
@@ -370,13 +319,13 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                if (string.Equals(reader.GetName(i), columnName, StringComparison.OrdinalIgnoreCase))
-                                    return true;
-                            }
-                
-                            return false;
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    if (string.Equals(reader.GetName(i), columnName, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -391,32 +340,17 @@ namespace CatoriServices.Objects.database.Locations
         private static Task<string> GetLocationNameColumnAsync(SqliteConnection conn)
             => GetFirstExistingColumnAsync(conn, "Location", "LocationName", "FactoryName");
 
-        private static async Task<string> GetLocationOrderByAsync(SqliteConnection conn, string locationNameColumn)
-        {
-            try
-            {
-                            return await HasTableColumnAsync(conn, "Location", "SortOrder")
-                                ? $"SortOrder, {locationNameColumn}"
-                                : locationNameColumn;
-            }
-            catch (Exception ex)
-            {
-                cLogger.Log(ex.ToString());
-                throw;
-            }
-        }
-
         private static async Task<string> GetFirstExistingColumnAsync(SqliteConnection conn, string tableName, params string[] columnNames)
         {
             try
             {
-                            foreach (var columnName in columnNames)
-                            {
-                                if (await HasTableColumnAsync(conn, tableName, columnName))
-                                    return columnName;
-                            }
-                
-                            return columnNames[0];
+                foreach (var columnName in columnNames)
+                {
+                    if (await HasTableColumnAsync(conn, tableName, columnName))
+                        return columnName;
+                }
+
+                return columnNames[0];
             }
             catch (Exception ex)
             {
@@ -429,15 +363,15 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var cmd = new SqliteCommand($"PRAGMA table_info({tableName})", conn);
-                            using var reader = await cmd.ExecuteReaderAsync();
-                            while (await reader.ReadAsync())
-                            {
-                                if (string.Equals(reader.GetString(1), columnName, StringComparison.OrdinalIgnoreCase))
-                                    return true;
-                            }
-                
-                            return false;
+                using var cmd = new SqliteCommand($"PRAGMA table_info({tableName})", conn);
+                using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    if (string.Equals(reader.GetString(1), columnName, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -450,9 +384,9 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            var resolvedColumnName = HasColumn(reader, columnName) ? columnName : legacyColumnName;
-                            var ordinal = reader.GetOrdinal(resolvedColumnName);
-                            return reader.IsDBNull(ordinal) ? "" : reader.GetString(ordinal);
+                var resolvedColumnName = HasColumn(reader, columnName) ? columnName : legacyColumnName;
+                var ordinal = reader.GetOrdinal(resolvedColumnName);
+                return reader.IsDBNull(ordinal) ? "" : reader.GetString(ordinal);
             }
             catch (Exception ex)
             {
@@ -465,9 +399,9 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            var resolvedColumnName = HasColumn(reader, columnName) ? columnName : legacyColumnName;
-                            var ordinal = reader.GetOrdinal(resolvedColumnName);
-                            return reader.GetInt32(ordinal);
+                var resolvedColumnName = HasColumn(reader, columnName) ? columnName : legacyColumnName;
+                var ordinal = reader.GetOrdinal(resolvedColumnName);
+                return reader.GetInt32(ordinal);
             }
             catch (Exception ex)
             {
@@ -480,11 +414,11 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            if (!HasColumn(reader, columnName))
-                                return null;
-                
-                            var ordinal = reader.GetOrdinal(columnName);
-                            return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
+                if (!HasColumn(reader, columnName))
+                    return null;
+
+                var ordinal = reader.GetOrdinal(columnName);
+                return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
             }
             catch (Exception ex)
             {
@@ -497,62 +431,11 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            if (!HasColumn(reader, columnName))
-                                return null;
-                
-                            var ordinal = reader.GetOrdinal(columnName);
-                            return reader.IsDBNull(ordinal) ? null : reader.GetInt32(ordinal);
-            }
-            catch (Exception ex)
-            {
-                cLogger.Log(ex.ToString());
-                throw;
-            }
-        }
+                if (!HasColumn(reader, columnName))
+                    return null;
 
-        private static int GetIntOrDefault(SqliteDataReader reader, string columnName, int defaultValue)
-        {
-            try
-            {
-                            if (!HasColumn(reader, columnName))
-                                return defaultValue;
-                
-                            var ordinal = reader.GetOrdinal(columnName);
-                            return reader.IsDBNull(ordinal) ? defaultValue : reader.GetInt32(ordinal);
-            }
-            catch (Exception ex)
-            {
-                cLogger.Log(ex.ToString());
-                throw;
-            }
-        }
-
-        private static double GetDoubleOrDefault(SqliteDataReader reader, string columnName, double defaultValue)
-        {
-            try
-            {
-                            if (!HasColumn(reader, columnName))
-                                return defaultValue;
-                
-                            var ordinal = reader.GetOrdinal(columnName);
-                            return reader.IsDBNull(ordinal) ? defaultValue : reader.GetDouble(ordinal);
-            }
-            catch (Exception ex)
-            {
-                cLogger.Log(ex.ToString());
-                throw;
-            }
-        }
-
-        private static double? GetNullableDouble(SqliteDataReader reader, string columnName)
-        {
-            try
-            {
-                            if (!HasColumn(reader, columnName))
-                                return null;
-                
-                            var ordinal = reader.GetOrdinal(columnName);
-                            return reader.IsDBNull(ordinal) ? null : reader.GetDouble(ordinal);
+                var ordinal = reader.GetOrdinal(columnName);
+                return reader.IsDBNull(ordinal) ? null : reader.GetInt32(ordinal);
             }
             catch (Exception ex)
             {
@@ -565,22 +448,8 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            var value = GetNullableString(reader, columnName);
-                            return DateTime.TryParse(value, out var parsed) ? parsed : defaultValue;
-            }
-            catch (Exception ex)
-            {
-                cLogger.Log(ex.ToString());
-                throw;
-            }
-        }
-
-        private static DateTime? GetNullableDateTime(SqliteDataReader reader, string columnName)
-        {
-            try
-            {
-                            var value = GetNullableString(reader, columnName);
-                            return DateTime.TryParse(value, out var parsed) ? parsed : null;
+                var value = GetNullableString(reader, columnName);
+                return DateTime.TryParse(value, out var parsed) ? parsed : defaultValue;
             }
             catch (Exception ex)
             {
@@ -590,5 +459,3 @@ namespace CatoriServices.Objects.database.Locations
         }
     }
 }
-
-

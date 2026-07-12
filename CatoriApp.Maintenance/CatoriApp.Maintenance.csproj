@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="[11.0.0-preview.1.26104.118, )" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriApp.Game\CatoriApp.Game.csproj" />
+    <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
+    <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
+    <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
+    <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>CatoriApp.Maintenance</AssemblyName>
+    <RootNamespace>CatoriApp.Maintenance</RootNamespace>
+  </PropertyGroup>
+
+</Project>

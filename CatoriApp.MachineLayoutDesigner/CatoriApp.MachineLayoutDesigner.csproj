@@ -1,6 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="[11.0.0-preview.1.26104.118, )" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
     <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
     <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />

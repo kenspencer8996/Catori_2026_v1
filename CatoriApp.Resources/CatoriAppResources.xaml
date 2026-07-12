@@ -35,15 +35,22 @@
             </Setter>
         </Style>
         <SolidColorBrush x:Key="ButtonBackground" Color="Red"/>
+        <SolidColorBrush x:Key="ButtonAltBackground" Color="Blue"/>
         <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" x:Key="MainGradient">
+        <SolidColorBrush x:Key="ViewHeaderForeground" Color="Red"/>
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" x:Key="MainGradient">
             <LinearGradientBrush.RelativeTransform>
                 <RotateTransform Angle="90" CenterX="0.7" CenterY="0.7" />
             </LinearGradientBrush.RelativeTransform>
             <GradientStop x:Name="Gradient1" Color="#FFFDFDFD" Offset=".2"/>
             <GradientStop x:Name="Gradient2" Color="#FF88BEFB" Offset=".8"/>
         </LinearGradientBrush>
-        <Style x:Key="ButtonFocusVisual">
+    <Style x:Key="RedBoldLabelStyle" TargetType="Label">
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="ButtonFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>

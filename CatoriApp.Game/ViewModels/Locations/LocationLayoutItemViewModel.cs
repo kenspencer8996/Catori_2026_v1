@@ -4,9 +4,10 @@ namespace CatoriApp.Game.ViewModels.Locations
     public class LocationLayoutItemViewModel : ViewmodelBase
     {
         private long _locationLayoutItemId;
-        private long _locationLayoutId;
+        private long _locationId;
         private string _itemName = "";
         private LocationLayoutItemType _itemType = LocationLayoutItemType.Conveyor;
+        private string? _majorItemType;
         private double _x;
         private double _y;
         private double _z;
@@ -15,13 +16,13 @@ namespace CatoriApp.Game.ViewModels.Locations
         private double _rotationDegrees;
         private int _zIndex;
         private bool _isLocked;
-        private string? _imagePath;
         private string? _metadataJson;
 
         public long LocationLayoutItemId { get => _locationLayoutItemId; set => SetProperty(ref _locationLayoutItemId, value); }
-        public long LocationId { get => _locationLayoutId; set => SetProperty(ref _locationLayoutId, value); }
+        public long LocationId { get => _locationId; set => SetProperty(ref _locationId, value); }
         public string ItemName { get => _itemName; set => SetProperty(ref _itemName, value); }
         public LocationLayoutItemType ItemType { get => _itemType; set => SetProperty(ref _itemType, value); }
+        public string? MajorItemType { get => _majorItemType; set => SetProperty(ref _majorItemType, value); }
         public double X { get => _x; set => SetProperty(ref _x, value); }
         public double Y { get => _y; set => SetProperty(ref _y, value); }
         public double Z { get => _z; set => SetProperty(ref _z, value); }
@@ -30,7 +31,6 @@ namespace CatoriApp.Game.ViewModels.Locations
         public double RotationDegrees { get => _rotationDegrees; set => SetProperty(ref _rotationDegrees, value); }
         public int ZIndex { get => _zIndex; set => SetProperty(ref _zIndex, value); }
         public bool IsLocked { get => _isLocked; set => SetProperty(ref _isLocked, value); }
-        public string? ImagePath { get => _imagePath; set => SetProperty(ref _imagePath, value); }
         public string? MetadataJson { get => _metadataJson; set => SetProperty(ref _metadataJson, value); }
         public ObservableCollection<LocationLayoutPointViewModel> Points { get; } = new();
     }

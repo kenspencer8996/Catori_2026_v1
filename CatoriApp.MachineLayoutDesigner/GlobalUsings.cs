@@ -10,5 +10,4 @@ global using System.Windows.Controls;
 global using System.Windows.Controls.Primitives;
 global using System.Windows.Media.Imaging;
 global using CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner;
-global using CatoriApp.MachineLayoutDesigner.Views.MachineCatalog;
 global using System.Collections.ObjectModel;

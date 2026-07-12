@@ -31,6 +31,7 @@
   <ItemGroup>
     <None Remove="Images\badguy_6_wcash.png" />
     <None Remove="Images\BagOfrocks.png" />
+    <None Remove="Images\BOMButtonImage.png" />
     <None Remove="Images\BoxShippingShipping3.png" />
     <None Remove="Images\cabinetcorner.png" />
     <None Remove="Images\CatoriImage.ico" />
@@ -38,6 +39,7 @@
     <None Remove="Images\CHestClosed.png" />
     <None Remove="Images\CityScapeButtonImage.png" />
     <None Remove="Images\closexred.png" />
+    <None Remove="Images\ComponentsToolBarImage.png" />
     <None Remove="Images\DefaultRobotArmt.png" />
     <None Remove="Images\DepositImage.png" />
     <None Remove="Images\DirtSpot.png" />
@@ -46,6 +48,7 @@
     <None Remove="Images\DroneWithBox.png" />
     <None Remove="Images\entrytogarage.png" />
     <None Remove="Images\HouseGearMenuIcon.png" />
+    <None Remove="Images\InventoryButtonImage.png" />
     <None Remove="Images\LocationConVeyorTable1.png" />
     <None Remove="Images\LocationInterior1.png" />
     <None Remove="Images\Locationinterior2.png" />
@@ -70,6 +73,7 @@
     <None Remove="Images\MailBox.png" />
     <None Remove="Images\PeopleSelector.png" />
     <None Remove="Images\policestation_.png" />
+    <None Remove="Images\ProductBOMButton.png" />
     <None Remove="Images\ProductsButton.png" />
     <None Remove="Images\RealEstateOfficeExterior.png" />
     <None Remove="Images\RealEstateOfficeInterior.png" />
@@ -121,8 +125,10 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="[11.0.0-preview.1.26104.118, )" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
   </ItemGroup>
 
@@ -133,6 +139,7 @@
     <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
     <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
     <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
+    <ProjectReference Include="..\CatoriApp.Maintenance\CatoriApp.Maintenance.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -143,6 +150,7 @@
     <Resource Include="Images\CatoriImage.ico" />
     <Resource Include="Images\CHestClosed.png" />
     <Resource Include="Images\CityScapeButtonImage.png" />
+    <Resource Include="Images\ComponentsToolBarImage.png" />
     <Resource Include="Images\DirtSpot.png" />
     <Resource Include="Images\DronePortal.png" />
     <Resource Include="Images\DroneWithBox.png" />
@@ -155,6 +163,7 @@
     <Resource Include="Images\GrasswithTreasureSpot.png" />
     <Resource Include="Images\HouseDoor.png" />
     <Resource Include="Images\HouseGearMenuIcon.png" />
+    <Resource Include="Images\InventoryButtonImage.png" />
     <Resource Include="Images\LearnedStepsButton.png" />
     <Resource Include="Images\Left4.png" />
     <Resource Include="Images\machinebutton.png" />
@@ -162,6 +171,7 @@
     <Resource Include="Images\MailBox.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\ProductBOMButton.png" />
     <Resource Include="Images\ProductsButton.png" />
     <Resource Include="Images\RealEstateOfficeExterior.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

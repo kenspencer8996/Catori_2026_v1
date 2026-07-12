@@ -12,12 +12,11 @@
              
              mc:Ignorable="d" Loaded="UserControl_Loaded" MouseDown="UserControl_MouseDown"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Canvas x:Name="MainCanvas" Background="#01FFFFFF" Width="{Binding ActualWidth, ElementName=UC}" 
-             Height="{Binding ActualHeight, ElementName=UC}" >
-             <Image x:Name="FactoryInteriorImage" Stretch="UniformToFill" 
-                Height="{Binding ActualHeight, ElementName=MainCanvas}"
-                   Width="{Binding ActualWidth, ElementName=MainCanvas}" Panel.ZIndex="1210"
+    <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             >
+        <Canvas x:Name="MainCanvas" Background="#01FFFFFF" Width="1920" Height="1080" >
+             <Image x:Name="FactoryInteriorImage" Stretch="Fill" 
+                 Width="1920" Height="1080" Panel.ZIndex="1210"
                Source="/Images/LocationInterior1.png" />
             <Image x:Name="WorkerImage" Stretch="Fill" Source="/Images/GirlStandingRight.png" 
                 Height="120" Canvas.Left="64" Canvas.Top="950"/>
@@ -26,9 +25,12 @@
             <controls:LightPanel x:Name="lightPanel" Canvas.Left="600" Canvas.Top="5" Width="100" Height="100" Panel.ZIndex="1202"/>
             <uslib:RoboticArmUC x:Name="RobotArmNew" Canvas.Left="300" Canvas.Top="200" Width="100" Height="100" Panel.ZIndex="1201"/>
             <robots:RobotControlPanel x:Name="RobotPanel" Canvas.Left="5" Canvas.Top="5" Panel.ZIndex="2000"/>
+        <Polygon x:Name="Zone1" Fill="#01EA2E2E" Stroke="Transparent" StrokeThickness="6" Points="600,300 800,50 1520,700 300,800" Panel.ZIndex="1603" MouseEnter="Zone1_MouseEnter"/>
         </Canvas>
     </Viewbox>
 </UserControl>
+
+
 
 
 

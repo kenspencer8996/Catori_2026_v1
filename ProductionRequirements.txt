@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS ProductValue (
+    ProductValueId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    product_idLocationId INTEGER NOT NULL,
+    ManufacturingValue REAL DEFAULT 0 NOT NULL,
+    wholesaleValue REAL DEFAULT 0 NOT NULL,
+    RetailValue REAL DEFAULT 0 NOT NULL,
+    Notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS FactoryCapability (
+    FactoryCapabilityId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    LocationId INTEGER NOT NULL,
+    CapabilityType TEXT NOT NULL,
+    CapabilityName TEXT,
+    IsEnabled INTEGER DEFAULT 1 NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ProductProduceRequirementId (
+    ProductProduceRequirementIdId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    product_idLocationId INTEGER NOT NULL,
+    RequiredCapabilityType TEXT NOT NULL,
+    RequiredCapabilityName TEXT,
+    MinimumFactoryLevel INTEGER DEFAULT 1 NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS LocationUnlockRule (
+    LocationUnlockRuleId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    LocationId INTEGER NOT NULL,
+    RequiredMoney REAL DEFAULT 0 NOT NULL,
+    Requiredproduct_idLocationId INTEGER NULL,
+    RequiredProductCount INTEGER DEFAULT 0 NOT NULL,
+    UnlockDescription TEXT
+);

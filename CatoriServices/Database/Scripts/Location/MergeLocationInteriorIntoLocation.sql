@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS LocationLayoutItem (
     LocationId INTEGER NOT NULL,
     ItemName TEXT NOT NULL,
     ItemType TEXT NOT NULL,
+    MajorItemType TEXT NULL,
     X REAL NOT NULL DEFAULT 0,
     Y REAL NOT NULL DEFAULT 0,
     Z REAL NOT NULL DEFAULT 0,
@@ -117,7 +118,6 @@ CREATE TABLE IF NOT EXISTS LocationLayoutItem (
     RotationDegrees REAL NOT NULL DEFAULT 0,
     ZIndex INTEGER NOT NULL DEFAULT 0,
     IsLocked INTEGER NOT NULL DEFAULT 0,
-    ImagePath TEXT NULL,
     MetadataJson TEXT NULL,
     FOREIGN KEY (LocationId) REFERENCES Location(LocationId) ON DELETE CASCADE
 );
@@ -142,13 +142,14 @@ CREATE TABLE IF NOT EXISTS LocationLayoutPoint (
 );
 
 INSERT OR IGNORE INTO LocationLayoutItem
-    (LocationLayoutItemId, LocationId, ItemName, ItemType, X, Y, Z, Width, Height,
-     RotationDegrees, ZIndex, IsLocked, ImagePath, MetadataJson)
+    (LocationLayoutItemId, LocationId, ItemName, ItemType, MajorItemType, X, Y, Z, Width, Height,
+     RotationDegrees, ZIndex, IsLocked, MetadataJson)
 SELECT
     LayoutObjectId,
     LocationId,
     ObjectName,
     ObjectType,
+    NULL,
     COALESCE((SELECT X FROM LocationLayoutObjectPoint p WHERE p.LayoutObjectId = o.LayoutObjectId ORDER BY CASE WHEN PointRole = 'Anchor' THEN 0 ELSE 1 END, PointIndex LIMIT 1), 0),
     COALESCE((SELECT Y FROM LocationLayoutObjectPoint p WHERE p.LayoutObjectId = o.LayoutObjectId ORDER BY CASE WHEN PointRole = 'Anchor' THEN 0 ELSE 1 END, PointIndex LIMIT 1), 0),
     0,
@@ -157,7 +158,6 @@ SELECT
     0,
     ZIndex,
     CASE WHEN IsInteractive = 1 THEN 0 ELSE 1 END,
-    ImagePath,
     Notes
 FROM LocationLayoutObject o;
 

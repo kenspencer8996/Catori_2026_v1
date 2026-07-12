@@ -277,19 +277,24 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
 
         private void MaintenancePanel_MachineCatalogRequested(object? sender, EventArgs e)
         {
-            var window = new MachineCatalogEditorWindow
-            {
-                Owner = this
-            };
-            window.ShowDialog();
+            ShowMaintenanceWindow("CatoriApp.MachineLayoutDesigner.Views.MachineCatalog.MachineCatalogListView");
         }
 
         private void MaintenancePanel_MachineInstancesRequested(object? sender, EventArgs e)
         {
-            var window = new MachineInstanceEditorListView
+            ShowMaintenanceWindow("CatoriApp.MachineLayoutDesigner.Views.MachineCatalog.MachineInstanceEditorListView");
+        }
+
+        private void ShowMaintenanceWindow(string typeName)
+        {
+            var type = Type.GetType(typeName + ", CatoriApp.Maintenance");
+            if (type == null || Activator.CreateInstance(type) is not Window window)
             {
-                Owner = this
-            };
+                MessageBox.Show("Unable to open maintenance window: " + typeName, "Maintenance", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            window.Owner = this;
             window.ShowDialog();
         }
     }

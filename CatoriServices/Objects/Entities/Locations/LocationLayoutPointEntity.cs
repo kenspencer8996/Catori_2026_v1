@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.Locations
+namespace CatoriServices.Objects.Entities.Locations
 {
     public class LocationLayoutPointEntity
     {
@@ -9,13 +9,14 @@
         public string? PointRole { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
+        public double? RotationDegrees { get; set; }
+
         public double Z { get; set; }
         public LocationLayoutSegmentKind SegmentKind { get; set; } = LocationLayoutSegmentKind.Line;
         public double? Control1X { get; set; }
         public double? Control1Y { get; set; }
         public double? Control2X { get; set; }
         public double? Control2Y { get; set; }
-        public double? RotationDegrees { get; set; }
 
         public double XLoc
         {
@@ -46,4 +47,3 @@
         CubicBezier
     }
 }
-
