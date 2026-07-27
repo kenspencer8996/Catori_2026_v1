@@ -14,12 +14,8 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         ILocationSubController _locationSubController;
         string _backgroundImagePath;
 
-        LocationViewModel viewModel = new LocationViewModel();
-        readonly DispatcherTimer _animation_timer;
-        public string ImagesFolderRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling");
-        public string restImageRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
-        string root = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "WIthSawBlade");
-        public string ConveyorA;
+         readonly DispatcherTimer _animation_timer;
+            public string ConveyorA;
         public string ConveyorB;
         public string ConveyorTarget;
         List<Polygon> _zones;
@@ -27,30 +23,13 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         private Point _segmentStart;
         private Point _currentPoint;
         private bool _editMode;
-        private bool _isDrawingEnabled;
-        private bool _isDrawingSegment;
-        private System.Windows.Shapes.Path? _previewPath;
-        private LocationLayoutItemViewModel? _activeDrawingItem;
-        private LocationLayoutItemViewModel? _drawingLayoutItem;
-        LocationService _locationService;
-         AnimationController moveXYOnControl;
+        AnimationController moveXYOnControl;
         int _locationid = 0;
-        LocationViewModel _locationViewModel;
         private bool _isOverInteractiveZone;
-        private Point? _lastPathPoint;
         private const int InteractiveZoneZIndex = 1603;
         private const int InteractiveZoneEditZIndex = 2101;
         private const double ConveyorHitAreaWidth = 60;
         private Polygon? _activeDrawingZone;
-        List<LocationLayoutItemViewModel> _locationLayoutItemViewModels;
-        List<System.Windows.Shapes.Path> _designerPaths = new List<System.Windows.Shapes.Path>();
-        ProductUC part1SimpleUC;
-        ProductUC part2SimpleUC;
-        ProductUC part3CompleteUC;
-        PathAnimationHandle _pathAnimationHandler1;
-        PathAnimationHandle _pathAnimationHandler2;
-        PathAnimationHandle _pathAnimationHandler3;
-        List<RobotPose> _robotPoses;
         public FactoryInterior_UController(FactoryInterior_UC view, 
             int locationid)
         {
@@ -78,9 +57,7 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                     break;
             }
             moveXYOnControl = new AnimationController();
-            _locationService = new LocationService();
-            _locationViewModel = _locationService.GetByLocationId(locationid);
-            _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
+              _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
             string root = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "WIthSawBlade");
             LoadViewModelAsync();
             if (viewModel.Points.Count == 0)
@@ -98,7 +75,7 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
             part3CompleteUC.Opacity = 0;
             WeakReferenceMessenger.Default.Register<AnimationCompleteMessage>(this, (r, m) =>
             {
-                cLogger.Log(m.Name + " WeakReferenceMessenger called  ");
+                cLogger.Log(m.LocationName + " WeakReferenceMessenger called  ");
                 if (m.Name.ToLower().Contains(viewModel.LocationName.ToLower()))
                 {
                     _view.RobotArmNew.MoveToPoseAsync(_robotPoses[0]);
