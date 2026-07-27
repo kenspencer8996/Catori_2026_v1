@@ -10,11 +10,18 @@
              xmlns:uslib="clr-namespace:CatoriUCLibrary.Views.RobotArm;assembly=CatoriUCLibrary"
             xmlns:controls="clr-namespace:CatoriApp.Game.Views.Controls.CommonControls" 
              
-             mc:Ignorable="d" Loaded="UserControl_Loaded" MouseDown="UserControl_MouseDown"
+             mc:Ignorable="d" Loaded="UserControl_Loaded" Unloaded="UC_Unloaded" MouseLeftButtonDown="UserControl_MouseLeftButtonDown" 
+                MouseMove="UserControl_MouseMove" MouseLeftButtonUp="UC_MouseLeftButtonUp"
              d:DesignHeight="450" d:DesignWidth="800">
     <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              >
         <Canvas x:Name="MainCanvas" Background="#01FFFFFF" Width="1920" Height="1080" >
+            <Canvas.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="StartDrawingMenuItem" Header="Start Drawing" Click="MenuItem_Start_Click"/>
+                    <MenuItem x:Name="CompleteDrawingMenuItem" Header="Complete Drawing" Click="MenuItem_Complete_Click"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
              <Image x:Name="FactoryInteriorImage" Stretch="Fill" 
                  Width="1920" Height="1080" Panel.ZIndex="1210"
                Source="/Images/LocationInterior1.png" />
@@ -23,7 +30,7 @@
             <!--<Image x:Name="RobotBuilderImage" Source="/Images/Left4.png" Canvas.Left="170" Canvas.Top="156" />-->
 
             <controls:LightPanel x:Name="lightPanel" Canvas.Left="600" Canvas.Top="5" Width="100" Height="100" Panel.ZIndex="1202"/>
-            <uslib:RoboticArmUC x:Name="RobotArmNew" Canvas.Left="300" Canvas.Top="200" Width="100" Height="100" Panel.ZIndex="1201"/>
+            <uslib:RoboticArmUC x:Name="RobotArmNew" Canvas.Left="300" Canvas.Top="200" Width="100" Height="100" Panel.ZIndex="1221"/>
             <robots:RobotControlPanel x:Name="RobotPanel" Canvas.Left="5" Canvas.Top="5" Panel.ZIndex="2000"/>
         <Polygon x:Name="Zone1" Fill="#01EA2E2E" Stroke="Transparent" StrokeThickness="6" Points="600,300 800,50 1520,700 300,800" Panel.ZIndex="1603" MouseEnter="Zone1_MouseEnter"/>
         </Canvas>

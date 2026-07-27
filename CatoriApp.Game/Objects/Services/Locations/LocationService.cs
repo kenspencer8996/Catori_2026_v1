@@ -226,12 +226,12 @@ namespace CatoriApp.Game.Objects.Services.Locations
             return await _itemRepository.UpdateAsync(item);
         }
 
-        public void UpdatePoints(long LocationId, LocationLayoutPointEntity point)
+        public void UpdatePoints(long LocationId, LocationLayoutPointEntity point, string? wpfPath = null)
         {
-            UpdatePointsAsync(LocationId, point).GetAwaiter().GetResult();
+            UpdatePointsAsync(LocationId, point, wpfPath).GetAwaiter().GetResult();
         }
 
-        public async Task UpdatePointsAsync(long LocationId, LocationLayoutPointEntity point)
+        public async Task UpdatePointsAsync(long LocationId, LocationLayoutPointEntity point, string? wpfPath = null)
         {
             string conveyorName = string.IsNullOrWhiteSpace(point.PointType)
                 ? "Conveyor"
@@ -251,6 +251,12 @@ namespace CatoriApp.Game.Objects.Services.Locations
                     ItemType = LocationLayoutItemType.Conveyor
                 };
                 item.LocationLayoutItemId = await _itemRepository.InsertAsync(item);
+            }
+
+            if (!string.IsNullOrWhiteSpace(wpfPath))
+            {
+                item.WpfPath = wpfPath;
+                await _itemRepository.UpdateAsync(item);
             }
 
             await _pointRepository.DeleteByItemIdAsync(item.LocationLayoutItemId);
@@ -302,7 +308,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
                 vm.Items.Add(itemVm);
             }
-
+    
             var routes = await _routeRepository.GetByLocationIdAsync(locationId);
             foreach (var route in routes)
             {
@@ -362,6 +368,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = vm.RotationDegrees,
                 ZIndex = vm.ZIndex,
                 IsLocked = vm.IsLocked,
+                WpfPath = string.IsNullOrWhiteSpace(vm.WpfPath) ? null : vm.WpfPath,
                 MetadataJson = vm.MetadataJson
             };
         }
@@ -404,6 +411,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = entity.RotationDegrees,
                 ZIndex = entity.ZIndex,
                 IsLocked = entity.IsLocked,
+                WpfPath = entity.WpfPath,
                 MetadataJson = entity.MetadataJson
             };
         }

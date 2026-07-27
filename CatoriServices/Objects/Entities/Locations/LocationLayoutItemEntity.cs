@@ -15,7 +15,9 @@
         public double RotationDegrees { get; set; }
         public int ZIndex { get; set; }
         public bool IsLocked { get; set; }
+        public string? WpfPath { get; set; }
         public string? MetadataJson { get; set; }
+        public string? WPFPath { get; set; }
         public List<LocationLayoutPointEntity> Points { get; set; } = new();
     }
 

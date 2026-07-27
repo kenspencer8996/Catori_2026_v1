@@ -1,0 +1,29 @@
+Create wpf app (catoriPlay2) in this folder C:\Development\Gaming\CatoriLearniing
+the main window should have a toolbar across the top. Startwith 1 button named BoxMatch1.
+when clicking the button it should load 1 uwercontrol.
+this 1st usercontrol should be a game. It should have a box in the middle with rows and columns.
+Each cell can host one colored box. when 2 or more boxes of same color are contiguous the user can click one of them and make all of those go away
+Small boxes should be of different color sets (red,black,blue,green,pink,purple)
+New boxes should fall down from top into an empty cell.
+When all the cells in box are filled game over.
+there should be a reset button to restart game.
+
+
+Create game control (add to catoriPlay2)  with a astronaut character chased by a black ship that will shoot lasers when he/she 
+tough the edge of thescreen. To defeat it is by dodging lasers or get behind it and press space to shoot lasers at ship.
+
+Please modify this project C:\Development\Gaming\CatoriLearniing\catoriPlay2 astronaut game by making these changes:
+Copy current spaceship  astronaut game to new usercontrol.
+Use this folder for image ideas: C:\Users\kensp\OneDrive\Pictures\GameImages
+Change the astronaut to a usercontrol using an astro* image.
+Change spaceshihp to usercontrol using an spaceship* image.
+Allow spaceship to navigate outside the visible canvas. 
+add radar usercontrol that automatically appears when spaceship approaches within 100 pixels of visible canvas. Radar panel should
+aoto track spaceship location.
+
+
+Lets switch back to C:\Development\Gaming\Catori2026\Catori.Studio\Catori.Studio.Dev.sln and look at the database exporter.
+First the LocationID in the source and target databases does NOT match. So any updates should lookup locationid in the targt db by the LocationName column and use 
+that value to do updates.
+Second, change the Export tab of the save dialog.it should still let your make current selections but also let you select the table to export. After selecting a table,
+show the rows in the table with a selection box for each row and a master select all. The export should use these selections.

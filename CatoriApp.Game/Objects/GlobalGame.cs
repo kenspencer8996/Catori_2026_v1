@@ -8,6 +8,6 @@ namespace CatoriApp.Game.Objects
     {
         public static PersonViewModel CurrentPerson { get; set; }
         public static List<PersonViewModel> AllPersons { get; set; } = new List<PersonViewModel>();
-
+        public static Window MainWindow { get; set; }
     }
 }

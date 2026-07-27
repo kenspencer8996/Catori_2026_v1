@@ -1,0 +1,18 @@
+ Volume in drive C is Windows
+ Volume Serial Number is EAC2-1E22
+
+ Directory of C:\Development\Gaming\Catori2026\Catori_2026_v1\Images\LocationInteriors\Factory
+
+07/25/2026  05:37 PM    <DIR>          .
+05/15/2026  11:38 AM    <DIR>          ..
+07/25/2026  05:37 PM                 0 files.txt
+04/22/2026  07:58 PM         2,808,800 LocationConVeyorTable1.png
+12/14/2025  09:26 PM         1,898,404 LocationInterior1.png
+01/26/2026  04:34 PM         2,623,542 Locationinterior2.png
+01/17/2026  10:50 PM           364,184 Locationinterior3.jpg
+01/17/2026  10:51 PM           289,150 Locationinterior4.jpg
+01/27/2026  02:13 PM         2,581,919 LocationInterior4.png
+04/22/2026  07:52 PM         2,386,808 LocationTables1.png
+04/22/2026  07:56 PM         2,620,407 LocationTables2.png
+               9 File(s)     15,573,214 bytes
+               2 Dir(s)  549,001,056,256 bytes free

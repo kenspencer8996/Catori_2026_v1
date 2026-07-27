@@ -17,6 +17,7 @@ namespace CatoriApp.ViewModels
         private int _zIndex;
         private bool _isLocked;
         private string? _imagePath;
+        private string? _wpfPath;
         private string? _metadataJson;
 
         public long LocationLayoutItemId { get => _locationLayoutItemId; set => SetProperty(ref _locationLayoutItemId, value); }
@@ -32,6 +33,7 @@ namespace CatoriApp.ViewModels
         public int ZIndex { get => _zIndex; set => SetProperty(ref _zIndex, value); }
         public bool IsLocked { get => _isLocked; set => SetProperty(ref _isLocked, value); }
         public string? ImagePath { get => _imagePath; set => SetProperty(ref _imagePath, value); }
+        public string? WpfPath { get => _wpfPath; set => SetProperty(ref _wpfPath, value); }
         public string? MetadataJson { get => _metadataJson; set => SetProperty(ref _metadataJson, value); }
         public ObservableCollection<LocationLayoutPointViewModel> Points { get; } = new();
     }

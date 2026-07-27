@@ -21,8 +21,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
 
             // Debug.WriteLine("RobotControl is now the source: " + e.Source);
             _controller = new FactoryInterior_UController(this, locationId);
-            AddHandler(UIElement.MouseMoveEvent, new System.Windows.Input.MouseEventHandler(UserControl_MouseMove), true);
-            RobotPanel.RunRequested += RobotPanel_RunRequested;
+             RobotPanel.RunRequested += RobotPanel_RunRequested;
             RobotPanel.DesignModeRequested += RobotPanel_EditModeRequested; ;
             RobotPanel.DesignModeEndRequested += RobotPanel_EditModeEndRequested; ;
             _dragManager.RegisterDropTarget(this);
@@ -35,7 +34,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             Canvas.SetLeft(RobotArmNew, 976);
             Canvas.SetTop(RobotArmNew, 760);
 
-                       lightPanel.PanelTriggered += LightPanel_PanelTriggered;
+            lightPanel.PanelTriggered += LightPanel_PanelTriggered;
             lightPanel.StartFlicker();
 
 
@@ -52,9 +51,48 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             _animation_timer.Tick += Animation_timer_Tick;
             _animation_timer.Start();
 
+        }
+        private Window? _hostWindow;
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            ////GlobalGame.MainWindow.AddHandler(Keyboard.PreviewKeyDownEvent,
+            ////    new KeyEventHandler(UC_KeyDown), handledEventsToo: true);
+            _hostWindow = Window.GetWindow(this);
+
+            if (_hostWindow != null)
+            {
+                _hostWindow.PreviewKeyDown += UC_KeyDown;
+            }
+            _controller.LoadedAsync();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"Canvas size: {MainCanvas.ActualWidth}, {MainCanvas.ActualHeight}");
+                Debug.WriteLine($"Image size: {FactoryInteriorImage.ActualWidth}, {FactoryInteriorImage.ActualHeight}");
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"FactoryInterior_UC arranged size: {ActualWidth}x{ActualHeight}; canvas: {MainCanvas.ActualWidth}x{MainCanvas.ActualHeight}");
+            }), DispatcherPriority.Loaded);
+        }
+        private void UC_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GlobalGame.MainWindow?.RemoveHandler(Keyboard.PreviewKeyDownEvent,
+                   new KeyEventHandler(UC_KeyDown));
         }
 
+        private void UserControl_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _controller.HandleMouseMove(e);
+        }
+        private void UserControl_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _controller.HandleMouseLeftButtonDown(e);
+        }
+        private void UC_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _controller.HandleMouseLeftButtonUp(e);
+        }
         private void RobotPanel_EditModeEndRequested(object? sender, EventArgs e)
         {
             _controller.EditModeEnd();
@@ -84,17 +122,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             _animation_timer.Start();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Debug.WriteLine($"Canvas size: {MainCanvas.ActualWidth}, {MainCanvas.ActualHeight}");
-                Debug.WriteLine($"Image size: {FactoryInteriorImage.ActualWidth}, {FactoryInteriorImage.ActualHeight}");
-
-                System.Diagnostics.Debug.WriteLine(
-                    $"FactoryInterior_UC arranged size: {ActualWidth}x{ActualHeight}; canvas: {MainCanvas.ActualWidth}x{MainCanvas.ActualHeight}");
-            }), DispatcherPriority.Loaded);
-        }
+       
         public void StartWorking(string workerImagePath)
         {
             //RobotLeftUC.StartWorking();
@@ -116,21 +144,21 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         {
             RobotPanel.Visibility = Visibility.Visible;
         }
+       
 
-        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void MenuItem_Start_Click(object sender, RoutedEventArgs e)
         {
-            _controller.HandleMouseDown(e);
-            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                Point thispoint = e.GetPosition(this);
-                System.Diagnostics.Debug.WriteLine("loc " + thispoint.X + "  " + thispoint.Y);
-            }
+            Cursor = Cursors.Cross;
+            _controller.StartDrawing();
+        }
 
-        }
-        private void UserControl_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void MenuItem_Complete_Click(object sender, RoutedEventArgs e)
         {
-            _controller.HandleMouseMove(e);
+            Cursor = Cursors.Arrow;
+            _controller.StopDrawing();
         }
+
+       
 
         public void OnDropped()
         {
@@ -203,17 +231,81 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         }
         private void UC_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.D && Keyboard.Modifiers == ModifierKeys.Control)
+            switch (e.Key)
             {
-                DanceRobot();
+                case Key.None:
+                    break;
+                case Key.A:
+                    break;
+                case Key.B:
+                    break;
+                case Key.C:
+                    break;
+                case Key.D:
+                    if (Keyboard.Modifiers == ModifierKeys.Control)
+                    {
+                        DanceRobot();
+                    }
+                    break;
+                case Key.E:
+                    break;
+                case Key.F:
+                    break;
+                case Key.G:
+                    break;
+                case Key.H:
+                    break;
+                case Key.I:
+                    break;
+                case Key.J:
+                    break;
+                case Key.K:
+                    break;
+                case Key.L:
+                    break;
+                case Key.M:
+                    break;
+                case Key.N:
+                    break;
+                case Key.O:
+                    break;
+                case Key.P:
+                    break;
+                case Key.Q:
+                    break;
+                case Key.R:
+                    if (Keyboard.Modifiers == ModifierKeys.Control)
+                    {
+                        _controller.ProducePart();
+                    }
+                    break;
+                case Key.S:
+                    break;
+                case Key.T:
+                    break;
+                case Key.U:
+                    break;
+                case Key.V:
+                    break;
+                case Key.W:
+                    break;
+                case Key.X:
+                    break;
+                case Key.Y:
+                    break;
+                case Key.Z:
+                    break;
+                default:
+                    break;
             }
-        }
+          }
 
         private void Zone1_MouseEnter(object sender, MouseEventArgs e)
         {
 
         }
-    }
+
+     }
 }
 
 

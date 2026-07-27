@@ -10,7 +10,7 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            _connectionString = "Data Source=" + GlobalServices.Database + " ;";
+                _connectionString = "Data Source=" + GlobalServices.Database + " ;";
             }
             catch (Exception ex)
             {
@@ -45,19 +45,19 @@ namespace CatoriServices.Objects.database.Locations
         {
             try
             {
-                            using var conn = GetConnection();
-                            await conn.OpenAsync();
+                using var conn = GetConnection();
+                await conn.OpenAsync();
                 
-                            const string sql = "SELECT * FROM LocationLayoutItem WHERE LocationId = @LocationId ORDER BY ZIndex, LocationLayoutItemId";
-                            using var cmd = new SqliteCommand(sql, conn);
-                            cmd.Parameters.AddWithValue("@LocationId", locationId);
-                            using var reader = await cmd.ExecuteReaderAsync();
+                const string sql = "SELECT * FROM LocationLayoutItem WHERE LocationId = @LocationId ORDER BY ZIndex, LocationLayoutItemId";
+                using var cmd = new SqliteCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@LocationId", locationId);
+                using var reader = await cmd.ExecuteReaderAsync();
                 
-                            var list = new List<LocationLayoutItemEntity>();
-                            while (await reader.ReadAsync())
-                                list.Add(MapItem(reader));
+                var locLayout = new List<LocationLayoutItemEntity>();
+                while (await reader.ReadAsync())
+                    locLayout.Add(MapItem(reader));
                 
-                            return list;
+                return locLayout;
             }
             catch (Exception ex)
             {
@@ -66,10 +66,7 @@ namespace CatoriServices.Objects.database.Locations
             }
         }
 
-        public Task<List<LocationLayoutItemEntity>> GetLayoutItemsByIdAsync(long locationId)
-            => GetByLocationIdAsync(locationId);
-
-        public async Task<int> InsertAsync(LocationLayoutItemEntity item)
+          public async Task<int> InsertAsync(LocationLayoutItemEntity item)
         {
             try
             {
@@ -79,10 +76,10 @@ namespace CatoriServices.Objects.database.Locations
                             const string sql = @"
                                 INSERT INTO LocationLayoutItem
                                     (LocationId, ItemName, ItemType, MajorItemType, X, Y, Z, Width, Height, RotationDegrees,
-                                     ZIndex, IsLocked, MetadataJson)
+                                     ZIndex, IsLocked, WpfPath, MetadataJson)
                                 VALUES
                                     (@LocationId, @ItemName, @ItemType, @MajorItemType, @X, @Y, @Z, @Width, @Height, @RotationDegrees,
-                                     @ZIndex, @IsLocked, @MetadataJson);
+                                     @ZIndex, @IsLocked, @WpfPath, @MetadataJson);
                                 SELECT last_insert_rowid();";
                 
                             using var cmd = new SqliteCommand(sql, conn);
@@ -118,6 +115,7 @@ namespace CatoriServices.Objects.database.Locations
                                     RotationDegrees = @RotationDegrees,
                                     ZIndex = @ZIndex,
                                     IsLocked = @IsLocked,
+                                    WpfPath = @WpfPath,
                                     MetadataJson = @MetadataJson
                                 WHERE LocationLayoutItemId = @LocationLayoutItemId";
                 
@@ -132,7 +130,29 @@ namespace CatoriServices.Objects.database.Locations
                 throw;
             }
         }
+        public async Task UpdateWpfPathAsync(long locationLayoutItemId, string updatedWpfPath)
+        {
+            try
+            {
+                using var conn = GetConnection();
+                await conn.OpenAsync();
 
+                const string sql = @"
+                                UPDATE LocationLayoutItem
+                                SET WpfPath = @WpfPath
+                                WHERE LocationLayoutItemId = @LocationLayoutItemId";
+
+                using var cmd = new SqliteCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@LocationLayoutItemId", locationLayoutItemId);
+                cmd.Parameters.AddWithValue("@WpfPath", updatedWpfPath ?? (object)DBNull.Value);
+                await cmd.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
         public async Task<bool> DeleteAsync(long itemId)
         {
             try
@@ -167,6 +187,7 @@ namespace CatoriServices.Objects.database.Locations
                             cmd.Parameters.AddWithValue("@RotationDegrees", item.RotationDegrees);
                             cmd.Parameters.AddWithValue("@ZIndex", item.ZIndex);
                             cmd.Parameters.AddWithValue("@IsLocked", item.IsLocked ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@WpfPath", item.WpfPath ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@MetadataJson", item.MetadataJson ?? (object)DBNull.Value);
             }
             catch (Exception ex)
@@ -195,6 +216,7 @@ namespace CatoriServices.Objects.database.Locations
                                 RotationDegrees = reader.GetDouble(reader.GetOrdinal("RotationDegrees")),
                                 ZIndex = reader.GetInt32(reader.GetOrdinal("ZIndex")),
                                 IsLocked = reader.GetInt32(reader.GetOrdinal("IsLocked")) == 1,
+                                WpfPath = GetNullableString(reader, "WpfPath"),
                                 MetadataJson = GetNullableString(reader, "MetadataJson")
                             };
             }
@@ -245,6 +267,8 @@ namespace CatoriServices.Objects.database.Locations
                 throw;
             }
         }
+
+       
     }
 }
 

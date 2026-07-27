@@ -27,15 +27,18 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
         public async Task<List<LocationLayoutItemViewModel>> GetByLocationIdAsync(long locationId, bool includePoints = true)
         {
+            List<LocationLayoutItemViewModel> viewModels = new List<LocationLayoutItemViewModel>();    
             var entities = await _itemRepository.GetByLocationIdAsync(locationId);
-            var viewModels = entities.Select(ToViewModel).ToList();
-
-            if (includePoints)
+            foreach (var entity in entities)
             {
-                foreach (var viewModel in viewModels)
-                    await LoadPointsAsync(viewModel);
-            }
+                var viewModel = ToViewModel(entity);
 
+                if (includePoints)
+                {
+                    await LoadPointsAsync(viewModel);
+                }
+                viewModels.Add(viewModel);
+            }
             return viewModels;
         }
 
@@ -133,6 +136,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = viewModel.RotationDegrees,
                 ZIndex = viewModel.ZIndex,
                 IsLocked = viewModel.IsLocked,
+                WpfPath = string.IsNullOrWhiteSpace(viewModel.WpfPath) ? null : viewModel.WpfPath,
                 MetadataJson = viewModel.MetadataJson
             };
         }
@@ -175,6 +179,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = entity.RotationDegrees,
                 ZIndex = entity.ZIndex,
                 IsLocked = entity.IsLocked,
+                WpfPath = entity.WpfPath,
                 MetadataJson = entity.MetadataJson
             };
         }
@@ -198,6 +203,11 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 Control2Y = entity.Control2Y,
                 RotationDegrees = entity.RotationDegrees
             };
+        }
+
+        internal async Task UpdateWpfPath(long locationLayoutItemId, string updatedWpfPath)
+        {
+            await _itemRepository.UpdateWpfPathAsync(locationLayoutItemId, updatedWpfPath);
         }
     }
 }

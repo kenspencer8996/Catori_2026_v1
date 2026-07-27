@@ -1,9 +1,4 @@
-using CatoriApp.Game.Controllers;
-using CatoriApp.Core.Objects.Arguments;
-using CatoriApp.Core.Objects.DragDrop;
-using CatoriApp.Core.Objects.Messages;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Windows.Input;
 namespace CatoriApp.Game.Views.Controls.House
 {
     /// <summary>

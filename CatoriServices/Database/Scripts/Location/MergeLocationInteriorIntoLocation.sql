@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS LocationLayoutItem (
     RotationDegrees REAL NOT NULL DEFAULT 0,
     ZIndex INTEGER NOT NULL DEFAULT 0,
     IsLocked INTEGER NOT NULL DEFAULT 0,
+    WpfPath TEXT NULL,
     MetadataJson TEXT NULL,
     FOREIGN KEY (LocationId) REFERENCES Location(LocationId) ON DELETE CASCADE
 );

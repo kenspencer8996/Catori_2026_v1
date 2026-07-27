@@ -1,5 +1,9 @@
+using CatoriApp.Game.Controllers.LocationSubControllers;
+using CatoriApp.Game.Objects.AnimationOnPath;
+using CatoriApp.MachineLayoutDesigner.ViewModels.Robots;
+using CatoriUCLibrary.Views.RobotArm;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
-using System.Security.Policy;
 using System.Windows.Threading;
 namespace CatoriApp.Game.Controllers.Locations.Factory
 {
@@ -7,46 +11,75 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
     {
         FactoryInterior_UC _view;
         Cursor _currentCursor;
-        LocationService layoutService = new LocationService();
-        LocationLayoutItemService _layoutItemService = new LocationLayoutItemService();
-         public List<RobotPoseViewModel> robotposes { get; private set; }
-        private RobotPoseService _poseservice = new RobotPoseService();
+        ILocationSubController _locationSubController;
         string _backgroundImagePath;
 
-        LocationViewModel viewModel = new LocationViewModel();    
+        LocationViewModel viewModel = new LocationViewModel();
         readonly DispatcherTimer _animation_timer;
         public string ImagesFolderRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling");
         public string restImageRight = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "RightDrilling", "RobotArm2rightDrilling00r.png");
         string root = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "WIthSawBlade");
-          public string ConveyorA;
+        public string ConveyorA;
         public string ConveyorB;
         public string ConveyorTarget;
         List<Polygon> _zones;
         List<Polygon> _interactiveZones = new List<Polygon>();
-        Point _startPoint;
-        Point _endPoint;
-        bool _editMode = false;
-        private bool _isDrawingLine = false;
-        private Line? _previewLine;
-        Point _currentPoint;
+        private Point _segmentStart;
+        private Point _currentPoint;
+        private bool _editMode;
+        private bool _isDrawingEnabled;
+        private bool _isDrawingSegment;
+        private System.Windows.Shapes.Path? _previewPath;
+        private LocationLayoutItemViewModel? _activeDrawingItem;
+        private LocationLayoutItemViewModel? _drawingLayoutItem;
         LocationService _locationService;
-        AnimationController moveXYOnControl;
+         AnimationController moveXYOnControl;
         int _locationid = 0;
         LocationViewModel _locationViewModel;
         private bool _isOverInteractiveZone;
+        private Point? _lastPathPoint;
         private const int InteractiveZoneZIndex = 1603;
         private const int InteractiveZoneEditZIndex = 2101;
         private const double ConveyorHitAreaWidth = 60;
-        ObservableCollection<LocationLayoutItemViewModel> _locationLayoutItemViewModels;
-        public FactoryInterior_UController(FactoryInterior_UC view, int locationid)
+        private Polygon? _activeDrawingZone;
+        List<LocationLayoutItemViewModel> _locationLayoutItemViewModels;
+        List<System.Windows.Shapes.Path> _designerPaths = new List<System.Windows.Shapes.Path>();
+        ProductUC part1SimpleUC;
+        ProductUC part2SimpleUC;
+        ProductUC part3CompleteUC;
+        PathAnimationHandle _pathAnimationHandler1;
+        PathAnimationHandle _pathAnimationHandler2;
+        PathAnimationHandle _pathAnimationHandler3;
+        List<RobotPose> _robotPoses;
+        public FactoryInterior_UController(FactoryInterior_UC view, 
+            int locationid)
         {
             _locationid = locationid;
             _view = view;
             _currentCursor = view.Cursor;
+            switch (_locationid)
+            {
+                case 1:
+                    _locationSubController = new LocationInterior1SubController(_view);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                default:
+                    break;
+            }
             moveXYOnControl = new AnimationController();
             _locationService = new LocationService();
             _locationViewModel = _locationService.GetByLocationId(locationid);
-            _layoutItemService = new LocationLayoutItemService();
             _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
             string root = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "WIthSawBlade");
             LoadViewModelAsync();
@@ -57,33 +90,65 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
 
             //< Robots:RobotControl x:Name = "RobotBuilder" Canvas.Left = "20" Panel.ZIndex = "1202"
             //              Canvas.Top = "50" />
-
+            part1SimpleUC = new ProductUC("factories//SawBlade.png");
+            part2SimpleUC = new ProductUC("factories//SawHandle.png");
+            part3CompleteUC = new ProductUC("factories//SawPurpleHandle.png");
+            part1SimpleUC.Opacity = 0;
+            part2SimpleUC.Opacity = 0;
+            part3CompleteUC.Opacity = 0;
+            WeakReferenceMessenger.Default.Register<AnimationCompleteMessage>(this, (r, m) =>
+            {
+                cLogger.Log(m.Name + " WeakReferenceMessenger called  ");
+                if (m.Name.ToLower().Contains(viewModel.LocationName.ToLower()))
+                {
+                    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[0]);
+                    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[1]);
+                    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[2]);
+                    //_view.RobotArmNew.MoveToPoseAsync(_robotPoses[3]);
+                    // Handle the animation complete message for this location
+                }
+            });
         }
         private async Task LoadViewModelAsync()
         {
-            viewModel = await layoutService.GetByLocationIdAsync(_locationid) ?? new LocationViewModel();
+            viewModel = await locationService.GetByLocationIdAsync(_locationid) ?? new LocationViewModel();
             _view.RobotPanel.LocationId = viewModel.LocationId;
             robotposes = viewModel.LocationId > 0
                 ? await _poseservice.GetByLocationIdAsync(viewModel.LocationId)
                 : new List<RobotPoseViewModel>();
-
-            await SetupInteriorAsync(viewModel);
-            var locitems = await _layoutItemService.GetByLocationIdAsync(_locationid);
-            _locationLayoutItemViewModels = new ObservableCollection<LocationLayoutItemViewModel>();
-            foreach (var item in locitems)
-            {
-                _locationLayoutItemViewModels.Add(item);
-            }
             
+            await SetupInteriorAsync(viewModel);
+            _locationLayoutItemViewModels = await _layoutItemService.GetByLocationIdAsync(_locationid);
+            _zones = new List<Polygon>();
             LoadZones(_locationLayoutItemViewModels);
-            if (viewModel.Points.Count == 0)
-            {
-                _view.ShowrobotControlPanel();
             }
+        public async Task LoadedAsync()
+        {
+            machineLayoutDesignermodel = await _robotdesignservice.LoadByLocationIdAsync(viewModel.LocationId);
+            double left = machineLayoutDesignermodel.RobotX;
+            double top = machineLayoutDesignermodel.RobotY;
+            left = 620;
+            top = 330;
+
+            //CatoriUCLibrary.Views.RobotArm.RobotPose targetPose =
+            //   new CatoriUCLibrary.Views.RobotArm.RobotPose(j1, j2, j3, j4);
+            _robotPoses = new List<RobotPose>();
+            Canvas.SetLeft(_view.RobotArmNew, left);
+            Canvas.SetTop(_view.RobotArmNew, top);
+            foreach (var pose in machineLayoutDesignermodel.Poses)
+            {
+                List<double> angles = new List<double>();
+                foreach (var segment in pose.Segments)
+                {
+                    angles.Add(segment.Angle);
+                }
+                RobotPose robotpose = new RobotPose(angles[0], angles[1], angles[2], angles[3]);
+                _robotPoses.Add(robotpose);
+            }
+            SetupAnimations();
 
         }
-
-        private void LoadZones(ObservableCollection<LocationLayoutItemViewModel> layouts)
+        private void LoadZones(List<LocationLayoutItemViewModel> layouts)
         {
 
             if (_zones != null)
@@ -92,100 +157,93 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                     _view.MainCanvas.Children.Remove(zone);
             }
 
-            _zones = new List<Polygon>();
             _interactiveZones.Clear();
             int zMainIndex = Panel.GetZIndex(_view.FactoryInteriorImage);
-            foreach (var thislayout in _locationLayoutItemViewModels)
+            System.Windows.Media.Brush fillBrush;
+            foreach (var layout in layouts)
             {
-                System.Windows.Media.Brush fillBrush;
-                fillBrush = MediaCommon.GetBrushForMajorItemType(thislayout.MajorItemType);
-
+                if (layout.WpfPath != null && layout.WpfPath != string.Empty)
+                {
+                    AddPath(layout.WpfPath);
+                   
+                }
+                fillBrush = MediaCommon.GetBrushForMajorItemType(layout.MajorItemType);
                 Polygon polygon = new Polygon();
                 polygon.Visibility = Visibility.Hidden;
                 polygon.StrokeThickness = 2;
-                polygon.Tag = "zone";
+                polygon.Tag = layout;
                 polygon.IsHitTestVisible = true;
                 polygon.Opacity = 1;
-                int zCurrentIndex = zMainIndex+1;
-                if (IsZoneLayout(thislayout))
+                int zCurrentIndex = zMainIndex + 1;
+                if (IsZoneLayout(layout))
                 {
-                        switch (thislayout.ItemType)
-                        {
-                            case LocationLayoutItemType.Conveyor:
-                                polygon.Stroke = Brushes.Red;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = InteractiveZoneZIndex;
-                                MakeInteractiveZone(polygon);
-                                _interactiveZones.Add(polygon);
-                                break;
-                            case LocationLayoutItemType.Table:
-                                polygon.Stroke = Brushes.Red;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = zMainIndex + 1;
-                                break;
-                            case LocationLayoutItemType.Workstation:
-                                polygon.Stroke = Brushes.Red;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = zMainIndex + 1;
-                                break;
-                            case LocationLayoutItemType.Storage:
-                                polygon.Stroke = Brushes.Red;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = zMainIndex + 1;
-                                break;
-                            //case LocationLayoutItemType.Decoration:
-                            //    polygon.Stroke = Brushes.Red;
-                            //    polygon.Fill = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
-                            //    zCurrentIndex = zMainIndex + 1;
-                            //    if (IsConveyorZone(thislayout))
-                            //    {
-                            //        zCurrentIndex = InteractiveZoneZIndex;
-                            //        MakeInteractiveZone(polygon);
-                            //        _interactiveZones.Add(polygon);
-                            //    }
-                            //    break;
-                            case LocationLayoutItemType.PickupZone:
-                                polygon.Stroke = Brushes.Blue;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = InteractiveZoneZIndex;
-                                MakeInteractiveZone(polygon);
-                                _interactiveZones.Add(polygon);
-                                break;
-                            case LocationLayoutItemType.DropoffZone:
-                                polygon.Stroke = Brushes.AliceBlue;
-                                polygon.Fill = fillBrush;
-                                zCurrentIndex = InteractiveZoneZIndex;
-                                MakeInteractiveZone(polygon);
-                                _interactiveZones.Add(polygon);
-                                break;
-                            default:
-                                break;
-                        }
+                    switch (layout.ItemType)
+                    {
+                        case LocationLayoutItemType.Conveyor:
+                            polygon.Stroke = Brushes.Red;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = InteractiveZoneZIndex;
+                            MakeInteractiveZone(polygon);
+                            _interactiveZones.Add(polygon);
+                            break;
+                        case LocationLayoutItemType.Table:
+                            polygon.Stroke = Brushes.Red;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = zMainIndex + 1;
+                            break;
+                        case LocationLayoutItemType.Workstation:
+                            polygon.Stroke = Brushes.Red;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = zMainIndex + 1;
+                            break;
+                        case LocationLayoutItemType.Storage:
+                            polygon.Stroke = Brushes.Red;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = zMainIndex + 1;
+                            break;
+                        case LocationLayoutItemType.PickupZone:
+                            polygon.Stroke = Brushes.Blue;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = InteractiveZoneZIndex;
+                            MakeInteractiveZone(polygon);
+                            _interactiveZones.Add(polygon);
+                            break;
+                        case LocationLayoutItemType.DropoffZone:
+                            polygon.Stroke = Brushes.AliceBlue;
+                            polygon.Fill = fillBrush;
+                            zCurrentIndex = InteractiveZoneZIndex;
+                            MakeInteractiveZone(polygon);
+                            _interactiveZones.Add(polygon);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                else if (string.Equals(thislayout.MajorItemType, "Robot", StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(layout.MajorItemType, "Robot", StringComparison.OrdinalIgnoreCase))
                 {
-                        switch (thislayout.ItemType)
-                        {
-                            case LocationLayoutItemType.Robot:
-                                break;
-                            default:
-                                break;
-                        }
+                    switch (layout.ItemType)
+                    {
+                        case LocationLayoutItemType.Robot:
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                foreach (LocationLayoutPointViewModel point in thislayout.Points)
+                foreach (LocationLayoutPointViewModel
+                    point in layout.Points.OrderBy(p => p.PointIndex))
                 {
                     polygon.Points.Add(new Point(point.X, point.Y));
                 }
 
-                if (thislayout.ItemType == LocationLayoutItemType.Conveyor && polygon.Points.Count == 2)
+                if (layout.ItemType == LocationLayoutItemType.Conveyor && polygon.Points.Count == 2)
                 {
                     polygon.Points = CreateConveyorHitArea(polygon.Points[0], polygon.Points[1]);
                 }
-                Debug.WriteLine($"{thislayout.ItemName} {thislayout.ItemType} {thislayout.MajorItemType} Points={polygon.Points.Count}");
+                Debug.WriteLine($"{layout.ItemName} {layout.ItemType} {layout.MajorItemType} Points={polygon.Points.Count}");
                 if (polygon.Points.Count >= 3)
                 {
-                    //Canvas.SetLeft(polygon, thislayout.X);
-                    //Canvas.SetTop(polygon, thislayout.Y );
+                    //Canvas.SetLeft(polygon, layout.X);
+                    //Canvas.SetTop(polygon, layout.Y );
                     Canvas.SetZIndex(polygon, zCurrentIndex);
                     if (_interactiveZones.Contains(polygon))
                     {
@@ -197,8 +255,41 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                     _zones.Add(polygon);
                 }
             }
-        }
 
+        }
+        private void SetupAnimations()
+        {
+           
+            Geometry path =
+           Geometry.Parse(_locationLayoutItemViewModels[0].WpfPath);
+            PathAnimationOptions? options = new PathAnimationOptions();
+            options.Duration = TimeSpan.FromSeconds(2);
+            options.InitialScale = .73;
+            _pathAnimationHandler1 = GameAnimationHelper.AddControlOnPath(viewModel.LocationName, _view.MainCanvas,
+                part1SimpleUC, _locationLayoutItemViewModels[0].WpfPath,options);
+            _pathAnimationHandler2 = GameAnimationHelper.AddControlOnPath(viewModel.LocationName, _view.MainCanvas,
+                part2SimpleUC, _locationLayoutItemViewModels[1].WpfPath,options);
+            //_pathAnimationHandler3 = GameAnimationHelper.AddControlOnPath(_view.MainCanvas,
+            //    part3SimpleUC, _locationLayoutItemViewModels[0].WpfPath);
+
+        }
+        public void ProducePart()
+        {
+            try
+            {
+                part1SimpleUC.Opacity = 1;
+                part2SimpleUC.Opacity = 1;
+                part3CompleteUC.Opacity = 0;
+
+                _pathAnimationHandler1.Start();
+                _pathAnimationHandler2.Start();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         private void MakeInteractiveZone(Polygon polygon)
         {
             polygon.Cursor = Cursors.Cross;
@@ -263,12 +354,11 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
             ConveyorB = e.InputB;
             ConveyorTarget = e.Output;
             EventHandler handler = null;
-            MovePartsToStep1();
             StartProductionLine();
 
             return handler;
         }
-        
+
         private async void StartProductionLine()
         {
             //await moveXYOnControl.MoveXYOnControlToAsync(partSimpleUC,transform,finalPoint, duration);
@@ -278,7 +368,8 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         {
             EventHandler handler = null;
             _editMode = false;
-            CancelCurrentLines();
+            _isDrawingEnabled = false;
+            CancelCurrentSegment();
             foreach (var zone in _zones)
             {
                 if (_interactiveZones.Contains(zone))
@@ -291,7 +382,8 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                 {
                     zone.Visibility = Visibility.Hidden;
                 }
-            }       
+            }
+            SwitchPathColor();
             ApplyInteractiveCursor(false);
             return handler;
         }
@@ -309,48 +401,13 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                     Canvas.SetZIndex(zone, InteractiveZoneEditZIndex);
                 }
             }
-            
+            SwitchPathColor();
             return handler;
         }
-        private async void MovePartsToStep1()
-        {
-            //_view.part1SimpleUC.Opacity = 1;
-            //_view.part2SimpleUC.Opacity = 1;
-
-            //TimeSpan duration = TimeSpan.FromSeconds(2);
-            //var founda = viewModel.Points.FirstOrDefault(p => p.PointType == ConveyorA);
-            //var foundb = viewModel.Points.FirstOrDefault(p => p.PointType == ConveyorB);
-            //double halfcontrolwidth = _view.part1SimpleUC.ActualWidth / 2;
-            //double halfcontrolheight = _view.part1SimpleUC.ActualHeight / 2;
-            //double ax = founda.XLoc - halfcontrolwidth;
-            //double ay = founda.YLoc - halfcontrolheight;
-            //double aendx = founda.XLocEnd;
-            //double aendy = founda.YLocEnd;
-            //double bx = foundb.XLoc - halfcontrolwidth;
-            //double by = foundb.YLoc - halfcontrolheight;
-            //double bendx = foundb.XLocEnd;
-            //double bendy = foundb.YLocEnd;
-            //Canvas.SetLeft(_view.part1SimpleUC, ax);
-            //Canvas.SetTop(_view.part1SimpleUC, ay);
-            //Storyboard sb1 = moveXYOnControl.MoveXYOnControlToAsync(_view.part1SimpleUC,
-            //    aendx, aendy, duration);
-
-            ////center conveyor
-            //Canvas.SetLeft(_view.part2SimpleUC, bx);
-            //Canvas.SetTop(_view.part2SimpleUC, by);
-            //Storyboard sb2 = moveXYOnControl.MoveXYOnControlToAsync(_view.part2SimpleUC,
-            //    bendx, bendy, duration);
-
-            //sb2.Completed += (s, e) =>
-            //{
-            //};
-            //sb1.Begin();
-            //sb2.Begin();
-
-        }
+       
         public async Task SetupInteriorAsync(LocationViewModel vm)
         {
-            _backgroundImagePath =System.IO.Path.Combine(GlobalAllApps.ImageFolder, "LocationInteriors", "Factory", vm.BackgroundImagePath);
+            _backgroundImagePath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "LocationInteriors", "Factory", vm.BackgroundImagePath);
             _view.FactoryInteriorImage.Source = UIUtility.GetImageControl(_backgroundImagePath, 1920, 1080, 0).Source;
 
             _view.RobotPanel.LocationBackgroundImagePath = _backgroundImagePath;
@@ -367,125 +424,289 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         {
             await Task.Delay(milliseconds);
         }
-        private void FinishLine(Point endPoint)
+        internal void StartDrawing()
         {
-            if (_previewLine == null)
+            if (!_editMode)
                 return;
 
-            _previewLine.X2 = endPoint.X;
-            _previewLine.Y2 = endPoint.Y;
-
-            // Optional: make final line solid instead of dashed
-            _previewLine.StrokeDashArray = null;
-            _previewLine.Stroke = Brushes.LimeGreen;
-
-            _isDrawingLine = false;
-            // Save to database here
-            SaveConveyorLine(_startPoint, endPoint);
-
-            _previewLine = null;
+            CancelCurrentSegment();
+            _isDrawingEnabled = true;
+            UpdateInteractiveZoneCursor(Mouse.GetPosition(_view.MainCanvas));
         }
-        private void SaveConveyorLine(Point startPoint, Point endPoint)
+        private void SwitchPathColor()
         {
-            string PointType = "";
-
-            PointType = GetLineName(startPoint);
-
-            if (PointType != "")
+            foreach (var path in _designerPaths)
             {
-                LocationLayoutPointEntity newPoint = new LocationLayoutPointEntity
-                {
-                    LocationLayoutPointId = 0, // Assuming 0 means new entry
-                    LocationId = viewModel.LocationId,
-                    XLoc = startPoint.X,
-                    YLoc = startPoint.Y,
-                    PointType = PointType,
-                    XLocEnd = endPoint.X,
-                    YLocEnd = endPoint.Y
-                };
-                layoutService.UpdatePoints(viewModel.LocationId, newPoint);
-            }
-        }
-        /// <summary>
-        /// remove edit preview lines and reset edit state. Called when exiting edit mode or canceling current line drawing
-        /// </summary>
-        private void CancelCurrentLines()
-        {
-            List<Line> lines = UIHelper.FindChildrenByNamePrefix<Line>(_view.MainCanvas, "PreviewLine");
-            if (lines != null && lines.Count > 0)
-            {
-                foreach (var line in lines)
-                {
-                    _view.MainCanvas.Children.Remove(line);
-                }
-                //MainCanvas.Children.Remove(_previewLine);
-            }
 
-            _isDrawingLine = false;
-            _ = LoadViewModelAsync();
-        }
-
-        internal void HandleMouseDown(MouseButtonEventArgs e)
-        {
-            if (_editMode)
-            {
-                if (!_isDrawingLine)
+                if (_editMode)
                 {
-                    _startPoint = e.GetPosition(_view.MainCanvas);
-                    System.Diagnostics.Debug.WriteLine("Start loc " + _startPoint.X + "  " + _startPoint.Y);
-                    _isDrawingLine = true;
-                    string lineName = GetLineName(_startPoint);
-                    _previewLine = new Line
-                    {
-                        X1 = _startPoint.X,
-                        Y1 = _startPoint.Y,
-                        X2 = _currentPoint.X,
-                        Y2 = _currentPoint.Y,
-                        Stroke = Brushes.Yellow,
-                        StrokeThickness = 4,
-                        Name = "PreviewLine",
-                        StrokeDashArray = new DoubleCollection { 4, 2 } // optional preview style
-                    };
-
-                    _view.MainCanvas.Children.Add(_previewLine);
+                    path.Stroke = Brushes.LimeGreen;
+                    path.StrokeThickness = 4;
+                    path.Opacity = 1.0;
                 }
                 else
                 {
-                    // Second click = finalize line
-                    FinishLine(_currentPoint);
+                    path.Stroke = Brushes.LimeGreen;
+                    path.StrokeThickness = 2;
+                    path.Opacity = 0.15;
                 }
             }
         }
 
-        private string GetLineName(Point startPoint)
+        internal void StopDrawing()
         {
-            int leftA = 971;
-            int rightA = 1240;
-            int leftB = 1158;
-            int rightB = 1566;
-            int rightC = 1838;
-            string PointType = "";
-            if (startPoint.X > leftA && startPoint.X < rightA)
-                PointType = "A";
-            else if (startPoint.X > rightA && startPoint.X < rightB)
-                PointType = "B";
-            else if (startPoint.X > rightC)
-                PointType = "C";
-            return PointType;
+            _isDrawingEnabled = false;
+
+            // Complete should not create another point.
+            // Remove any unfinished preview segment.
+            if (_isDrawingSegment)
+            {
+                CancelCurrentSegment();
+            }
+            else
+            {
+                _view.MainCanvas.ReleaseMouseCapture();
+            }
+
+            ApplyInteractiveCursor(false);
+
+            if (_drawingLayoutItem != null &&
+                !string.IsNullOrWhiteSpace(_drawingLayoutItem.WpfPath))
+            {
+                _layoutItemService.UpdateWpfPath(
+                    _drawingLayoutItem.LocationLayoutItemId,
+                    _drawingLayoutItem.WpfPath);
+            }
+
+            _drawingLayoutItem = null;
+            _activeDrawingItem = null;
+            _lastPathPoint = null;
+        }
+
+        internal void HandleMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            GlobalAllApps.WriteDebugInfo($"Mouse left button down at {e.GetPosition(_view.MainCanvas)}. EditMode: {_editMode}, DrawingEnabled: {_isDrawingEnabled}, IsDrawingSegment: {_isDrawingSegment}");
+            if (!_editMode || !_isDrawingEnabled || _isDrawingSegment)
+                return;
+            
+           
+            Point mousePoint = e.GetPosition(_view.MainCanvas);
+            Polygon? zone = GetInteractiveZoneAt(mousePoint);
+
+            if (zone?.Tag is not LocationLayoutItemViewModel layoutItem)
+                return;
+
+            // Lock the whole drawing session to one layout item.
+            _drawingLayoutItem ??= layoutItem;
+
+            if (_drawingLayoutItem.LocationLayoutItemId !=
+                layoutItem.LocationLayoutItemId)
+            {
+                return;
+            }
+
+            // First segment starts at the click.
+            // Later segments start at the previous endpoint.
+
+            _activeDrawingZone = zone;
+            _activeDrawingItem = layoutItem;
+            _drawingLayoutItem ??= layoutItem;
+
+            _segmentStart = _lastPathPoint ?? mousePoint;
+            _currentPoint = mousePoint;
+            _isDrawingSegment = true;
+
+            StartPreviewSegment(_segmentStart);
+            _view.MainCanvas.CaptureMouse();
+            e.Handled = true;
         }
 
         internal void HandleMouseMove(MouseEventArgs e)
         {
-            _currentPoint = e.GetPosition(_view.MainCanvas);
-            UpdateInteractiveZoneCursor(_currentPoint);
+            Point mousePoint = e.GetPosition(_view.MainCanvas);
 
-            if (!_editMode || !_isDrawingLine || _previewLine == null)
+            UpdateInteractiveZoneCursor(mousePoint);
+
+            if (!_isDrawingSegment || _previewPath == null)
                 return;
 
-            _previewLine.X2 = _currentPoint.X;
-            _previewLine.Y2 = _currentPoint.Y;
+            // Do not let the preview follow the cursor after the button is released.
+            if (e.LeftButton != MouseButtonState.Pressed)
+            {
+                CancelCurrentSegment();
+                return;
+            }
 
-         }
+            _currentPoint = mousePoint;
+
+            _previewPath.Data =
+                CreateSegmentGeometry(_segmentStart, _currentPoint);
+        }
+
+        internal void HandleMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            GlobalAllApps.WriteDebugInfo($"Mouse left button up at {e.GetPosition(_view.MainCanvas)}. EditMode: {_editMode}, DrawingEnabled: {_isDrawingEnabled}, IsDrawingSegment: {_isDrawingSegment}");
+            if (!_isDrawingSegment)
+                return;
+
+            Point segmentEnd = e.GetPosition(_view.MainCanvas);
+
+            bool endedInSameZone =
+                _activeDrawingZone != null &&
+                IsPointInsidePolygon(segmentEnd, _activeDrawingZone);
+
+            GlobalAllApps.WriteDebugInfo(
+                $"MouseUp: Start={_segmentStart}, End={segmentEnd}, " +
+                $"SameZone={endedInSameZone}");
+
+            if (endedInSameZone &&
+                !PointsAreEffectivelyEqual(_segmentStart, segmentEnd))
+            {
+                CompleteSegment(segmentEnd);
+            }
+            else
+            {
+                CancelCurrentSegment();
+            }
+
+            e.Handled = true;
+        }
+
+        private void StartPreviewSegment(Point startPoint)
+        {
+            _previewPath = new System.Windows.Shapes.Path
+            {
+                Data = CreateSegmentGeometry(startPoint, startPoint),
+                Stroke = Brushes.Yellow,
+                StrokeThickness = 4,
+                Name = "PreviewPath",
+                IsHitTestVisible = false,
+                StrokeDashArray = new DoubleCollection { 4, 2 }
+            };
+
+            Panel.SetZIndex(_previewPath, InteractiveZoneEditZIndex + 100);
+            _view.MainCanvas.Children.Add(_previewPath);
+        }
+
+        private void CompleteSegment(Point endPoint)
+        {
+            if (_drawingLayoutItem == null || _previewPath == null)
+            {
+                CancelCurrentSegment();
+                return;
+            }
+
+            _drawingLayoutItem.WpfPath = AppendSegment(
+                _drawingLayoutItem.WpfPath,
+                _segmentStart,
+                endPoint);
+
+            _lastPathPoint = endPoint;
+
+            // Create a separate permanent path.
+            var completedPath = new System.Windows.Shapes.Path
+            {
+                Data = CreateSegmentGeometry(_segmentStart, endPoint),
+                Stroke = Brushes.LimeGreen,
+                StrokeThickness = 4,
+                IsHitTestVisible = false,
+                Tag = _drawingLayoutItem
+            };
+
+            Panel.SetZIndex(
+                completedPath,
+                InteractiveZoneEditZIndex + 100);
+            _designerPaths.Add(completedPath);
+            _view.MainCanvas.Children.Add(completedPath);
+
+            GlobalAllApps.WriteDebugInfo(
+                $"Completed path added. " +
+                $"Canvas children={_view.MainCanvas.Children.Count}, " +
+                $"Start={_segmentStart}, End={endPoint}");
+
+            // Now remove the temporary dashed path.
+            ResetDrawingSegmentState(removePreview: true);
+        }
+        private string AppendSegment(
+            string? existingWpfPath,
+            Point startPoint,
+            Point endPoint)
+        {
+            string newSegment =
+                $"M {startPoint.X:0.##},{startPoint.Y:0.##} " +
+                $"L {endPoint.X:0.##},{endPoint.Y:0.##}";
+
+            if (string.IsNullOrWhiteSpace(existingWpfPath))
+            {
+                return newSegment;
+            }
+
+            return $"{existingWpfPath.Trim()} {newSegment}";
+        }
+        //private string AppendSegment(string? existingWpfPath,
+        //    Point startPoint,Point endPoint)
+        //{
+        //    string result;
+
+        //    if (string.IsNullOrWhiteSpace(existingWpfPath))
+        //    {
+        //        result =
+        //            $"M {startPoint.X:0.##},{startPoint.Y:0.##} " +
+        //            $"L {endPoint.X:0.##},{endPoint.Y:0.##}";
+        //    }
+        //    else
+        //    {
+        //        result =
+        //            $"{existingWpfPath.Trim()} " +
+        //            $"M {_lastPathPosition.X:0.##},{_lastPathPosition.Y:0.##} " +
+        //            $"L {endPoint.X:0.##},{endPoint.Y:0.##}";
+        //    }
+
+        //    _lastPathPosition = endPoint;
+
+        //    return result;
+        //}
+
+        private static Geometry CreateSegmentGeometry(Point startPoint, Point endPoint)
+        {
+            //GlobalAllApps.WriteDebugInfo($"Creating segment geometry from {startPoint} to {endPoint}");
+            return new LineGeometry(startPoint, endPoint);
+        }
+
+        private Polygon? GetInteractiveZoneAt(Point point)
+        {
+            return _interactiveZones
+                .Where(zone => zone.Visibility == Visibility.Visible)
+                .OrderByDescending(Panel.GetZIndex)
+                .FirstOrDefault(zone => IsPointInsidePolygon(point, zone));
+        }
+
+        private static bool PointsAreEffectivelyEqual(Point first, Point second)
+        {
+            const double tolerance = 0.5;
+            return Math.Abs(first.X - second.X) < tolerance &&
+                   Math.Abs(first.Y - second.Y) < tolerance;
+        }
+
+        private void CancelCurrentSegment()
+        {
+            ResetDrawingSegmentState(removePreview: true);
+        }
+
+        private void ResetDrawingSegmentState(bool removePreview)
+        {
+            if (removePreview && _previewPath != null)
+            {
+                _view.MainCanvas.Children.Remove(_previewPath);
+            }
+
+            _view.MainCanvas.ReleaseMouseCapture();
+
+            _previewPath = null;
+            _activeDrawingItem = null;
+            _activeDrawingZone = null;
+            _isDrawingSegment = false;
+        }
 
         private void UpdateInteractiveZoneCursor(Point point)
         {
@@ -552,19 +773,42 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
         internal void MouseUpAfterRobotMove(RobotArg arg)
         {
         }
+
+        private System.Windows.Shapes.Path AddPath(string pathData)
+        {
+            if (string.IsNullOrWhiteSpace(pathData))
+                return null;
+
+            Geometry geometry;
+
+            try
+            {
+                geometry = Geometry.Parse(pathData);
+            }
+            catch (FormatException ex)
+            {
+                Debug.WriteLine($"Invalid path data: {pathData}");
+                Debug.WriteLine(ex);
+                return null;
+            }
+
+            var path = new System.Windows.Shapes.Path
+            {
+                Data = geometry,
+                Stroke = Brushes.LimeGreen,
+                StrokeThickness = 4,
+                Fill = Brushes.Transparent,
+                Stretch = Stretch.None,
+                SnapsToDevicePixels = true
+            };
+
+            Canvas.SetLeft(path, 0);
+            Canvas.SetTop(path, 0);
+            Panel.SetZIndex(path, 2500);
+
+            _view.MainCanvas.Children.Add(path);
+
+            return path;
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

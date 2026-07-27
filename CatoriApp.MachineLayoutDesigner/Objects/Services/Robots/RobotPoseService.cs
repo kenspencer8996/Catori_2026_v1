@@ -1,63 +1,24 @@
+using System.Text.Json;
+
 namespace CatoriApp.MachineLayoutDesigner.Objects.Services.Robots
 {
     public class RobotPoseService
     {
-        private readonly RobotPoseRepository _repository;
-
-        public RobotPoseService()
-        {
-            _repository = new RobotPoseRepository();
-        }
+        private readonly RobotRepository _repository = new();
 
         public async Task<List<RobotPoseViewModel>> GetByLocationIdAsync(long locationId)
         {
-            var poses = await _repository.GetByLocationIdAsync(locationId);
-            return poses.OrderBy(p => p.PoseIndex).Select(ToViewModel).ToList();
-        }
-
-        public async Task ReplaceForLocationAsync(long locationId, IList<RobotPoseViewModel> poses)
-        {
-            var entities = poses.Select(ToEntity).ToList();
-            await _repository.ReplaceForLocationAsync(locationId, entities);
-
-            for (int i = 0; i < entities.Count; i++)
-                poses[i].RobotPoseId = entities[i].RobotPoseId;
-        }
-
-        private static RobotPoseEntity ToEntity(RobotPoseViewModel vm)
-        {
-            return new RobotPoseEntity
+            var robot = await _repository.GetByLocationIdAsync(locationId);
+            if (robot == null) return new();
+            var result = new List<RobotPoseViewModel>();
+            foreach (var entity in robot.Poses)
             {
-                RobotPoseId = vm.RobotPoseId,
-                RobotSequenceId = vm.RobotSequenceId,
-                LocationId = vm.LocationId,
-                PoseIndex = vm.PoseIndex,
-                PoseName = vm.PoseName,
-                Joint1 = vm.Joint1,
-                Joint2 = vm.Joint2,
-                Joint3 = vm.Joint3,
-                JointEnd = vm.JointEnd,
-                DurationMilliseconds = vm.DurationMilliseconds
-            };
-        }
-
-        private static RobotPoseViewModel ToViewModel(RobotPoseEntity entity)
-        {
-            return new RobotPoseViewModel
-            {
-                RobotPoseId = entity.RobotPoseId,
-                RobotSequenceId = entity.RobotSequenceId,
-                LocationId = entity.LocationId,
-                PoseIndex = entity.PoseIndex,
-                PoseName = entity.PoseName,
-                Joint1 = entity.Joint1,
-                Joint2 = entity.Joint2,
-                Joint3 = entity.Joint3,
-                JointEnd = entity.JointEnd,
-                DurationMilliseconds = entity.DurationMilliseconds
-            };
+                var vm = new RobotPoseViewModel { RobotPoseId = entity.RobotPoseId, RobotId = robot.RobotId, PoseIndex = result.Count, PoseName = entity.PoseName };
+                var angles = JsonSerializer.Deserialize<List<double>>(entity.Pose) ?? new();
+                for (var i = 0; i < angles.Count; i++) vm.Segments.Add(new RobotPoseSegmentViewModel { SegmentIndex = i, Angle = angles[i] });
+                result.Add(vm);
+            }
+            return result;
         }
     }
 }
-
-

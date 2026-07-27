@@ -42,6 +42,8 @@ namespace CatoriServices.Objects.database.Locations
                             {
                                 await CreateTablesInlineAsync(conn);
                             }
+
+                            await EnsureLocationLayoutItemWpfPathColumnAsync(conn);
             }
             catch (Exception ex)
             {
@@ -78,6 +80,7 @@ namespace CatoriServices.Objects.database.Locations
                                     RotationDegrees REAL NOT NULL DEFAULT 0,
                                     ZIndex INTEGER NOT NULL DEFAULT 0,
                                     IsLocked INTEGER NOT NULL DEFAULT 0,
+                                    WpfPath TEXT NULL,
                                     MetadataJson TEXT NULL,
                                     FOREIGN KEY (LocationId) REFERENCES Location(LocationId) ON DELETE CASCADE
                                 );
@@ -103,6 +106,28 @@ namespace CatoriServices.Objects.database.Locations
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             await cmd.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
+
+        private static async Task EnsureLocationLayoutItemWpfPathColumnAsync(SqliteConnection conn)
+        {
+            try
+            {
+                            using var check = new SqliteCommand("PRAGMA table_info(LocationLayoutItem);", conn);
+                            using var reader = await check.ExecuteReaderAsync();
+                            while (await reader.ReadAsync())
+                            {
+                                if (string.Equals(reader.GetString(1), "WpfPath", StringComparison.OrdinalIgnoreCase))
+                                    return;
+                            }
+
+                            using var alter = new SqliteCommand("ALTER TABLE LocationLayoutItem ADD COLUMN WpfPath TEXT NULL;", conn);
+                            await alter.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {

@@ -29,6 +29,8 @@ namespace CatoriApp.Views.Shared
             };
             TreasureHuntButton.ToolTip = toolTip;
             toolsPanel.startupView = this;
+
+            GlobalGame.MainWindow = this;
         }
 
         private void CityScapeButton_Click(object sender, RoutedEventArgs e)
@@ -94,6 +96,11 @@ namespace CatoriApp.Views.Shared
         private void SettingsPanelImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             toolsPanel.OpenPanel();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
         }
     }
 }

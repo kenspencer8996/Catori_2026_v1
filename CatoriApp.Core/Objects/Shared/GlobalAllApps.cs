@@ -3,13 +3,20 @@ namespace CatoriApp.Core.Objects.Shared
     public class GlobalAllApps
     {
         public static string _imageFolder = "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images";
-        public static bool showDebugInfo = false;
+        public static bool showDebugInfo = true;
         public static bool LearnMode { get; set; } = false;
          public static bool IsDeveloperUser()
         {
             return Environment.UserName.Equals(
                 "kensp",
                 StringComparison.OrdinalIgnoreCase);
+        }
+        public static void WriteDebugInfo(string message)
+        {
+            if (showDebugInfo)
+            {
+                System.Diagnostics.Debug.WriteLine(message);
+            }
         }
         public static string ImageFolder
         {

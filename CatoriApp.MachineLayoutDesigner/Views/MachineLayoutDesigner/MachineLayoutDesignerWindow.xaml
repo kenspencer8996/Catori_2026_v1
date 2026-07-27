@@ -54,8 +54,6 @@
                             <ComboBoxItem Content="Gray" />
                         </ComboBox>
                     </StackPanel>
-                    <TextBlock Text="Robot Sequence Name" FontWeight="SemiBold" Margin="0,0,0,4" />
-                    <TextBox x:Name="SequenceNameTextBox" Text="{Binding SequenceName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" />
                     <UniformGrid Columns="2" Margin="0,0,0,8">
                         <Label Content="Left"/>
                         <TextBox x:Name="RobotPositionLeftTextBox" TextChanged="RobotPositionLeftTextBox_TextChanged"/>
@@ -87,10 +85,10 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="J1" Width="42" DisplayMemberBinding="{Binding Joint1}" />
-                                <GridViewColumn Header="J2" Width="42" DisplayMemberBinding="{Binding Joint2}" />
-                                <GridViewColumn Header="J3" Width="42" DisplayMemberBinding="{Binding Joint3}" />
-                                <GridViewColumn Header="End" Width="52" DisplayMemberBinding="{Binding JointEnd}" />
+                                <GridViewColumn Header="J1" Width="42" DisplayMemberBinding="{Binding Segments[0].Angle}" />
+                                <GridViewColumn Header="J2" Width="42" DisplayMemberBinding="{Binding Segments[1].Angle}" />
+                                <GridViewColumn Header="J3" Width="42" DisplayMemberBinding="{Binding Segments[2].Angle}" />
+                                <GridViewColumn Header="End" Width="52" DisplayMemberBinding="{Binding Segments[3].Angle}" />
                             </GridView>
                         </ListView.View>
                     </ListView >
@@ -101,7 +99,7 @@
                     <UniformGrid Columns="2">
                         <Button Content="Save" x:Name="SaveButton" Click="SaveButton_Click" Margin="0,0,4,4" />
                     </UniformGrid>
-                    <Button Content="Play Sequence" Click="PlaySequence_Click" Margin="0,4,0,8" />
+                    <Button Content="Play Poses" Click="PlaySequence_Click" Margin="0,4,0,8" />
                     <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" />
                 </StackPanel>
             </Grid>

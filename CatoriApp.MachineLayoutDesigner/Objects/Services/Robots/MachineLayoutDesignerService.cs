@@ -1,107 +1,61 @@
-using CatoriServices.Objects.database;
-using CatoriServices.Objects.Entities;
+using System.Text.Json;
+
 namespace CatoriApp.MachineLayoutDesigner.Objects.Services.Robots
 {
     public class MachineLayoutDesignerService
     {
-        private readonly MachineLayoutDesignerRepository _designerRepository;
-        private readonly RobotSequenceService _sequenceService;
+        private readonly MachineLayoutDesignerRepository _designerRepository = new();
+        private readonly RobotRepository _robotRepository = new();
 
-        public MachineLayoutDesignerService()
+        public async Task<MachineLayoutDesignerViewModel?> LoadByLocationIdAsync(long locationId, string? unused = null)
         {
-            _designerRepository = new MachineLayoutDesignerRepository();
-            _sequenceService = new RobotSequenceService();
-        }
-
-        public async Task<MachineLayoutDesignerViewModel?> LoadSequenceAsync(string sequenceName)
-        {
-            var sequence = await _sequenceService.GetByNameAsync(sequenceName);
-            if (sequence == null)
-                return null;
-
-            var entity = await _designerRepository.GetByLocationIdAsync(sequence.LocationId);
-            var vm = entity == null ? new MachineLayoutDesignerViewModel() : ToViewModel(entity);
-
-            vm.LocationId = sequence.LocationId;
-            vm.Sequences.Add(sequence);
-            vm.SelectedSequence = sequence;
-            vm.SelectedPose = vm.Poses.FirstOrDefault();
-            return vm;
-        }
-
-        public async Task<MachineLayoutDesignerViewModel?> LoadByLocationIdAsync(long locationId, string? preferredSequenceName = null)
-        {
-            var entity = await _designerRepository.GetByLocationIdAsync(locationId);
-            var vm = entity == null ? new MachineLayoutDesignerViewModel { LocationId = locationId } : ToViewModel(entity);
-
-            var sequences = await _sequenceService.GetByLocationIdAsync(locationId);
-            foreach (var sequence in sequences)
-                vm.Sequences.Add(sequence);
-
-            var selected = !string.IsNullOrWhiteSpace(preferredSequenceName)
-                ? vm.Sequences.FirstOrDefault(s => string.Equals(s.SequenceName, preferredSequenceName, StringComparison.OrdinalIgnoreCase))
-                : null;
-
-            vm.SelectedSequence = selected ?? vm.Sequences.FirstOrDefault() ?? vm.SelectedSequence;
-            vm.SelectedSequence.LocationId = locationId;
-            vm.SelectedPose = vm.Poses.FirstOrDefault();
+            var layout = await _designerRepository.GetByLocationIdAsync(locationId);
+            var robot = await _robotRepository.GetByLocationIdAsync(locationId);
+            var vm = new MachineLayoutDesignerViewModel { LocationId = locationId };
+            if (layout != null)
+            {
+                vm.MachineLayoutDesignerId = layout.MachineLayoutDesignerId;
+                vm.SelectionX = layout.SelectionX; vm.SelectionY = layout.SelectionY;
+                vm.SelectionWidth = layout.SelectionWidth; vm.SelectionHeight = layout.SelectionHeight;
+            }
+            if (robot != null)
+            {
+                vm.RobotId = robot.RobotId; 
+                vm.RobotX = robot.RobotX; 
+                vm.RobotY = robot.RobotY;
+                vm.RobotWidth = robot.RobotWidth; 
+                vm.RobotHeight = robot.RobotHeight;
+                foreach (var pose in robot.Poses)
+                {
+                    var poseVm = new RobotPoseViewModel { RobotPoseId = pose.RobotPoseId, RobotId = robot.RobotId, PoseIndex = vm.Poses.Count, PoseName = pose.PoseName };
+                    var angles = JsonSerializer.Deserialize<List<double>>(pose.Pose) ?? new();
+                    for (var i = 0; i < angles.Count; i++) poseVm.Segments.Add(new RobotPoseSegmentViewModel { SegmentIndex = i, Angle = angles[i] });
+                    vm.Poses.Add(poseVm);
+                }
+                vm.SelectedPose = vm.Poses.FirstOrDefault();
+            }
             return vm;
         }
 
         public async Task<long> SaveSequenceAsync(MachineLayoutDesignerViewModel vm)
         {
-            var entity = ToEntity(vm);
-            var id = await _designerRepository.SaveAsync(entity);
-            vm.MachineLayoutDesignerId = id;
-
-            vm.SelectedSequence.LocationId = vm.LocationId;
-            foreach (var pose in vm.Poses)
+            vm.MachineLayoutDesignerId = await _designerRepository.SaveAsync(new MachineLayoutDesignerEntity
             {
-                pose.LocationId = vm.LocationId;
-                pose.RobotSequenceId = vm.RobotSequenceId;
-            }
-
-            await _sequenceService.SaveAsync(vm.SelectedSequence);
-            return id;
-        }
-
-        private static MachineLayoutDesignerEntity ToEntity(MachineLayoutDesignerViewModel vm)
-        {
-            return new MachineLayoutDesignerEntity
+                MachineLayoutDesignerId = vm.MachineLayoutDesignerId, LocationId = vm.LocationId, SelectionX = vm.SelectionX,
+                SelectionY = vm.SelectionY, SelectionWidth = vm.SelectionWidth, SelectionHeight = vm.SelectionHeight
+            });
+            var robot = new RobotEntity
             {
-                MachineLayoutDesignerId = vm.MachineLayoutDesignerId,
-                LocationId = vm.LocationId,
-                SequenceName = vm.SequenceName,
-                SelectionX = vm.SelectionX,
-                SelectionY = vm.SelectionY,
-                SelectionWidth = vm.SelectionWidth,
-                SelectionHeight = vm.SelectionHeight,
-                RobotX = vm.RobotX,
-                RobotY = vm.RobotY,
-                RobotWidth = vm.RobotWidth,
-                RobotHeight = vm.RobotHeight
+                RobotId = vm.RobotId, LocationId = vm.LocationId, RobotX = vm.RobotX, RobotY = vm.RobotY,
+                RobotWidth = vm.RobotWidth, RobotHeight = vm.RobotHeight,
+                Poses = vm.Poses.Select(p => new RobotPoseEntity
+                {
+                    RobotPoseId = p.RobotPoseId, RobotId = vm.RobotId, PoseName = p.PoseName,
+                    Pose = JsonSerializer.Serialize(p.Segments.OrderBy(s => s.SegmentIndex).Select(s => s.Angle))
+                }).ToList()
             };
-        }
-
-        private static MachineLayoutDesignerViewModel ToViewModel(MachineLayoutDesignerEntity entity)
-        {
-            return new MachineLayoutDesignerViewModel
-            {
-                MachineLayoutDesignerId = entity.MachineLayoutDesignerId,
-                LocationId = entity.LocationId,
-                SequenceName = entity.SequenceName,
-                SelectionX = entity.SelectionX,
-                SelectionY = entity.SelectionY,
-                SelectionWidth = entity.SelectionWidth,
-                SelectionHeight = entity.SelectionHeight,
-                RobotX = entity.RobotX,
-                RobotY = entity.RobotY,
-                RobotWidth = entity.RobotWidth,
-                RobotHeight = entity.RobotHeight
-            };
+            vm.RobotId = await _robotRepository.SaveAsync(robot);
+            return vm.RobotId;
         }
     }
 }
-
-
-

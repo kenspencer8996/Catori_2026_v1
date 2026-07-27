@@ -40,7 +40,6 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
                 default:
                     break;
             }
-            SetImageFromSequenceName();
             DataContext = ViewModel;
             MainImage.Source = GetImageSource(_backgroundImagePath);
          }
@@ -108,7 +107,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
                     await System.Windows.Threading.Dispatcher.Yield();
 
                     await RobotArmNew.MoveToPoseAsync(
-                        new RobotPose(pose.Joint1, pose.Joint2, pose.Joint3, pose.JointEnd),
+                        new RobotPose(GetAngle(pose, 0), GetAngle(pose, 1), GetAngle(pose, 2), GetAngle(pose, 3)),
                         Math.Max(100, pose.DurationMilliseconds));
                 }
 
@@ -132,11 +131,14 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
         private void ApplyPose(RobotPoseViewModel pose)
         {
             RobotArmNew.SetPose(
-                (int)pose.Joint1,
-                (int)pose.Joint2,
-                (int)pose.Joint3,
-                (int)pose.JointEnd);
+                (int)GetAngle(pose, 0),
+                (int)GetAngle(pose, 1),
+                (int)GetAngle(pose, 2),
+                (int)GetAngle(pose, 3));
         }
+
+        private static double GetAngle(RobotPoseViewModel pose, int segmentIndex)
+            => pose.Segments.FirstOrDefault(segment => segment.SegmentIndex == segmentIndex)?.Angle ?? 0;
 
         private RobotPose GetCurrentPose()
         {
@@ -205,7 +207,7 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
         {
             try
             {
-                var loaded = await _service.LoadByLocationIdAsync(ViewModel.LocationId, ViewModel.SequenceName);
+                var loaded = await _service.LoadByLocationIdAsync(ViewModel.LocationId);
                 if (loaded == null)
                 {
                     ViewModel.StatusMessage = "Sequence not found.";
@@ -227,11 +229,6 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
             }
         }
 
-        private void SetImageFromSequenceName()
-        {
-            if (string.IsNullOrWhiteSpace(ViewModel.SequenceName) && !string.IsNullOrWhiteSpace(_backgroundImagePath))
-                ViewModel.SequenceName = System.IO.Path.GetFileNameWithoutExtension(_backgroundImagePath);
-        }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Save();

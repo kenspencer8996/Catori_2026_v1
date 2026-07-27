@@ -406,6 +406,7 @@
                 ZIndex = vm.ZIndex,
                 IsLocked = vm.IsLocked,
                 ImagePath = vm.ImagePath,
+                WpfPath = string.IsNullOrWhiteSpace(vm.WpfPath) ? null : vm.WpfPath,
                 MetadataJson = vm.MetadataJson
             };
         }
@@ -447,6 +448,7 @@
                 ZIndex = entity.ZIndex,
                 IsLocked = entity.IsLocked,
                 ImagePath = entity.ImagePath,
+                WpfPath = entity.WpfPath,
                 MetadataJson = entity.MetadataJson
             };
         }
