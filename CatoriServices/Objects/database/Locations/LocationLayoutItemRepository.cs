@@ -76,10 +76,10 @@ namespace CatoriServices.Objects.database.Locations
                             const string sql = @"
                                 INSERT INTO LocationLayoutItem
                                     (LocationId, ItemName, ItemType, MajorItemType, X, Y, Z, Width, Height, RotationDegrees,
-                                     ZIndex, IsLocked, WpfPath, MetadataJson)
+                                     ZIndex, IsLocked, ItemDataJson, MetadataJson)
                                 VALUES
                                     (@LocationId, @ItemName, @ItemType, @MajorItemType, @X, @Y, @Z, @Width, @Height, @RotationDegrees,
-                                     @ZIndex, @IsLocked, @WpfPath, @MetadataJson);
+                                     @ZIndex, @IsLocked, @ItemDataJson, @MetadataJson);
                                 SELECT last_insert_rowid();";
                 
                             using var cmd = new SqliteCommand(sql, conn);
@@ -115,7 +115,7 @@ namespace CatoriServices.Objects.database.Locations
                                     RotationDegrees = @RotationDegrees,
                                     ZIndex = @ZIndex,
                                     IsLocked = @IsLocked,
-                                    WpfPath = @WpfPath,
+                                    ItemDataJson = @ItemDataJson,
                                     MetadataJson = @MetadataJson
                                 WHERE LocationLayoutItemId = @LocationLayoutItemId";
                 
@@ -130,7 +130,7 @@ namespace CatoriServices.Objects.database.Locations
                 throw;
             }
         }
-        public async Task UpdateWpfPathAsync(long locationLayoutItemId, string updatedWpfPath)
+        public async Task UpdateItemDataJsonAsync(long locationLayoutItemId, string updatedItemDataJson)
         {
             try
             {
@@ -139,12 +139,12 @@ namespace CatoriServices.Objects.database.Locations
 
                 const string sql = @"
                                 UPDATE LocationLayoutItem
-                                SET WpfPath = @WpfPath
+                                SET ItemDataJson = @ItemDataJson
                                 WHERE LocationLayoutItemId = @LocationLayoutItemId";
 
                 using var cmd = new SqliteCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@LocationLayoutItemId", locationLayoutItemId);
-                cmd.Parameters.AddWithValue("@WpfPath", updatedWpfPath ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@ItemDataJson", updatedItemDataJson ?? (object)DBNull.Value);
                 await cmd.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
@@ -187,7 +187,7 @@ namespace CatoriServices.Objects.database.Locations
                             cmd.Parameters.AddWithValue("@RotationDegrees", item.RotationDegrees);
                             cmd.Parameters.AddWithValue("@ZIndex", item.ZIndex);
                             cmd.Parameters.AddWithValue("@IsLocked", item.IsLocked ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@WpfPath", item.WpfPath ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ItemDataJson", item.ItemDataJson ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@MetadataJson", item.MetadataJson ?? (object)DBNull.Value);
             }
             catch (Exception ex)
@@ -216,7 +216,7 @@ namespace CatoriServices.Objects.database.Locations
                                 RotationDegrees = reader.GetDouble(reader.GetOrdinal("RotationDegrees")),
                                 ZIndex = reader.GetInt32(reader.GetOrdinal("ZIndex")),
                                 IsLocked = reader.GetInt32(reader.GetOrdinal("IsLocked")) == 1,
-                                WpfPath = GetNullableString(reader, "WpfPath"),
+                                ItemDataJson = GetNullableString(reader, "ItemDataJson"),
                                 MetadataJson = GetNullableString(reader, "MetadataJson")
                             };
             }

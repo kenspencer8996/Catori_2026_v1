@@ -226,12 +226,12 @@ namespace CatoriApp.Game.Objects.Services.Locations
             return await _itemRepository.UpdateAsync(item);
         }
 
-        public void UpdatePoints(long LocationId, LocationLayoutPointEntity point, string? wpfPath = null)
+        public void UpdatePoints(long LocationId, LocationLayoutPointEntity point, string? itemDataJson = null)
         {
-            UpdatePointsAsync(LocationId, point, wpfPath).GetAwaiter().GetResult();
+            UpdatePointsAsync(LocationId, point, itemDataJson).GetAwaiter().GetResult();
         }
 
-        public async Task UpdatePointsAsync(long LocationId, LocationLayoutPointEntity point, string? wpfPath = null)
+        public async Task UpdatePointsAsync(long LocationId, LocationLayoutPointEntity point, string? itemDataJson = null)
         {
             string conveyorName = string.IsNullOrWhiteSpace(point.PointType)
                 ? "Conveyor"
@@ -253,9 +253,9 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 item.LocationLayoutItemId = await _itemRepository.InsertAsync(item);
             }
 
-            if (!string.IsNullOrWhiteSpace(wpfPath))
+            if (!string.IsNullOrWhiteSpace(itemDataJson))
             {
-                item.WpfPath = wpfPath;
+                item.ItemDataJson = itemDataJson;
                 await _itemRepository.UpdateAsync(item);
             }
 
@@ -368,7 +368,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = vm.RotationDegrees,
                 ZIndex = vm.ZIndex,
                 IsLocked = vm.IsLocked,
-                WpfPath = string.IsNullOrWhiteSpace(vm.WpfPath) ? null : vm.WpfPath,
+                ItemDataJson = string.IsNullOrWhiteSpace(vm.ItemDataJson) ? null : vm.ItemDataJson,
                 MetadataJson = vm.MetadataJson
             };
         }
@@ -411,7 +411,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 RotationDegrees = entity.RotationDegrees,
                 ZIndex = entity.ZIndex,
                 IsLocked = entity.IsLocked,
-                WpfPath = entity.WpfPath,
+                ItemDataJson = entity.ItemDataJson,
                 MetadataJson = entity.MetadataJson
             };
         }

@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

@@ -12,6 +12,7 @@
              
              mc:Ignorable="d" Loaded="UserControl_Loaded" Unloaded="UC_Unloaded" MouseLeftButtonDown="UserControl_MouseLeftButtonDown" 
                 MouseMove="UserControl_MouseMove" MouseLeftButtonUp="UC_MouseLeftButtonUp"
+                
              d:DesignHeight="450" d:DesignWidth="800">
     <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              >

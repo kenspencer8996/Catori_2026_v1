@@ -6,5 +6,12 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
 {
     public class LocationTables1SubController : LocationSubControllerBase
     {
+        public LocationTables1SubController(long locationId, FactoryInterior_UC view) 
+            : base(locationId, view)
+        {
+            base._view = view;
+            _locationId = locationId;
+            LoadLayoutItems();
+        }
     }
 }

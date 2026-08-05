@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -8,7 +7,6 @@
     <AssemblyName>CatoriApp.Game</AssemblyName>
     <RootNamespace>CatoriApp.Game</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="[11.0.0-preview.1.26104.118, )" />
@@ -17,20 +15,19 @@
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
     <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
     <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
     <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="CatoriUCLibrary">
       <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
-
   <ItemGroup Label="GameLegacyExclusions">
     <Compile Remove="ViewModels\Shared\ViewmodelBase.cs" />
     <Compile Remove="ViewModels\Robots\RobotPoseViewModel.cs" />
@@ -44,7 +41,6 @@
     <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_3UC.xaml" />
     <Page Remove="Views\Controls\Locations\Factory\Interiors\LocationInterior_4UC.xaml" />
   </ItemGroup>
-
   <ItemGroup Label="GameLayerCoreSources">
     <Compile Include="..\CatoriApp.Core\Objects\BusinessContentAndLocXYEntity.cs" Link="Objects\BusinessContentAndLocXYEntity.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\LandScapeWithBank_ReturnEntity.cs" Link="Objects\LandScapeWithBank_ReturnEntity.cs" />
@@ -69,7 +65,6 @@
     <Compile Include="..\CatoriApp.Core\Objects\Arguments\POCArgs.cs" Link="Objects\Arguments\POCArgs.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Arguments\RObotMoverControlDrag .cs" Link="Objects\Arguments\RObotMoverControlDrag .cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Arguments\ShopItemControlDrag.cs" Link="Objects\Arguments\ShopItemControlDrag.cs" />
-    <Compile Include="..\CatoriApp.Core\Objects\DragDrop\DragManager.cs" Link="Objects\DragDrop\DragManager.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Messages\FactoryMouseMessage.cs" Link="Objects\Messages\FactoryMouseMessage.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Messages\FundsMessage.cs" Link="Objects\Messages\FundsMessage.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Messages\HouseSoldMessage.cs" Link="Objects\Messages\HouseSoldMessage.cs" />
@@ -89,5 +84,4 @@
     <Compile Include="..\CatoriApp.Core\Objects\Shared\ShoppingCartUtility.cs" Link="Objects\Shared\ShoppingCartUtility.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Shared\StreetHelper.cs" Link="Objects\Shared\StreetHelper.cs" />
   </ItemGroup>
-
 </Project>

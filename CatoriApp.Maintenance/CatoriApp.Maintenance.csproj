@@ -12,6 +12,7 @@
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
     <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
     <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

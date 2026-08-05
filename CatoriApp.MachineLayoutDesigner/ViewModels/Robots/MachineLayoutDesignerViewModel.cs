@@ -5,7 +5,7 @@ namespace CatoriApp.MachineLayoutDesigner.ViewModels.Robots
     public class MachineLayoutDesignerViewModel : ViewmodelBase
     {
         private long _machineLayoutDesignerId;
-        private long _robotId;
+        private long _locationLayoutItemId;
         private long _locationId;
         private double _selectionX;
         private double _selectionY;
@@ -21,7 +21,7 @@ namespace CatoriApp.MachineLayoutDesigner.ViewModels.Robots
         private string _statusMessage = "";
 
         public long MachineLayoutDesignerId { get => _machineLayoutDesignerId; set => SetProperty(ref _machineLayoutDesignerId, value); }
-        public long RobotId { get => _robotId; set => SetProperty(ref _robotId, value); }
+        public long LocationLayoutItemId { get => _locationLayoutItemId; set => SetProperty(ref _locationLayoutItemId, value); }
         public long LocationId { get => _locationId; set => SetProperty(ref _locationId, value); }
         public double SelectionX { get => _selectionX; set => SetProperty(ref _selectionX, value); }
         public double SelectionY { get => _selectionY; set => SetProperty(ref _selectionY, value); }
@@ -39,7 +39,7 @@ namespace CatoriApp.MachineLayoutDesigner.ViewModels.Robots
 
         public void AddPose(double joint1, double joint2, double joint3, double jointEnd)
         {
-            var pose = new RobotPoseViewModel { RobotId = RobotId, PoseIndex = Poses.Count, PoseName = "Pose " + (Poses.Count + 1), DurationMilliseconds = 600 };
+            var pose = new RobotPoseViewModel { LocationLayoutItemId = LocationLayoutItemId, PoseIndex = Poses.Count, PoseName = "Pose " + (Poses.Count + 1), DurationMilliseconds = 600 };
             pose.Segments.Add(new RobotPoseSegmentViewModel { SegmentIndex = 0, Angle = joint1 });
             pose.Segments.Add(new RobotPoseSegmentViewModel { SegmentIndex = 1, Angle = joint2 });
             pose.Segments.Add(new RobotPoseSegmentViewModel { SegmentIndex = 2, Angle = joint3 });

@@ -43,7 +43,7 @@ namespace CatoriServices.Objects.database.Locations
                                 await CreateTablesInlineAsync(conn);
                             }
 
-                            await EnsureLocationLayoutItemWpfPathColumnAsync(conn);
+                            await EnsureLocationLayoutItemItemDataJsonColumnAsync(conn);
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace CatoriServices.Objects.database.Locations
                                     RotationDegrees REAL NOT NULL DEFAULT 0,
                                     ZIndex INTEGER NOT NULL DEFAULT 0,
                                     IsLocked INTEGER NOT NULL DEFAULT 0,
-                                    WpfPath TEXT NULL,
+                                    ItemDataJson TEXT NULL,
                                     MetadataJson TEXT NULL,
                                     FOREIGN KEY (LocationId) REFERENCES Location(LocationId) ON DELETE CASCADE
                                 );
@@ -114,20 +114,26 @@ namespace CatoriServices.Objects.database.Locations
             }
         }
 
-        private static async Task EnsureLocationLayoutItemWpfPathColumnAsync(SqliteConnection conn)
+        private static async Task EnsureLocationLayoutItemItemDataJsonColumnAsync(SqliteConnection conn)
         {
             try
             {
-                            using var check = new SqliteCommand("PRAGMA table_info(LocationLayoutItem);", conn);
-                            using var reader = await check.ExecuteReaderAsync();
-                            while (await reader.ReadAsync())
-                            {
-                                if (string.Equals(reader.GetString(1), "WpfPath", StringComparison.OrdinalIgnoreCase))
-                                    return;
-                            }
+                var columns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                using (var check = new SqliteCommand("PRAGMA table_info(LocationLayoutItem);", conn))
+                using (var reader = await check.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                        columns.Add(reader.GetString(1));
+                }
 
-                            using var alter = new SqliteCommand("ALTER TABLE LocationLayoutItem ADD COLUMN WpfPath TEXT NULL;", conn);
-                            await alter.ExecuteNonQueryAsync();
+                if (columns.Contains("ItemDataJson"))
+                    return;
+
+                var sql = columns.Contains("WpfPath")
+                    ? "ALTER TABLE LocationLayoutItem RENAME COLUMN WpfPath TO ItemDataJson;"
+                    : "ALTER TABLE LocationLayoutItem ADD COLUMN ItemDataJson TEXT NULL;";
+                using var alter = new SqliteCommand(sql, conn);
+                await alter.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {

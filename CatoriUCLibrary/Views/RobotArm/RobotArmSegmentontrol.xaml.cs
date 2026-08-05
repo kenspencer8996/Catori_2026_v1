@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.ConstrainedExecution;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,11 +20,8 @@ namespace CatoriUCLibrary.Views.RobotArm
         }
         public void SetSegmentImage(string imagePath)
         {
-            string fileName = imagePath; // your resource file name
-            string uri = $"pack://application:,,,/Images/{fileName}";
-
+            string uri = Imagehelper.GetImagePath(imagePath);
             SegmentImage.Source = new BitmapImage(new Uri(uri, UriKind.Absolute));
-            //SegmentImage.Source = UIUtility.GetImageControl(imagePath, 30, 140, 1000).Source;
         }
 
         public double GetImageLength()

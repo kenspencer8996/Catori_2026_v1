@@ -140,6 +140,8 @@
     <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
     <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
     <ProjectReference Include="..\CatoriApp.Maintenance\CatoriApp.Maintenance.csproj" />
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

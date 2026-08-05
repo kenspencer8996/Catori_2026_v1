@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriUCLibrary", "CatoriUC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriApp.Maintenance", "CatoriApp.Maintenance\CatoriApp.Maintenance.csproj", "{CC3E4267-2D29-4673-AADC-6190A982F055}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriShared", "CatoriShared\CatoriShared.csproj", "{5445052D-8602-4F3A-887A-1A2D7C12FF69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatoriInterfaces", "CatoriInterfaces\CatoriInterfaces.csproj", "{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +165,30 @@ Global
 		{CC3E4267-2D29-4673-AADC-6190A982F055}.Release|x64.Build.0 = Release|Any CPU
 		{CC3E4267-2D29-4673-AADC-6190A982F055}.Release|x86.ActiveCfg = Release|Any CPU
 		{CC3E4267-2D29-4673-AADC-6190A982F055}.Release|x86.Build.0 = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|x64.Build.0 = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Debug|x86.Build.0 = Debug|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|x64.ActiveCfg = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|x64.Build.0 = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|x86.ActiveCfg = Release|Any CPU
+		{5445052D-8602-4F3A-887A-1A2D7C12FF69}.Release|x86.Build.0 = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|x64.Build.0 = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|x64.ActiveCfg = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|x64.Build.0 = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|x86.ActiveCfg = Release|Any CPU
+		{D755963F-57E4-4D5D-AFFF-98755B8C5EC5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

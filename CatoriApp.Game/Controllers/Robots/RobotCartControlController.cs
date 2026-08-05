@@ -17,7 +17,7 @@ namespace CatoriApp.Game.Controllers.Robots
 
         internal void MoveCartFromTimer()
         {
-            //show side view
+            //show side _view
             _view.SetSideView();
             int seconds = 2;
             Storyboard sb = new Storyboard();
@@ -53,12 +53,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         _view.SetFrontiew();
                     });
                 });
@@ -85,13 +85,13 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 //_view.SetreadView();
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
 
                         _view.SetSideView();
                         MoveLeft();
@@ -104,7 +104,7 @@ namespace CatoriApp.Game.Controllers.Robots
         private double stopbetweencabinets = 780;
         private void MoveLeft()
         {
-            //show side view
+            //show side _view
             _view.SetSideView();
             int seconds = 2;
             Storyboard sb = new Storyboard();
@@ -119,12 +119,12 @@ namespace CatoriApp.Game.Controllers.Robots
             sb.Children.Add(daleft);
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         _view.SetRearView();
                        MoveAtAngleBehindCounter();
                     });
@@ -140,7 +140,7 @@ namespace CatoriApp.Game.Controllers.Robots
 
         private void MoveAtAngleBehindCounter()
         {
-            //show side view
+            //show side _view
             _view.SetRearView();
             int seconds = 2;
             Storyboard sb = new Storyboard();
@@ -181,12 +181,12 @@ namespace CatoriApp.Game.Controllers.Robots
             sb.Children.Add(dtop);
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         _view.SetFrontiew();
                         _view.RobotAllDone();
                     });

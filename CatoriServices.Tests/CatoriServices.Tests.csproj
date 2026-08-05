@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
 
 </Project>

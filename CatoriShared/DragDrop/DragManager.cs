@@ -30,9 +30,12 @@ public class DragManager
         _root = canvas;
         _debug = new DebugOverlay(canvas);
 
-        _canvas.MouseLeftButtonDown += OnMouseDown;
-        _canvas.MouseMove += OnMouseMove;
-        _canvas.MouseLeftButtonUp += OnMouseUp;
+        _canvas.AddHandler(UIElement.MouseLeftButtonDownEvent,
+            new MouseButtonEventHandler(OnMouseDown), true);
+        _canvas.AddHandler(UIElement.MouseMoveEvent,
+            new MouseEventHandler(OnMouseMove), true);
+        _canvas.AddHandler(UIElement.MouseLeftButtonUpEvent,
+            new MouseButtonEventHandler(OnMouseUp), true);
 
         CreatePhysicsController();
     }
@@ -54,7 +57,8 @@ public class DragManager
     // ---------------------------------------------------------
     private void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.Source is IDraggable draggable &&
+        IDraggable? draggable = FindDraggable(e.OriginalSource as DependencyObject);
+        if (draggable?.IsDragEnabled == true &&
             draggable.Visual is UIElement element &&
             _canvas.Children.Contains(element))
         {
@@ -74,6 +78,21 @@ public class DragManager
         }
     }
 
+    private static IDraggable? FindDraggable(DependencyObject? source)
+    {
+        DependencyObject? current = source;
+        while (current != null)
+        {
+            if (current is IDraggable draggable)
+                return draggable;
+
+            current = current is Visual or Visual3D
+                ? VisualTreeHelper.GetParent(current)
+                : LogicalTreeHelper.GetParent(current);
+        }
+
+        return null;
+    }
     // ---------------------------------------------------------
     // MOUSE MOVE
     // ---------------------------------------------------------

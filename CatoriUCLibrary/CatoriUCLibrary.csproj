@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\RobotArmHandBlue.png" />
     <Resource Include="Images\robotArmLongBlue.png" />
     <Resource Include="Images\robotArmMediumBlue.png" />

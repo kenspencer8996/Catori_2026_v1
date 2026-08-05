@@ -16,7 +16,7 @@ namespace CatoriApp.Game.ViewModels.Locations
         private double _rotationDegrees;
         private int _zIndex;
         private bool _isLocked;
-        private string? _wpfPath;
+        private string? _itemDataJson;
         private string? _metadataJson;
 
         public long LocationLayoutItemId { get => _locationLayoutItemId; set => SetProperty(ref _locationLayoutItemId, value); }
@@ -32,9 +32,54 @@ namespace CatoriApp.Game.ViewModels.Locations
         public double RotationDegrees { get => _rotationDegrees; set => SetProperty(ref _rotationDegrees, value); }
         public int ZIndex { get => _zIndex; set => SetProperty(ref _zIndex, value); }
         public bool IsLocked { get => _isLocked; set => SetProperty(ref _isLocked, value); }
-        public string? WpfPath { get => _wpfPath; set => SetProperty(ref _wpfPath, value); }
+        public string? ItemDataJson { get => _itemDataJson; set => SetProperty(ref _itemDataJson, value); }
         public string? MetadataJson { get => _metadataJson; set => SetProperty(ref _metadataJson, value); }
         public ObservableCollection<LocationLayoutPointViewModel> Points { get; } = new();
+
+        public LocationLayoutItemEntity ToEntity()
+        {
+            var itemDataJson = string.IsNullOrWhiteSpace(ItemDataJson)
+                ? null
+                : ItemDataJson.Trim();
+
+            return new LocationLayoutItemEntity
+            {
+                LocationLayoutItemId = LocationLayoutItemId,
+                LocationId = LocationId,
+                ItemName = ItemName.Trim(),
+                ItemType = ItemType,
+                MajorItemType = string.IsNullOrWhiteSpace(MajorItemType)
+                    ? null
+                    : MajorItemType.Trim(),
+                X = X,
+                Y = Y,
+                Z = Z,
+                Width = Width,
+                Height = Height,
+                RotationDegrees = RotationDegrees,
+                ZIndex = ZIndex,
+                IsLocked = IsLocked,
+                ItemDataJson = itemDataJson,
+                MetadataJson = MetadataJson,
+                Points = Points.Select(point => new LocationLayoutPointEntity
+                {
+                    LocationLayoutPointId = point.LocationLayoutPointId,
+                    LocationLayoutItemId = point.LocationLayoutItemId,
+                    LocationId = point.LocationId,
+                    PointIndex = point.PointIndex,
+                    PointRole = point.PointRole,
+                    X = point.X,
+                    Y = point.Y,
+                    Z = point.Z,
+                    SegmentKind = point.SegmentKind,
+                    Control1X = point.Control1X,
+                    Control1Y = point.Control1Y,
+                    Control2X = point.Control2X,
+                    Control2Y = point.Control2Y,
+                    RotationDegrees = point.RotationDegrees
+                }).ToList()
+            };
+        }
     }
 }
 

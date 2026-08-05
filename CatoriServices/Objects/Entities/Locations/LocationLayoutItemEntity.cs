@@ -1,4 +1,4 @@
-﻿namespace CatoriServices.Objects.Entities.Locations
+namespace CatoriServices.Objects.Entities.Locations
 {
     public class LocationLayoutItemEntity
     {
@@ -15,9 +15,8 @@
         public double RotationDegrees { get; set; }
         public int ZIndex { get; set; }
         public bool IsLocked { get; set; }
-        public string? WpfPath { get; set; }
+        public string? ItemDataJson { get; set; }
         public string? MetadataJson { get; set; }
-        public string? WPFPath { get; set; }
         public List<LocationLayoutPointEntity> Points { get; set; } = new();
     }
 

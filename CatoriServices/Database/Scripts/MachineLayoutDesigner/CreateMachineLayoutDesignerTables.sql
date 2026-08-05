@@ -63,26 +63,3 @@ CREATE TABLE IF NOT EXISTS MachineInstanceSegment (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_machine_instance_segment_index
 ON MachineInstanceSegment(MachineInstanceId, SegmentIndex);
-
-CREATE TABLE IF NOT EXISTS Robot (
-    RobotId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    RobotX REAL NOT NULL DEFAULT 300,
-    RobotY REAL NOT NULL DEFAULT 200,
-    RobotWidth REAL NOT NULL DEFAULT 100,
-    RobotHeight REAL NOT NULL DEFAULT 100,
-    CreatedAt TEXT NOT NULL DEFAULT (datetime('now')),
-    UpdatedAt TEXT NOT NULL DEFAULT (datetime('now')),
-    LocationId INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE INDEX IF NOT EXISTS idx_robot_location_id ON Robot(LocationId);
-
-CREATE TABLE IF NOT EXISTS RobotPose (
-    RobotPoseId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    RobotId INTEGER,
-    PoseName TEXT,
-    Pose TEXT,
-    FOREIGN KEY (RobotId) REFERENCES Robot(RobotId) ON DELETE CASCADE
-);
-
-CREATE INDEX IF NOT EXISTS idx_robot_pose_robot_id ON RobotPose(RobotId);

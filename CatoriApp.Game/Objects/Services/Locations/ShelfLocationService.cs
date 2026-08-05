@@ -10,7 +10,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         }
 
         /// <summary>
-        /// Returns all shelf locations as view models.
+        /// Returns all shelf locations as _view models.
         /// </summary>
         public async Task<List<ShelfLocationViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
@@ -29,7 +29,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         }
 
         /// <summary>
-        /// Returns single shelf location by id as view model.
+        /// Returns single shelf location by id as _view model.
         /// </summary>
         public async Task<ShelfLocationViewModel> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
@@ -41,7 +41,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         }
 
         /// <summary>
-        /// Returns shelf locations for a specific shop item as view models.
+        /// Returns shelf locations for a specific shop item as _view models.
         /// </summary>
         public async Task<List<ShelfLocationViewModel>> GetByShopItemIdAsync(int shopItemId, CancellationToken cancellationToken = default)
         {
@@ -60,7 +60,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         }
 
         /// <summary>
-        /// Returns shelf locations filtered by store type as view models.
+        /// Returns shelf locations filtered by store type as _view models.
         /// </summary>
         public async Task<List<ShelfLocationViewModel>> GetByStoreTypeAsync(string storeType, CancellationToken cancellationToken = default)
         {

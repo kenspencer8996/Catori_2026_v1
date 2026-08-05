@@ -7,7 +7,7 @@ namespace CatoriApp.Game.Controllers.Police
         internal CarPoliceOffRoadControlController(CarPoliceOffRoadControl view)
         {
             _view = view;
-            // Initialize the controller with the view and its position
+            // Initialize the controller with the _view and its position
         }
     }
 }

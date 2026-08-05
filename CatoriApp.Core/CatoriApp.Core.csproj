@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

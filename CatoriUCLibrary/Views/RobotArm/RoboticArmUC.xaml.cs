@@ -1,3 +1,4 @@
+using CatoriApp.Core.Objects.DragDrop;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -5,7 +6,7 @@ using System.Windows.Input;
 
 namespace CatoriUCLibrary.Views.RobotArm
 {
-    public partial class RoboticArmUC : UserControl
+    public partial class RoboticArmUC : UserControl, IDraggable
     {
         private readonly RobotArmController _controller;
         private readonly List<RobotArmSegmentontrol> _segments = new();
@@ -202,6 +203,9 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         private void Segment_MouseDown(object? sender, SegmentMouseDownArgs e)
         {
+            if (IsDragEnabled)
+                return;
+
             _draggedArmSegment = sender as RobotArmSegmentontrol;
             UserControl_MouseDown(this, e.MouseArgs);
         }
@@ -227,6 +231,9 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (IsDragEnabled)
+                return;
+
             if (_draggedArmSegment == null)
             {
                 MessageLabel.Content = "You must click on a segment to drag it.";
@@ -251,6 +258,25 @@ namespace CatoriUCLibrary.Views.RobotArm
             _draggedArmSegment = null;
         }
 
+        public bool IsDragEnabled { get; set; }
+
+        public UIElement Visual => this;
+
+        public Point OriginalPosition
+        {
+            get
+            {
+                double left = Canvas.GetLeft(this);
+                double top = Canvas.GetTop(this);
+                return new Point(
+                    double.IsNaN(left) ? 0 : left,
+                    double.IsNaN(top) ? 0 : top);
+            }
+        }
+
+        public void OnDragMouseup()
+        {
+        }
         private void RenderConfiguredPose()
         {
             if (_segments.Count == 0)

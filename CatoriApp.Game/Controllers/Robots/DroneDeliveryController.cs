@@ -34,7 +34,7 @@ namespace CatoriApp.Game.Controllers.Robots
 
             string pathtofile  = System.IO.Path.Combine(_imagePath, "DoneEmpty.png");
             SetImage(pathtofile);
-            //show side view
+            //show side _view
             int seconds = 2;
             Storyboard sb = new Storyboard();
             DoubleAnimation daleft = AnimationHelper.GetDoubleAnimationWIthEasing(_originalTop, topMoveto, seconds * 1000);
@@ -45,12 +45,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         FlyToLeftFromHome();
                     });
                 });
@@ -63,7 +63,7 @@ namespace CatoriApp.Game.Controllers.Robots
             double topMoveto = _originalTop - 28;
             double leftMoveto = _originalLeft - 50;
 
-            //show side view
+            //show side _view
             int seconds = 2;
             Storyboard sb = new Storyboard();
             DoubleAnimation daleft = AnimationHelper.GetDoubleAnimationWIthEasing(_originalLeft, leftMoveto, seconds * 1000);
@@ -74,12 +74,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         FlyToPickup();
                     });
                 });
@@ -92,7 +92,7 @@ namespace CatoriApp.Game.Controllers.Robots
             cLogger.Log("Animation continues");
             double topMoveto = 450;
 
-            //show side view
+            //show side _view
             int seconds = 2;
             Storyboard sb = new Storyboard();
             DoubleAnimation daleft = AnimationHelper.GetDoubleAnimationWIthEasing(_originalTop - 50, topMoveto, seconds * 1000);
@@ -103,12 +103,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         string pathtofile = System.IO.Path.Combine(_imagePath, "DroneWithBox.png");
                         SetImage(pathtofile);
                         _view.FireDroneAtPickup();
@@ -125,7 +125,7 @@ namespace CatoriApp.Game.Controllers.Robots
             cLogger.Log("Animation continues");
             double leftMoveTo = 1900;
 
-            //show side view
+            //show side _view
             int seconds = 2;
             Storyboard sb = new Storyboard();
             DoubleAnimation daleft = AnimationHelper.GetDoubleAnimationWIthEasing(_originalLeft, leftMoveTo, seconds * 1000);
@@ -136,12 +136,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                     });
                 });
             };
@@ -159,7 +159,7 @@ namespace CatoriApp.Game.Controllers.Robots
             double topMoveto = _originalTop - 20;
             double topFrom = 430;
 
-            //show side view
+            //show side _view
             int seconds = 2;
             Storyboard sb = new Storyboard();
             DoubleAnimation daleft = AnimationHelper.GetDoubleAnimationWIthEasing(topFrom, topMoveto, seconds * 1000);
@@ -170,12 +170,12 @@ namespace CatoriApp.Game.Controllers.Robots
 
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                         FlyThruPortal();
                     });
                 });

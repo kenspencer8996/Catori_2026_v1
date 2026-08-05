@@ -32,7 +32,7 @@ public sealed class LocationLayoutItemRepositoryTests
             Y = 240.25,
             ZIndex = 12,
             IsLocked = true,
-            WpfPath = "M 10,20 L 30,40",
+            ItemDataJson = "M 10,20 L 30,40",
             MetadataJson = "{\"station\":\"A\"}"
         });
 
@@ -47,7 +47,7 @@ public sealed class LocationLayoutItemRepositoryTests
         Assert.Equal(240.25, loaded.Y);
         Assert.Equal(12, loaded.ZIndex);
         Assert.True(loaded.IsLocked);
-        Assert.Equal("M 10,20 L 30,40", loaded.WpfPath);
+        Assert.Equal("M 10,20 L 30,40", loaded.ItemDataJson);
         Assert.Equal("{\"station\":\"A\"}", loaded.MetadataJson);
     }
 
@@ -79,7 +79,7 @@ public sealed class LocationLayoutItemRepositoryTests
             Y = 40,
             ZIndex = 5,
             IsLocked = false,
-            WpfPath = "M 1,2 L 3,4",
+            ItemDataJson = "M 1,2 L 3,4",
             MetadataJson = "updated"
         });
 
@@ -94,7 +94,7 @@ public sealed class LocationLayoutItemRepositoryTests
         Assert.Equal(40, loaded.Y);
         Assert.Equal(5, loaded.ZIndex);
         Assert.False(loaded.IsLocked);
-        Assert.Equal("M 1,2 L 3,4", loaded.WpfPath);
+        Assert.Equal("M 1,2 L 3,4", loaded.ItemDataJson);
         Assert.Equal("updated", loaded.MetadataJson);
     }
 }

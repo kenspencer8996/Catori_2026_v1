@@ -88,8 +88,8 @@ namespace CatoriApp.Views.Shared
 
         private void RobotArmButton_Click(object sender, RoutedEventArgs e)
         {
-            //RobotTestView view = new RobotTestView();
-            //view.ShowDialog();
+            //RobotTestView _view = new RobotTestView();
+            //_view.ShowDialog();
         }
 
        

@@ -40,26 +40,26 @@ public static class GameAnimationHelper
         return PathGeometry.CreateFromGeometry(geometry);
     }
     public static PathAnimationHandle AddControlOnPath(string animationName,
-    Canvas canvas,FrameworkElement control,string wpfPath,
+    Canvas canvas,FrameworkElement control,string itemDataJson,
     PathAnimationOptions? options = null)
     {
         return AddControlOnPathInner(
             animationName,
             canvas,
             control,
-            wpfPath,
+            itemDataJson,
             options);
     }
     public static Path AddPath(
     Canvas canvas,
-    string wpfPath,
+    string itemDataJson,
     PathDisplayOptions? options = null)
     {
        
         
         return AddPath(
             canvas,
-            ParsePathGeometry(wpfPath),
+            ParsePathGeometry(itemDataJson),
             options);
     }
     public static Path AddPath(
@@ -128,14 +128,14 @@ public static class GameAnimationHelper
     public static PathAnimationHandle AddControlOnPathInner(string animationName,
         Canvas canvas,
         FrameworkElement control,
-        string wpfPath,
+        string itemDataJson,
         PathAnimationOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(canvas);
         ArgumentNullException.ThrowIfNull(control);
-        ArgumentNullException.ThrowIfNull(wpfPath);
+        ArgumentNullException.ThrowIfNull(itemDataJson);
     
-        PathGeometry geometry = ParsePathGeometry(wpfPath);
+        PathGeometry geometry = ParsePathGeometry(itemDataJson);
         options ??= new PathAnimationOptions();
         EnsureNameScope(canvas);
         string _animationName = animationName;
@@ -204,7 +204,7 @@ public static class GameAnimationHelper
             host,
             storyboard,
             translateName,
-            rotateName,wpfPath);
+            rotateName,itemDataJson);
 
         if (options.AutoStart)
             handle.Start();
@@ -355,13 +355,13 @@ public static class GameAnimationHelper
 
     private static Path CreatePath(
     Canvas canvas,
-    string wpfPath,
+    string itemDataJson,
     Brush stroke,
     double thickness = 3)
     {
         var path = new Path
         {
-            Data = Geometry.Parse(wpfPath),
+            Data = Geometry.Parse(itemDataJson),
             Stroke = stroke,
             StrokeThickness = thickness,
             Fill = Brushes.Transparent,
@@ -483,7 +483,7 @@ public sealed class PathAnimationHandle : IDisposable
         AnimationCompleteMessage animationComplete = new AnimationCompleteMessage(_animationName);
         WeakReferenceMessenger.Default.Send<AnimationCompleteMessage>(animationComplete );
 
-        StopGlow();
+        //StopGlow();
     }
 
     private string _path;
@@ -561,7 +561,7 @@ public sealed class PathAnimationHandle : IDisposable
         }
         catch (ArgumentException)
         {
-            // The name may already have been removed by the owning view.
+            // The name may already have been removed by the owning _view.
         }
     }
 

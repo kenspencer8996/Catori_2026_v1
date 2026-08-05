@@ -6,17 +6,14 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
 {
     public class Locationinterior2SubController : LocationSubControllerBase, ILocationSubController
     {
-        long _locationid;
-        public Locationinterior2SubController(FactoryInterior_UC view,long locationid) 
+         public Locationinterior2SubController(FactoryInterior_UC view,long locationid)
+            : base(locationid, view)
         {
-            base.view = view;
-            _locationid = locationid;
-            LoadPaths();
+            base._view = view;
+            _locationId = locationid;
+            LoadLayoutItems();
         }
-        public void LoadPaths()
-        {
-            
-        }
+   
 
         protected override void OnAnimationCompleted(AnimationCompleteMessage message)
         {
@@ -29,6 +26,11 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         }
 
         public void StopProduction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoadPaths()
         {
             throw new NotImplementedException();
         }

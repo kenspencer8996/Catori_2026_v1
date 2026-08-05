@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CatoriApp.Game.Objects.Services.Locations
 {
-    public class PathPlayerFactory
+    public class PathPlayer
     {
         private LocationLayoutItemEntity _layoutitem;
         private readonly List<Point> _pathPoints = new();
-        private readonly List<System.Windows.Shapes.Path> _designerPaths = new();
+        public readonly List<System.Windows.Shapes.Path> PathsForMovement = new();
 
         private System.Windows.Shapes.Path? _previewPath;
         private System.Windows.Shapes.Path? _displayPath;
@@ -17,7 +17,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
         private Point? _lastPathPoint;
         private readonly FactoryInterior_UC _view;
        
-        public PathPlayerFactory(FactoryInterior_UC view)
+        public PathPlayer(FactoryInterior_UC view)
         {
             _view = view;
         }
@@ -35,10 +35,10 @@ namespace CatoriApp.Game.Objects.Services.Locations
         internal void RemoveObjectsFromCanvas()
         {
 
-            foreach (var path in _designerPaths.ToList())
+            foreach (var path in PathsForMovement.ToList())
                 _view.MainCanvas.Children.Remove(path);
 
-            _designerPaths.Clear();
+            PathsForMovement.Clear();
             _displayPath = null;
             _pathPoints.Clear();
 
@@ -48,12 +48,12 @@ namespace CatoriApp.Game.Objects.Services.Locations
         }
         internal void LoadExistingPath(LocationLayoutItemEntity? thisItem)
         {
-            if (string.IsNullOrWhiteSpace(thisItem?.WPFPath))
+            if (string.IsNullOrWhiteSpace(thisItem?.ItemDataJson))
                 return;
             _layoutitem = thisItem;
             try
             {
-                Geometry geometry = Geometry.Parse(thisItem.WPFPath);
+                Geometry geometry = Geometry.Parse(thisItem.ItemDataJson);
                 LoadPointsFromGeometry(geometry);
 
                 if (_pathPoints.Count >= 2)
@@ -114,7 +114,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 CornerDistance,
                 MinimumTurnAngle);
 
-            _layoutitem.WPFPath = pathData;
+            _layoutitem.ItemDataJson = pathData;
 
             Geometry geometry = Geometry.Parse(pathData);
 
@@ -131,7 +131,7 @@ namespace CatoriApp.Game.Objects.Services.Locations
                 };
 
                 Panel.SetZIndex(_displayPath, 2200);
-                _designerPaths.Add(_displayPath);
+                PathsForMovement.Add(_displayPath);
                 _view.MainCanvas.Children.Add(_displayPath);
             }
 

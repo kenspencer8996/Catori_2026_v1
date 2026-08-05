@@ -152,12 +152,12 @@ namespace CatoriApp.Game.Controllers.Stores
             sb.Children.Add(daleft);
             sb.Completed += (s, e) =>
             {
-                //show rear view
+                //show rear _view
                 Task.Delay(500).ContinueWith(t =>
                 {
                     _view.Dispatcher.Invoke(() =>
                     {
-                        //show front view
+                        //show front _view
                     });
                 });
             };
