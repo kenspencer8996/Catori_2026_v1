@@ -10,6 +10,7 @@ namespace CatoriApp.Game.Objects.DTOs
             return new ProductViewModel
             {
                 ProductId = entity.ProductId,
+                PartId = entity.PartId,
                 ProductName = entity.ProductName,
                 ProductCode = entity.ProductCode,
                 ProductType = entity.ProductType,
@@ -26,6 +27,7 @@ namespace CatoriApp.Game.Objects.DTOs
             return new ProductEntity
             {
                 ProductId = vm.ProductId,
+                PartId = vm.PartId,
                 ProductName = vm.ProductName,
                 ProductCode = vm.ProductCode,
                 ProductType = vm.ProductType,

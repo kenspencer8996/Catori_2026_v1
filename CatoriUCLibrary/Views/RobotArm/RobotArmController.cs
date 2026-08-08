@@ -49,57 +49,57 @@ namespace CatoriUCLibrary.Views.RobotArm
         private void LoadParts()
         {
             ArmParts = new List<RobotPartEntity>();
-            RobotPartEntity part = GetPart("RobotArmHandBlue.png", RobotColorEnum.Blue, RobotPartType.Hand);
+            RobotPartEntity part = GetArmPart("RobotArmHandBlue.png", RobotColorEnum.Blue, RobotPartType.Hand);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmHandGray.png",RobotColorEnum.Gray, RobotPartType.Hand);
+            part = GetArmPart("RobotArmHandGray.png",RobotColorEnum.Gray, RobotPartType.Hand);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmHandRed.png", RobotColorEnum.Red, RobotPartType.Hand);
+            part = GetArmPart("RobotArmHandRed.png", RobotColorEnum.Red, RobotPartType.Hand);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmHandYellow.png", RobotColorEnum.Yellow, RobotPartType.Hand);
+            part = GetArmPart("RobotArmHandYellow.png", RobotColorEnum.Yellow, RobotPartType.Hand);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("robotArmLongBlue.png", RobotColorEnum.Blue, RobotPartType.ArmLong);
+            part = GetArmPart("robotArmLongBlue.png", RobotColorEnum.Blue, RobotPartType.ArmLong);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmMediumGray.png", RobotColorEnum.Gray, RobotPartType.ArmMedium);
+            part = GetArmPart("RobotArmMediumGray.png", RobotColorEnum.Gray, RobotPartType.ArmMedium);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmMediumRed.png", RobotColorEnum.Red, RobotPartType.ArmMedium);
+            part = GetArmPart("RobotArmMediumRed.png", RobotColorEnum.Red, RobotPartType.ArmMedium);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmMediumBlue.png", RobotColorEnum.Blue, RobotPartType.ArmMedium);
+            part = GetArmPart("RobotArmMediumBlue.png", RobotColorEnum.Blue, RobotPartType.ArmMedium);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmMediumYellow.png", RobotColorEnum.Yellow, RobotPartType.ArmMedium);
+            part = GetArmPart("RobotArmMediumYellow.png", RobotColorEnum.Yellow, RobotPartType.ArmMedium);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmShortBlue.png", RobotColorEnum.Blue, RobotPartType.ArmShort)                    ;
+            part = GetArmPart("RobotArmShortBlue.png", RobotColorEnum.Blue, RobotPartType.ArmShort)                    ;
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmShortGray.png", RobotColorEnum.Gray, RobotPartType.ArmShort);
+            part = GetArmPart("RobotArmShortGray.png", RobotColorEnum.Gray, RobotPartType.ArmShort);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmShortRed.png", RobotColorEnum.Red, RobotPartType.ArmShort);
+            part = GetArmPart("RobotArmShortRed.png", RobotColorEnum.Red, RobotPartType.ArmShort);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotArmShortYellow.png", RobotColorEnum.Yellow, RobotPartType.ArmShort);
+            part = GetArmPart("RobotArmShortYellow.png", RobotColorEnum.Yellow, RobotPartType.ArmShort);
             ArmParts.Add(part);
               part = new RobotPartEntity();
-            part = GetPart("RobotBaseBlue.png", RobotColorEnum.Blue, RobotPartType.Base)        ;
+            part = GetArmPart("RobotBaseBlue.png", RobotColorEnum.Blue, RobotPartType.Base)        ;
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotBaseGray.png", RobotColorEnum.Gray, RobotPartType.Base);
+            part = GetArmPart("RobotBaseGray.png", RobotColorEnum.Gray, RobotPartType.Base);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotBaseRed.png", RobotColorEnum.Red, RobotPartType.Base);
+            part = GetArmPart("RobotBaseRed.png", RobotColorEnum.Red, RobotPartType.Base);
             ArmParts.Add(part);
             part = new RobotPartEntity();
-            part = GetPart("RobotBaseYellow.png", RobotColorEnum.Yellow, RobotPartType.Base);
+            part = GetArmPart("RobotBaseYellow.png", RobotColorEnum.Yellow, RobotPartType.Base);
             ArmParts.Add(part);
         }
-        private RobotPartEntity GetPart(string imagename,RobotColorEnum color,RobotPartType type)
+        private RobotPartEntity GetArmPart(string imagename,RobotColorEnum color,RobotPartType type)
         {
             RobotPartEntity part = new RobotPartEntity();
             part.ImagePath = imagename;

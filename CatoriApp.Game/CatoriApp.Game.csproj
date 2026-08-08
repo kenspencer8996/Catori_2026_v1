@@ -20,13 +20,9 @@
     <ProjectReference Include="..\CatoriApp.Core\CatoriApp.Core.csproj" />
     <ProjectReference Include="..\CatoriApp.Resources\CatoriApp.Resources.csproj" />
     <ProjectReference Include="..\CatoriApp.MachineLayoutDesigner\CatoriApp.MachineLayoutDesigner.csproj" />
+    <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
     <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
     <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CatoriUCLibrary">
-      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup Label="GameLegacyExclusions">
     <Compile Remove="ViewModels\Shared\ViewmodelBase.cs" />

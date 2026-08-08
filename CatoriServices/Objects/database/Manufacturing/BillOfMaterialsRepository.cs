@@ -58,10 +58,10 @@ namespace CatoriServices.Objects.database.Manufacturing
                 
                             string sql = @"
                                 SELECT * FROM Bill_of_Materials 
-                                WHERE parent_product_id = @ParentProductId
+                                WHERE parent_part_id = @ParentProductId
                                 AND effective_date <= @AsOfDate
                                 AND (expiry_date IS NULL OR expiry_date >= @AsOfDate)
-                                ORDER BY component_id";
+                                ORDER BY child_part_id";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ParentProductId", parentProductId);
@@ -91,10 +91,10 @@ namespace CatoriServices.Objects.database.Manufacturing
                 
                             string sql = @"
                                 SELECT * FROM Bill_of_Materials 
-                                WHERE component_id = @ComponentId
+                                WHERE child_part_id = @ComponentId
                                 AND effective_date <= @AsOfDate
                                 AND (expiry_date IS NULL OR expiry_date >= @AsOfDate)
-                                ORDER BY parent_product_id";
+                                ORDER BY parent_part_id";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ComponentId", componentId);
@@ -122,7 +122,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             using var conn = GetConnection();
                             await conn.OpenAsync();
                 
-                            string sql = "SELECT * FROM Bill_of_Materials ORDER BY parent_product_id, component_id";
+                            string sql = "SELECT * FROM Bill_of_Materials ORDER BY parent_part_id, child_part_id";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             using var reader = await cmd.ExecuteReaderAsync();
@@ -148,7 +148,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             await conn.OpenAsync();
                 
                             string sql = @"
-                                INSERT INTO Bill_of_Materials (parent_product_id, component_id, quantity, scrap_factor, effective_date, expiry_date)
+                                INSERT INTO Bill_of_Materials (parent_part_id, child_part_id, quantity, scrap_factor, effective_date, expiry_date)
                                 VALUES (@ParentProductId, @ComponentId, @Quantity, @ScrapFactor, @EffectiveDate, @ExpiryDate);
                                 SELECT last_insert_rowid();";
                 
@@ -179,8 +179,8 @@ namespace CatoriServices.Objects.database.Manufacturing
                 
                             string sql = @"
                                 UPDATE Bill_of_Materials 
-                                SET parent_product_id = @ParentProductId,
-                                    component_id = @ComponentId,
+                                SET parent_part_id = @ParentProductId,
+                                    child_part_id = @ComponentId,
                                     quantity = @Quantity,
                                     scrap_factor = @ScrapFactor,
                                     effective_date = @EffectiveDate,
@@ -235,8 +235,8 @@ namespace CatoriServices.Objects.database.Manufacturing
                             return new BillOfMaterialsEntity
                             {
                                 BomId = reader.GetInt32(reader.GetOrdinal("bom_id")),
-                                ParentProductId = reader.GetInt32(reader.GetOrdinal("parent_product_id")),
-                                ComponentId = reader.GetInt32(reader.GetOrdinal("component_id")),
+                                ParentPartId = reader.GetInt32(reader.GetOrdinal("parent_part_id")),
+                                ChildPartId = reader.GetInt32(reader.GetOrdinal("child_part_id")),
                                 Quantity = reader.GetDecimal(reader.GetOrdinal("quantity")),
                                 ScrapFactor = reader.GetDecimal(reader.GetOrdinal("scrap_factor")),
                                 EffectiveDate = DateTime.Parse(reader.GetString(reader.GetOrdinal("effective_date"))),

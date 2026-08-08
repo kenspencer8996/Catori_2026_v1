@@ -7,6 +7,7 @@ namespace CatoriApp.Game.ViewModels.Manufacturing
     public class ProductViewModel: ViewmodelBase
     {
         private int _productId;
+        private int _partId;
         private string _productName = "";
         private string _productCode = "";
         private ProductType _productType = ProductType.Finished;
@@ -18,6 +19,12 @@ namespace CatoriApp.Game.ViewModels.Manufacturing
         {
             get => _productId;
             set => SetProperty(ref _productId, value);
+        }
+
+        public int PartId
+        {
+            get => _partId;
+            set => SetProperty(ref _partId, value);
         }
 
         public string ProductName

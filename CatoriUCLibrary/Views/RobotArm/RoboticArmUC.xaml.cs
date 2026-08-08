@@ -1,5 +1,6 @@
 using CatoriApp.Core.Objects.DragDrop;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,6 +9,8 @@ namespace CatoriUCLibrary.Views.RobotArm
 {
     public partial class RoboticArmUC : UserControl, IDraggable
     {
+        public event EventHandler? DragCompleted;
+        public event EventHandler<RobotPoseCompletedEventArgs>? PoseCompleted;
         private readonly RobotArmController _controller;
         private readonly List<RobotArmSegmentontrol> _segments = new();
         private readonly List<double> _relativeAngles = new();
@@ -15,11 +18,12 @@ namespace CatoriUCLibrary.Views.RobotArm
         private double _dragOffset;
         private Point _fixedBase = new(390, 525);
         private RobotArmSegmentontrol? _draggedArmSegment;
-
+        private bool _isPlayingPoses;
         public RoboticArmUC()
         {
             InitializeComponent();
             _controller = new RobotArmController(this);
+
         }
 
         public Point FixedBase
@@ -29,6 +33,47 @@ namespace CatoriUCLibrary.Views.RobotArm
             {
                 _fixedBase = value;
                 RenderConfiguredPose();
+            }
+        }
+
+        public string? ItemDataJson
+        {
+            get => (string?)GetValue(ItemDataJsonProperty);
+            set => SetValue(ItemDataJsonProperty, value);
+        }
+
+        public static readonly DependencyProperty ItemDataJsonProperty =
+            DependencyProperty.Register(
+                nameof(ItemDataJson),
+                typeof(string),
+                typeof(RoboticArmUC),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public bool PlayAllPoses
+        {
+            get => (bool)GetValue(PlayAllPosesProperty);
+            set => SetValue(PlayAllPosesProperty, value);
+        }
+
+        public static readonly DependencyProperty PlayAllPosesProperty =
+            DependencyProperty.Register(
+                nameof(PlayAllPoses),
+                typeof(bool),
+                typeof(RoboticArmUC),
+                new PropertyMetadata(false, OnPlayAllPosesChanged));
+
+        private static async void OnPlayAllPosesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not RoboticArmUC arm || e.NewValue is not true)
+                return;
+
+            try
+            {
+                await arm.PlayAllPosesAsync();
+            }
+            finally
+            {
+                arm.SetCurrentValue(PlayAllPosesProperty, false);
             }
         }
 
@@ -163,6 +208,54 @@ namespace CatoriUCLibrary.Views.RobotArm
             SetPose(target.Joint1, target.Joint2, target.Joint3, target.JointHand);
         }
 
+        public async Task PlayAllPosesAsync(int millisecondsPerPose = 600)
+        {
+            if (_isPlayingPoses || string.IsNullOrWhiteSpace(ItemDataJson))
+                return;
+
+            _isPlayingPoses = true;
+            try
+            {
+                List<StoredRobotPose> poses;
+                try
+                {
+                    poses = JsonSerializer.Deserialize<List<StoredRobotPose>>(ItemDataJson) ?? [];
+                }
+                catch (JsonException)
+                {
+                    MessageLabel.Content = "Robot pose data is not valid JSON.";
+                    return;
+                }
+
+                for (var index = 0; index < poses.Count; index++)
+                {
+                    var storedPose = poses[index];
+                    var angles = storedPose.Angles.ValueKind == JsonValueKind.Array
+                        ? storedPose.Angles.Deserialize<double[]>() ?? []
+                        : [];
+                    var pose = new RobotPose(
+                        GetAngle(angles, 0), GetAngle(angles, 1),
+                        GetAngle(angles, 2), GetAngle(angles, 3));
+
+                    await MoveToPoseAsync(pose, millisecondsPerPose);
+                    PoseCompleted?.Invoke(this, new RobotPoseCompletedEventArgs(
+                        storedPose.PoseName, index, poses.Count, pose));
+                }
+            }
+            finally
+            {
+                _isPlayingPoses = false;
+            }
+        }
+
+        private static double GetAngle(double[] angles, int index) => index < angles.Length ? angles[index] : 0;
+
+        private sealed class StoredRobotPose
+        {
+            public string PoseName { get; set; } = string.Empty;
+            public JsonElement Angles { get; set; }
+        }
+
         public void MoveTo(Point target)
         {
             if (_segments.Count == 0)
@@ -276,6 +369,7 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         public void OnDragMouseup()
         {
+            DragCompleted?.Invoke(this, EventArgs.Empty);
         }
         private void RenderConfiguredPose()
         {

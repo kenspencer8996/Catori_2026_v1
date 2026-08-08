@@ -140,10 +140,9 @@ public class DragManager
 
         bool wasDragging = _isDragging;
         _isDragging = false;
-        _currentDraggable.OnDragMouseup();
-
         _canvas.ReleaseMouseCapture();
         _physics.Stop();
+        _currentDraggable.OnDragMouseup();
 
         if (wasDragging && _currentDraggable != null && _activeTarget != null)
         {

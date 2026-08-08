@@ -9,6 +9,9 @@ namespace CatoriApp.Game.Objects.AnimationOnPath;
 /// </summary>
 public static class GameAnimationHelper
 {
+    private static string PartName;
+    private static string TargetName;
+    private static string NextAction;
     public static PathGeometry CreatePathGeometry(
         IEnumerable<Point> points,
         bool isClosed = false,
@@ -33,18 +36,25 @@ public static class GameAnimationHelper
 
     public static PathGeometry ParsePathGeometry(string pathData)
     {
-        if (string.IsNullOrWhiteSpace(pathData))
-            throw new ArgumentException("Path data cannot be empty.", nameof(pathData));
-
-        Geometry geometry = Geometry.Parse(pathData);
-        return PathGeometry.CreateFromGeometry(geometry);
+        Geometry geometry;
+        PathGeometry resultPath = null;
+        if (pathData != null && pathData != "" && pathData != "[]")
+        {
+            geometry = Geometry.Parse(pathData);
+            resultPath = PathGeometry.CreateFromGeometry(geometry);
+        }
+        return resultPath;
     }
     public static PathAnimationHandle AddControlOnPath(string animationName,
-    Canvas canvas,FrameworkElement control,string itemDataJson,
-    PathAnimationOptions? options = null)
+        string partName, string targetName, string nextAction,
+        Canvas canvas,FrameworkElement control,string itemDataJson,
+        PathAnimationOptions? options = null)
     {
         return AddControlOnPathInner(
             animationName,
+            partName,
+            targetName,
+            nextAction,
             canvas,
             control,
             itemDataJson,
@@ -55,12 +65,16 @@ public static class GameAnimationHelper
     string itemDataJson,
     PathDisplayOptions? options = null)
     {
-       
-        
-        return AddPath(
-            canvas,
-            ParsePathGeometry(itemDataJson),
-            options);
+        Path result = null;
+        if (itemDataJson != null && itemDataJson != "" && itemDataJson != "[]")
+        {
+            PathGeometry geometry = ParsePathGeometry(itemDataJson);
+            result = AddPath(
+                canvas,
+                geometry,
+                options);
+        }
+        return result;
     }
     public static Path AddPath(
         Canvas canvas,
@@ -126,6 +140,7 @@ public static class GameAnimationHelper
     }
 
     public static PathAnimationHandle AddControlOnPathInner(string animationName,
+        string partName, string targetName, string nextAction,
         Canvas canvas,
         FrameworkElement control,
         string itemDataJson,
@@ -139,6 +154,9 @@ public static class GameAnimationHelper
         options ??= new PathAnimationOptions();
         EnsureNameScope(canvas);
         string _animationName = animationName;
+        PartName = partName;
+        TargetName = targetName;
+        NextAction = nextAction;
         var scaleTransform = new ScaleTransform(1, 1);
         var rotateTransform = new RotateTransform();
         var translateTransform = new TranslateTransform();
@@ -200,6 +218,7 @@ public static class GameAnimationHelper
             options);
 
         var handle = new PathAnimationHandle(_animationName,
+            PartName,TargetName, NextAction,
             canvas,
             host,
             storyboard,
@@ -440,8 +459,11 @@ public sealed class PathAnimationHandle : IDisposable
     private bool _isStarted;
     private bool _isDisposed;
     private string _animationName;
-
+    private string PartName;
+    private string TargetName;
+    private string NextAction;
     internal PathAnimationHandle(string animationName,
+        string partName, string targetName, string nextAction,
         Canvas canvas,
         ContentControl host,
         Storyboard storyboard,
@@ -451,6 +473,9 @@ public sealed class PathAnimationHandle : IDisposable
     {
         _canvas = canvas;
         _animationName = animationName; 
+        PartName = partName;
+        TargetName = targetName;
+        NextAction = nextAction;
         _path = path;
         Host = host;
         Storyboard = storyboard;
@@ -480,7 +505,8 @@ public sealed class PathAnimationHandle : IDisposable
 
     private void StoryBoardComplete()
     {
-        AnimationCompleteMessage animationComplete = new AnimationCompleteMessage(_animationName);
+        AnimationCompleteMessage animationComplete = 
+            new AnimationCompleteMessage(_animationName, PartName, TargetName, NextAction);
         WeakReferenceMessenger.Default.Send<AnimationCompleteMessage>(animationComplete );
 
         //StopGlow();

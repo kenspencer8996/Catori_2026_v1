@@ -1,5 +1,9 @@
 using System.Diagnostics;
+using System.Windows.Data;
 using System.Windows.Threading;
+using CatoriApp.Game.Objects.Services.Locations;
+using CatoriApp.Game.ViewModels.Locations;
+using CatoriUCLibrary.Views.RobotArm;
 namespace CatoriApp.Game.Views.Controls.Locations.Factory
 {
     /// <summary>
@@ -12,9 +16,13 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         public string restImageLeft = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Locations", "RobotArms", "00RobotArmStart.png");
         DragManager _dragManager;
         readonly DispatcherTimer _animation_timer;
+        private readonly LocationLayoutItemService _layoutItemService = new();
+        private readonly List<RoboticArmUC> _loadedRobotArms = new();
+        private readonly int _locationId;
 
         public FactoryInterior_UC(int locationId)
         {
+            _locationId = locationId;
             InitializeComponent();
             _dragManager = GlobalCode.GetDragmanager(MainCanvas);
             _animation_timer = new DispatcherTimer(DispatcherPriority.Normal);
@@ -28,11 +36,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             Canvas.SetLeft(lightPanel, 1476);
             Canvas.SetTop(lightPanel, 815);
             RobotArmNew.SetupRobot(CatoriUCLibrary.RobotColorEnum.Blue);
-
-            RobotArmNew.Width = 400;
-            RobotArmNew.Height = 400;
-            Canvas.SetLeft(RobotArmNew, 976);
-            Canvas.SetTop(RobotArmNew, 760);
+            RobotArmNew.Visibility = Visibility.Collapsed;
 
             lightPanel.PanelTriggered += LightPanel_PanelTriggered;
             lightPanel.StartFlicker();
@@ -54,7 +58,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         }
         private Window? _hostWindow;
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
             ////GlobalGame.MainWindow.AddHandler(Keyboard.PreviewKeyDownEvent,
@@ -65,7 +69,8 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             {
                 _hostWindow.PreviewKeyDown += UC_KeyDown;
             }
-            _controller.LoadedAsync();
+            await _controller.LoadedAsync();
+            await LoadLayoutRobotsAsync();
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 Debug.WriteLine($"Canvas size: {MainCanvas.ActualWidth}, {MainCanvas.ActualHeight}");
@@ -74,6 +79,46 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
                 System.Diagnostics.Debug.WriteLine(
                     $"FactoryInterior_UC arranged size: {ActualWidth}x{ActualHeight}; canvas: {MainCanvas.ActualWidth}x{MainCanvas.ActualHeight}");
             }), DispatcherPriority.Loaded);
+        }
+
+        private async Task LoadLayoutRobotsAsync()
+        {
+            foreach (var robot in _loadedRobotArms.Skip(1).ToList())
+                MainCanvas.Children.Remove(robot);
+            _loadedRobotArms.Clear();
+
+            var robotItems = (await _layoutItemService.GetByLocationIdAsync(_locationId, includePoints: false))
+                .Where(item => string.Equals(item.MajorItemType, "Robot", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            for (var index = 0; index < robotItems.Count; index++)
+            {
+                var item = robotItems[index];
+                var robot = index == 0 ? RobotArmNew : new RoboticArmUC();
+                ConfigureLayoutRobot(robot, item);
+                if (index > 0)
+                    MainCanvas.Children.Add(robot);
+                _loadedRobotArms.Add(robot);
+            }
+        }
+
+        private static void ConfigureLayoutRobot(RoboticArmUC robot, LocationLayoutItemViewModel layoutItem)
+        {
+            robot.Tag = layoutItem;
+            robot.IsDragEnabled = false;
+            robot.Width = layoutItem.Width > 0 ? layoutItem.Width : 400;
+            robot.Height = layoutItem.Height > 0 ? layoutItem.Height : 400;
+            robot.SetBinding(RoboticArmUC.ItemDataJsonProperty, new Binding(nameof(LocationLayoutItemViewModel.ItemDataJson))
+            {
+                Source = layoutItem,
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            });
+            robot.SetupRobot(CatoriUCLibrary.RobotColorEnum.Blue);
+            Canvas.SetLeft(robot, layoutItem.X);
+            Canvas.SetTop(robot, layoutItem.Y);
+            Canvas.SetZIndex(robot, layoutItem.ZIndex == 0 ? 1221 : layoutItem.ZIndex);
+            robot.Visibility = Visibility.Visible;
         }
         private void UC_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -222,7 +267,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             CatoriUCLibrary.Views.RobotArm.RobotPose targetPose =
                 new CatoriUCLibrary.Views.RobotArm.RobotPose(j1, j2, j3, j4);
 
-            RobotArmNew.MoveToPoseAsync(targetPose);
+            (_loadedRobotArms.FirstOrDefault() ?? RobotArmNew).MoveToPoseAsync(targetPose);
 
         }
         bool is_odd(int n)

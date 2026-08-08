@@ -7,15 +7,19 @@ namespace CatoriServices.Objects.Entities.Manufacturing
     public class BillOfMaterialsEntity
     {
         public int BomId { get; set; }
-        public int ParentProductId { get; set; }
-        public int ComponentId { get; set; }
+        public int ParentPartId { get; set; }
+        public int ChildPartId { get; set; }
+        [Obsolete("Use ParentPartId.")]
+        public int ParentProductId { get => ParentPartId; set => ParentPartId = value; }
+        [Obsolete("Use ChildPartId.")]
+        public int ComponentId { get => ChildPartId; set => ChildPartId = value; }
         public decimal Quantity { get; set; }
         public decimal ScrapFactor { get; set; }
         public DateTime EffectiveDate { get; set; }
         public DateTime? ExpiryDate { get; set; }
 
         // Navigation properties (optional - for convenience)
-        public ProductEntity? ParentProduct { get; set; }
+        public PartEntity? ParentPart { get; set; }
    }
 }
 

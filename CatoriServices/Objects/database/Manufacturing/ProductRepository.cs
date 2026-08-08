@@ -32,7 +32,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             using var conn = GetConnection();
                             await conn.OpenAsync();
                 
-                            string sql = "SELECT * FROM Products WHERE product_id = @ProductId";
+                            string sql = "SELECT p.*, pt.unit_of_measure, pt.cost_per_unit FROM Products p JOIN Parts pt ON pt.part_id=p.part_id WHERE p.product_id = @ProductId";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ProductId", productId);
@@ -56,7 +56,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             using var conn = GetConnection();
                             await conn.OpenAsync();
                 
-                            string sql = "SELECT * FROM Products WHERE product_code = @ProductCode";
+                            string sql = "SELECT p.*, pt.unit_of_measure, pt.cost_per_unit FROM Products p JOIN Parts pt ON pt.part_id=p.part_id WHERE p.product_code = @ProductCode";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ProductCode", productCode);
@@ -80,7 +80,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             using var conn = GetConnection();
                             await conn.OpenAsync();
                 
-                            string sql = "SELECT * FROM Products ORDER BY product_name";
+                            string sql = "SELECT p.*, pt.unit_of_measure, pt.cost_per_unit FROM Products p JOIN Parts pt ON pt.part_id=p.part_id ORDER BY p.product_name";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             using var reader = await cmd.ExecuteReaderAsync();
@@ -105,7 +105,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             using var conn = GetConnection();
                             await conn.OpenAsync();
                 
-                            string sql = "SELECT * FROM Products WHERE product_type = @ProductType ORDER BY product_name";
+                            string sql = "SELECT p.*, pt.unit_of_measure, pt.cost_per_unit FROM Products p JOIN Parts pt ON pt.part_id=p.part_id WHERE p.product_type = @ProductType ORDER BY p.product_name";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ProductType", productType.ToString());
@@ -133,16 +133,15 @@ namespace CatoriServices.Objects.database.Manufacturing
                             await conn.OpenAsync();
                 
                             string sql = @"
-                                INSERT INTO Products (product_name, product_code, product_type, unit_of_measure, cost_per_unit, created_at)
-                                VALUES (@ProductName, @ProductCode, @ProductType, @UnitOfMeasure, @CostPerUnit, @CreatedAt);
+                                INSERT INTO Products (product_name, product_code, product_type, part_id, created_at)
+                                VALUES (@ProductName, @ProductCode, @ProductType, @PartId, @CreatedAt);
                                 SELECT last_insert_rowid();";
                 
                             using var cmd = new SqliteCommand(sql, conn);
                             cmd.Parameters.AddWithValue("@ProductName", product.ProductName);
                             cmd.Parameters.AddWithValue("@ProductCode", product.ProductCode);
                             cmd.Parameters.AddWithValue("@ProductType", product.ProductType.ToString());
-                            cmd.Parameters.AddWithValue("@UnitOfMeasure", product.UnitOfMeasure);
-                            cmd.Parameters.AddWithValue("@CostPerUnit", product.CostPerUnit);
+                            cmd.Parameters.AddWithValue("@PartId", product.PartId);
                             cmd.Parameters.AddWithValue("@CreatedAt", product.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"));
                 
                             var result = await cmd.ExecuteScalarAsync();
@@ -167,8 +166,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                                 SET product_name = @ProductName,
                                     product_code = @ProductCode,
                                     product_type = @ProductType,
-                                    unit_of_measure = @UnitOfMeasure,
-                                    cost_per_unit = @CostPerUnit
+                                    part_id = @PartId
                                 WHERE product_id = @ProductId";
                 
                             using var cmd = new SqliteCommand(sql, conn);
@@ -176,8 +174,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             cmd.Parameters.AddWithValue("@ProductName", product.ProductName);
                             cmd.Parameters.AddWithValue("@ProductCode", product.ProductCode);
                             cmd.Parameters.AddWithValue("@ProductType", product.ProductType.ToString());
-                            cmd.Parameters.AddWithValue("@UnitOfMeasure", product.UnitOfMeasure);
-                            cmd.Parameters.AddWithValue("@CostPerUnit", product.CostPerUnit);
+                            cmd.Parameters.AddWithValue("@PartId", product.PartId);
                 
                             int rowsAffected = await cmd.ExecuteNonQueryAsync();
                             return rowsAffected > 0;
@@ -218,6 +215,7 @@ namespace CatoriServices.Objects.database.Manufacturing
                             return new ProductEntity
                             {
                                 ProductId = reader.GetInt32(reader.GetOrdinal("product_id")),
+                                PartId = reader.GetInt32(reader.GetOrdinal("part_id")),
                                 ProductName = reader.GetString(reader.GetOrdinal("product_name")),
                                 ProductCode = reader.GetString(reader.GetOrdinal("product_code")),
                                 ProductType = Enum.Parse<ProductType>(reader.GetString(reader.GetOrdinal("product_type"))),
