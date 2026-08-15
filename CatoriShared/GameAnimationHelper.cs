@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using CatoriApp.Core.Objects.Production;
 using System.Globalization;
 
 namespace CatoriApp.Game.Objects.AnimationOnPath;
@@ -9,9 +10,6 @@ namespace CatoriApp.Game.Objects.AnimationOnPath;
 /// </summary>
 public static class GameAnimationHelper
 {
-    private static string PartName;
-    private static string TargetName;
-    private static string NextAction;
     public static PathGeometry CreatePathGeometry(
         IEnumerable<Point> points,
         bool isClosed = false,
@@ -50,16 +48,39 @@ public static class GameAnimationHelper
         Canvas canvas,FrameworkElement control,string itemDataJson,
         PathAnimationOptions? options = null)
     {
+        Enum.TryParse<ProductionAction>(nextAction,true,out var action);
         return AddControlOnPathInner(
             animationName,
             partName,
             targetName,
-            nextAction,
+            action,
             canvas,
             control,
             itemDataJson,
             options);
     }
+
+    public static PathAnimationHandle AddControlOnPath(string animationName,
+        string partName,string targetName,ProductionAction nextAction,
+        Canvas canvas,FrameworkElement control,string itemDataJson,
+        PathAnimationOptions? options=null)
+        =>AddControlOnPathInner(animationName,partName,targetName,nextAction,
+            canvas,control,itemDataJson,options);
+
+    public static PathAnimationHandle AddControlOnPath(PathAnimationDefinition definition,
+        Canvas canvas,FrameworkElement control,PathAnimationOptions? options=null)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        return AddControlOnPath(definition.AnimationName,definition.PartName,definition.TargetName,
+            definition.NextAction,
+            canvas,control,definition.PathData,options);
+    }
+
+    public static PathAnimationHandle AddControlOnPath(string animationName,
+        Canvas canvas,FrameworkElement control,string itemDataJson,
+        PathAnimationOptions? options=null)
+        =>AddControlOnPath(animationName,$"{animationName}Part",string.Empty,string.Empty,
+            canvas,control,itemDataJson,options);
     public static Path AddPath(
     Canvas canvas,
     string itemDataJson,
@@ -135,12 +156,14 @@ public static class GameAnimationHelper
         Canvas.SetTop(host, top);
         Panel.SetZIndex(host, options.ZIndex);
         canvas.Children.Add(host);
+        System.Diagnostics.Debug.WriteLine($"ani ctrl Width / Height: {host.Width} / {host.Height} - {Canvas.GetLeft(control)} / " +
+            $"{Canvas.GetLeft(control)} / {Canvas.GetTop(control)} / {Canvas.GetZIndex(control)}");
 
         return host;
     }
 
     public static PathAnimationHandle AddControlOnPathInner(string animationName,
-        string partName, string targetName, string nextAction,
+        string partName, string targetName, ProductionAction nextAction,
         Canvas canvas,
         FrameworkElement control,
         string itemDataJson,
@@ -149,14 +172,18 @@ public static class GameAnimationHelper
         ArgumentNullException.ThrowIfNull(canvas);
         ArgumentNullException.ThrowIfNull(control);
         ArgumentNullException.ThrowIfNull(itemDataJson);
+
+        string imagePath = control is CatoriInterfaces.IImagePathSource imageSource
+            ? imageSource.ImagePath ?? string.Empty
+            : string.Empty;
+        System.Diagnostics.Debug.WriteLine(
+            $"Animation '{animationName}' control '{control.GetType().FullName}' image path: " +
+            $"{(string.IsNullOrWhiteSpace(imagePath) ? "<none>" : imagePath)}");
     
         PathGeometry geometry = ParsePathGeometry(itemDataJson);
         options ??= new PathAnimationOptions();
         EnsureNameScope(canvas);
         string _animationName = animationName;
-        PartName = partName;
-        TargetName = targetName;
-        NextAction = nextAction;
         var scaleTransform = new ScaleTransform(1, 1);
         var rotateTransform = new RotateTransform();
         var translateTransform = new TranslateTransform();
@@ -192,6 +219,17 @@ public static class GameAnimationHelper
         double width = options.ControlWidth ?? ResolveDimension(control.Width, control.ActualWidth);
         double height = options.ControlHeight ?? ResolveDimension(control.Height, control.ActualHeight);
 
+        if(options.ControlWidth is double controlWidth&&controlWidth>0)
+            control.Width=controlWidth;
+        if(options.ControlHeight is double controlHeight&&controlHeight>0)
+            control.Height=controlHeight;
+        if (width > 0)
+            host.Width = width;
+        if (height > 0)
+            host.Height = height;
+        host.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+        host.VerticalContentAlignment = VerticalAlignment.Stretch;
+
         Canvas.SetLeft(host, options.CenterOnPath ? -width / 2 : 0);
         Canvas.SetTop(host, options.CenterOnPath ? -height / 2 : 0);
         Panel.SetZIndex(host, options.ZIndex);
@@ -201,6 +239,10 @@ public static class GameAnimationHelper
             canvas.Children.Add(host);
         }
         //canvas.Children.Add(host);
+        System.Diagnostics.Debug.WriteLine(
+            $"Animation host {animationName}: {host.Width}x{host.Height}, " +
+            $"Left={Canvas.GetLeft(host)}, Top={Canvas.GetTop(host)}, " +
+            $"ZIndex={Panel.GetZIndex(host)}");
 
         string suffix = Guid.NewGuid().ToString("N", CultureInfo.InvariantCulture);
         string translateName = $"PathTranslate_{suffix}";
@@ -218,7 +260,7 @@ public static class GameAnimationHelper
             options);
 
         var handle = new PathAnimationHandle(_animationName,
-            PartName,TargetName, NextAction,
+            partName,targetName,nextAction,
             canvas,
             host,
             storyboard,
@@ -461,9 +503,9 @@ public sealed class PathAnimationHandle : IDisposable
     private string _animationName;
     private string PartName;
     private string TargetName;
-    private string NextAction;
+    private ProductionAction NextAction;
     internal PathAnimationHandle(string animationName,
-        string partName, string targetName, string nextAction,
+        string partName, string targetName, ProductionAction nextAction,
         Canvas canvas,
         ContentControl host,
         Storyboard storyboard,
@@ -482,6 +524,8 @@ public sealed class PathAnimationHandle : IDisposable
         _translateName = translateName;
         _rotateName = rotateName;
         storyboard.Completed += (s, e) => StoryBoardComplete();
+        WeakReferenceMessenger.Default.Register<RobotPartTransferMessage>(this,
+            static (recipient,message)=>((PathAnimationHandle)recipient).HandlePartTransfer(message));
         _visualPath = new Path
         {
             Data = Geometry.Parse(_path),
@@ -506,15 +550,35 @@ public sealed class PathAnimationHandle : IDisposable
     private void StoryBoardComplete()
     {
         AnimationCompleteMessage animationComplete = 
-            new AnimationCompleteMessage(_animationName, PartName, TargetName, NextAction);
+            new AnimationCompleteMessage(_animationName,PartName,TargetName,NextAction,
+                Host.Content as FrameworkElement);
         WeakReferenceMessenger.Default.Send<AnimationCompleteMessage>(animationComplete );
 
         //StopGlow();
     }
 
+    private void HandlePartTransfer(RobotPartTransferMessage message)
+    {
+        if(!string.Equals(message.RobotName,TargetName,StringComparison.Ordinal))
+            return;
+        bool isPickup=NextAction==ProductionAction.Pickup;
+        bool isDrop=NextAction==ProductionAction.Drop;
+        bool shouldHide=message.Stage==RobotPartTransferStage.PickedUp&&(isPickup||isDrop)
+            ||message.Stage==RobotPartTransferStage.Dropped&&isDrop;
+        if(!shouldHide)return;
+        void HidePlaceholder()
+        {
+            Host.Visibility=Visibility.Collapsed;
+            Storyboard.Stop(_canvas);
+        }
+        if(Host.Dispatcher.CheckAccess())HidePlaceholder();
+        else Host.Dispatcher.BeginInvoke((Action)HidePlaceholder);
+    }
+
     private string _path;
 
     public ContentControl Host { get; }
+    public string AnimationName=>_animationName;
     public Storyboard Storyboard { get; }
   
     private readonly Path _visualPath;
@@ -523,9 +587,38 @@ public sealed class PathAnimationHandle : IDisposable
     public void Start()
     {
         ThrowIfDisposed();
+        Host.Visibility=Visibility.Visible;
         StartGlow();
         Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
         _isStarted = true;
+    }
+
+    public void StartWithPart(FrameworkElement part,string? partName=null)
+    {
+        ThrowIfDisposed();
+        ArgumentNullException.ThrowIfNull(part);
+        DetachTransferredPart(part);
+        Host.Content=part;
+        Host.Visibility=Visibility.Visible;
+        if(!string.IsNullOrWhiteSpace(partName))PartName=partName;
+        Start();
+    }
+
+    private static void DetachTransferredPart(FrameworkElement part)
+    {
+        switch(part.Parent)
+        {
+            case ContentControl content when ReferenceEquals(content.Content,part):
+                content.Content=null;
+                if(content.Parent is Panel parentPanel)parentPanel.Children.Remove(content);
+                break;
+            case Panel directPanel:
+                directPanel.Children.Remove(part);
+                break;
+            case Decorator decorator when ReferenceEquals(decorator.Child,part):
+                decorator.Child=null;
+                break;
+        }
     }
 
     public void Pause()
@@ -576,6 +669,7 @@ public sealed class PathAnimationHandle : IDisposable
             return;
 
         Remove();
+        WeakReferenceMessenger.Default.UnregisterAll(this);
         _isDisposed = true;
     }
 

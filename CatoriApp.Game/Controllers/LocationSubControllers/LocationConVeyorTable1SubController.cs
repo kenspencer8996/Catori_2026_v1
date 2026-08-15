@@ -13,7 +13,7 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         }
         public void LoadPaths()
         {
-           LoadPaths();
+           base.LoadLayoutItems().GetAwaiter().GetResult();
 
         }
 

@@ -76,18 +76,6 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
             //part1SimpleUC.Opacity = 0;
             //part2SimpleUC.Opacity = 0;
             //part3CompleteUC.Opacity = 0;
-            WeakReferenceMessenger.Default.Register<AnimationCompleteMessage>(this, (r, m) =>
-            {
-                cLogger.Log(m.AnimationName + " WeakReferenceMessenger called  ");
-                //if (m.Name.ToLower().Contains(viewModel.LocationName.ToLower()))
-                //{
-                //    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[0]);
-                //    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[1]);
-                //    _view.RobotArmNew.MoveToPoseAsync(_robotPoses[2]);
-                //    //_view.RobotArmNew.MoveToPoseAsync(_robotPoses[3]);
-                //    // Handle the animation complete message for this location
-                //}
-            });
         }
         private async Task LoadViewModelAsync()
         {

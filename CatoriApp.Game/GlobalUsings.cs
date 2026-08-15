@@ -112,3 +112,4 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Shapes;
 
 global using CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner;
+global using CatoriUCLibrary.Views.Products;

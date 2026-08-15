@@ -1,4 +1,5 @@
 using Microsoft.Data.Sqlite;
+using CatoriServices.Objects.database.Production;
 namespace CatoriServices.Objects.database.Manufacturing
 {
     /// <summary>
@@ -50,6 +51,8 @@ namespace CatoriServices.Objects.database.Manufacturing
                                 // Fallback: create tables inline if script file not found
                                 await CreateTablesInlineAsync(conn);
                             }
+                            RuntimeProductionSchemaMigrator.Migrate(
+                                new SqliteConnectionStringBuilder(_connectionString).DataSource);
             }
             catch (Exception ex)
             {

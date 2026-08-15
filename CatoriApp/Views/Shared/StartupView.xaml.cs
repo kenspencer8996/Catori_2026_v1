@@ -1,4 +1,5 @@
 ﻿using CatoriApp.Controllers;
+using CatoriApp.Game.Views.Locations.Warehouse;
 using CatoriApp.MachineLayoutDesigner.Views.MachineCatalog;
 namespace CatoriApp.Views.Shared
 {
@@ -101,6 +102,13 @@ namespace CatoriApp.Views.Shared
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
+        }
+
+        private void warehouseButton_Click(object sender, RoutedEventArgs e)
+        {
+            WarehouseView view = new WarehouseView();
+            view.Owner = this;
+            view.ShowDialog();
         }
     }
 }

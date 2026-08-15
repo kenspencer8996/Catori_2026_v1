@@ -4,30 +4,22 @@ using System.Security.Policy;
 
 namespace CatoriApp.Game.Controllers.LocationSubControllers
 {
-    public class LocationSubControllerBase 
+    public class LocationSubControllerBase : CatoriApp.Game.Controllers.ControllerAnimateLayoutsBase
     {
         public FactoryInterior_UC _view;
         public LocationService locationService = new LocationService();
-        public LocationLayoutItemService _layoutItemService = new LocationLayoutItemService();
         public List<RobotPoseViewModel> robotposes { get; private set; }
         public MachineLayoutDesignerViewModel machineLayoutDesignermodel;
         public RobotPoseService _poseservice = new RobotPoseService();
         public readonly MachineLayoutDesignerService _robotdesignservice = new MachineLayoutDesignerService();
         private readonly LocationService _locationService = new LocationService();
         public LocationViewModel _locationViewModel;
-        List<LocationLayoutItemViewModel> _locationLayoutItemViewModels;
         public readonly List<System.Windows.Shapes.Path> PathsForMovement = new();
-        public long _locationId;
         string _backgroundImagePath;
         public LocationSubControllerBase(long locationId, FactoryInterior_UC view)
+            : base(locationId)
         {
-            _locationId = locationId;
             this._view = view;
-            {
-                WeakReferenceMessenger.Default.Register<
-                    AnimationCompleteMessage>(
-                    this,HandleAnimationCompleted);
-            }
 
             _locationService = new LocationService();
             _locationViewModel = _locationService.GetByLocationId(_locationId);
@@ -44,14 +36,14 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
               : new List<RobotPoseViewModel>();
 
             await SetupInteriorAsync(_locationViewModel);
-            _locationLayoutItemViewModels = await _layoutItemService.GetByLocationIdAsync(_locationId);
+            await LoadLayoutItemsAsync();
         }
         public async Task SetupInteriorAsync(LocationViewModel vm)
         {
             _backgroundImagePath = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "LocationInteriors", "Factory", vm.BackgroundImagePath);
             _view.FactoryInteriorImage.Source = UIUtility.GetImageControl(_backgroundImagePath, 1920, 1080, 0).Source;
 
-            _view.RobotPanel.LocationBackgroundImagePath = _backgroundImagePath;
+            //_view.RobotPanel.LocationBackgroundImagePath = _backgroundImagePath;
         }
         private TranslateTransform GetTransform()
         {
@@ -82,28 +74,13 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         public async Task LoadLayoutItems()
         {
             PathPlayer pathPlayer = new PathPlayer(_view);
-            _locationLayoutItemViewModels = await _layoutItemService.GetByLocationIdAsync(_locationId);
-            foreach (var item in _locationLayoutItemViewModels)
+            var layoutItems = await LoadLayoutItemsAsync();
+            foreach (var item in layoutItems)
             {
                 var layoutItem = item.ToEntity();
                 pathPlayer.LoadExistingPath(layoutItem);
                 PathsForMovement.AddRange(pathPlayer.PathsForMovement);
             }
-        }
-        private void HandleAnimationCompleted(
-            object recipient,AnimationCompleteMessage message)
-        {
-            OnAnimationCompleted(message);
-        }
-
-        protected virtual void OnAnimationCompleted(
-            AnimationCompleteMessage message)
-        {
-        }
-
-        public virtual void Dispose()
-        {
-            WeakReferenceMessenger.Default.UnregisterAll(this);
         }
       
     }

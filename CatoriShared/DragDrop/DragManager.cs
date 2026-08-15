@@ -196,6 +196,15 @@ public class DragManager
     {
         if (_dragged is FrameworkElement fe)
         {
+            if (_dragged is ICanvasDragAnchor anchored)
+            {
+                double anchoredX = Math.Max(-anchored.DragAnchorX,
+                    Math.Min(_canvas.ActualWidth - anchored.DragAnchorX,p.X));
+                double anchoredY = Math.Max(-anchored.DragAnchorY,
+                    Math.Min(_canvas.ActualHeight - anchored.DragAnchorY,p.Y));
+                return new Point(anchoredX,anchoredY);
+            }
+
             double w = fe.ActualWidth;
             double h = fe.ActualHeight;
 
@@ -280,5 +289,15 @@ public class DragManager
         _previousTarget?.HighlightOff();
         _previousTarget = null;
     }
+}
+
+/// <summary>
+/// Allows a large, mostly transparent draggable control to be constrained by
+/// its meaningful physical anchor instead of its full layout rectangle.
+/// </summary>
+public interface ICanvasDragAnchor
+{
+    double DragAnchorX { get; }
+    double DragAnchorY { get; }
 }
 

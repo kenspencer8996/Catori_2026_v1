@@ -64,21 +64,22 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <Button x:Name="Location2Button"  Style="{StaticResource MapHotspotButton}"
-             Width="145" Height="50" Canvas.Left="1582" Canvas.Top="167"
-             Click="Location2Button_Click" ToolTip="Click to open Location 2" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                <Button x:Name="warehouseButton"  Style="{StaticResource MapHotspotButton}"
+                    Width="100" Height="51" Canvas.Left="1518" Canvas.Top="129"
+                    Click="warehouseButton_Click" ToolTip="Click to open warehouse" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
                             <SkewTransform/>
-                            <RotateTransform Angle="-13.749"/>
+                            <RotateTransform Angle="8.33"/>
                             <TranslateTransform/>
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
+
                 <Button x:Name="Location3Button"  Style="{StaticResource MapHotspotButton}"
              Width="100" Height="51" Canvas.Left="1665" Canvas.Top="230"
-             Click="Location3Button_Click" ToolTip="Click to open Location 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+             Click="Location3Button_Click" ToolTip="Click to open Factory 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

@@ -18,6 +18,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         readonly DispatcherTimer _animation_timer;
         private readonly LocationLayoutItemService _layoutItemService = new();
         private readonly List<RoboticArmUC> _loadedRobotArms = new();
+        public IReadOnlyList<RoboticArmUC> LoadedRobotArms=>_loadedRobotArms;
         private readonly int _locationId;
 
         public FactoryInterior_UC(int locationId)
@@ -29,9 +30,9 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
 
             // Debug.WriteLine("RobotControl is now the source: " + e.Source);
             _controller = new FactoryInterior_UController(this, locationId);
-             RobotPanel.RunRequested += RobotPanel_RunRequested;
-            RobotPanel.DesignModeRequested += RobotPanel_EditModeRequested; ;
-            RobotPanel.DesignModeEndRequested += RobotPanel_EditModeEndRequested; ;
+            // RobotPanel.RunRequested += RobotPanel_RunRequested;
+            //RobotPanel.DesignModeRequested += RobotPanel_EditModeRequested; ;
+            //RobotPanel.DesignModeEndRequested += RobotPanel_EditModeEndRequested; ;
             _dragManager.RegisterDropTarget(this);
             Canvas.SetLeft(lightPanel, 1476);
             Canvas.SetTop(lightPanel, 815);
@@ -49,7 +50,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             List<string> outPutItems = new List<string>();
             outPutItems.Add("Paint Booth");
             outPutItems.Add("No Paint");
-            RobotPanel.LoadData("Yellow Builder Robot", conveyors, conveyors, outPutItems);
+            //RobotPanel.LoadData("Yellow Builder Robot", conveyors, conveyors, outPutItems);
             // _controller.RobotBuilder.MouseUpAfterRobotMove += RobotBuilder_MoveRobotComplete;
             _animation_timer.Interval = TimeSpan.FromMilliseconds(1000);
             _animation_timer.Tick += Animation_timer_Tick;
@@ -87,7 +88,10 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
                 MainCanvas.Children.Remove(robot);
             _loadedRobotArms.Clear();
 
-            var robotItems = (await _layoutItemService.GetByLocationIdAsync(_locationId, includePoints: false))
+            var layoutItems=await _layoutItemService.GetByLocationIdAsync(_locationId,includePoints:false);
+            int minimumRobotZ=layoutItems.Where(item=>item.ItemType==LocationLayoutItemType.Conveyor)
+                .Select(item=>item.ZIndex).DefaultIfEmpty(0).Max()+1;
+            var robotItems = layoutItems
                 .Where(item => string.Equals(item.MajorItemType, "Robot", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
@@ -95,19 +99,23 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             {
                 var item = robotItems[index];
                 var robot = index == 0 ? RobotArmNew : new RoboticArmUC();
-                ConfigureLayoutRobot(robot, item);
+                ConfigureLayoutRobot(robot,item,minimumRobotZ);
                 if (index > 0)
                     MainCanvas.Children.Add(robot);
                 _loadedRobotArms.Add(robot);
             }
         }
 
-        private static void ConfigureLayoutRobot(RoboticArmUC robot, LocationLayoutItemViewModel layoutItem)
+        private static void ConfigureLayoutRobot(RoboticArmUC robot,LocationLayoutItemViewModel layoutItem,int minimumRobotZ)
         {
             robot.Tag = layoutItem;
+            robot.AnimationTargetName=layoutItem.ItemName;
             robot.IsDragEnabled = false;
-            robot.Width = layoutItem.Width > 0 ? layoutItem.Width : 400;
-            robot.Height = layoutItem.Height > 0 ? layoutItem.Height : 400;
+            // Studio leaves these at zero when the robot uses its natural
+            // RoboticArmUC design size. Match that 800x600 canvas here so the
+            // saved Canvas.Left/Top coordinates describe the same visual.
+            robot.Width = layoutItem.Width > 0 ? layoutItem.Width : 800;
+            robot.Height = layoutItem.Height > 0 ? layoutItem.Height : 600;
             robot.SetBinding(RoboticArmUC.ItemDataJsonProperty, new Binding(nameof(LocationLayoutItemViewModel.ItemDataJson))
             {
                 Source = layoutItem,
@@ -117,7 +125,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             robot.SetupRobot(CatoriUCLibrary.RobotColorEnum.Blue);
             Canvas.SetLeft(robot, layoutItem.X);
             Canvas.SetTop(robot, layoutItem.Y);
-            Canvas.SetZIndex(robot, layoutItem.ZIndex == 0 ? 1221 : layoutItem.ZIndex);
+            Canvas.SetZIndex(robot,Math.Max(minimumRobotZ,layoutItem.ZIndex==0?1221:layoutItem.ZIndex));
             robot.Visibility = Visibility.Visible;
         }
         private void UC_Unloaded(object sender, RoutedEventArgs e)
@@ -157,7 +165,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
 
         private void LightPanel_PanelTriggered(object? sender, EventArgs e)
         {
-            ShowrobotControlPanel();
+            //ShowrobotControlPanel();
         }
 
         private void Animation_timer_Tick(object? sender, EventArgs e)
@@ -181,14 +189,8 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             //RobotRightUC.StopWorking();
         }
 
-        private void ShowRobotControlsButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShowrobotControlPanel();
-        }
-        public void ShowrobotControlPanel()
-        {
-            RobotPanel.Visibility = Visibility.Visible;
-        }
+       
+      
        
 
         private void MenuItem_Start_Click(object sender, RoutedEventArgs e)

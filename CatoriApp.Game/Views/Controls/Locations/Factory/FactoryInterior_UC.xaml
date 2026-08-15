@@ -32,8 +32,7 @@
 
             <controls:LightPanel x:Name="lightPanel" Canvas.Left="600" Canvas.Top="5" Width="100" Height="100" Panel.ZIndex="1202"/>
             <uslib:RoboticArmUC x:Name="RobotArmNew" Canvas.Left="300" Canvas.Top="200" Width="100" Height="100" Panel.ZIndex="1221"/>
-            <robots:RobotControlPanel x:Name="RobotPanel" Canvas.Left="5" Canvas.Top="5" Panel.ZIndex="2000"/>
-        <Polygon x:Name="Zone1" Fill="#01EA2E2E" Stroke="Transparent" StrokeThickness="6" Points="600,300 800,50 1520,700 300,800" Panel.ZIndex="1603" MouseEnter="Zone1_MouseEnter"/>
+         <Polygon x:Name="Zone1" Fill="#01EA2E2E" Stroke="Transparent" StrokeThickness="6" Points="600,300 800,50 1520,700 300,800" Panel.ZIndex="1603" MouseEnter="Zone1_MouseEnter"/>
         </Canvas>
     </Viewbox>
 </UserControl>

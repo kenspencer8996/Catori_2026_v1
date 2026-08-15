@@ -17,27 +17,27 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
 
         protected override void OnAnimationCompleted(AnimationCompleteMessage message)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Animation completed: {message.AnimationName}");
         }
 
         public void StartProduction()
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("Location 2 production has no configured animations.");
         }
 
         public void StopProduction()
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("Location 2 production stopped.");
         }
 
         public void LoadPaths()
         {
-            throw new NotImplementedException();
+            LoadLayoutItems().GetAwaiter().GetResult();
         }
 
         public void OnAnimationCompleted()
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("Location 2 animation completed.");
         }
     }
 }

@@ -1,13 +1,17 @@
 using CatoriApp.Core.Objects.DragDrop;
+using CatoriApp.Core.Objects.Arguments;
+using CatoriApp.Core.Objects.Production;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CatoriUCLibrary.Views.RobotArm
 {
-    public partial class RoboticArmUC : UserControl, IDraggable
+    public partial class RoboticArmUC : UserControl, IDraggable, ICanvasDragAnchor
     {
         public event EventHandler? DragCompleted;
         public event EventHandler<RobotPoseCompletedEventArgs>? PoseCompleted;
@@ -19,11 +23,174 @@ namespace CatoriUCLibrary.Views.RobotArm
         private Point _fixedBase = new(390, 525);
         private RobotArmSegmentontrol? _draggedArmSegment;
         private bool _isPlayingPoses;
+        private bool _isSynchronizingJointProperties;
+        private bool _isHandlingPickup;
+        private ContentControl? _carriedPartHost;
+        private Point _handPoint;
         public RoboticArmUC()
         {
             InitializeComponent();
             _controller = new RobotArmController(this);
+            WeakReferenceMessenger.Default.Register<AnimationCompleteMessage>(this,
+                static (recipient,message)=>((RoboticArmUC)recipient).ReceiveAnimationComplete(message));
 
+        }
+
+        public string? AnimationTargetName
+        {
+            get => (string?)GetValue(AnimationTargetNameProperty);
+            set => SetValue(AnimationTargetNameProperty,value);
+        }
+
+        public static readonly DependencyProperty AnimationTargetNameProperty=
+            DependencyProperty.Register(nameof(AnimationTargetName),typeof(string),typeof(RoboticArmUC));
+
+        public bool ReleasePartAtDrop { get; set; }=true;
+        public string? OutputPartImagePath { get; set; }
+
+        private void ReceiveAnimationComplete(AnimationCompleteMessage message)
+        {
+            if(message.Action!=ProductionAction.Pickup
+                ||!MatchesAnimationTarget(message.TargetName))
+                return;
+
+            if(!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(()=>ReceiveAnimationComplete(message)));
+                return;
+            }
+            _=HandlePickupAsync(message.PartName,message.Part);
+        }
+
+        private async Task HandlePickupAsync(string partName,FrameworkElement? part)
+        {
+            if(_isHandlingPickup)return;
+            _isHandlingPickup=true;
+            try
+            {
+                if(part!=null)
+                {
+                    PickupPart(part);
+                    SendPartTransfer(partName,RobotPartTransferStage.PickedUp,part);
+                }
+                await PlayAllPosesAsync();
+                if(!ReleasePartAtDrop)return;
+                ApplyOutputPartImage(part);
+                var releasedPart=ReleasePart();
+                if(releasedPart!=null)
+                    SendPartTransfer(partName,RobotPartTransferStage.Dropped,releasedPart);
+            }
+            finally
+            {
+                _isHandlingPickup=false;
+            }
+        }
+
+        private void ApplyOutputPartImage(FrameworkElement? part)
+        {
+            if(part==null||string.IsNullOrWhiteSpace(OutputPartImagePath))return;
+            var image=FindVisualChild<Image>(part);if(image==null)return;
+            try { image.Source=new System.Windows.Media.Imaging.BitmapImage(new Uri(OutputPartImagePath,UriKind.RelativeOrAbsolute)); }
+            catch(Exception) { }
+        }
+
+        private static T? FindVisualChild<T>(DependencyObject parent) where T:DependencyObject
+        {
+            for(int index=0;index<VisualTreeHelper.GetChildrenCount(parent);index++)
+            {
+                var child=VisualTreeHelper.GetChild(parent,index);
+                if(child is T match)return match;
+                var nested=FindVisualChild<T>(child);if(nested!=null)return nested;
+            }
+            return null;
+        }
+
+        private void PickupPart(FrameworkElement part)
+        {
+            DetachFromParent(part);
+            if(_carriedPartHost!=null)RobotRoot.Children.Remove(_carriedPartHost);
+            _carriedPartHost=new ContentControl
+            {
+                Content=part,IsHitTestVisible=false,
+                Width=double.IsNaN(part.Width)?part.ActualWidth:part.Width,
+                Height=double.IsNaN(part.Height)?part.ActualHeight:part.Height
+            };
+            Panel.SetZIndex(_carriedPartHost,10000);
+            RobotRoot.Children.Add(_carriedPartHost);
+            PositionCarriedPart();
+        }
+
+        private void PositionCarriedPart()
+        {
+            if(_carriedPartHost==null)return;
+            double width=double.IsNaN(_carriedPartHost.Width)?_carriedPartHost.ActualWidth:_carriedPartHost.Width;
+            double height=double.IsNaN(_carriedPartHost.Height)?_carriedPartHost.ActualHeight:_carriedPartHost.Height;
+            Canvas.SetLeft(_carriedPartHost,_handPoint.X-width/2);
+            Canvas.SetTop(_carriedPartHost,_handPoint.Y-height/2);
+        }
+
+        private FrameworkElement? ReleasePart()
+        {
+            if(_carriedPartHost?.Content is not FrameworkElement part)return null;
+            var targetCanvas=FindAncestorCanvas(this);
+            Point dropPoint=targetCanvas==null
+                ? default
+                : RobotRoot.TranslatePoint(_handPoint,targetCanvas);
+
+            // Releasing always removes the visual owned by the arm.  Failure to
+            // locate a destination must not leave a stale part stuck to the hand.
+            _carriedPartHost.Content=null;
+            RobotRoot.Children.Remove(_carriedPartHost);
+            _carriedPartHost=null;
+            if(targetCanvas==null)return null;
+
+            var releasedHost=new ContentControl { Content=part,IsHitTestVisible=false };
+            Canvas.SetLeft(releasedHost,dropPoint.X-Math.Max(0,part.ActualWidth)/2);
+            Canvas.SetTop(releasedHost,dropPoint.Y-Math.Max(0,part.ActualHeight)/2);
+            Panel.SetZIndex(releasedHost,Panel.GetZIndex(this)+1);
+            targetCanvas.Children.Add(releasedHost);
+            return part;
+        }
+
+        private void SendPartTransfer(string partName,RobotPartTransferStage stage,FrameworkElement part)
+        {
+            string robotName=string.IsNullOrWhiteSpace(AnimationTargetName)?Name:AnimationTargetName;
+            WeakReferenceMessenger.Default.Send(new RobotPartTransferMessage(
+                robotName??string.Empty,partName,stage,part));
+        }
+
+        private static Canvas? FindAncestorCanvas(DependencyObject child)
+        {
+            DependencyObject? current=VisualTreeHelper.GetParent(child);
+            while(current!=null)
+            {
+                if(current is Canvas canvas)return canvas;
+                current=VisualTreeHelper.GetParent(current);
+            }
+            return null;
+        }
+
+        private static void DetachFromParent(FrameworkElement element)
+        {
+            switch(element.Parent)
+            {
+                case ContentControl content when ReferenceEquals(content.Content,element): content.Content=null;break;
+                case Panel panel: panel.Children.Remove(element);break;
+                case Decorator decorator when ReferenceEquals(decorator.Child,element): decorator.Child=null;break;
+            }
+        }
+
+        private bool MatchesAnimationTarget(string? targetName)
+        {
+            if(string.IsNullOrWhiteSpace(targetName))return false;
+            string controlName=Name??string.Empty;
+            const string suffix="RobotArmUC";
+            string logicalName=controlName.EndsWith(suffix,StringComparison.Ordinal)
+                ?controlName[..^suffix.Length]
+                :controlName;
+            return string.Equals(targetName,AnimationTargetName,StringComparison.Ordinal)
+                ||string.Equals(targetName,controlName,StringComparison.Ordinal)
+                ||string.Equals(targetName,logicalName,StringComparison.Ordinal);
         }
 
         public Point FixedBase
@@ -147,7 +314,7 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         private static void OnJointAngleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is RoboticArmUC arm)
+            if (d is RoboticArmUC arm && !arm._isSynchronizingJointProperties)
             {
                 arm.ApplyPoseFromProperties();
             }
@@ -216,10 +383,10 @@ namespace CatoriUCLibrary.Views.RobotArm
             _isPlayingPoses = true;
             try
             {
-                List<StoredRobotPose> poses;
+                List<RobotPoseDefinition> poses;
                 try
                 {
-                    poses = JsonSerializer.Deserialize<List<StoredRobotPose>>(ItemDataJson) ?? [];
+                    poses = JsonSerializer.Deserialize<List<RobotPoseDefinition>>(ItemDataJson) ?? [];
                 }
                 catch (JsonException)
                 {
@@ -230,9 +397,7 @@ namespace CatoriUCLibrary.Views.RobotArm
                 for (var index = 0; index < poses.Count; index++)
                 {
                     var storedPose = poses[index];
-                    var angles = storedPose.Angles.ValueKind == JsonValueKind.Array
-                        ? storedPose.Angles.Deserialize<double[]>() ?? []
-                        : [];
+                    var angles = storedPose.Angles??[];
                     var pose = new RobotPose(
                         GetAngle(angles, 0), GetAngle(angles, 1),
                         GetAngle(angles, 2), GetAngle(angles, 3));
@@ -249,12 +414,6 @@ namespace CatoriUCLibrary.Views.RobotArm
         }
 
         private static double GetAngle(double[] angles, int index) => index < angles.Length ? angles[index] : 0;
-
-        private sealed class StoredRobotPose
-        {
-            public string PoseName { get; set; } = string.Empty;
-            public JsonElement Angles { get; set; }
-        }
 
         public void MoveTo(Point target)
         {
@@ -353,6 +512,9 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         public bool IsDragEnabled { get; set; }
 
+        public double DragAnchorX => _fixedBase.X;
+        public double DragAnchorY => _fixedBase.Y;
+
         public UIElement Visual => this;
 
         public Point OriginalPosition
@@ -390,6 +552,8 @@ namespace CatoriUCLibrary.Views.RobotArm
 
                 joint = GetSegmentEnd(joint, worldAngle, segment.SegmentLength);
             }
+            _handPoint=joint;
+            PositionCarriedPart();
         }
 
         private void ApplyPoseFromProperties()
@@ -408,10 +572,18 @@ namespace CatoriUCLibrary.Views.RobotArm
 
         private void SyncJointProperties()
         {
-            SetCurrentValue(Joint1AngleProperty, GetRelativeAngle(0));
-            SetCurrentValue(Joint2AngleProperty, GetRelativeAngle(1));
-            SetCurrentValue(Joint3AngleProperty, GetRelativeAngle(2));
-            SetCurrentValue(Joint4AngleProperty, GetRelativeAngle(3));
+            _isSynchronizingJointProperties = true;
+            try
+            {
+                SetCurrentValue(Joint1AngleProperty, GetRelativeAngle(0));
+                SetCurrentValue(Joint2AngleProperty, GetRelativeAngle(1));
+                SetCurrentValue(Joint3AngleProperty, GetRelativeAngle(2));
+                SetCurrentValue(Joint4AngleProperty, GetRelativeAngle(3));
+            }
+            finally
+            {
+                _isSynchronizingJointProperties = false;
+            }
         }
 
         private double GetRelativeAngle(int index)

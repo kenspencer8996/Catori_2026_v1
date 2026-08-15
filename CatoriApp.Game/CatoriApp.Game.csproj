@@ -80,4 +80,7 @@
     <Compile Include="..\CatoriApp.Core\Objects\Shared\ShoppingCartUtility.cs" Link="Objects\Shared\ShoppingCartUtility.cs" />
     <Compile Include="..\CatoriApp.Core\Objects\Shared\StreetHelper.cs" Link="Objects\Shared\StreetHelper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Controls\Locations\Warehouses\" />
+  </ItemGroup>
 </Project>
