@@ -24,15 +24,14 @@
                 <Image x:Name="LeftForearmImage" Stretch="Fill"/>
             </Canvas>
             <Canvas x:Name="RightArmRoot">
+                <Canvas.RenderTransform>
+                    <RotateTransform x:Name="ArmRotate"/>
+                </Canvas.RenderTransform>
             <Image x:Name="ArmImage" Stretch="Fill" Width="155" Height="55"
                    RenderTransformOrigin="0,0.5" Cursor="Hand"
                    MouseLeftButtonDown="ArmImage_MouseLeftButtonDown"
                    MouseMove="ArmImage_MouseMove"
-                   MouseLeftButtonUp="ArmImage_MouseLeftButtonUp">
-                <Image.RenderTransform>
-                    <RotateTransform x:Name="ArmRotate"/>
-                </Image.RenderTransform>
-            </Image>
+                   MouseLeftButtonUp="ArmImage_MouseLeftButtonUp"/>
                 <Image x:Name="RightForearmImage" Stretch="Fill" IsHitTestVisible="False"/>
             </Canvas>
         </Canvas>

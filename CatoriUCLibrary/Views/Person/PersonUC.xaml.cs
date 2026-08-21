@@ -122,7 +122,19 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         Point rootPosition = OffsetPosition(upperPart, upper.Width, upper.Height, avatarCenter);
         Canvas.SetLeft(root,rootPosition.X);Canvas.SetTop(root,rootPosition.Y);Panel.SetZIndex(root,upperPart.ZIndex);
         Canvas.SetLeft(upper,0);Canvas.SetTop(upper,0);upper.RenderTransformOrigin=new Point(upperPart.PivotX,upperPart.PivotY);
-        if(!interactiveUpper)root.RenderTransform=new System.Windows.Media.RotateTransform(upperPart.InitialAngle,upperPart.PivotX*upper.Width,upperPart.PivotY*upper.Height);
+        if (!interactiveUpper)
+        {
+            root.RenderTransform = new System.Windows.Media.RotateTransform(
+                upperPart.InitialAngle,
+                upperPart.PivotX * upper.Width,
+                upperPart.PivotY * upper.Height
+            );
+        }
+        else if (root.RenderTransform is System.Windows.Media.RotateTransform armRotate)
+        {
+            armRotate.CenterX = upperPart.PivotX * upper.Width;
+            armRotate.CenterY = upperPart.PivotY * upper.Height;
+        }
         lower.Source=LoadImage(lowerPart.ImagePath);lower.Width=lowerPart.Width;lower.Height=lowerPart.Height;
         Point upperPivot = new(upperPart.PivotX * upper.Width, upperPart.PivotY * upper.Height);
         Point lowerPosition = OffsetPosition(lowerPart, lower.Width, lower.Height, upperPivot);
