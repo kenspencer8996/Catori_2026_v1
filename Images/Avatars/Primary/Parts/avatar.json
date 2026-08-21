@@ -1,0 +1,127 @@
+{
+  "SchemaVersion": 1,
+  "Name": "New Avatar",
+  "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+  "Parts": [
+    {
+      "PartType": "Head",
+      "PngFilename": "Head.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 238,
+      "OriginalY": 25,
+      "Width": 628,
+      "Height": 497,
+      "PivotX": 398,
+      "PivotY": 424,
+      "ZOrder": 1
+    },
+    {
+      "PartType": "LeftUpperArm",
+      "PngFilename": "LeftUpperArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "PivotX": 109,
+      "PivotY": 43,
+      "ZOrder": 2
+    },
+    {
+      "PartType": "LeftLowerArm",
+      "PngFilename": "LeftLowerArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 692,
+      "OriginalY": 557,
+      "Width": 230,
+      "Height": 217,
+      "PivotX": 49,
+      "PivotY": 56,
+      "ZOrder": 3
+    },
+    {
+      "PartType": "RightUpperArm",
+      "PngFilename": "RightUpperArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "PivotX": 109,
+      "PivotY": 43,
+      "ZOrder": 4
+    },
+    {
+      "PartType": "RightLowerArm",
+      "PngFilename": "RightLowerArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 373,
+      "OriginalY": 565,
+      "Width": 216,
+      "Height": 284,
+      "PivotX": 146,
+      "PivotY": 61,
+      "ZOrder": 5
+    },
+    {
+      "PartType": "LeftUpperLeg",
+      "PngFilename": "LeftUpperLeg.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 509,
+      "OriginalY": 738,
+      "Width": 133,
+      "Height": 137,
+      "PivotX": 100.15000000000009,
+      "PivotY": 3.48800000000017,
+      "ZOrder": 6
+    },
+    {
+      "PartType": "Body",
+      "PngFilename": "Body.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 558,
+      "OriginalY": 441,
+      "Width": 174,
+      "Height": 266,
+      "PivotX": 78,
+      "PivotY": 11,
+      "ZOrder": 7
+    },
+    {
+      "PartType": "LeftLowerLeg",
+      "PngFilename": "LeftLowerLeg.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 287,
+      "OriginalY": 812,
+      "Width": 323,
+      "Height": 305,
+      "PivotX": 281.01,
+      "PivotY": 43.22800000000018,
+      "ZOrder": 7
+    },
+    {
+      "PartType": "RightUpperLeg",
+      "PngFilename": "RightUpperLeg.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 571,
+      "OriginalY": 703,
+      "Width": 217,
+      "Height": 153,
+      "PivotX": 99.8599999999999,
+      "PivotY": 39.69800000000021,
+      "ZOrder": 8
+    },
+    {
+      "PartType": "RightLowerLeg",
+      "PngFilename": "RightLowerLeg.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 673,
+      "OriginalY": 827,
+      "Width": 302,
+      "Height": 278,
+      "PivotX": 61.99000000000001,
+      "PivotY": 40.3280000000002,
+      "ZOrder": 9
+    }
+  ]
+}

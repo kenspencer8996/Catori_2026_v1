@@ -16,9 +16,28 @@ namespace CatoriApp
     /// </summary>
     public partial class App : Application
     {
-        protected virtual void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-          
+            base.OnStartup(e);
+            EventManager.RegisterClassHandler(typeof(Window),System.Windows.Input.Keyboard.PreviewKeyDownEvent,
+                new System.Windows.Input.KeyEventHandler(GlobalAvatarKeyDown),true);
+            EventManager.RegisterClassHandler(typeof(Window),FrameworkElement.LoadedEvent,
+                new RoutedEventHandler(WindowLoaded),true);
+        }
+
+        private static void GlobalAvatarKeyDown(object sender,System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key!=System.Windows.Input.Key.A||!System.Windows.Input.Keyboard.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control))return;
+            if(sender is Window owner&&owner is not Views.Shared.AvatarSelectorWindow)
+            {
+                Views.Shared.AvatarSelectorWindow.ShowFor(owner);e.Handled=true;
+            }
+        }
+
+        private static void WindowLoaded(object sender,RoutedEventArgs e)
+        {
+            if(sender is Window window&&window is not Views.Shared.AvatarSelectorWindow)
+                Views.Shared.AvatarSelectorWindow.ApplyCurrentTo(window);
         }
         void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

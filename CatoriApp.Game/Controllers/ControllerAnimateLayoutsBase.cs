@@ -1,5 +1,6 @@
 using CatoriApp.Game.Objects.AnimationOnPath;
 using CommunityToolkit.Mvvm.Messaging;
+using CatoriUCLibrary.Views.FactoryControls;
 
 namespace CatoriApp.Game.Controllers
 {
@@ -17,6 +18,9 @@ namespace CatoriApp.Game.Controllers
             WeakReferenceMessenger.Default.Register<AnimationCompleteMessage>(
                 this, static (recipient, message) =>
                     ((ControllerAnimateLayoutsBase)recipient).OnAnimationCompleted(message));
+            WeakReferenceMessenger.Default.Register<FactoryControlPanelActivatedMessage>(
+                this, static (recipient, message) =>
+                    ((ControllerAnimateLayoutsBase)recipient).OnFactoryControlPanelActivated(message));
         }
 
         protected async Task<IReadOnlyList<LocationLayoutItemViewModel>> LoadLayoutItemsAsync()
@@ -36,6 +40,12 @@ namespace CatoriApp.Game.Controllers
 
         protected virtual void OnAnimationCompleted(AnimationCompleteMessage message)
         {
+        }
+
+        protected virtual void OnFactoryControlPanelActivated(FactoryControlPanelActivatedMessage message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.AnimationTargetName))
+                _productionSession.StartPath(message.AnimationTargetName);
         }
 
         public virtual void Dispose()

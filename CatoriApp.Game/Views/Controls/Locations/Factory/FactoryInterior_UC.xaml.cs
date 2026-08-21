@@ -56,6 +56,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
             _animation_timer.Tick += Animation_timer_Tick;
             _animation_timer.Start();
 
+           // PersonActive.PointArmAt()
         }
         private Window? _hostWindow;
 
@@ -146,22 +147,9 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         {
             _controller.HandleMouseLeftButtonUp(e);
         }
-        private void RobotPanel_EditModeEndRequested(object? sender, EventArgs e)
-        {
-            _controller.EditModeEnd();
-        }
+   
 
-        private void RobotPanel_EditModeRequested(object? sender, EventArgs e)
-        {
-            _controller.EditMode();
-        }
-
-
-        private void RobotPanel_RunRequested(object? sender, RobotControlPanelSelectionsArg e)
-        {
-            _controller.RunRequested(e);
-
-        }
+      
 
         private void LightPanel_PanelTriggered(object? sender, EventArgs e)
         {
@@ -176,23 +164,7 @@ namespace CatoriApp.Game.Views.Controls.Locations.Factory
         }
 
        
-        public void StartWorking(string workerImagePath)
-        {
-            //RobotLeftUC.StartWorking();
-            //RobotRightUC.StartWorking();
-            //WorkerImage.Source = UIUtility.GetImageControl(workerImagePath, 10, 5, 0).Source; ;
-        }
-        public void StopWorking()
-        {
-            //_animation_timer.Stop();
-            //RobotLeftUC.StopWorking();
-            //RobotRightUC.StopWorking();
-        }
-
-       
       
-       
-
         private void MenuItem_Start_Click(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Cross;

@@ -180,7 +180,11 @@ public static class GameAnimationHelper
             $"Animation '{animationName}' control '{control.GetType().FullName}' image path: " +
             $"{(string.IsNullOrWhiteSpace(imagePath) ? "<none>" : imagePath)}");
     
-        PathGeometry geometry = ParsePathGeometry(itemDataJson);
+        LayoutItemPathSet pathSet = LayoutItemPathSetSerializer.Parse(itemDataJson);
+        string initialPath = pathSet.Paths.OrderBy(path => path.Order)
+            .FirstOrDefault(path => !string.IsNullOrWhiteSpace(path.WpfPath))?.WpfPath
+            ?? throw new InvalidOperationException($"Animation '{animationName}' has no drawable paths.");
+        PathGeometry geometry = ParsePathGeometry(initialPath);
         options ??= new PathAnimationOptions();
         EnsureNameScope(canvas);
         string _animationName = animationName;
@@ -265,7 +269,7 @@ public static class GameAnimationHelper
             host,
             storyboard,
             translateName,
-            rotateName,itemDataJson);
+            rotateName,pathSet,options,scaleTransform,options.ShowPath);
 
         if (options.AutoStart)
             handle.Start();
@@ -485,6 +489,10 @@ public sealed class PathAnimationOptions
     public Point RenderTransformOrigin { get; set; } = new(0.5, 0.5);
     public object? Tag { get; set; }
     /// <summary>
+    /// Displays the animation geometry. Intended for design/debug views; game paths are hidden by default.
+    /// </summary>
+    public bool ShowPath { get; set; }
+    /// <summary>
     /// Initial scale of the control.
     /// 1.0 = normal size.
     /// 0 = disabled.
@@ -504,6 +512,11 @@ public sealed class PathAnimationHandle : IDisposable
     private string PartName;
     private string TargetName;
     private ProductionAction NextAction;
+    private readonly string _defaultPartName;
+    private readonly LayoutItemPathSet _pathSet;
+    private readonly PathAnimationOptions _options;
+    private readonly ScaleTransform _scaleTransform;
+    private int _sequentialIndex;
     internal PathAnimationHandle(string animationName,
         string partName, string targetName, ProductionAction nextAction,
         Canvas canvas,
@@ -511,14 +524,21 @@ public sealed class PathAnimationHandle : IDisposable
         Storyboard storyboard,
         string translateName,
         string? rotateName,
-        string path)
+        LayoutItemPathSet pathSet,
+        PathAnimationOptions options,
+        ScaleTransform scaleTransform,
+        bool showPath)
     {
         _canvas = canvas;
         _animationName = animationName; 
         PartName = partName;
+        _defaultPartName = partName;
         TargetName = targetName;
         NextAction = nextAction;
-        _path = path;
+        _pathSet = pathSet;
+        _options = options;
+        _scaleTransform = scaleTransform;
+        _path = pathSet.Paths.OrderBy(candidate => candidate.Order).First().WpfPath;
         Host = host;
         Storyboard = storyboard;
         _translateName = translateName;
@@ -532,6 +552,7 @@ public sealed class PathAnimationHandle : IDisposable
             Stroke = Brushes.DeepSkyBlue,
             StrokeThickness = 3,
             Opacity = 0.65,
+            Visibility = showPath ? Visibility.Visible : Visibility.Collapsed,
             IsHitTestVisible = false,
             Effect = new DropShadowEffect
             {
@@ -579,7 +600,7 @@ public sealed class PathAnimationHandle : IDisposable
 
     public ContentControl Host { get; }
     public string AnimationName=>_animationName;
-    public Storyboard Storyboard { get; }
+    public Storyboard Storyboard { get; private set; }
   
     private readonly Path _visualPath;
     private Storyboard? _glowStoryboard;
@@ -587,10 +608,32 @@ public sealed class PathAnimationHandle : IDisposable
     public void Start()
     {
         ThrowIfDisposed();
+        SelectPathForStart();
         Host.Visibility=Visibility.Visible;
         StartGlow();
         Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
         _isStarted = true;
+    }
+
+    private void SelectPathForStart()
+    {
+        var paths = _pathSet.Paths.Where(path => !string.IsNullOrWhiteSpace(path.WpfPath))
+            .OrderBy(path => path.Order).ToList();
+        if (paths.Count == 0) return;
+        int index = _pathSet.SelectionMode switch
+        {
+            PathSelectionMode.Random => Random.Shared.Next(paths.Count),
+            PathSelectionMode.Sequential => _sequentialIndex++ % paths.Count,
+            _ => 0
+        };
+        LayoutPath selected = paths[index];
+        _path = selected.WpfPath;
+        PartName = string.IsNullOrWhiteSpace(selected.PartName) ? _defaultPartName : selected.PartName;
+        Storyboard.Stop(_canvas);
+        Storyboard = GameAnimationHelper.CreatePathStoryboard(
+            GameAnimationHelper.ParsePathGeometry(_path), _translateName, _rotateName, _scaleTransform, _options);
+        Storyboard.Completed += (s, e) => StoryBoardComplete();
+        _visualPath.Data = Geometry.Parse(_path);
     }
 
     public void StartWithPart(FrameworkElement part,string? partName=null)

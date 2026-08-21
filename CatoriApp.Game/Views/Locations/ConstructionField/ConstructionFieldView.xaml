@@ -1,16 +1,12 @@
-﻿<Window x:Class="CatoriApp.Game.Views.Locations.Warehouse.WarehouseView"
+<Window x:Class="CatoriApp.Game.Views.Locations.ConstructionField.ConstructionFieldView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CatoriApp.Game.Views.Locations.Warehouse"
-        mc:Ignorable="d"
-        Title="WarehouseView"
+        Title="ConstructionFieldView"
         WindowState="Maximized"
         WindowStyle="None"
         ResizeMode="NoResize">
     <Canvas x:Name="MainCanvas" ClipToBounds="True" SizeChanged="MainCanvas_SizeChanged">
-        <Image x:Name="WarehouseImage"
+        <Image x:Name="ConstructionFieldImage"
                Width="{Binding ActualWidth, ElementName=MainCanvas}"
                Height="{Binding ActualHeight, ElementName=MainCanvas}"
                Stretch="UniformToFill" />
@@ -22,8 +18,7 @@
                         VerticalContentAlignment="Stretch" />
         <Button x:Name="ExitButton"
                 Style="{StaticResource MapHotspotButton}"
-                Width="50"
-                Height="50"
+                Width="50" Height="50"
                 Canvas.Top="8"
                 Click="ExitButton_Click"
                 ToolTip="Click to exit"

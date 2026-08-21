@@ -57,8 +57,10 @@ public class DragManager
     // ---------------------------------------------------------
     private void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
-        IDraggable? draggable = FindDraggable(e.OriginalSource as DependencyObject);
+        DependencyObject? originalSource = e.OriginalSource as DependencyObject;
+        IDraggable? draggable = FindDraggable(originalSource);
         if (draggable?.IsDragEnabled == true &&
+            (draggable is not IDragStartFilter filter || filter.CanStartDrag(originalSource)) &&
             draggable.Visual is UIElement element &&
             _canvas.Children.Contains(element))
         {
@@ -299,5 +301,14 @@ public interface ICanvasDragAnchor
 {
     double DragAnchorX { get; }
     double DragAnchorY { get; }
+}
+
+/// <summary>
+/// Lets a draggable control reserve interactive children, such as an arm or
+/// button, without disabling dragging from the rest of the control.
+/// </summary>
+public interface IDragStartFilter
+{
+    bool CanStartDrag(DependencyObject? originalSource);
 }
 

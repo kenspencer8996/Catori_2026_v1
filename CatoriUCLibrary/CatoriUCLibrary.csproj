@@ -16,6 +16,8 @@
     <Resource Include="Images\RobotArmHandBlue.png" />
     <Resource Include="Images\robotArmLongBlue.png" />
     <Resource Include="Images\robotArmMediumBlue.png" />
+    <Resource Include="Images\PersonArmStraight.png" />
+    <Resource Include="Images\PersonBodyDefault.png" />
   </ItemGroup>
 
   <ItemGroup>

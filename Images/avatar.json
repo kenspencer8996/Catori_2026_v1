@@ -1,0 +1,67 @@
+{
+  "SchemaVersion": 1,
+  "Name": "New Avatar",
+  "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+  "Parts": [
+    {
+      "PartType": "LeftUpperArm",
+      "PngFilename": "LeftUpperArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "PivotX": 109,
+      "PivotY": 43,
+      "ZOrder": 2
+    },
+    {
+      "PartType": "LeftLowerArm",
+      "PngFilename": "LeftLowerArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 692,
+      "OriginalY": 557,
+      "Width": 230,
+      "Height": 217,
+      "PivotX": 49,
+      "PivotY": 56,
+      "ZOrder": 3
+    },
+    {
+      "PartType": "RightUpperArm",
+      "PngFilename": "RightUpperArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "PivotX": 109,
+      "PivotY": 43,
+      "ZOrder": 4
+    },
+    {
+      "PartType": "RightLowerArm",
+      "PngFilename": "RightLowerArm.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 373,
+      "OriginalY": 565,
+      "Width": 216,
+      "Height": 284,
+      "PivotX": 146,
+      "PivotY": 61,
+      "ZOrder": 5
+    },
+    {
+      "PartType": "Body",
+      "PngFilename": "Body.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "OriginalX": 663,
+      "OriginalY": 499,
+      "Width": 271,
+      "Height": 268,
+      "PivotX": 76,
+      "PivotY": 112,
+      "ZOrder": 7
+    }
+  ]
+}

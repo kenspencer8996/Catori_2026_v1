@@ -1,0 +1,342 @@
+{
+  "SchemaVersion": 1,
+  "Name": "New Avatar",
+  "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+  "SourceImagePaths": [
+    "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png"
+  ],
+  "ExportFolder": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\Parts",
+  "Parts": {
+    "Body": {
+      "PartType": "Body",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Rectangle",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 558,
+          "Y": 441
+        },
+        {
+          "X": 732,
+          "Y": 707
+        }
+      ],
+      "PivotSourceX": 636,
+      "PivotSourceY": 452,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 558,
+      "OriginalY": 441,
+      "Width": 174,
+      "Height": 266,
+      "ZOrder": 7
+    },
+    "Head": {
+      "PartType": "Head",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 268,
+          "Y": 25
+        },
+        {
+          "X": 238,
+          "Y": 519
+        },
+        {
+          "X": 456,
+          "Y": 522
+        },
+        {
+          "X": 484,
+          "Y": 435
+        },
+        {
+          "X": 799,
+          "Y": 461
+        },
+        {
+          "X": 866,
+          "Y": 72
+        }
+      ],
+      "PivotSourceX": 636,
+      "PivotSourceY": 449,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 238,
+      "OriginalY": 25,
+      "Width": 628,
+      "Height": 497,
+      "ZOrder": 1
+    },
+    "LeftUpperArm": {
+      "PartType": "LeftUpperArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\LeftUpperArm.cleaned.png",
+      "SelectionShape": "Rectangle",
+      "SelectionRotationDegrees": 21.25619340826291,
+      "Polygon": [
+        {
+          "X": 528.5586811376354,
+          "Y": 457.64821237013376
+        },
+        {
+          "X": 639.4413188623646,
+          "Y": 596.3517876298663
+        }
+      ],
+      "PivotSourceX": 616,
+      "PivotSourceY": 485,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "ZOrder": 2
+    },
+    "LeftLowerArm": {
+      "PartType": "LeftLowerArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\LeftLowerArm.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 759,
+          "Y": 557
+        },
+        {
+          "X": 692,
+          "Y": 649
+        },
+        {
+          "X": 918,
+          "Y": 774
+        },
+        {
+          "X": 922,
+          "Y": 631
+        }
+      ],
+      "PivotSourceX": 741,
+      "PivotSourceY": 613,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 692,
+      "OriginalY": 557,
+      "Width": 230,
+      "Height": 217,
+      "ZOrder": 3
+    },
+    "RightUpperArm": {
+      "PartType": "RightUpperArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\RightUpperArm.cleaned.png",
+      "SelectionShape": "Rectangle",
+      "SelectionRotationDegrees": 21.25619340826291,
+      "Polygon": [
+        {
+          "X": 528.5586811376354,
+          "Y": 457.64821237013376
+        },
+        {
+          "X": 639.4413188623646,
+          "Y": 596.3517876298663
+        }
+      ],
+      "PivotSourceX": 616,
+      "PivotSourceY": 485,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 507,
+      "OriginalY": 442,
+      "Width": 154,
+      "Height": 170,
+      "ZOrder": 4
+    },
+    "RightLowerArm": {
+      "PartType": "RightLowerArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Ellipse",
+      "SelectionRotationDegrees": 25.162934505725016,
+      "Polygon": [
+        {
+          "X": 422.90365501316177,
+          "Y": 577.879522498676
+        },
+        {
+          "X": 539.0963449868382,
+          "Y": 836.120477501324
+        }
+      ],
+      "PivotSourceX": 519,
+      "PivotSourceY": 626,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 373,
+      "OriginalY": 565,
+      "Width": 216,
+      "Height": 284,
+      "ZOrder": 5
+    },
+    "LeftUpperLeg": {
+      "PartType": "LeftUpperLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 552.3405000000001,
+          "Y": 738.5965000000001
+        },
+        {
+          "X": 509.74850000000004,
+          "Y": 798.4915000000001
+        },
+        {
+          "X": 626.8765,
+          "Y": 874.3585
+        },
+        {
+          "X": 641.5175,
+          "Y": 746.5825000000001
+        }
+      ],
+      "PivotSourceX": 609.1500000000001,
+      "PivotSourceY": 741.4880000000002,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 509,
+      "OriginalY": 738,
+      "Width": 133,
+      "Height": 137,
+      "ZOrder": 6
+    },
+    "LeftLowerLeg": {
+      "PartType": "LeftLowerLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 509.92999999999995,
+          "Y": 812.8780000000002
+        },
+        {
+          "X": 287.28999999999996,
+          "Y": 999.2180000000003
+        },
+        {
+          "X": 497.8299999999999,
+          "Y": 1116.5880000000002
+        },
+        {
+          "X": 591,
+          "Y": 1089.9680000000003
+        },
+        {
+          "X": 609.1500000000001,
+          "Y": 877.0080000000002
+        }
+      ],
+      "PivotSourceX": 568.01,
+      "PivotSourceY": 855.2280000000002,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 287,
+      "OriginalY": 812,
+      "Width": 323,
+      "Height": 305,
+      "ZOrder": 7
+    },
+    "RightUpperLeg": {
+      "PartType": "RightUpperLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 571.6400000000001,
+          "Y": 741.4880000000002
+        },
+        {
+          "X": 641.8199999999999,
+          "Y": 855.2280000000002
+        },
+        {
+          "X": 787.02,
+          "Y": 805.6180000000002
+        },
+        {
+          "X": 719.26,
+          "Y": 703.9780000000002
+        }
+      ],
+      "PivotSourceX": 670.8599999999999,
+      "PivotSourceY": 742.6980000000002,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 571,
+      "OriginalY": 703,
+      "Width": 217,
+      "Height": 153,
+      "ZOrder": 8
+    },
+    "RightLowerLeg": {
+      "PartType": "RightLowerLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 673.28,
+          "Y": 887.8980000000001
+        },
+        {
+          "X": 725.31,
+          "Y": 1092.3880000000001
+        },
+        {
+          "X": 789.44,
+          "Y": 1104.4880000000003
+        },
+        {
+          "X": 974.5700000000002,
+          "Y": 1006.4780000000003
+        },
+        {
+          "X": 937.06,
+          "Y": 896.3680000000002
+        },
+        {
+          "X": 791.8600000000001,
+          "Y": 827.3980000000003
+        }
+      ],
+      "PivotSourceX": 734.99,
+      "PivotSourceY": 867.3280000000002,
+      "HasPivot": true,
+      "IsComplete": true,
+      "OriginalX": 673,
+      "OriginalY": 827,
+      "Width": 302,
+      "Height": 278,
+      "ZOrder": 9
+    }
+  },
+  "SelectedPart": "RightLowerLeg",
+  "OverlayPart": null,
+  "OverlayOpacity": 0.35
+}

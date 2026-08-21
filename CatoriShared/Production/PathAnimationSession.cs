@@ -38,6 +38,17 @@ public sealed class PathAnimationSession:IDisposable
         foreach(var handle in _handles)handle.Start();
     }
 
+    public bool StartPath(string animationName)
+    {
+        ObjectDisposedException.ThrowIf(_disposed,this);
+        if(string.IsNullOrWhiteSpace(animationName))return false;
+        var handle=_handles.FirstOrDefault(candidate=>
+            string.Equals(candidate.AnimationName,animationName,StringComparison.OrdinalIgnoreCase));
+        if(handle==null)return false;
+        handle.Start();
+        return true;
+    }
+
     public void AddDropHandoff(string robotName,string destinationPathName)
     {
         ObjectDisposedException.ThrowIf(_disposed,this);
