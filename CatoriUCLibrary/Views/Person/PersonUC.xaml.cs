@@ -68,6 +68,11 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public double RightElbowAngle { get=>GetJointAngle(RightForearmImage);set=>SetJointAngle(RightForearmImage,value); }
     public double LeftKneeAngle { get=>GetJointAngle(LeftLowerLegImage);set=>SetJointAngle(LeftLowerLegImage,value); }
     public double RightKneeAngle { get=>GetJointAngle(RightLowerLegImage);set=>SetJointAngle(RightLowerLegImage,value); }
+    public double LeftShoulderAngle
+    {
+        get => GetJointAngle(LeftArmRoot);
+        set => SetJointAngle(LeftArmRoot, value);
+    }
     public bool IsArmEditingEnabled
     {
         get => _isArmEditingEnabled;
@@ -147,11 +152,11 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         LeftElbowAngle=leftElbow;RightElbowAngle=rightElbow;LeftKneeAngle=leftKnee;RightKneeAngle=rightKnee;
     }
 
-    private static double GetJointAngle(Image image)=>image.RenderTransform is System.Windows.Media.RotateTransform rotate?rotate.Angle:0;
-    private static void SetJointAngle(Image image,double angle)
+    private static double GetJointAngle(FrameworkElement element)=>element.RenderTransform is System.Windows.Media.RotateTransform rotate?rotate.Angle:0;
+    private static void SetJointAngle(FrameworkElement element,double angle)
     {
-        if(image.RenderTransform is System.Windows.Media.RotateTransform rotate)rotate.Angle=angle;
-        else image.RenderTransform=new System.Windows.Media.RotateTransform(angle);
+        if(element.RenderTransform is System.Windows.Media.RotateTransform rotate)rotate.Angle=angle;
+        else element.RenderTransform=new System.Windows.Media.RotateTransform(angle);
     }
 
     private static void ApplyPart(Image image,AvatarPartSettings part,Point avatarCenter,double? fallbackWidth=null,double? fallbackHeight=null)
@@ -199,7 +204,8 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
             return;
 
         IReadOnlyList<string> frames = animation.FrameImagePaths;
-        if (frames.Count == 0)
+        bool usesComposedParts = !string.IsNullOrWhiteSpace(_settings.Body.ImagePath);
+        if (frames.Count == 0 || usesComposedParts)
         {
             ActivityCompleted?.Invoke(this, new PersonActivityCompletedEventArgs(activity));
             return;
@@ -246,6 +252,45 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         }
 
         ArmAngle = targetAngle;
+        ArmMoved?.Invoke(this, EventArgs.Empty);
+    }
+
+    public async Task MoveShouldersToAsync(
+        double leftTargetAngle,
+        double rightTargetAngle,
+        TimeSpan duration,
+        CancellationToken cancellationToken = default
+    )
+    {
+        double leftStartAngle = LeftShoulderAngle;
+        double rightStartAngle = ArmAngle;
+        if (duration <= TimeSpan.Zero)
+        {
+            LeftShoulderAngle = leftTargetAngle;
+            ArmAngle = rightTargetAngle;
+            ArmMoved?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        while (stopwatch.Elapsed < duration)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            double amount = Math.Clamp(
+                stopwatch.Elapsed.TotalMilliseconds / duration.TotalMilliseconds,
+                0,
+                1
+            );
+            amount = amount < .5
+                ? 2 * amount * amount
+                : 1 - Math.Pow(-2 * amount + 2, 2) / 2;
+            LeftShoulderAngle = leftStartAngle
+                + (leftTargetAngle - leftStartAngle) * amount;
+            ArmAngle = rightStartAngle
+                + (rightTargetAngle - rightStartAngle) * amount;
+            await Task.Delay(16, cancellationToken);
+        }
+        LeftShoulderAngle = leftTargetAngle;
+        ArmAngle = rightTargetAngle;
         ArmMoved?.Invoke(this, EventArgs.Empty);
     }
 
@@ -304,8 +349,14 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
             ? Visibility.Visible
             : Visibility.Collapsed;
         ArmAngle = animation.ArmAngle;
-        if (setFirstFrame && animation.FrameImagePaths.Count > 0)
+        if (
+            setFirstFrame
+            && animation.FrameImagePaths.Count > 0
+            && string.IsNullOrWhiteSpace(_settings.Body.ImagePath)
+        )
+        {
             BodyImage.Source = LoadImage(animation.FrameImagePaths[0]);
+        }
     }
 
     private void ArmImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -10,7 +10,7 @@
     "Body": {
       "PartType": "Body",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
-      "CleanedImagePath": "",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\Body.cleaned.png",
       "SelectionShape": "Rectangle",
       "SelectionRotationDegrees": 0,
       "Polygon": [
@@ -336,7 +336,7 @@
       "ZOrder": 9
     }
   },
-  "SelectedPart": "RightLowerLeg",
+  "SelectedPart": "Body",
   "OverlayPart": null,
   "OverlayOpacity": 0.35
 }
