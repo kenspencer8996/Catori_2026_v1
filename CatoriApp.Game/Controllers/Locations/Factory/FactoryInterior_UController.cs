@@ -48,15 +48,9 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
                     break;
                 case 4:
                     _locationSubController = new LocationInterior1SubController(_view, _locationid);
-
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
                     break;
                 default:
+                    _locationSubController = CreateGeneratedSubController(_locationid);
                     break;
             }
             //moveXYOnControl = new AnimationController();
@@ -76,6 +70,19 @@ namespace CatoriApp.Game.Controllers.Locations.Factory
             //part1SimpleUC.Opacity = 0;
             //part2SimpleUC.Opacity = 0;
             //part3CompleteUC.Opacity = 0;
+        }
+
+        private ILocationSubController CreateGeneratedSubController(int locationId)
+        {
+            string typeName =
+                $"CatoriApp.Game.Controllers.LocationSubControllers.Locationinterior{locationId}SubController";
+            Type controllerType = typeof(FactoryInterior_UController).Assembly.GetType(typeName)
+                ?? throw new InvalidOperationException(
+                    $"The generated location controller '{typeName}' was not found. Save the location in Studio, rebuild CatoriApp, and try again.");
+            object? controller = Activator.CreateInstance(controllerType, _view, (long)locationId);
+            return controller as ILocationSubController
+                ?? throw new InvalidOperationException(
+                    $"The generated location controller '{typeName}' does not implement ILocationSubController.");
         }
         private async Task LoadViewModelAsync()
         {

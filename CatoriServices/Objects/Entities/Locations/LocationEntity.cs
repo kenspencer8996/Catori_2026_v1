@@ -5,6 +5,7 @@ namespace CatoriServices.Objects.Entities.Locations
         public int LocationId { get; set; }
         public int? BusinessId { get; set; }
         public string LocationName { get; set; } = "";
+        public string LocationType { get; set; } = "";
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string? Description { get; set; }
         public string BackgroundImagePath { get; set; } = "";

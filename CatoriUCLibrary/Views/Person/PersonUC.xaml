@@ -6,33 +6,34 @@
              d:DesignHeight="400" d:DesignWidth="300"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d">
+             mc:Ignorable="d" PreviewMouseMove="PartEditorMouseMove"
+             PreviewMouseLeftButtonUp="PartEditorMouseUp">
     <Viewbox Stretch="Uniform">
         <Canvas x:Name="PersonRoot" Width="300" Height="400" Background="Transparent">
-            <Canvas x:Name="LeftLegRoot" IsHitTestVisible="False">
-                <Image x:Name="LeftLegImage" Stretch="Fill"/>
-                <Image x:Name="LeftLowerLegImage" Stretch="Fill"/>
+            <Canvas x:Name="LeftLegRoot">
+                <Image x:Name="LeftLegImage" Stretch="Fill" Tag="LeftThigh" MouseLeftButtonDown="PartMouseDown"/>
+                <Image x:Name="LeftLowerLegImage" Stretch="Fill" Tag="LeftLowerLeg" MouseLeftButtonDown="PartMouseDown"/>
             </Canvas>
-            <Canvas x:Name="RightLegRoot" IsHitTestVisible="False">
-                <Image x:Name="RightLegImage" Stretch="Fill"/>
-                <Image x:Name="RightLowerLegImage" Stretch="Fill"/>
+            <Canvas x:Name="RightLegRoot">
+                <Image x:Name="RightLegImage" Stretch="Fill" Tag="RightThigh" MouseLeftButtonDown="PartMouseDown"/>
+                <Image x:Name="RightLowerLegImage" Stretch="Fill" Tag="RightLowerLeg" MouseLeftButtonDown="PartMouseDown"/>
             </Canvas>
-            <Image x:Name="BodyImage" Stretch="Uniform" Width="300" Height="400" IsHitTestVisible="False"/>
-            <Image x:Name="HeadImage" Stretch="Uniform" IsHitTestVisible="False"/>
-            <Canvas x:Name="LeftArmRoot" IsHitTestVisible="False">
-                <Image x:Name="LeftArmImage" Stretch="Fill"/>
-                <Image x:Name="LeftForearmImage" Stretch="Fill"/>
+            <Image x:Name="BodyImage" Stretch="Uniform" Width="300" Height="400" Tag="Body" MouseLeftButtonDown="PartMouseDown"/>
+            <Image x:Name="HeadImage" Stretch="Uniform" Tag="Head" MouseLeftButtonDown="PartMouseDown"/>
+            <Canvas x:Name="LeftArmRoot">
+                <Image x:Name="LeftArmImage" Stretch="Fill" Tag="LeftUpperArm" MouseLeftButtonDown="PartMouseDown"/>
+                <Image x:Name="LeftForearmImage" Stretch="Fill" Tag="LeftForearm" MouseLeftButtonDown="PartMouseDown"/>
             </Canvas>
             <Canvas x:Name="RightArmRoot">
                 <Canvas.RenderTransform>
                     <RotateTransform x:Name="ArmRotate"/>
                 </Canvas.RenderTransform>
-            <Image x:Name="ArmImage" Stretch="Fill" Width="155" Height="55"
+            <Image x:Name="ArmImage" Stretch="Fill" Width="155" Height="55" Tag="RightUpperArm"
                    RenderTransformOrigin="0,0.5" Cursor="Hand"
-                   MouseLeftButtonDown="ArmImage_MouseLeftButtonDown"
+                   MouseLeftButtonDown="PartMouseDown"
                    MouseMove="ArmImage_MouseMove"
                    MouseLeftButtonUp="ArmImage_MouseLeftButtonUp"/>
-                <Image x:Name="RightForearmImage" Stretch="Fill" IsHitTestVisible="False"/>
+                <Image x:Name="RightForearmImage" Stretch="Fill" Tag="RightForearm" MouseLeftButtonDown="PartMouseDown"/>
             </Canvas>
         </Canvas>
     </Viewbox>

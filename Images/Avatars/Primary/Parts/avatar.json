@@ -13,6 +13,11 @@
       "Height": 497,
       "PivotX": 398,
       "PivotY": 424,
+      "EndJointX": -238,
+      "EndJointY": -25,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 1
     },
     {
@@ -23,8 +28,13 @@
       "OriginalY": 442,
       "Width": 154,
       "Height": 170,
-      "PivotX": 109,
-      "PivotY": 43,
+      "PivotX": 49,
+      "PivotY": 47,
+      "EndJointX": 124.15268173097047,
+      "EndJointY": 149.084283295918,
+      "HasEndJoint": true,
+      "Offset": -12,
+      "InitialAngle": -19.202075637975497,
       "ZOrder": 2
     },
     {
@@ -37,6 +47,11 @@
       "Height": 217,
       "PivotX": 49,
       "PivotY": 56,
+      "EndJointX": 16.493574909804465,
+      "EndJointY": 18.271741995555658,
+      "HasEndJoint": true,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 3
     },
     {
@@ -49,6 +64,11 @@
       "Height": 170,
       "PivotX": 109,
       "PivotY": 43,
+      "EndJointX": -507,
+      "EndJointY": -442,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 4
     },
     {
@@ -61,6 +81,11 @@
       "Height": 284,
       "PivotX": 146,
       "PivotY": 61,
+      "EndJointX": -373,
+      "EndJointY": -565,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 5
     },
     {
@@ -73,6 +98,11 @@
       "Height": 137,
       "PivotX": 100.15000000000009,
       "PivotY": 3.48800000000017,
+      "EndJointX": -509,
+      "EndJointY": -738,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 6
     },
     {
@@ -85,6 +115,11 @@
       "Height": 266,
       "PivotX": 78,
       "PivotY": 11,
+      "EndJointX": -558,
+      "EndJointY": -441,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 7
     },
     {
@@ -97,6 +132,11 @@
       "Height": 305,
       "PivotX": 281.01,
       "PivotY": 43.22800000000018,
+      "EndJointX": -287,
+      "EndJointY": -812,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 7
     },
     {
@@ -109,6 +149,11 @@
       "Height": 153,
       "PivotX": 99.8599999999999,
       "PivotY": 39.69800000000021,
+      "EndJointX": -571,
+      "EndJointY": -703,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 8
     },
     {
@@ -121,6 +166,11 @@
       "Height": 278,
       "PivotX": 61.99000000000001,
       "PivotY": 40.3280000000002,
+      "EndJointX": -673,
+      "EndJointY": -827,
+      "HasEndJoint": false,
+      "Offset": 0,
+      "InitialAngle": 0,
       "ZOrder": 9
     }
   ]

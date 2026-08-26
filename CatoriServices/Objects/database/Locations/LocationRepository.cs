@@ -192,9 +192,9 @@ namespace CatoriServices.Objects.database.Locations
 
                 const string sql = @"
                     INSERT INTO Location
-                        (LocationName, CreatedAt, BusinessId, Description, BackgroundImagePath)
+                        (LocationName, LocationType, CreatedAt, BusinessId, Description, BackgroundImagePath)
                     VALUES
-                        (@LocationName, @CreatedAt, @BusinessId, @Description, @BackgroundImagePath);
+                        (@LocationName, @LocationType, @CreatedAt, @BusinessId, @Description, @BackgroundImagePath);
                     SELECT last_insert_rowid();";
 
                 using var cmd = new SqliteCommand(sql, conn);
@@ -220,6 +220,7 @@ namespace CatoriServices.Objects.database.Locations
                 const string sql = @"
                     UPDATE Location
                     SET LocationName = @LocationName,
+                        LocationType = @LocationType,
                         BusinessId = @BusinessId,
                         Description = @Description,
                         BackgroundImagePath = @BackgroundImagePath
@@ -261,6 +262,7 @@ namespace CatoriServices.Objects.database.Locations
             try
             {
                 cmd.Parameters.AddWithValue("@LocationName", location.LocationName);
+                cmd.Parameters.AddWithValue("@LocationType", location.LocationType);
                 cmd.Parameters.AddWithValue("@CreatedAt", (location.CreatedAt == default ? DateTime.Now : location.CreatedAt).ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@BusinessId", location.BusinessId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Description", location.Description ?? (object)DBNull.Value);
@@ -282,6 +284,7 @@ namespace CatoriServices.Objects.database.Locations
                     LocationId = GetRequiredInt(reader, "LocationId", "FactoryId"),
                     BusinessId = GetNullableInt(reader, "BusinessId"),
                     LocationName = GetRequiredString(reader, "LocationName", "FactoryName"),
+                    LocationType = GetNullableString(reader, "LocationType") ?? "",
                     Description = GetNullableString(reader, "Description"),
                     BackgroundImagePath = GetNullableString(reader, "BackgroundImagePath") ?? "",
                     CreatedAt = GetDateTimeOrDefault(reader, "CreatedAt", DateTime.Now)

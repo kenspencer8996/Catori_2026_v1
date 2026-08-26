@@ -102,6 +102,10 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
+                <Button x:Name="Location6Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1393.558" Canvas.Top="141.514"
+                        Click="Location6Button_Click" ToolTip="Click to open factory6" />
+
                 <Button x:Name="RobotArmButton" Content="RobotArm" Canvas.Left="1708" Canvas.Top="954" Click="RobotArmButton_Click"/>
                 <Controls:ToolsPanel x:Name="toolsPanel" Canvas.Left="10" Canvas.Top="70"/>
             </Canvas>

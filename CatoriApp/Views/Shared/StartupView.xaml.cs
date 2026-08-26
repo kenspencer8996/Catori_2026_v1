@@ -1,4 +1,4 @@
-﻿using CatoriApp.Controllers;
+using CatoriApp.Controllers;
 using CatoriApp.Game.Views.Locations.Warehouse;
 using CatoriApp.MachineLayoutDesigner.Views.MachineCatalog;
 namespace CatoriApp.Views.Shared
@@ -80,6 +80,11 @@ namespace CatoriApp.Views.Shared
         {
             ShowFactoryView(4);
         }
+        private void Location6Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(14);
+        }
+
         private void ShowFactoryView(int locationNumber)
         {
             FactoryView view = new FactoryView(locationNumber);

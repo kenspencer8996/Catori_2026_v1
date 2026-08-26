@@ -44,6 +44,7 @@ namespace CatoriServices.Objects.database.Locations
                             }
 
                             await EnsureLocationLayoutItemItemDataJsonColumnAsync(conn);
+                            await EnsureLocationTypeColumnAsync(conn);
             }
             catch (Exception ex)
             {
@@ -60,6 +61,7 @@ namespace CatoriServices.Objects.database.Locations
                                 CREATE TABLE IF NOT EXISTS Location (
                                     LocationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                     LocationName TEXT NOT NULL,
+                                    LocationType TEXT NOT NULL DEFAULT '',
                                     CreatedAt TEXT NOT NULL DEFAULT (datetime('now')),
                                     BusinessId INTEGER NULL,
                                     Description TEXT NULL,
@@ -133,6 +135,31 @@ namespace CatoriServices.Objects.database.Locations
                     ? "ALTER TABLE LocationLayoutItem RENAME COLUMN WpfPath TO ItemDataJson;"
                     : "ALTER TABLE LocationLayoutItem ADD COLUMN ItemDataJson TEXT NULL;";
                 using var alter = new SqliteCommand(sql, conn);
+                await alter.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                cLogger.Log(ex.ToString());
+                throw;
+            }
+        }
+
+        private static async Task EnsureLocationTypeColumnAsync(SqliteConnection conn)
+        {
+            try
+            {
+                using var check = new SqliteCommand(
+                    "SELECT 1 FROM pragma_table_info('Location') WHERE name = 'LocationType' LIMIT 1;",
+                    conn
+                );
+                if (await check.ExecuteScalarAsync() != null)
+                {
+                    return;
+                }
+                using var alter = new SqliteCommand(
+                    "ALTER TABLE Location ADD COLUMN LocationType TEXT NOT NULL DEFAULT '';",
+                    conn
+                );
                 await alter.ExecuteNonQueryAsync();
             }
             catch (Exception ex)

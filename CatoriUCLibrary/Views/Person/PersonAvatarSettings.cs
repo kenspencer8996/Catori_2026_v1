@@ -67,6 +67,9 @@ public sealed class AvatarPartSettings
     public double Height { get; set; } = 100;
     public double PivotX { get; set; } = .5;
     public double PivotY { get; set; } = .5;
+    public double EndJointX { get; set; } = .5;
+    public double EndJointY { get; set; } = .5;
+    public bool HasEndJoint { get; set; }
     public double InitialAngle { get; set; }
     public double Offset { get; set; }
     public int ZIndex { get; set; }

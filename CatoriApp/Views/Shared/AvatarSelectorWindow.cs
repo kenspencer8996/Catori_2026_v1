@@ -27,12 +27,12 @@ public sealed class AvatarSelectorWindow:Window
         if(_open!=null){_open.Owner=owner;_open.Activate();return;}
         _open=new(owner);_open.Show();
     }
-    public static void ApplyCurrentTo(Window window)
+    public static void ApplyCurrentTo(DependencyObject root)
     {
         try
         {
             var repository=new AvatarRepository();string? name=repository.GetCurrentName();if(string.IsNullOrWhiteSpace(name))return;
-            AvatarEntity? avatar=repository.GetByName(name);if(avatar!=null)ApplyAvatar(window,avatar.SettingsJson);
+            AvatarEntity? avatar=repository.GetByName(name);if(avatar!=null)ApplyAvatar(root,avatar.SettingsJson);
         }
         catch(Exception ex){System.Diagnostics.Debug.WriteLine($"Could not load current avatar: {ex.Message}");}
     }

@@ -23,6 +23,8 @@ namespace CatoriApp
                 new System.Windows.Input.KeyEventHandler(GlobalAvatarKeyDown),true);
             EventManager.RegisterClassHandler(typeof(Window),FrameworkElement.LoadedEvent,
                 new RoutedEventHandler(WindowLoaded),true);
+            EventManager.RegisterClassHandler(typeof(CatoriUCLibrary.Views.Person.PersonUC),FrameworkElement.LoadedEvent,
+                new RoutedEventHandler(PersonLoaded),true);
         }
 
         private static void GlobalAvatarKeyDown(object sender,System.Windows.Input.KeyEventArgs e)
@@ -38,6 +40,12 @@ namespace CatoriApp
         {
             if(sender is Window window&&window is not Views.Shared.AvatarSelectorWindow)
                 Views.Shared.AvatarSelectorWindow.ApplyCurrentTo(window);
+        }
+
+        private static void PersonLoaded(object sender,RoutedEventArgs e)
+        {
+            if(sender is CatoriUCLibrary.Views.Person.PersonUC person)
+                Views.Shared.AvatarSelectorWindow.ApplyCurrentTo(person);
         }
         void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

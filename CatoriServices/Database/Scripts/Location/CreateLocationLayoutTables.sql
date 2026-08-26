@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS Location (
     LocationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     LocationName TEXT NOT NULL,
+    LocationType TEXT NOT NULL DEFAULT '',
     CreatedAt TEXT NOT NULL DEFAULT (datetime('now')),
     BusinessId INTEGER NULL,
     Description TEXT NULL,
