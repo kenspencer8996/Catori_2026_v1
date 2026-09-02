@@ -7,6 +7,7 @@ public sealed class PersonAvatarSettings
 {
     public string Name { get; set; } = "Default";
     public string Description { get; set; } = string.Empty;
+    public string VisualPartProjectPath { get; set; } = string.Empty;
     public int SchemaVersion { get; set; } = 3;
     public double DesignWidth { get; set; } = 300;
     public double DesignHeight { get; set; } = 400;

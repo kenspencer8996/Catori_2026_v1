@@ -15,9 +15,9 @@ namespace CatoriApp.Game.Objects.Services.Locations
         private LocationLayoutItemEntity? _activeDrawingItem;
         private LocationLayoutItemEntity? _drawingLayoutItem;
         private Point? _lastPathPoint;
-        private readonly FactoryInterior_UC _view;
+        private readonly Location_UC _view;
        
-        public PathPlayer(FactoryInterior_UC view)
+        public PathPlayer(Location_UC view)
         {
             _view = view;
         }

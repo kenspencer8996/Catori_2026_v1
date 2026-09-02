@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,6 +14,9 @@ namespace CatoriApp.Core.Objects.Arguments.Enums
         PaintBooth,
         Workbench,
         StorageArea,
-        Custom
+        Custom,
+        Vehicle,
+        Airplane,
+        Person
     }
 }

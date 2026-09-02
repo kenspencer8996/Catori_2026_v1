@@ -27,19 +27,43 @@ namespace CatoriApp.Game.Objects.Services.Locations
 
         public async Task<List<LocationLayoutItemViewModel>> GetByLocationIdAsync(long locationId, bool includePoints = true)
         {
+            if (locationId <= 0)
+                return new List<LocationLayoutItemViewModel>();
             List<LocationLayoutItemViewModel> viewModels = new List<LocationLayoutItemViewModel>();    
             var entities = await _itemRepository.GetByLocationIdAsync(locationId);
             foreach (var entity in entities)
             {
-                var viewModel = ToViewModel(entity);
-
-                if (includePoints)
+                try
                 {
-                    await LoadPointsAsync(viewModel);
+                    if (!IsLoadable(entity, locationId, out string reason))
+                    {
+                        CatoriShared.Diagnostics.GameSafetyLog.Warning("Layout items",
+                            $"Skipped layout item {entity.LocationLayoutItemId}: {reason}");
+                        continue;
+                    }
+                    var viewModel = ToViewModel(entity);
+                    if (includePoints)
+                        await LoadPointsAsync(viewModel);
+                    viewModels.Add(viewModel);
                 }
-                viewModels.Add(viewModel);
+                catch (Exception ex)
+                {
+                    CatoriShared.Diagnostics.GameSafetyLog.Error("Layout items",
+                        $"Skipped malformed layout item {entity.LocationLayoutItemId} in location {locationId}.", ex);
+                }
             }
             return viewModels;
+        }
+
+        private static bool IsLoadable(LocationLayoutItemEntity entity,long requestedLocationId,out string reason)
+        {
+            if(entity.LocationId!=requestedLocationId){reason="location id does not match the request";return false;}
+            if(string.IsNullOrWhiteSpace(entity.ItemName)){reason="item name is missing";return false;}
+            if(!double.IsFinite(entity.X)||!double.IsFinite(entity.Y)||!double.IsFinite(entity.Z)
+                ||!double.IsFinite(entity.Width)||!double.IsFinite(entity.Height)
+                ||!double.IsFinite(entity.RotationDegrees)){reason="geometry contains a non-finite number";return false;}
+            if(entity.Width<0||entity.Height<0){reason="width or height is negative";return false;}
+            reason=string.Empty;return true;
         }
 
         public async Task<long> SaveAsync(LocationLayoutItemViewModel viewModel, bool savePoints = true)

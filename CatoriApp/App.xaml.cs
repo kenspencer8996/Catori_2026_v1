@@ -16,15 +16,39 @@ namespace CatoriApp
     /// </summary>
     public partial class App : Application
     {
+        private int _handlingDispatcherFailure;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += OnDomainUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
             EventManager.RegisterClassHandler(typeof(Window),System.Windows.Input.Keyboard.PreviewKeyDownEvent,
                 new System.Windows.Input.KeyEventHandler(GlobalAvatarKeyDown),true);
-            EventManager.RegisterClassHandler(typeof(Window),FrameworkElement.LoadedEvent,
-                new RoutedEventHandler(WindowLoaded),true);
-            EventManager.RegisterClassHandler(typeof(CatoriUCLibrary.Views.Person.PersonUC),FrameworkElement.LoadedEvent,
-                new RoutedEventHandler(PersonLoaded),true);
+            EventManager.RegisterClassHandler(typeof(Window),System.Windows.Input.Keyboard.PreviewKeyDownEvent,
+                new System.Windows.Input.KeyEventHandler(AddImageKeyDown),true);
+        }
+
+        private static void AddImageKeyDown(object sender,System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key!=System.Windows.Input.Key.F||!System.Windows.Input.Keyboard.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control))return;
+            if(System.Windows.Input.Keyboard.FocusedElement is System.Windows.Controls.Primitives.TextBoxBase)return;
+            if(sender is not Window owner)return;
+            Microsoft.Win32.OpenFileDialog dialog=new(){Title="Add image",Filter="Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*"};
+            if(dialog.ShowDialog(owner)!=true)return;
+            var image=new CatoriUCLibrary.Views.MyImage.MyImageUC{ImagePath=dialog.FileName,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
+            Panel host;
+            if(owner.Content is Panel panel)host=panel;
+            else
+            {
+                object oldContent=owner.Content;owner.Content=null;
+                Grid grid=new();if(oldContent is UIElement element)grid.Children.Add(element);owner.Content=grid;host=grid;
+            }
+            Panel.SetZIndex(image,int.MaxValue-10);host.Children.Add(image);
+            if(host is Canvas){Canvas.SetLeft(image,Math.Max(20,(owner.ActualWidth-image.Width)/2));Canvas.SetTop(image,Math.Max(20,(owner.ActualHeight-image.Height)/2));}
+            else image.Margin=new Thickness(Math.Max(20,(owner.ActualWidth-image.Width)/2),Math.Max(20,(owner.ActualHeight-image.Height)/2),0,0);
+            image.Focus();e.Handled=true;
         }
 
         private static void GlobalAvatarKeyDown(object sender,System.Windows.Input.KeyEventArgs e)
@@ -36,24 +60,41 @@ namespace CatoriApp
             }
         }
 
-        private static void WindowLoaded(object sender,RoutedEventArgs e)
+        private void OnDispatcherUnhandledException(object sender,
+            System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            if(sender is Window window&&window is not Views.Shared.AvatarSelectorWindow)
-                Views.Shared.AvatarSelectorWindow.ApplyCurrentTo(window);
+            CatoriShared.Diagnostics.GameSafetyLog.Error("WPF.Dispatcher",
+                "Unexpected UI-thread exception. The current action was cancelled.", e.Exception);
+            e.Handled = true;
+            System.Windows.Input.Mouse.OverrideCursor = null;
+
+            if (Interlocked.Exchange(ref _handlingDispatcherFailure, 1) != 0)
+                return;
+            try
+            {
+                MessageBox.Show(MainWindow,
+                    "Something unexpected happened. The current action was stopped, but the game can continue.",
+                    "Catori recovered", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _handlingDispatcherFailure, 0);
+            }
         }
 
-        private static void PersonLoaded(object sender,RoutedEventArgs e)
+        private static void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
-            if(sender is CatoriUCLibrary.Views.Person.PersonUC person)
-                Views.Shared.AvatarSelectorWindow.ApplyCurrentTo(person);
+            CatoriShared.Diagnostics.GameSafetyLog.Error("Tasks",
+                "An unobserved background task failed.", e.Exception);
+            e.SetObserved();
         }
-        void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+
+        private static void OnDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            string errorMessage = string.Format("An unhandled exception occurred: {0}", e.Exception.Message);
-            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            // OR whatever you want like logging etc. MessageBox it's just example
-            // for quick debugging etc.
-            e.Handled = true;
+            Exception exception = e.ExceptionObject as Exception
+                ?? new Exception($"Non-exception failure: {e.ExceptionObject}");
+            CatoriShared.Diagnostics.GameSafetyLog.Error("AppDomain",
+                $"Fatal process-level exception. IsTerminating={e.IsTerminating}.", exception);
         }
     }
 

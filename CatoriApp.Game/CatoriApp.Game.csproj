@@ -81,6 +81,7 @@
     <Compile Include="..\CatoriApp.Core\Objects\Shared\StreetHelper.cs" Link="Objects\Shared\StreetHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controllers\LocationSubControllers\Generated\" />
     <Folder Include="Views\Controls\Locations\Warehouses\" />
   </ItemGroup>
 </Project>

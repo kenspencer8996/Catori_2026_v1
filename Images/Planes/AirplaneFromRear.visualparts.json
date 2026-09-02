@@ -1,0 +1,277 @@
+{
+  "SchemaVersion": 1,
+  "Name": "AirplaneFromRear",
+  "VisualObjectType": "Airplane",
+  "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+  "SourceImagePaths": [
+    "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png"
+  ],
+  "ExportFolder": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneFromRear.visualparts.assets",
+  "Parts": {
+    "Body": {
+      "Name": "Body",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneFromRear.visualparts.assets\\Body.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 40.99006215422452,
+          "Y": 205.37845775561777
+        },
+        {
+          "X": 0.009254832320323203,
+          "Y": 184.20504063930053
+        },
+        {
+          "X": 8.888429752066202,
+          "Y": 1.1574346014616594
+        },
+        {
+          "X": 424.8436240693941,
+          "Y": 8.670582610477481
+        },
+        {
+          "X": 429.62471825694956,
+          "Y": 195.81626938050675
+        }
+      ],
+      "PivotSourceX": 211.06041254012712,
+      "PivotSourceY": 170.54477153199912,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 0,
+      "OriginalY": 1,
+      "Width": 430,
+      "Height": 205,
+      "ZOrder": 0
+    },
+    "LeftWing": {
+      "Name": "LeftWing",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [],
+      "PivotSourceX": 0,
+      "PivotSourceY": 0,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": false,
+      "HasEndJoint": false,
+      "IsComplete": false,
+      "OriginalX": 0,
+      "OriginalY": 0,
+      "Width": 0,
+      "Height": 0,
+      "ZOrder": 1
+    },
+    "RightWing": {
+      "Name": "RightWing",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [],
+      "PivotSourceX": 0,
+      "PivotSourceY": 0,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": false,
+      "HasEndJoint": false,
+      "IsComplete": false,
+      "OriginalX": 0,
+      "OriginalY": 0,
+      "Width": 0,
+      "Height": 0,
+      "ZOrder": 2
+    },
+    "LeftPropeller": {
+      "Name": "LeftPropeller",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [],
+      "PivotSourceX": 0,
+      "PivotSourceY": 0,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": false,
+      "HasEndJoint": false,
+      "IsComplete": false,
+      "OriginalX": 0,
+      "OriginalY": 0,
+      "Width": 0,
+      "Height": 0,
+      "ZOrder": 3
+    },
+    "RightPropeller": {
+      "Name": "RightPropeller",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [],
+      "PivotSourceX": 0,
+      "PivotSourceY": 0,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": false,
+      "HasEndJoint": false,
+      "IsComplete": false,
+      "OriginalX": 0,
+      "OriginalY": 0,
+      "Width": 0,
+      "Height": 0,
+      "ZOrder": 4
+    },
+    "Door": {
+      "Name": "Door",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [],
+      "PivotSourceX": 0,
+      "PivotSourceY": 0,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": false,
+      "HasEndJoint": false,
+      "IsComplete": false,
+      "OriginalX": 0,
+      "OriginalY": 0,
+      "Width": 0,
+      "Height": 0,
+      "ZOrder": 5
+    },
+    "LandingGear": {
+      "Name": "LandingGear",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneFromRear.visualparts.assets\\LandingGear.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 198.42466361587321,
+          "Y": 177.09549149027328
+        },
+        {
+          "X": 199.66650626199157,
+          "Y": 195.7231311820479
+        },
+        {
+          "X": 218.9150672768253,
+          "Y": 200.06958044346197
+        },
+        {
+          "X": 220.15690992294367,
+          "Y": 175.85364884415492
+        }
+      ],
+      "PivotSourceX": 213.9476966923521,
+      "PivotSourceY": 177.7164128133324,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 198,
+      "OriginalY": 175,
+      "Width": 23,
+      "Height": 26,
+      "ZOrder": 6
+    },
+    "LandingGearLeft": {
+      "Name": "LandingGearLeft",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneFromRear.visualparts.assets\\LandingGearLeft.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 146.88819380196338,
+          "Y": 152.87955989096622
+        },
+        {
+          "X": 148.75095777114086,
+          "Y": 200.06958044346197
+        },
+        {
+          "X": 181.0388665702169,
+          "Y": 196.9649738281662
+        },
+        {
+          "X": 171.10412540127038,
+          "Y": 151.01679592178874
+        }
+      ],
+      "PivotSourceX": 169.86228275515214,
+      "PivotSourceY": 157.2260091523803,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 146,
+      "OriginalY": 151,
+      "Width": 36,
+      "Height": 50,
+      "ZOrder": 7
+    },
+    "LandingGearRight": {
+      "Name": "LandingGearRight",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropRear.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneFromRear.visualparts.assets\\LandingGearRight.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 252.4448187220197,
+          "Y": 150.39587459872956
+        },
+        {
+          "X": 243.75192019919155,
+          "Y": 195.10220985898877
+        },
+        {
+          "X": 282.8699635519183,
+          "Y": 198.2068164742845
+        },
+        {
+          "X": 278.5235142905042,
+          "Y": 156.60508782932112
+        }
+      ],
+      "PivotSourceX": 255.54942533731548,
+      "PivotSourceY": 156.60508782932112,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 243,
+      "OriginalY": 150,
+      "Width": 40,
+      "Height": 49,
+      "ZOrder": 8
+    }
+  },
+  "SelectedPart": "LandingGearRight",
+  "OverlayPart": null,
+  "OverlayOpacity": 0.35,
+  "CleanupBackground": "Dark"
+}

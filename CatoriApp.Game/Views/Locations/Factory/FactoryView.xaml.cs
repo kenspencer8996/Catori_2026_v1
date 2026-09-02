@@ -19,7 +19,7 @@ namespace CatoriApp.Game.Views.Locations.Factory
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LocationUCPanel.Content = new FactoryInterior_UC(_locationNumber);
+            LocationUCPanel.Content = new Location_UC(_locationNumber);
             
         }
     }

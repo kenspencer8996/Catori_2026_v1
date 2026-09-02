@@ -4,7 +4,10 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using CatoriUCLibrary.Views.VisualParts;
+using CatoriInterfaces;
 
 namespace CatoriUCLibrary.Views.Person;
 
@@ -20,6 +23,35 @@ public sealed class PersonPartSelectedEventArgs(PersonPartType part, double angl
     public double Angle { get; } = angle;
 }
 
+public enum PersonDroppedItemType
+{
+    Ticket,
+    Clothes,
+    Food
+}
+
+public enum PersonRole
+{
+    Avatar,
+    Pilot,
+    Passenger,
+    Commander,
+    Driver
+}
+
+public sealed class PersonItemDroppedEventArgs(PersonDroppedItemType itemType, object item) : EventArgs
+{
+    public PersonDroppedItemType ItemType
+    {
+        get;
+    } = itemType;
+
+    public object Item
+    {
+        get;
+    } = item;
+}
+
 public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDragStartFilter
 {
     private PersonAvatarSettings _settings = PersonAvatarSettings.CreateDefault();
@@ -27,8 +59,13 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     private bool _isArmDragging;
     private bool _isArmEditingEnabled = true;
     private bool _isPartDragging;
+    private bool _isMouseDragging;
+    private PersonActivity _activityBeforeMouseDrag;
+    private double _lastDragX;
     private double _partDragOffset;
     private PersonPartType _selectedPart = PersonPartType.Body;
+    private readonly List<ITicket> _tickets = [];
+    private readonly List<IClothes> _clothes = [];
 
     public PersonUC()
     {
@@ -42,6 +79,28 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public event EventHandler<PersonActivityCompletedEventArgs>? ActivityCompleted;
     public event EventHandler<PersonPartSelectedEventArgs>? PartSelected;
     public event EventHandler<PersonPartSelectedEventArgs>? PartMoved;
+    public event EventHandler<PersonItemDroppedEventArgs>? ItemDropped;
+    public event EventHandler<PersonItemDroppedEventArgs>? TicketReceived;
+    public event EventHandler<PersonItemDroppedEventArgs>? ClothesEquipped;
+    public event EventHandler<PersonItemDroppedEventArgs>? FoodReceived;
+
+    public IReadOnlyList<ITicket> Tickets => _tickets;
+
+    public IReadOnlyList<IClothes> Clothes => _clothes;
+
+    public void ReceiveTicket(ITicket ticket)
+    {
+        ArgumentNullException.ThrowIfNull(ticket);
+        _tickets.Add(ticket);
+        if (ticket is UIElement ticketVisual)
+        {
+            HeldTicketContentControl.Content = ticketVisual;
+            HeldTicketViewbox.Visibility = Visibility.Visible;
+        }
+        RaiseDroppedEvents(PersonDroppedItemType.Ticket, ticket, TicketReceived);
+    }
+
+    public VisualPartAnimatorUC Animator => PartAnimator;
 
     public PersonAvatarSettings AvatarSettings
     {
@@ -58,6 +117,16 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public static readonly DependencyProperty AvatarSettingsJsonProperty =
         DependencyProperty.Register(nameof(AvatarSettingsJson), typeof(string), typeof(PersonUC),
             new FrameworkPropertyMetadata(null, OnAvatarSettingsJsonChanged));
+
+    public PersonRole Role
+    {
+        get => (PersonRole)GetValue(RoleProperty);
+        set => SetValue(RoleProperty, value);
+    }
+
+    public static readonly DependencyProperty RoleProperty =
+        DependencyProperty.Register(nameof(Role), typeof(PersonRole), typeof(PersonUC),
+            new FrameworkPropertyMetadata(PersonRole.Avatar));
 
     public PersonActivity CurrentActivity
     {
@@ -86,38 +155,38 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public double SelectedPartAngle => GetPartAngle(_selectedPart);
     public double LeftElbowAngle
     {
-        get => GetJointAngle(LeftForearmImage);
-        set => SetLowerJointAngle(LeftForearmImage, value);
+        get => GetPartAngle(PersonPartType.LeftForearm);
+        set => SetPartAngle(PersonPartType.LeftForearm, Math.Max(0, value));
     }
     public double RightElbowAngle
     {
-        get => GetJointAngle(RightForearmImage);
-        set => SetLowerJointAngle(RightForearmImage, value);
+        get => GetPartAngle(PersonPartType.RightForearm);
+        set => SetPartAngle(PersonPartType.RightForearm, Math.Max(0, value));
     }
     public double LeftKneeAngle
     {
-        get => GetJointAngle(LeftLowerLegImage);
-        set => SetLowerJointAngle(LeftLowerLegImage, value);
+        get => GetPartAngle(PersonPartType.LeftLowerLeg);
+        set => SetPartAngle(PersonPartType.LeftLowerLeg, Math.Max(0, value));
     }
     public double RightKneeAngle
     {
-        get => GetJointAngle(RightLowerLegImage);
-        set => SetLowerJointAngle(RightLowerLegImage, value);
+        get => GetPartAngle(PersonPartType.RightLowerLeg);
+        set => SetPartAngle(PersonPartType.RightLowerLeg, Math.Max(0, value));
     }
     public double LeftShoulderAngle
     {
-        get => GetJointAngle(LeftArmRoot) - _settings.LeftArm.InitialAngle;
-        set => SetJointAngle(LeftArmRoot, _settings.LeftArm.InitialAngle + value);
+        get => GetPartAngle(PersonPartType.LeftUpperArm) - _settings.LeftArm.InitialAngle;
+        set => SetPartAngle(PersonPartType.LeftUpperArm, _settings.LeftArm.InitialAngle + value);
     }
     public double LeftHipAngle
     {
-        get => GetJointAngle(LeftLegRoot) - _settings.LeftLeg.InitialAngle;
-        set => SetJointAngle(LeftLegRoot, _settings.LeftLeg.InitialAngle + value);
+        get => GetPartAngle(PersonPartType.LeftThigh) - _settings.LeftLeg.InitialAngle;
+        set => SetPartAngle(PersonPartType.LeftThigh, _settings.LeftLeg.InitialAngle + value);
     }
     public double RightHipAngle
     {
-        get => GetJointAngle(RightLegRoot) - _settings.RightLeg.InitialAngle;
-        set => SetJointAngle(RightLegRoot, _settings.RightLeg.InitialAngle + value);
+        get => GetPartAngle(PersonPartType.RightThigh) - _settings.RightLeg.InitialAngle;
+        set => SetPartAngle(PersonPartType.RightThigh, _settings.RightLeg.InitialAngle + value);
     }
     public bool IsArmEditingEnabled
     {
@@ -129,12 +198,15 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         }
     }
     public UIElement Visual => this;
-    public double DragAnchorX => _settings.DesignWidth / 2;
-    public double DragAnchorY => _settings.DesignHeight;
+    public double DragAnchorX => PositiveRenderedSize(ActualWidth,Width,_settings.DesignWidth) / 2;
+    public double DragAnchorY => PositiveRenderedSize(ActualHeight,Height,_settings.DesignHeight);
 
     public Point OriginalPosition => new(
         NormalizeCanvasCoordinate(Canvas.GetLeft(this)),
         NormalizeCanvasCoordinate(Canvas.GetTop(this)));
+
+    private static double PositiveRenderedSize(double actual,double explicitSize,double fallback)
+        =>actual>0?actual:explicitSize>0&&!double.IsNaN(explicitSize)?explicitSize:fallback;
 
     public Point HandPoint
     {
@@ -151,61 +223,67 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public void ApplySettings(PersonAvatarSettings settings)
     {
         _settings = settings;
+        PartAnimator.ClearParts();
         PersonRoot.Width = settings.DesignWidth;
         PersonRoot.Height = settings.DesignHeight;
         Point avatarCenter = new(settings.DesignWidth / 2, settings.DesignHeight / 2);
-        ApplyPart(BodyImage, settings.Body, avatarCenter, settings.DesignWidth, settings.DesignHeight);
-        ApplyPart(HeadImage, settings.Head, avatarCenter);
-        ApplyLimb(LeftArmRoot,LeftArmImage,LeftForearmImage,settings.LeftArm,settings.LeftForearm,avatarCenter);
-        ApplyLimb(LeftLegRoot,LeftLegImage,LeftLowerLegImage,settings.LeftLeg,settings.LeftLowerLeg,avatarCenter);
-        ApplyLimb(RightLegRoot,RightLegImage,RightLowerLegImage,settings.RightLeg,settings.RightLowerLeg,avatarCenter);
+        ConfigurePart(PersonPartType.Body, BodyImage, settings.Body, avatarCenter, settings.DesignWidth, settings.DesignHeight);
+        ConfigurePart(PersonPartType.Head, HeadImage, settings.Head, avatarCenter);
+        ConfigureLimb(PersonPartType.LeftUpperArm, PersonPartType.LeftForearm, LeftArmRoot, LeftArmImage, LeftForearmImage, settings.LeftArm, settings.LeftForearm, avatarCenter);
+        ConfigureLimb(PersonPartType.LeftThigh, PersonPartType.LeftLowerLeg, LeftLegRoot, LeftLegImage, LeftLowerLegImage, settings.LeftLeg, settings.LeftLowerLeg, avatarCenter);
+        ConfigureLimb(PersonPartType.RightThigh, PersonPartType.RightLowerLeg, RightLegRoot, RightLegImage, RightLowerLegImage, settings.RightLeg, settings.RightLowerLeg, avatarCenter);
         AvatarPartSettings right=settings.RightArm;
-        if(string.IsNullOrWhiteSpace(right.ImagePath))right.ImagePath=settings.ArmImagePath;
-        ApplyLimb(RightArmRoot,ArmImage,RightForearmImage,right,settings.RightForearm,avatarCenter,settings.ArmWidth,settings.ArmHeight,true);
+        if (string.IsNullOrWhiteSpace(right.ImagePath))
+        {
+            right.ImagePath = settings.ArmImagePath;
+        }
+        ConfigureLimb(PersonPartType.RightUpperArm, PersonPartType.RightForearm, RightArmRoot, ArmImage, RightForearmImage, right, settings.RightForearm, avatarCenter, settings.ArmWidth, settings.ArmHeight);
         ApplyRightShoulderAngle(ArmAngle);
         settings.ShoulderX=right.X;settings.ShoulderY=right.Y;
         settings.ArmWidth=right.Width;settings.ArmHeight=right.Height;
         ApplyActivity(CurrentActivity, setFirstFrame: true);
     }
 
-    private static void ApplyLimb(Canvas root,Image upper,Image lower,AvatarPartSettings upperPart,AvatarPartSettings lowerPart,Point avatarCenter,double? fallbackWidth=null,double? fallbackHeight=null,bool interactiveUpper=false)
+    private void ConfigureLimb(
+        PersonPartType upperPartType,
+        PersonPartType lowerPartType,
+        Canvas root,
+        Image upper,
+        Image lower,
+        AvatarPartSettings upperPart,
+        AvatarPartSettings lowerPart,
+        Point avatarCenter,
+        double? fallbackWidth = null,
+        double? fallbackHeight = null
+    )
     {
-        upper.Source=LoadImage(upperPart.ImagePath);upper.Width=upperPart.Width>0?upperPart.Width:fallbackWidth??100;upper.Height=upperPart.Height>0?upperPart.Height:fallbackHeight??100;
-        Point rootPosition = OffsetPosition(upperPart, upper.Width, upper.Height, avatarCenter);
-        Canvas.SetLeft(root,rootPosition.X);Canvas.SetTop(root,rootPosition.Y);Panel.SetZIndex(root,upperPart.ZIndex);
-        Canvas.SetLeft(upper,0);Canvas.SetTop(upper,0);upper.RenderTransformOrigin=new Point(upperPart.PivotX,upperPart.PivotY);
-        if (!interactiveUpper)
-        {
-            root.RenderTransform = new System.Windows.Media.RotateTransform(
-                upperPart.InitialAngle,
-                upperPart.PivotX * upper.Width,
-                upperPart.PivotY * upper.Height
-            );
-        }
-        else if (root.RenderTransform is System.Windows.Media.RotateTransform armRotate)
-        {
-            armRotate.CenterX = upperPart.PivotX * upper.Width;
-            armRotate.CenterY = upperPart.PivotY * upper.Height;
-        }
-        lower.Source=LoadImage(lowerPart.ImagePath);lower.Width=lowerPart.Width;lower.Height=lowerPart.Height;
-        Point upperPivot = new(upperPart.PivotX * upper.Width, upperPart.PivotY * upper.Height);
+        double upperWidth = upperPart.Width > 0 ? upperPart.Width : fallbackWidth ?? 100;
+        double upperHeight = upperPart.Height > 0 ? upperPart.Height : fallbackHeight ?? 100;
+        Point rootPosition = OffsetPosition(upperPart, upperWidth, upperHeight, avatarCenter);
+        PartAnimator.ConfigurePart(
+            upper,
+            CreateConfiguration(upperPartType.ToString(), upperPart, rootPosition, upperWidth, upperHeight),
+            root
+        );
+        Canvas.SetLeft(upper, 0);
+        Canvas.SetTop(upper, 0);
+        Point upperPivot = new(upperPart.PivotX * upperWidth, upperPart.PivotY * upperHeight);
         Point lowerPosition;
         if (upperPart.HasEndJoint)
         {
-            Point elbow = new(upperPart.EndJointX * upper.Width, upperPart.EndJointY * upper.Height);
+            Point elbow = new(upperPart.EndJointX * upperWidth, upperPart.EndJointY * upperHeight);
             lowerPosition = new Point(
-                elbow.X - lowerPart.PivotX * lower.Width,
-                elbow.Y - lowerPart.PivotY * lower.Height
+                elbow.X - lowerPart.PivotX * lowerPart.Width,
+                elbow.Y - lowerPart.PivotY * lowerPart.Height
             );
         }
         else
         {
-            lowerPosition = OffsetPosition(lowerPart, lower.Width, lower.Height, upperPivot);
+            lowerPosition = OffsetPosition(lowerPart, lowerPart.Width, lowerPart.Height, upperPivot);
         }
-        Canvas.SetLeft(lower,lowerPosition.X);Canvas.SetTop(lower,lowerPosition.Y);Panel.SetZIndex(lower,lowerPart.ZIndex);
-        lower.RenderTransformOrigin = new Point(lowerPart.PivotX, lowerPart.PivotY);
-        lower.RenderTransform = new System.Windows.Media.RotateTransform(
-            Math.Max(0, lowerPart.InitialAngle)
+        PartAnimator.ConfigurePart(
+            lower,
+            CreateConfiguration(lowerPartType.ToString(), lowerPart, lowerPosition, lowerPart.Width, lowerPart.Height, upperPartType.ToString())
         );
     }
 
@@ -217,21 +295,15 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         RightKneeAngle = rightKnee;
     }
 
-    private static double GetJointAngle(FrameworkElement element)=>element.RenderTransform is System.Windows.Media.RotateTransform rotate?rotate.Angle:0;
-    private static void SetJointAngle(FrameworkElement element,double angle)
-    {
-        if(element.RenderTransform is System.Windows.Media.RotateTransform rotate)rotate.Angle=angle;
-        else element.RenderTransform=new System.Windows.Media.RotateTransform(angle);
-    }
-
-    private static void SetLowerJointAngle(FrameworkElement element, double angle)
-    {
-        SetJointAngle(element, Math.Max(0, angle));
-    }
-
     private void ApplyRightShoulderAngle(double animationAngle)
     {
-        ArmRotate.Angle = _settings.RightArm.InitialAngle + animationAngle;
+        if (PartAnimator.ContainsPart(PersonPartType.RightUpperArm.ToString()))
+        {
+            PartAnimator.SetPartAngle(
+                PersonPartType.RightUpperArm.ToString(),
+                _settings.RightArm.InitialAngle + animationAngle
+            );
+        }
     }
 
     public void SelectPart(PersonPartType part)
@@ -305,7 +377,12 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         _ => _settings.RightLowerLeg,
     };
 
-    private double GetPartAngle(PersonPartType part) => GetJointAngle(GetPartElement(part));
+    private double GetPartAngle(PersonPartType part)
+    {
+        return PartAnimator.ContainsPart(part.ToString())
+            ? PartAnimator.GetPartAngle(part.ToString())
+            : 0;
+    }
 
     private void SetPartAngle(PersonPartType part, double angle)
     {
@@ -315,22 +392,20 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
             or PersonPartType.RightForearm
             or PersonPartType.LeftLowerLeg
             or PersonPartType.RightLowerLeg)
-            SetLowerJointAngle(GetPartElement(part), angle);
+            PartAnimator.SetPartAngle(part.ToString(), Math.Max(0, angle));
         else
-            SetJointAngle(GetPartElement(part), angle);
+            PartAnimator.SetPartAngle(part.ToString(), angle);
     }
 
-    private double GetPartWorldAngle(PersonPartType part) =>
-        GetParentWorldAngle(part) + GetPartAngle(part);
-
-    private double GetParentWorldAngle(PersonPartType part) => part switch
+    private double GetPartWorldAngle(PersonPartType part)
     {
-        PersonPartType.LeftForearm => GetPartAngle(PersonPartType.LeftUpperArm),
-        PersonPartType.RightForearm => GetPartAngle(PersonPartType.RightUpperArm),
-        PersonPartType.LeftLowerLeg => GetPartAngle(PersonPartType.LeftThigh),
-        PersonPartType.RightLowerLeg => GetPartAngle(PersonPartType.RightThigh),
-        _ => 0,
-    };
+        return PartAnimator.GetPartWorldAngle(part.ToString());
+    }
+
+    private double GetParentWorldAngle(PersonPartType part)
+    {
+        return GetPartWorldAngle(part) - GetPartAngle(part);
+    }
 
     private Point GetPartPivot(PersonPartType part)
     {
@@ -351,16 +426,47 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         return angle;
     }
 
-    private static void ApplyPart(Image image,AvatarPartSettings part,Point avatarCenter,double? fallbackWidth=null,double? fallbackHeight=null)
+    private void ConfigurePart(
+        PersonPartType partType,
+        Image image,
+        AvatarPartSettings part,
+        Point avatarCenter,
+        double? fallbackWidth = null,
+        double? fallbackHeight = null
+    )
     {
-        image.Source=LoadImage(part.ImagePath);
-        image.Width=part.Width>0?part.Width:fallbackWidth??100;
-        image.Height=part.Height>0?part.Height:fallbackHeight??100;
-        Point position = OffsetPosition(part, image.Width, image.Height, avatarCenter);
-        Canvas.SetLeft(image,position.X);Canvas.SetTop(image,position.Y);
-        Panel.SetZIndex(image,part.ZIndex);
-        image.RenderTransformOrigin=new Point(part.PivotX,part.PivotY);
-        if(image.Name!="ArmImage")image.RenderTransform=new System.Windows.Media.RotateTransform(part.InitialAngle);
+        double width = part.Width > 0 ? part.Width : fallbackWidth ?? 100;
+        double height = part.Height > 0 ? part.Height : fallbackHeight ?? 100;
+        Point position = OffsetPosition(part, width, height, avatarCenter);
+        PartAnimator.ConfigurePart(
+            image,
+            CreateConfiguration(partType.ToString(), part, position, width, height)
+        );
+    }
+
+    private static VisualPartConfiguration CreateConfiguration(
+        string name,
+        AvatarPartSettings part,
+        Point position,
+        double width,
+        double height,
+        string? parentPartName = null
+    )
+    {
+        return new VisualPartConfiguration
+        {
+            Name = name,
+            ImagePath = part.ImagePath,
+            X = position.X,
+            Y = position.Y,
+            Width = width,
+            Height = height,
+            PivotX = part.PivotX,
+            PivotY = part.PivotY,
+            InitialAngle = part.InitialAngle,
+            ZOrder = part.ZIndex,
+            ParentPartName = parentPartName,
+        };
     }
 
     private static Point OffsetPosition(AvatarPartSettings part, double width, double height, Point origin)
@@ -456,14 +562,6 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     )
     {
         targetPhase = Math.Clamp(targetPhase, -1, 1);
-        double startLeftHip = LeftHipAngle;
-        double startRightHip = RightHipAngle;
-        double startLeftShoulder = LeftShoulderAngle;
-        double startRightShoulder = ArmAngle;
-        double startLeftElbow = LeftElbowAngle;
-        double startRightElbow = RightElbowAngle;
-        double startLeftKnee = LeftKneeAngle;
-        double startRightKnee = RightKneeAngle;
         double targetLeftHip = 24 * targetPhase;
         double targetRightHip = -24 * targetPhase;
         double targetLeftShoulder = 18 * targetPhase;
@@ -472,68 +570,31 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         double targetRightElbow = targetPhase > 0 ? 18 : 5;
         double targetLeftKnee = targetPhase > 0 ? 28 : 5;
         double targetRightKnee = targetPhase > 0 ? 5 : 28;
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < duration)
+        VisualPartPose pose = new(new Dictionary<string, double>
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            double amount = duration <= TimeSpan.Zero
-                ? 1
-                : Math.Clamp(
-                    stopwatch.Elapsed.TotalMilliseconds / duration.TotalMilliseconds,
-                    0,
-                    1
-                );
-            amount = amount < .5
-                ? 2 * amount * amount
-                : 1 - Math.Pow(-2 * amount + 2, 2) / 2;
-            LeftHipAngle = Interpolate(startLeftHip, targetLeftHip, amount);
-            RightHipAngle = Interpolate(startRightHip, targetRightHip, amount);
-            LeftShoulderAngle = Interpolate(startLeftShoulder, targetLeftShoulder, amount);
-            ArmAngle = Interpolate(startRightShoulder, targetRightShoulder, amount);
-            LeftElbowAngle = Interpolate(startLeftElbow, targetLeftElbow, amount);
-            RightElbowAngle = Interpolate(startRightElbow, targetRightElbow, amount);
-            LeftKneeAngle = Interpolate(startLeftKnee, targetLeftKnee, amount);
-            RightKneeAngle = Interpolate(startRightKnee, targetRightKnee, amount);
-            await Task.Delay(16, cancellationToken);
-        }
-        LeftHipAngle = targetLeftHip;
-        RightHipAngle = targetRightHip;
-        LeftShoulderAngle = targetLeftShoulder;
-        ArmAngle = targetRightShoulder;
-        LeftElbowAngle = targetLeftElbow;
-        RightElbowAngle = targetRightElbow;
-        LeftKneeAngle = targetLeftKnee;
-        RightKneeAngle = targetRightKnee;
+            [PersonPartType.LeftThigh.ToString()] = _settings.LeftLeg.InitialAngle + targetLeftHip,
+            [PersonPartType.RightThigh.ToString()] = _settings.RightLeg.InitialAngle + targetRightHip,
+            [PersonPartType.LeftUpperArm.ToString()] = _settings.LeftArm.InitialAngle + targetLeftShoulder,
+            [PersonPartType.RightUpperArm.ToString()] = _settings.RightArm.InitialAngle + targetRightShoulder,
+            [PersonPartType.LeftForearm.ToString()] = targetLeftElbow,
+            [PersonPartType.RightForearm.ToString()] = targetRightElbow,
+            [PersonPartType.LeftLowerLeg.ToString()] = targetLeftKnee,
+            [PersonPartType.RightLowerLeg.ToString()] = targetRightKnee,
+        });
+        await PartAnimator.AnimateToPoseAsync(pose, duration, cancellationToken);
+        SetCurrentValue(ArmAngleProperty, targetRightShoulder);
         ArmMoved?.Invoke(this, EventArgs.Empty);
-    }
-
-    private static double Interpolate(double start, double end, double amount)
-    {
-        return start + (end - start) * amount;
     }
 
     public async Task MoveArmToAsync(double targetAngle, TimeSpan duration,
         CancellationToken cancellationToken = default)
     {
-        double start = ArmAngle;
-        if (duration <= TimeSpan.Zero)
+        VisualPartPose pose = new(new Dictionary<string, double>
         {
-            ArmAngle = targetAngle;
-            ArmMoved?.Invoke(this, EventArgs.Empty);
-            return;
-        }
-
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < duration)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            double amount = Math.Clamp(stopwatch.Elapsed.TotalMilliseconds / duration.TotalMilliseconds, 0, 1);
-            amount = amount < .5 ? 2 * amount * amount : 1 - Math.Pow(-2 * amount + 2, 2) / 2;
-            ArmAngle = start + (targetAngle - start) * amount;
-            await Task.Delay(16, cancellationToken);
-        }
-
-        ArmAngle = targetAngle;
+            [PersonPartType.RightUpperArm.ToString()] = _settings.RightArm.InitialAngle + targetAngle,
+        });
+        await PartAnimator.AnimateToPoseAsync(pose, duration, cancellationToken);
+        SetCurrentValue(ArmAngleProperty, targetAngle);
         ArmMoved?.Invoke(this, EventArgs.Empty);
     }
 
@@ -544,35 +605,13 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         CancellationToken cancellationToken = default
     )
     {
-        double leftStartAngle = LeftShoulderAngle;
-        double rightStartAngle = ArmAngle;
-        if (duration <= TimeSpan.Zero)
+        VisualPartPose pose = new(new Dictionary<string, double>
         {
-            LeftShoulderAngle = leftTargetAngle;
-            ArmAngle = rightTargetAngle;
-            ArmMoved?.Invoke(this, EventArgs.Empty);
-            return;
-        }
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        while (stopwatch.Elapsed < duration)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            double amount = Math.Clamp(
-                stopwatch.Elapsed.TotalMilliseconds / duration.TotalMilliseconds,
-                0,
-                1
-            );
-            amount = amount < .5
-                ? 2 * amount * amount
-                : 1 - Math.Pow(-2 * amount + 2, 2) / 2;
-            LeftShoulderAngle = leftStartAngle
-                + (leftTargetAngle - leftStartAngle) * amount;
-            ArmAngle = rightStartAngle
-                + (rightTargetAngle - rightStartAngle) * amount;
-            await Task.Delay(16, cancellationToken);
-        }
-        LeftShoulderAngle = leftTargetAngle;
-        ArmAngle = rightTargetAngle;
+            [PersonPartType.LeftUpperArm.ToString()] = _settings.LeftArm.InitialAngle + leftTargetAngle,
+            [PersonPartType.RightUpperArm.ToString()] = _settings.RightArm.InitialAngle + rightTargetAngle,
+        });
+        await PartAnimator.AnimateToPoseAsync(pose, duration, cancellationToken);
+        SetCurrentValue(ArmAngleProperty, rightTargetAngle);
         ArmMoved?.Invoke(this, EventArgs.Empty);
     }
 
@@ -584,7 +623,51 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         ArmMoved?.Invoke(this, EventArgs.Empty);
     }
 
-    public void OnDragMouseup() => DragCompleted?.Invoke(this, EventArgs.Empty);
+    public void OnDragStarted()
+    {
+        if (_isMouseDragging)
+            return;
+        _isMouseDragging = true;
+        _activityBeforeMouseDrag = CurrentActivity;
+        _lastDragX = NormalizeCanvasCoordinate(Canvas.GetLeft(this));
+        LayoutUpdated += PersonLayoutUpdatedDuringDrag;
+        _ = PlayActivityAsync(PersonActivity.Walk);
+    }
+
+    public void OnDragMouseup()
+    {
+        if (_isMouseDragging)
+        {
+            _isMouseDragging = false;
+            LayoutUpdated -= PersonLayoutUpdatedDuringDrag;
+            _activityCancellation?.Cancel();
+            CurrentActivity = _activityBeforeMouseDrag;
+        }
+        DragCompleted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PersonLayoutUpdatedDuringDrag(object? sender, EventArgs e)
+    {
+        double currentX = NormalizeCanvasCoordinate(Canvas.GetLeft(this));
+        double deltaX = currentX - _lastDragX;
+        if (Math.Abs(deltaX) < 0.01)
+            return;
+
+        FaceDirection(deltaX > 0);
+        _lastDragX = currentX;
+    }
+
+    private void FaceDirection(bool faceRight)
+    {
+        PersonRoot.RenderTransformOrigin = new Point(.5, .5);
+        if (PersonRoot.RenderTransform is ScaleTransform scale)
+        {
+            scale.ScaleX = faceRight ? Math.Abs(scale.ScaleX) : -Math.Abs(scale.ScaleX);
+            return;
+        }
+
+        PersonRoot.RenderTransform = new ScaleTransform(faceRight ? 1 : -1, 1);
+    }
 
     public bool CanStartDrag(DependencyObject? originalSource)
     {
@@ -705,4 +788,69 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     }
 
     private static double NormalizeCanvasCoordinate(double value) => double.IsNaN(value) ? 0 : value;
+
+    private void Person_DragEnter(object sender, DragEventArgs e)
+    {
+        SetDropEffect(e);
+    }
+
+    private void Person_DragOver(object sender, DragEventArgs e)
+    {
+        SetDropEffect(e);
+    }
+
+    private void Person_Drop(object sender, DragEventArgs e)
+    {
+        object? item = GetSupportedDroppedItem(e.Data);
+        switch (item)
+        {
+            case ITicket ticket:
+                ReceiveTicket(ticket);
+                break;
+            case IClothes clothes:
+                _clothes.Add(clothes);
+                RaiseDroppedEvents(PersonDroppedItemType.Clothes, clothes, ClothesEquipped);
+                break;
+            case IFood food:
+                RaiseDroppedEvents(PersonDroppedItemType.Food, food, FoodReceived);
+                break;
+            default:
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+        }
+        e.Effects = DragDropEffects.Copy;
+        e.Handled = true;
+    }
+
+    private void RaiseDroppedEvents(
+        PersonDroppedItemType itemType,
+        object item,
+        EventHandler<PersonItemDroppedEventArgs>? typedHandler)
+    {
+        var eventArgs = new PersonItemDroppedEventArgs(itemType, item);
+        typedHandler?.Invoke(this, eventArgs);
+        ItemDropped?.Invoke(this, eventArgs);
+    }
+
+    private static void SetDropEffect(DragEventArgs e)
+    {
+        e.Effects = GetSupportedDroppedItem(e.Data) == null
+            ? DragDropEffects.None
+            : DragDropEffects.Copy;
+        e.Handled = true;
+    }
+
+    private static object? GetSupportedDroppedItem(IDataObject data)
+    {
+        foreach (string format in data.GetFormats())
+        {
+            object? item = data.GetData(format);
+            if (item is ITicket or IClothes or IFood)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
 }

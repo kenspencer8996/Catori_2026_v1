@@ -22,14 +22,8 @@
     <ProjectReference Include="..\CatoriServices\CatoriServices.csproj" />
     <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
     <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
+    <ProjectReference Include="..\CatoriUCLibrary\CatoriUCLibrary.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="CatoriUCLibrary">
-      <HintPath>..\DLLs\CatoriUCLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
   <ItemGroup Label="CoreLegacyExclusions">
     <Compile Remove="Controllers\Locations\Factory\LocationInterior_1UCController.cs" />

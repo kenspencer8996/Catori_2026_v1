@@ -1,0 +1,16 @@
+<UserControl x:Class="CatoriUCLibrary.Views.MyImage.MyImageUC"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ mc:Ignorable="d" d:DesignWidth="220" d:DesignHeight="160"
+ MinWidth="40" MinHeight="40" Background="Transparent" Focusable="True">
+ <Grid>
+  <Border x:Name="SelectionBorder" BorderBrush="#FF168BFF" BorderThickness="1" Background="Transparent">
+   <Image x:Name="ImageView" Stretch="Uniform" IsHitTestVisible="False"/>
+  </Border>
+  <Button x:Name="RemoveButton" Content="×" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Top"
+          Click="RemoveButton_Click" ToolTip="Remove image"/>
+  <Thumb x:Name="MoveThumb" Cursor="SizeAll" Background="Transparent" Margin="0,24,16,16" DragDelta="MoveThumb_DragDelta"/>
+  <Thumb Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE"
+         Background="#CC168BFF" DragDelta="ResizeThumb_DragDelta"/>
+ </Grid>
+</UserControl>

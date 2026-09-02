@@ -1,5 +1,6 @@
 using CatoriServices.Objects.database;
 using CatoriServices.Objects.database.Production;
+using CatoriServices.Objects.database.Finance;
 using CatoriServices.Objects.Entities;
 using System.Collections.ObjectModel;
 namespace CatoriServices.Objects.Core
@@ -37,6 +38,7 @@ namespace CatoriServices.Objects.Core
             try
             {
                             RuntimeProductionSchemaMigrator.Migrate(Database);
+                            RuntimeFinanceSchemaMigrator.Migrate(Database);
                             AdoNetHelper adoNetHelper = new AdoNetHelper();
                             PersonRepo = new PersonRepository();
                             ImageRepo = new ImageRepository();

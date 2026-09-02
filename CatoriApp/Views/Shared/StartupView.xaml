@@ -106,6 +106,25 @@
                         Width="100" Height="30" Canvas.Left="1393.558" Canvas.Top="141.514"
                         Click="Location6Button_Click" ToolTip="Click to open factory6" />
 
+                <Button x:Name="Location2Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1513.558" Canvas.Top="189.514"
+                        Click="Location2Button_Click" ToolTip="Click to open factory2" />
+
+                <Button x:Name="Location15Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1393.558" Canvas.Top="225.514"
+                        Click="Location15Button_Click" ToolTip="Click to open AirportTerminalExterior" />
+
+                <Button x:Name="Location19Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1777.558" Canvas.Top="225.514"
+                        Click="Location19Button_Click" ToolTip="Click to open BeachAirport" Background="{x:Null}" BorderBrush="{x:Null}" />
+
+                <Button x:Name="Location17Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1513.558" Canvas.Top="237.514"
+                        Click="Location17Button_Click" ToolTip="Click to open BeachFlyover" Background="{x:Null}" BorderBrush="{x:Null}" />
+
+                <Button x:Name="AirportButton" ToolTip="Airport" Canvas.Left="700" Canvas.Top="225" Click="AirportButton_Click">
+                    <Image Source="/Images/AirportSign.png" Width="50" Height="50"/>
+                </Button>
                 <Button x:Name="RobotArmButton" Content="RobotArm" Canvas.Left="1708" Canvas.Top="954" Click="RobotArmButton_Click"/>
                 <Controls:ToolsPanel x:Name="toolsPanel" Canvas.Left="10" Canvas.Top="70"/>
             </Canvas>

@@ -1,0 +1,24 @@
+{
+  "SchemaVersion": 1,
+  "Name": "AirplaneProp",
+  "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+  "Parts": [
+    {
+      "PartType": "Body",
+      "PngFilename": "Body.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "OriginalX": 128,
+      "OriginalY": 0,
+      "Width": 672,
+      "Height": 315,
+      "PivotX": 217.52967693463575,
+      "PivotY": 145.33621337340344,
+      "EndJointX": -128,
+      "EndJointY": 0,
+      "HasEndJoint": false,
+      "Offset": null,
+      "InitialAngle": 0,
+      "ZOrder": 30
+    }
+  ]
+}

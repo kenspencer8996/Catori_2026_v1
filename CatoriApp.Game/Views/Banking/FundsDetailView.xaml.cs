@@ -38,6 +38,20 @@ namespace CatoriApp.Game.Views.Banking
             this.Close();
         }
 
+        private void BankruptcyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("File bankruptcy? This enables recovery loans and creates a permanent financial record.",
+                "Confirm Bankruptcy", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                _controller.FileBankruptcy();
+            }
+        }
+
+        private void RecoveryLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.RequestRecoveryLoan();
+        }
+
         private void BankStackComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var selectedItem = (BankViewModel)BankStackComboBox.SelectedItem;

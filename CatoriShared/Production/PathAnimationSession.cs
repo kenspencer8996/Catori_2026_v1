@@ -123,14 +123,17 @@ public sealed class PathAnimationSession:IDisposable
         var handle=_handles.FirstOrDefault(candidate=>
             string.Equals(candidate.AnimationName,handoff.Target,StringComparison.OrdinalIgnoreCase));
         if(handle==null)return;
+        var sourceHandle=_handles.FirstOrDefault(candidate=>
+            string.Equals(candidate.AnimationName,message.AnimationName,StringComparison.OrdinalIgnoreCase));
         async void ContinuePath()
         {
             if(handoff.Delay>TimeSpan.Zero)await Task.Delay(handoff.Delay);
             if(_disposed||!_handles.Contains(handle))return;
-            // StartPath is sequencing, not a physical handoff. The target path
-            // must retain the part/control assigned to it in Studio. Robot drop
-            // handoffs continue to use StartWithPart in HandlePartTransfer.
-            handle.Start();
+            // The source stays parked at HoldEnd during the delay. Transfer the
+            // same visual only when the receiving path is ready to start.
+            FrameworkElement? part=sourceHandle?.ReleasePartForPathHandoff();
+            if(part!=null)handle.StartWithPart(part,message.PartName);
+            else handle.Start();
         }
         if(handle.Host.Dispatcher.CheckAccess())ContinuePath();
         else handle.Host.Dispatcher.BeginInvoke((Action)ContinuePath);

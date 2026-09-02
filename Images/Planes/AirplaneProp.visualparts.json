@@ -1,0 +1,374 @@
+{
+  "SchemaVersion": 1,
+  "Name": "AirplaneProp",
+  "VisualObjectType": "Airplane",
+  "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+  "SourceImagePaths": [
+    "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png"
+  ],
+  "ExportFolder": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets",
+  "Parts": {
+    "Body": {
+      "Name": "Body",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\Body.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 223.39955408169254,
+          "Y": 0.21045345678976446
+        },
+        {
+          "X": 128.9784603272426,
+          "Y": 230.61844854237688
+        },
+        {
+          "X": 162.8468961304692,
+          "Y": 287.5789996659853
+        },
+        {
+          "X": 351.68908363936913,
+          "Y": 307.5921662769828
+        },
+        {
+          "X": 444.05754492089625,
+          "Y": 314.263221813982
+        },
+        {
+          "X": 544.6365360941146,
+          "Y": 295.7895295576766
+        },
+        {
+          "X": 798.5725018782867,
+          "Y": 187.40984222389181
+        },
+        {
+          "X": 799.3238166791883,
+          "Y": 1.0837716003006506
+        }
+      ],
+      "PivotSourceX": 345.52967693463575,
+      "PivotSourceY": 145.33621337340344,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 128,
+      "OriginalY": 0,
+      "Width": 672,
+      "Height": 315,
+      "ZOrder": 30
+    },
+    "LeftWing": {
+      "Name": "LeftWing",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\LeftWing.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 19.5,
+          "Y": 80
+        },
+        {
+          "X": -15.5,
+          "Y": 164
+        },
+        {
+          "X": 11.5,
+          "Y": 211
+        },
+        {
+          "X": 200.5,
+          "Y": 223
+        },
+        {
+          "X": 220.5,
+          "Y": 92
+        }
+      ],
+      "PivotSourceX": 204.5,
+      "PivotSourceY": 157,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 0,
+      "OriginalY": 80,
+      "Width": 221,
+      "Height": 143,
+      "ZOrder": 1
+    },
+    "RightWing": {
+      "Name": "RightWing",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\RightWing.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 2.1788129226148953,
+          "Y": 83.72839969947415
+        },
+        {
+          "X": -15.101427498121382,
+          "Y": 270.80578512396687
+        },
+        {
+          "X": 213.29827197595807,
+          "Y": 285.0807663410968
+        },
+        {
+          "X": 217.05484598046598,
+          "Y": 76.21525169045839
+        }
+      ],
+      "PivotSourceX": 205.7851239669423,
+      "PivotSourceY": 152.09804658151768,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 0,
+      "OriginalY": 76,
+      "Width": 218,
+      "Height": 210,
+      "ZOrder": 25
+    },
+    "LeftPropeller": {
+      "Name": "LeftPropeller",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\LeftPropeller.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 349.5,
+          "Y": 70
+        },
+        {
+          "X": 356.5,
+          "Y": 263
+        },
+        {
+          "X": 524.5,
+          "Y": 254
+        },
+        {
+          "X": 502.5,
+          "Y": 46
+        }
+      ],
+      "PivotSourceX": 420,
+      "PivotSourceY": 169,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 349,
+      "OriginalY": 46,
+      "Width": 176,
+      "Height": 217,
+      "ZOrder": 35
+    },
+    "RightPropeller": {
+      "Name": "RightPropeller",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\RightPropeller.cleaned.png",
+      "SelectionShape": "Rectangle",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 49,
+          "Y": 50
+        },
+        {
+          "X": 225,
+          "Y": 267
+        }
+      ],
+      "PivotSourceX": 120,
+      "PivotSourceY": 173,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 49,
+      "OriginalY": 50,
+      "Width": 176,
+      "Height": 217,
+      "ZOrder": 27
+    },
+    "Door": {
+      "Name": "Door",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\Door.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 298.0670920564909,
+          "Y": 170.62043026754165
+        },
+        {
+          "X": 302.62351274974895,
+          "Y": 205.3193263161995
+        },
+        {
+          "X": 300.5205493528606,
+          "Y": 241.77069186226424
+        },
+        {
+          "X": 322.2511711207069,
+          "Y": 244.9251369575968
+        },
+        {
+          "X": 326.4570979144836,
+          "Y": 208.473771411532
+        },
+        {
+          "X": 321.19968942226274,
+          "Y": 177.9808021566509
+        },
+        {
+          "X": 317.6947504274488,
+          "Y": 169.91944246857886
+        }
+      ],
+      "PivotSourceX": 327.1580857134464,
+      "PivotSourceY": 205.3193263161995,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 298,
+      "OriginalY": 169,
+      "Width": 29,
+      "Height": 76,
+      "ZOrder": 32
+    },
+    "LandingGear": {
+      "Name": "LandingGear",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\LandingGear.cleaned.png",
+      "SelectionShape": "Rectangle",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 146.5,
+          "Y": 285
+        },
+        {
+          "X": 225.5,
+          "Y": 333
+        }
+      ],
+      "PivotSourceX": 190.5,
+      "PivotSourceY": 293,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 146,
+      "OriginalY": 285,
+      "Width": 80,
+      "Height": 48,
+      "ZOrder": 6
+    },
+    "LandingGearLeft": {
+      "Name": "LandingGearLeft",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\LandingGearLeft.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 449.8003737946367,
+          "Y": 271.19386095087884
+        },
+        {
+          "X": 454.1468230560507,
+          "Y": 329.56046531843947
+        },
+        {
+          "X": 509.40882080831557,
+          "Y": 333.9069145798535
+        },
+        {
+          "X": 511.2715847774931,
+          "Y": 275.540310212293
+        }
+      ],
+      "PivotSourceX": 471.53262010170715,
+      "PivotSourceY": 274.2984675661746,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 449,
+      "OriginalY": 271,
+      "Width": 63,
+      "Height": 63,
+      "ZOrder": 7
+    },
+    "LandingGearRight": {
+      "Name": "LandingGearRight",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropStairsUpFront45.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\AirplaneProp.visualparts.assets\\LandingGearRight.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 291.4654364145522,
+          "Y": 287.3378153504169
+        },
+        {
+          "X": 283.39345921478315,
+          "Y": 326.4558587031437
+        },
+        {
+          "X": 343.001906228462,
+          "Y": 327.69770134926193
+        },
+        {
+          "X": 341.7600635823438,
+          "Y": 286.71689402735774
+        }
+      ],
+      "PivotSourceX": 310.0930761063268,
+      "PivotSourceY": 286.71689402735774,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 283,
+      "OriginalY": 286,
+      "Width": 61,
+      "Height": 42,
+      "ZOrder": 8
+    }
+  },
+  "SelectedPart": "Body",
+  "OverlayPart": null,
+  "OverlayOpacity": 0.35,
+  "CleanupBackground": "Light"
+}

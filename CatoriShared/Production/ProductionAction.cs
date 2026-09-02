@@ -6,5 +6,6 @@ public enum ProductionAction
     Pickup,
     Drop,
     DronePickup,
-    StartPath
+    StartPath,
+    TransitionToView
 }

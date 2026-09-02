@@ -28,7 +28,11 @@ namespace CatoriServices.Objects.Entities.Locations
         Workstation,
         Storage,
         PickupZone,
-        DropoffZone
+        DropoffZone,
+        Polygon,
+        Rectangle,
+        Vehicle,
+        Airplane,
+        Person
     }
 }
-

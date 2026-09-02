@@ -8,7 +8,7 @@
   "ExportFolder": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\Parts",
   "Parts": {
     "Body": {
-      "PartType": "Body",
+      "Name": "Body",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\Body.cleaned.png",
       "SelectionShape": "Rectangle",
@@ -38,7 +38,7 @@
       "ZOrder": 7
     },
     "Head": {
-      "PartType": "Head",
+      "Name": "Head",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Polygon",
@@ -84,7 +84,7 @@
       "ZOrder": 1
     },
     "LeftUpperArm": {
-      "PartType": "LeftUpperArm",
+      "Name": "LeftUpperArm",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\LeftUpperArm.cleaned.png",
       "SelectionShape": "Rectangle",
@@ -114,7 +114,7 @@
       "ZOrder": 2
     },
     "LeftLowerArm": {
-      "PartType": "LeftLowerArm",
+      "Name": "LeftLowerArm",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\LeftLowerArm.cleaned.png",
       "SelectionShape": "Polygon",
@@ -156,37 +156,45 @@
       "ZOrder": 3
     },
     "RightUpperArm": {
-      "PartType": "RightUpperArm",
+      "Name": "RightUpperArm",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\New Avatar.avatarproj.assets\\RightUpperArm.cleaned.png",
-      "SelectionShape": "Rectangle",
-      "SelectionRotationDegrees": 21.25619340826291,
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
       "Polygon": [
         {
-          "X": 528.5586811376354,
-          "Y": 457.64821237013376
+          "X": 579,
+          "Y": 453
         },
         {
-          "X": 639.4413188623646,
-          "Y": 596.3517876298663
+          "X": 489,
+          "Y": 557
+        },
+        {
+          "X": 589,
+          "Y": 628
+        },
+        {
+          "X": 663,
+          "Y": 486
         }
       ],
-      "PivotSourceX": 616,
-      "PivotSourceY": 485,
+      "PivotSourceX": 607,
+      "PivotSourceY": 491,
       "EndJointSourceX": 0,
       "EndJointSourceY": 0,
       "InitialAngle": 0,
       "HasPivot": true,
       "HasEndJoint": false,
       "IsComplete": true,
-      "OriginalX": 507,
-      "OriginalY": 442,
-      "Width": 154,
-      "Height": 170,
+      "OriginalX": 489,
+      "OriginalY": 453,
+      "Width": 174,
+      "Height": 175,
       "ZOrder": 4
     },
     "RightLowerArm": {
-      "PartType": "RightLowerArm",
+      "Name": "RightLowerArm",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Ellipse",
@@ -216,7 +224,7 @@
       "ZOrder": 5
     },
     "LeftUpperLeg": {
-      "PartType": "LeftUpperLeg",
+      "Name": "LeftUpperLeg",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Polygon",
@@ -254,7 +262,7 @@
       "ZOrder": 6
     },
     "LeftLowerLeg": {
-      "PartType": "LeftLowerLeg",
+      "Name": "LeftLowerLeg",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Polygon",
@@ -296,7 +304,7 @@
       "ZOrder": 7
     },
     "RightUpperLeg": {
-      "PartType": "RightUpperLeg",
+      "Name": "RightUpperLeg",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Polygon",
@@ -334,7 +342,7 @@
       "ZOrder": 8
     },
     "RightLowerLeg": {
-      "PartType": "RightLowerLeg",
+      "Name": "RightLowerLeg",
       "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Primary\\GirlStppingRight.png",
       "CleanedImagePath": "",
       "SelectionShape": "Polygon",

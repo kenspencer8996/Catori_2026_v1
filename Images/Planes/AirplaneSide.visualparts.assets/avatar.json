@@ -1,0 +1,24 @@
+{
+  "SchemaVersion": 1,
+  "Name": "AirplaneSide",
+  "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropSide.png",
+  "Parts": [
+    {
+      "PartType": "Body",
+      "PngFilename": "Body.png",
+      "SourceImage": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Planes\\PlanePassengerPropSide.png",
+      "OriginalX": 0,
+      "OriginalY": 10,
+      "Width": 531,
+      "Height": 234,
+      "PivotX": 257.5,
+      "PivotY": 81,
+      "EndJointX": 0,
+      "EndJointY": -10,
+      "HasEndJoint": false,
+      "Offset": null,
+      "InitialAngle": 0,
+      "ZOrder": 0
+    }
+  ]
+}

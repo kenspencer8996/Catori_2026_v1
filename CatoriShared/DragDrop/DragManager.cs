@@ -116,6 +116,7 @@ public class DragManager
 
             // ? Start dragging
             _isDragging = true;
+            _currentDraggable.OnDragStarted();
 
             var left = Canvas.GetLeft(_dragged);
             var top = Canvas.GetTop(_dragged);

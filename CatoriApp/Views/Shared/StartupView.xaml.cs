@@ -85,6 +85,23 @@ namespace CatoriApp.Views.Shared
             ShowFactoryView(14);
         }
 
+        private void Location15Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(15);
+        }
+
+        private void Location19Button_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new CatoriApp.Game.Views.Locations.BeachAirport.BeachAirportView { Owner = this };
+            view.Show();
+        }
+
+        private void Location17Button_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new CatoriApp.Game.Views.Locations.BeachFlyover.BeachFlyoverView { Owner = this };
+            view.Show();
+        }
+
         private void ShowFactoryView(int locationNumber)
         {
             FactoryView view = new FactoryView(locationNumber);
@@ -114,6 +131,13 @@ namespace CatoriApp.Views.Shared
             WarehouseView view = new WarehouseView();
             view.Owner = this;
             view.ShowDialog();
+        }
+
+        private void AirportButton_Click(object sender, RoutedEventArgs e)
+        {
+            CatoriApp.Game.Views.Locations.AirportTerminalExterior.AirportTerminalExteriorView view = new CatoriApp.Game.Views.Locations.AirportTerminalExterior.AirportTerminalExteriorView { Owner = this };
+            view.Show();
+
         }
     }
 }

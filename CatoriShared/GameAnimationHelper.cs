@@ -288,7 +288,12 @@ public static class GameAnimationHelper
         ArgumentException.ThrowIfNullOrWhiteSpace(translateTransformName);
         ArgumentNullException.ThrowIfNull(options);
 
-        var storyboard = new Storyboard();
+        var storyboard = new Storyboard
+        {
+            FillBehavior = options.HoldAtEndUntilHandoff
+                ? FillBehavior.HoldEnd
+                : FillBehavior.Stop
+        };
         if (options.InitialScale > 0)
         {
             var scaleXAnimation = new DoubleAnimation
@@ -476,6 +481,12 @@ public sealed class PathAnimationOptions
     public RepeatBehavior RepeatBehavior { get; set; } = new RepeatBehavior(1);
     public bool AutoReverse { get; set; }
     public bool AutoStart { get; set; } = true;
+    public TimeSpan StartDelay { get; set; }
+    /// <summary>
+    /// Keeps the part at the final path point until a connected path or robot
+    /// takes ownership of it.
+    /// </summary>
+    public bool HoldAtEndUntilHandoff { get; set; } = true;
     public bool RotateWithPath { get; set; } = true;
     public bool CenterOnPath { get; set; } = true;
     public bool IsHitTestVisible { get; set; }
@@ -488,6 +499,8 @@ public sealed class PathAnimationOptions
     public int ZIndex { get; set; } = 2002;
     public Point RenderTransformOrigin { get; set; } = new(0.5, 0.5);
     public object? Tag { get; set; }
+    public Action<FrameworkElement>? Started { get; set; }
+    public Action<FrameworkElement>? Completed { get; set; }
     /// <summary>
     /// Displays the animation geometry. Intended for design/debug views; game paths are hidden by default.
     /// </summary>
@@ -508,6 +521,8 @@ public sealed class PathAnimationHandle : IDisposable
     private readonly string? _rotateName;
     private bool _isStarted;
     private bool _isDisposed;
+    private bool _isStartPending;
+    private CancellationTokenSource? _startDelayCancellation;
     private string _animationName;
     private string PartName;
     private string TargetName;
@@ -570,10 +585,20 @@ public sealed class PathAnimationHandle : IDisposable
 
     private void StoryBoardComplete()
     {
-        AnimationCompleteMessage animationComplete = 
-            new AnimationCompleteMessage(_animationName,PartName,TargetName,NextAction,
-                Host.Content as FrameworkElement);
-        WeakReferenceMessenger.Default.Send<AnimationCompleteMessage>(animationComplete );
+        try
+        {
+            if(Host.Content is FrameworkElement control)_options.Completed?.Invoke(control);
+            AnimationCompleteMessage animationComplete =
+                new AnimationCompleteMessage(_animationName,PartName,TargetName,NextAction,
+                    Host.Content as FrameworkElement);
+            WeakReferenceMessenger.Default.Send<AnimationCompleteMessage>(animationComplete);
+        }
+        catch(Exception ex)
+        {
+            CatoriShared.Diagnostics.GameSafetyLog.Error("Animation",
+                $"Completion handling failed for animation '{_animationName}'.",ex);
+            RestoreSaneState();
+        }
 
         //StopGlow();
     }
@@ -605,14 +630,58 @@ public sealed class PathAnimationHandle : IDisposable
     private readonly Path _visualPath;
     private Storyboard? _glowStoryboard;
            
-    public void Start()
+    public async void Start()
     {
         ThrowIfDisposed();
-        SelectPathForStart();
+        if(_isStartPending||_isStarted)return;
+        try
+        {
+            if(_options.StartDelay>TimeSpan.Zero)
+            {
+                _isStartPending=true;
+                Host.Visibility=Visibility.Collapsed;
+                _startDelayCancellation?.Dispose();
+                _startDelayCancellation=new CancellationTokenSource();
+                await Task.Delay(_options.StartDelay,_startDelayCancellation.Token);
+                _isStartPending=false;
+                if(_isDisposed)return;
+            }
+            SelectPathForStart();
+            Host.Visibility=Visibility.Visible;
+            if(Host.Content is FrameworkElement control)_options.Started?.Invoke(control);
+            StartGlow();
+            Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
+            _isStarted = true;
+        }
+        catch(OperationCanceledException)
+        {
+            _isStartPending=false;
+        }
+        catch(Exception ex)
+        {
+            _isStartPending=false;
+            CatoriShared.Diagnostics.GameSafetyLog.Error("Animation",
+                $"Animation '{_animationName}' failed to start and was reset.",ex);
+            RestoreSaneState();
+        }
+    }
+
+    private void RestoreSaneState()
+    {
+        try { Storyboard.Stop(_canvas); } catch(Exception stopFailure)
+        {
+            CatoriShared.Diagnostics.GameSafetyLog.Error("Animation",
+                $"Animation '{_animationName}' also failed while stopping.",stopFailure);
+        }
+        StopGlow();
+        if(_canvas.FindName(_translateName) is TranslateTransform translation)
+        {translation.X=0;translation.Y=0;}
+        if(_rotateName!=null&&_canvas.FindName(_rotateName) is RotateTransform rotation)
+            rotation.Angle=0;
+        _scaleTransform.ScaleX=1;
+        _scaleTransform.ScaleY=1;
         Host.Visibility=Visibility.Visible;
-        StartGlow();
-        Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
-        _isStarted = true;
+        _isStarted=false;
     }
 
     private void SelectPathForStart()
@@ -645,6 +714,17 @@ public sealed class PathAnimationHandle : IDisposable
         Host.Visibility=Visibility.Visible;
         if(!string.IsNullOrWhiteSpace(partName))PartName=partName;
         Start();
+    }
+
+    internal FrameworkElement? ReleasePartForPathHandoff()
+    {
+        ThrowIfDisposed();
+        if(Host.Content is not FrameworkElement part)return null;
+        Host.Content=null;
+        Host.Visibility=Visibility.Collapsed;
+        Storyboard.Stop(_canvas);
+        _isStarted=false;
+        return part;
     }
 
     private static void DetachTransferredPart(FrameworkElement part)
@@ -681,6 +761,8 @@ public sealed class PathAnimationHandle : IDisposable
     public void Stop()
     {
         ThrowIfDisposed();
+        _startDelayCancellation?.Cancel();
+        _isStartPending=false;
         if (_isStarted)
         {
             Storyboard.Stop(_canvas);
@@ -692,6 +774,9 @@ public sealed class PathAnimationHandle : IDisposable
     {
         if (_isDisposed)
             return;
+
+        _startDelayCancellation?.Cancel();
+        _isStartPending=false;
 
         if (_isStarted)
         {
@@ -712,6 +797,7 @@ public sealed class PathAnimationHandle : IDisposable
             return;
 
         Remove();
+        _startDelayCancellation?.Dispose();
         WeakReferenceMessenger.Default.UnregisterAll(this);
         _isDisposed = true;
     }

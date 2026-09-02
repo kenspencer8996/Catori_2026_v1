@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\AirportSign.png" />
     <None Remove="Images\badguy_6_wcash.png" />
     <None Remove="Images\BagOfrocks.png" />
     <None Remove="Images\BOMButtonImage.png" />
@@ -145,6 +146,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\AirportSign.png" />
     <Resource Include="Images\badguy_6_wcash.png" />
     <Resource Include="Images\BagOfrocks.png" />
     <Resource Include="Images\BoxShippingShipping3.png" />
@@ -225,7 +227,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Controls\Locations\Factory\Interiors\FactoryInterior_UC.xaml.cs">
+    <Compile Update="Views\Controls\Locations\Factory\Interiors\Location_UC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Controls\House\RealEstateControl .xaml.cs">

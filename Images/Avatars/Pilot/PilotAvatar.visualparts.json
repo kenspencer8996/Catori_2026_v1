@@ -1,0 +1,455 @@
+{
+  "SchemaVersion": 1,
+  "Name": "PilotAvatar",
+  "VisualObjectType": "Avatar",
+  "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+  "SourceImagePaths": [
+    "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png"
+  ],
+  "ExportFolder": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets",
+  "Parts": {
+    "Body": {
+      "Name": "Body",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\Body.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 68.5,
+          "Y": 1.5
+        },
+        {
+          "X": 78.5,
+          "Y": 449.5
+        },
+        {
+          "X": 251.5,
+          "Y": 460.5
+        },
+        {
+          "X": 249.5,
+          "Y": -1.5
+        }
+      ],
+      "PivotSourceX": 172.5,
+      "PivotSourceY": 24.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 68,
+      "OriginalY": 0,
+      "Width": 184,
+      "Height": 461,
+      "ZOrder": 0
+    },
+    "Head": {
+      "Name": "Head",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 46.5,
+          "Y": 3.5
+        },
+        {
+          "X": 83.5,
+          "Y": 191.5
+        },
+        {
+          "X": 280.5,
+          "Y": 212.5
+        },
+        {
+          "X": 273.5,
+          "Y": -4.5
+        }
+      ],
+      "PivotSourceX": 169.5,
+      "PivotSourceY": 204.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 46,
+      "OriginalY": 0,
+      "Width": 235,
+      "Height": 213,
+      "ZOrder": 1
+    },
+    "LeftUpperArm": {
+      "Name": "LeftUpperArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\LeftUpperArm.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 176.5,
+          "Y": 232.5
+        },
+        {
+          "X": 187.5,
+          "Y": 325.5
+        },
+        {
+          "X": 230.5,
+          "Y": 372.5
+        },
+        {
+          "X": 323.5,
+          "Y": 404.5
+        },
+        {
+          "X": 347.5,
+          "Y": 348.5
+        },
+        {
+          "X": 219.5,
+          "Y": 229.5
+        },
+        {
+          "X": 174.5,
+          "Y": 250.5
+        },
+        {
+          "X": 200.5,
+          "Y": 352.5
+        }
+      ],
+      "PivotSourceX": 183.5,
+      "PivotSourceY": 253.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 174,
+      "OriginalY": 229,
+      "Width": 174,
+      "Height": 176,
+      "ZOrder": 2
+    },
+    "LeftLowerArm": {
+      "Name": "LeftLowerArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\LeftLowerArm.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 200.5,
+          "Y": 325.5
+        },
+        {
+          "X": 215.5,
+          "Y": 359.5
+        },
+        {
+          "X": 304.5,
+          "Y": 405.5
+        },
+        {
+          "X": 334.5,
+          "Y": 346.5
+        },
+        {
+          "X": 231.5,
+          "Y": 288.5
+        }
+      ],
+      "PivotSourceX": 213.5,
+      "PivotSourceY": 319.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 200,
+      "OriginalY": 288,
+      "Width": 135,
+      "Height": 118,
+      "ZOrder": 3
+    },
+    "RightUpperArm": {
+      "Name": "RightUpperArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\RightUpperArm.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 53.5,
+          "Y": 295.5
+        },
+        {
+          "X": 113.5,
+          "Y": 326.5
+        },
+        {
+          "X": 143.5,
+          "Y": 243.5
+        },
+        {
+          "X": 109.5,
+          "Y": 228.5
+        },
+        {
+          "X": 80.5,
+          "Y": 231.5
+        }
+      ],
+      "PivotSourceX": 132.5,
+      "PivotSourceY": 247.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 53,
+      "OriginalY": 228,
+      "Width": 91,
+      "Height": 99,
+      "ZOrder": 4
+    },
+    "RightLowerArm": {
+      "Name": "RightLowerArm",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\RightLowerArm.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 46.5,
+          "Y": 297.5
+        },
+        {
+          "X": 112.5,
+          "Y": 325.5
+        },
+        {
+          "X": 67.5,
+          "Y": 449.5
+        },
+        {
+          "X": 2.5,
+          "Y": 414.5
+        }
+      ],
+      "PivotSourceX": 84.5,
+      "PivotSourceY": 317.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 2,
+      "OriginalY": 297,
+      "Width": 111,
+      "Height": 153,
+      "ZOrder": 5
+    },
+    "LeftUpperLeg": {
+      "Name": "LeftUpperLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\LeftUpperLeg.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 99.5,
+          "Y": 444.5
+        },
+        {
+          "X": 164.5,
+          "Y": 458.5
+        },
+        {
+          "X": 136.5,
+          "Y": 551.5
+        },
+        {
+          "X": 57.5,
+          "Y": 517.5
+        },
+        {
+          "X": 60.5,
+          "Y": 508.5
+        }
+      ],
+      "PivotSourceX": 130.5,
+      "PivotSourceY": 470.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 57,
+      "OriginalY": 444,
+      "Width": 108,
+      "Height": 108,
+      "ZOrder": 6
+    },
+    "LeftLowerLeg": {
+      "Name": "LeftLowerLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\LeftLowerLeg.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 65.5,
+          "Y": 500.5
+        },
+        {
+          "X": 9.5,
+          "Y": 619.5
+        },
+        {
+          "X": 1.5,
+          "Y": 635.5
+        },
+        {
+          "X": 3.5,
+          "Y": 661.5
+        },
+        {
+          "X": 26.5,
+          "Y": 686.5
+        },
+        {
+          "X": 66.5,
+          "Y": 695.5
+        },
+        {
+          "X": 113.5,
+          "Y": 693.5
+        },
+        {
+          "X": 140.5,
+          "Y": 543.5
+        }
+      ],
+      "PivotSourceX": 108.5,
+      "PivotSourceY": 522.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 1,
+      "OriginalY": 500,
+      "Width": 140,
+      "Height": 196,
+      "ZOrder": 7
+    },
+    "RightUpperLeg": {
+      "Name": "RightUpperLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\RightUpperLeg.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 160.5,
+          "Y": 460.5
+        },
+        {
+          "X": 187.5,
+          "Y": 568.5
+        },
+        {
+          "X": 258.5,
+          "Y": 536.5
+        },
+        {
+          "X": 232.5,
+          "Y": 446.5
+        }
+      ],
+      "PivotSourceX": 184.5,
+      "PivotSourceY": 456.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 160,
+      "OriginalY": 446,
+      "Width": 99,
+      "Height": 123,
+      "ZOrder": 8
+    },
+    "RightLowerLeg": {
+      "Name": "RightLowerLeg",
+      "SourceImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\WalkingImate.png",
+      "CleanedImagePath": "C:\\Development\\Gaming\\Catori2026\\Catori_2026_v1\\Images\\Avatars\\Pilot\\PilotAvatar.visualparts.assets\\RightLowerLeg.cleaned.png",
+      "SelectionShape": "Polygon",
+      "SelectionRotationDegrees": 0,
+      "Polygon": [
+        {
+          "X": 188.5,
+          "Y": 574.5
+        },
+        {
+          "X": 215.5,
+          "Y": 692.5
+        },
+        {
+          "X": 221.5,
+          "Y": 704.5
+        },
+        {
+          "X": 275.5,
+          "Y": 710.5
+        },
+        {
+          "X": 321.5,
+          "Y": 682.5
+        },
+        {
+          "X": 360.5,
+          "Y": 655.5
+        },
+        {
+          "X": 359.5,
+          "Y": 631.5
+        },
+        {
+          "X": 302.5,
+          "Y": 537.5
+        }
+      ],
+      "PivotSourceX": 228.5,
+      "PivotSourceY": 563.5,
+      "EndJointSourceX": 0,
+      "EndJointSourceY": 0,
+      "InitialAngle": 0,
+      "HasPivot": true,
+      "HasEndJoint": false,
+      "IsComplete": true,
+      "OriginalX": 188,
+      "OriginalY": 537,
+      "Width": 173,
+      "Height": 159,
+      "ZOrder": 9
+    }
+  },
+  "SelectedPart": "Body",
+  "OverlayPart": null,
+  "OverlayOpacity": 0.35
+}

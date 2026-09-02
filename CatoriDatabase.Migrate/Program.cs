@@ -1,4 +1,5 @@
 using CatoriServices.Objects.database.Production;
+using CatoriServices.Objects.database.Finance;
 
 if(args.Length!=1||string.IsNullOrWhiteSpace(args[0]))
 {
@@ -16,6 +17,7 @@ File.Copy(databasePath,backupPath,false);
 try
 {
     RuntimeProductionSchemaMigrator.Migrate(databasePath);
+    RuntimeFinanceSchemaMigrator.Migrate(databasePath);
     Console.WriteLine($"Migrated: {databasePath}");
     Console.WriteLine($"Backup:   {backupPath}");
     return 0;

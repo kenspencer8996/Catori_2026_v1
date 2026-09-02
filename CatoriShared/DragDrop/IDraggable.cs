@@ -6,8 +6,7 @@ namespace CatoriApp.Core.Objects.DragDrop
         public Point OriginalPosition { get; }
         public bool IsDragEnabled => true;
 
-        // ? New optional callback
+        void OnDragStarted() { }
         void OnDragMouseup();
     }
 }
-

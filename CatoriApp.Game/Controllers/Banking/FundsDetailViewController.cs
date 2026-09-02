@@ -12,6 +12,7 @@ namespace CatoriApp.Game.Controllers.Banking
         PersonViewModel _personViewModel;
         PersonService _personService;
         private BankService _bankService;
+        private BankViewModel? _selectedBank;
 
         int _personId;
         decimal _depositAmount;
@@ -64,25 +65,34 @@ namespace CatoriApp.Game.Controllers.Banking
             _view.TotalAmount.Content = $"Total Funds: {totalFunds}";
         }
 
-        public void SendDepositToBank()
+        public async void SendDepositToBank()
         {
             if (_depositViewModel != null)
             {
-                _depositViewModel.BankId = _depositViewModel.BankId;
-                //todoL send
-                DepositMessageArgument depositMessageArgument = new DepositMessageArgument
+                try
                 {
-                    BankId = _depositViewModel.BankId,
-                    Amount = _depositAmount,
-                    Person = _personViewModel,
-                    BusinessName = _depositViewModel.BusinessName,
-                };
-                WeakReferenceMessenger.Default.Send(depositMessageArgument);
+                    var service=new CatoriServices.Objects.Services.Finance.FinanceService();
+                    var result=await Task.Run(()=>service.DepositToBank(_personId,_depositViewModel.BankId,
+                        _depositAmount,_depositViewModel.BusinessName));
+                    _personViewModel.Funds=CatoriServices.Objects.Services.Finance.FinanceService.FromCents(result.WalletBalanceCents);
+                    _fundsViewModel.Money=_personViewModel.Funds;
+                    _depositAmount=0;
+                    _view.DepositAmountTextBox.Text="0";
+                    _view.MessageLabel.Content="Deposit completed.";
+                    LoadDepositsForPerson(_personId);
+                    WeakReferenceMessenger.Default.Send(new MessageSaveDepositArgument());
+                }
+                catch(Exception exception)
+                {
+                    _view.MessageLabel.Content=exception.Message;
+                }
             }
         }
         
         internal void BankSelected(BankViewModel selectedItem)
         {
+            if (selectedItem == null) return;
+            _selectedBank = selectedItem;
             _depositViewModel = new DepositViewModel();
             if (_depositViewModel == null)
             {
@@ -106,10 +116,54 @@ namespace CatoriApp.Game.Controllers.Banking
             }
         }
 
+        internal void FileBankruptcy()
+        {
+            try
+            {
+                var service = new CatoriServices.Objects.Services.Finance.FinanceService();
+                service.FileBankruptcy(_personId, "Filed by player at ATM.");
+                _view.MessageLabel.Content = "Bankruptcy filed. You may now request a recovery loan.";
+            }
+            catch (Exception exception)
+            {
+                _view.MessageLabel.Content = exception.Message;
+            }
+        }
+
+        internal void RequestRecoveryLoan()
+        {
+            if (_selectedBank == null)
+            {
+                _view.MessageLabel.Content = "Select a bank first.";
+                return;
+            }
+            if (_depositAmount <= 0)
+            {
+                _view.MessageLabel.Content = "Enter the requested loan amount in Amount.";
+                return;
+            }
+
+            try
+            {
+                var service = new CatoriServices.Objects.Services.Finance.FinanceService();
+                var result = service.IssueBankruptcyLoan(_personId, _selectedBank.BankId,
+                    _depositAmount, _selectedBank.InterestRate);
+                _personViewModel.Funds = CatoriServices.Objects.Services.Finance.FinanceService.FromCents(result.WalletBalanceCents);
+                _fundsViewModel.Money = _personViewModel.Funds;
+                _depositAmount = 0;
+                _view.DepositAmountTextBox.Text = "0";
+                _view.MessageLabel.Content = "Recovery loan approved and added to your wallet.";
+            }
+            catch (Exception exception)
+            {
+                _view.MessageLabel.Content = exception.Message;
+            }
+        }
+
         internal void DepositAmountChanged()
         {
             _depositAmount = Convert.ToDecimal( _view.DepositAmountTextBox.Text);
-            if (_depositAmount > 0 && _depositAmount < _personViewModel.Funds)
+            if (_depositAmount > 0 && _depositAmount <= _personViewModel.Funds)
             {
                 _view.MessageLabel.Content = "You can make this deposit.";
                 _view.DepositButton.IsEnabled = true;
