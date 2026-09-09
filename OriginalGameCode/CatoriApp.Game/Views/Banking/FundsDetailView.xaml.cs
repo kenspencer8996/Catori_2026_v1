@@ -1,0 +1,63 @@
+using CatoriApp.Game.Controllers;
+namespace CatoriApp.Game.Views.Banking
+{
+    /// <summary>
+    /// Interaction logic for FundsDetailView.xaml
+    /// </summary>
+    public partial class FundsDetailView : Window
+    {
+        FundsDetailViewController _controller;
+        public FundsDetailView(Decimal depositAmount = 0)
+        {
+            InitializeComponent();
+
+            _controller = new FundsDetailViewController(this);
+            DepositAmountTextBox.Text = depositAmount.ToString();
+
+        }
+
+        private void DepositAmountTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            double i = 0;
+            string s = DepositAmountTextBox.Text;
+            bool result = double.TryParse(s, out i); //i now = 108  
+            if (result == false)
+            {
+                return;
+            }
+            _controller.DepositAmountChanged();
+        }
+      
+        private void DepositButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.SendDepositToBank();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void BankruptcyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("File bankruptcy? This enables recovery loans and creates a permanent financial record.",
+                "Confirm Bankruptcy", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                _controller.FileBankruptcy();
+            }
+        }
+
+        private void RecoveryLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.RequestRecoveryLoan();
+        }
+
+        private void BankStackComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var selectedItem = (BankViewModel)BankStackComboBox.SelectedItem;
+            _controller.BankSelected(selectedItem);
+        }
+    }
+}
+
+

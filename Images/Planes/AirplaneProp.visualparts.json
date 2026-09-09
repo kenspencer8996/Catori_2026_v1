@@ -166,8 +166,8 @@
           "Y": 46
         }
       ],
-      "PivotSourceX": 420,
-      "PivotSourceY": 169,
+      "PivotSourceX": 438.5,
+      "PivotSourceY": 172,
       "EndJointSourceX": 0,
       "EndJointSourceY": 0,
       "InitialAngle": 0,
@@ -196,8 +196,8 @@
           "Y": 267
         }
       ],
-      "PivotSourceX": 120,
-      "PivotSourceY": 173,
+      "PivotSourceX": 139.5,
+      "PivotSourceY": 179,
       "EndJointSourceX": 0,
       "EndJointSourceY": 0,
       "InitialAngle": 0,
@@ -367,7 +367,7 @@
       "ZOrder": 8
     }
   },
-  "SelectedPart": "Body",
+  "SelectedPart": "LeftPropeller",
   "OverlayPart": null,
   "OverlayOpacity": 0.35,
   "CleanupBackground": "Light"

@@ -1,0 +1,134 @@
+<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:CatoriApp.Views.Controls" 
+        x:Class="CatoriApp.Views.Shared.StartupView" PreviewKeyDown="Window_KeyDown"
+        mc:Ignorable="d"
+        Title="StartupView"
+        Width="1920"
+        Height="1080"
+        MinWidth="900"
+        MinHeight="600"
+        WindowState="Maximized" WindowStyle="None"
+        Background="Black">
+
+
+
+    <Grid Background="Black">
+        <Viewbox Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas Width="1920" Height="1080" Background="Black">
+                <Image x:Name="SettingsPanelImage" Source="/Images/HouseGearMenuIcon.png"
+                  Width="75" MouseEnter="SettingsPanelImage_MouseEnter"     Panel.ZIndex="1202"/>
+
+                <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Left="1872" Canvas.Top="5" 
+                    Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="1002" />
+
+                <Image Source="/Images/StartWorld.png"
+                       Width="1920"
+                       Height="1080"
+                       Stretch="Fill"
+                       Canvas.Left="0"
+                       Canvas.Top="0" />
+
+                <Button x:Name="CityScapeButton"
+                        Style="{StaticResource MapHotspotButton}"
+                        Width="355"
+                        Height="280"
+                        Canvas.Left="750"
+                        Canvas.Top="253"
+                        Click="CityScapeButton_Click"
+                        ToolTip="Click to open CityScape" />
+
+                <Button x:Name="TreasureHuntButton"
+                        Style="{StaticResource MapHotspotButton}"
+                        Width="355"
+                        Height="280"
+                        Canvas.Left="750"
+                        Canvas.Top="553"
+                        Click="TreasureHuntButton_Click"
+                        ToolTip="Click to open Treasure Hunt" />
+
+
+
+                <Button x:Name="Location1Button"  Style="{StaticResource MapHotspotButton}"
+                    Width="100" Height="30" Canvas.Left="1394" Canvas.Top="183"
+                    Click="Location1Button_Click" ToolTip="Click to open Location 1" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="19.415"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="warehouseButton"  Style="{StaticResource MapHotspotButton}"
+                    Width="100" Height="51" Canvas.Left="1518" Canvas.Top="129"
+                    Click="warehouseButton_Click" ToolTip="Click to open warehouse" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="8.33"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+
+                <Button x:Name="Location3Button"  Style="{StaticResource MapHotspotButton}"
+             Width="100" Height="51" Canvas.Left="1665" Canvas.Top="230"
+             Click="Location3Button_Click" ToolTip="Click to open Factory 3" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-25.283"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+
+                <Button x:Name="Location4Button"  Style="{StaticResource MapHotspotButton}"
+             Width="113" Height="30" Canvas.Left="1705" Canvas.Top="165"
+             Click="Location4Button_Click" ToolTip="Click to open Location 4" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="0.209"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="Location6Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1393.558" Canvas.Top="141.514"
+                        Click="Location6Button_Click" ToolTip="Click to open factory6" />
+
+                <Button x:Name="Location2Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1513.558" Canvas.Top="189.514"
+                        Click="Location2Button_Click" ToolTip="Click to open factory2" />
+
+                <Button x:Name="Location15Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1393.558" Canvas.Top="225.514"
+                        Click="Location15Button_Click" ToolTip="Click to open AirportTerminalExterior" />
+
+                <Button x:Name="Location19Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1777.558" Canvas.Top="225.514"
+                        Click="Location19Button_Click" ToolTip="Click to open BeachAirport" Background="{x:Null}" BorderBrush="{x:Null}" />
+
+                <Button x:Name="Location17Button" Style="{StaticResource MapHotspotButton}"
+                        Width="100" Height="30" Canvas.Left="1513.558" Canvas.Top="237.514"
+                        Click="Location17Button_Click" ToolTip="Click to open BeachFlyover" Background="{x:Null}" BorderBrush="{x:Null}" />
+
+                <Button x:Name="AirportButton" ToolTip="Airport" Canvas.Left="700" Canvas.Top="225" Click="AirportButton_Click">
+                    <Image Source="/Images/AirportSign.png" Width="50" Height="50"/>
+                </Button>
+                <Button x:Name="RobotArmButton" Content="RobotArm" Canvas.Left="1708" Canvas.Top="954" Click="RobotArmButton_Click"/>
+                <Controls:ToolsPanel x:Name="toolsPanel" Canvas.Left="10" Canvas.Top="70"/>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</Window>
+

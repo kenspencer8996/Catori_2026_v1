@@ -59,8 +59,15 @@ namespace CatoriApp.MachineLayoutDesigner.ViewModels.Robots
             StatusMessage = "Pose deleted.";
         }
 
-        public void MoveSelectedPoseUp() => MoveSelectedPose(-1);
-        public void MoveSelectedPoseDown() => MoveSelectedPose(1);
+        public void MoveSelectedPoseUp()
+        {
+            MoveSelectedPose(-1);
+        }
+
+        public void MoveSelectedPoseDown()
+        {
+            MoveSelectedPose(1);
+        }
 
         private void MoveSelectedPose(int offset)
         {

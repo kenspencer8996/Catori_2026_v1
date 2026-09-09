@@ -1,0 +1,158 @@
+using CatoriApp.Game.Controllers;
+using CatoriApp.Core.Objects.Arguments;
+using CommunityToolkit.Mvvm.Messaging;
+namespace CatoriApp.Game.Views.Settings
+{
+    /// <summary>
+    /// Interaction logic for SettingsView.xaml
+    /// </summary>
+    public partial class SettingsView : Window
+    {
+        SettingsViewController _controller;
+        public event EventHandler<ReloadLandscapeSettingsArg> OnLandscapeGroupChange;
+        public bool IsDirty { get; set; } = false;
+        public SettingsView()
+        {
+            InitializeComponent();
+
+            _controller = new SettingsViewController(this);
+            Settingsgrid.ItemsSource = GlobalServices.Settings;
+            LoadLandscapeGroups(GlobalServices.LandscapeObjecGroupid);
+            SetControls();
+        }
+
+        internal Button GetButton()
+        {
+            Button landscapeObjectButton = new Button();
+            landscapeObjectButton.Width = 25;
+            //Style buttonstyle =(Style)Application.Current.Resources["ButtonFocusVisual"];
+            //landscapeObjectButton.Style = buttonstyle;
+            
+            landscapeObjectButton.Foreground = System.Windows.Media.Brushes.Red;
+            landscapeObjectButton.FontWeight = FontWeights.Bold;
+            landscapeObjectButton.Click += LandscapeObjectButton_Click;
+            return landscapeObjectButton;
+        }
+        internal void LandscapeObjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            string groupidstring = button.Content.ToString();
+            Int32 groupid = Convert.ToInt32(groupidstring);
+            GroupsLabel.Content = _controller.GroupLabelText + " " + groupidstring;
+
+            LoadLandscapeGroups(groupid);
+            if (OnLandscapeGroupChange != null)
+            {
+                ReloadLandscapeSettingsArg arg = new ReloadLandscapeSettingsArg();
+                OnLandscapeGroupChange(this, arg);
+            }
+        }
+        private void LoadLandscapeGroups(Int32 groupid)
+        {
+            GlobalServices.LandscapeObjecGroupid = groupid;
+            LandscapeGroups.ItemsSource = CityScapeGlobal.LandscapeObjects;
+
+        }
+
+        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.SaveSettings();
+        }
+      
+
+        internal void SetControls()
+        {
+            //BadPersonWidthTextBox.Text = GlobalStuff.BadPersonWidth.ToString();
+            //BadPersonHeightTextBox.Text = GlobalStuff.BadPersonHeight.ToString();
+            //PoliceCarSpeedTextBox.Text = GlobalStuff.PoliceCarSpeed.ToString();
+            //BadGuyTravelSpeedTextBox.Text = GlobalStuff.BadGuyTravelSpeed.ToString();
+            //EmailLogTextBox.Text = GlobalStuff.EmailLog.ToString();
+            //campfireanimationspeedTextBox.Text = GlobalStuff.CampFireAnimationSpeed.ToString();
+            //BadguyCountTextBox.Text = GlobalStuff.BadguyCount.ToString();
+            //CampfireSleeptimeTextBox.Text = GlobalStuff.CampfireSleeptime.ToString();
+        }
+
+        private void LandscapeGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+            var selectedItem = dataGrid.SelectedItem;
+            if (selectedItem != null)
+            {
+                IsDirty = true;
+                SelectFilename((LandscapeObjectViewModel)selectedItem);
+            }
+        }
+
+        private void AddNewLandscapeItem_Click(object sender, RoutedEventArgs e)
+        {
+            IsDirty = true;
+            LandscapeObjectViewModel modlel = new LandscapeObjectViewModel();
+            SelectFilename(modlel);
+        }
+        private void SelectFilename(LandscapeObjectViewModel model)
+        {
+            IsDirty = true;
+            LandscapeObjectDetailView view = new LandscapeObjectDetailView(model);
+            view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void Settingsgrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+            SettingEntity selectedItem =(SettingEntity)dataGrid.SelectedItem;
+            SettingDetailView view = new SettingDetailView(selectedItem);
+            view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void AddNewSetting_Click(object sender, RoutedEventArgs e)
+        {
+            IsDirty = true;
+            SettingEntity selectedItem = new SettingEntity();
+            SettingDetailView view = new SettingDetailView(selectedItem);
+            view.Owner = this;
+            view.ShowDialog();
+
+        }
+        #region Color events and properties
+     
+
+        #endregion
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (IsDirty)
+            {
+                _controller.SaveSettings();
+            }
+        }
+
+        private void PoliceCarsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            (CityScapeGlobal.CityScapeView as dynamic)?.RunPoliceCars();
+        }
+
+        private void BadPersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            FundsViewModel funds = new FundsViewModel();
+            funds.Money = 500;
+            funds.X = 150;
+            funds.Y = CityScapeGlobal.IntersectuonMikMoo.y;
+
+            FundsMessage msg = new FundsMessage(funds);
+            WeakReferenceMessenger.Default.Send(msg);
+        }
+
+        private void BanksButton_Click(object sender, RoutedEventArgs e)
+        {
+            BankListView bankListView = new BankListView();
+            bankListView.Owner = this;
+            bankListView.ShowDialog();
+        }
+    }
+}
+
+

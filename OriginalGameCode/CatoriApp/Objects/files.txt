@@ -1,0 +1,27 @@
+ Volume in drive C is Windows
+ Volume Serial Number is EAC2-1E22
+
+ Directory of C:\Development\Gaming\Catori2026\Catori_2026_v1\CatoriApp\Objects
+
+[.]                                   [..]
+[Arguments]                           BaloonLocationEnum.cs
+BusinessContentAndLocXYEntity.cs      CityappEntity.cs
+ColorChangedArgs.cs                   Directionfromhomeenum.cs
+[DragDrop]                            [DTOs]
+[Enums]                               [Extensions]
+files.txt                             GeometryObjectForAnimationsModel.cs
+[Graphics]                            HouseImageTypeEnum.cs
+Imagenamepartsentity.cs               ImageTextToolTip.cs
+LandScapeWithBank_ReturnEntity.cs     LeaveEnerEnum.cs
+LeaveWorkArg.cs                       MapPositionEntity.cs
+[Messages]                            MouseDirectionEnum.cs
+MouseStatesEnum.cs                    PathPositionModel.cs
+PersonMessage.cs                      PersonMouseTargetenum.cs
+PointEntity.cs                        RobberyMessage.cs
+RobotControlPanelSelectionsArg.cs     RobotPartEntity.cs
+RobotPartType.cs                      [Services]
+[Shared]                              StreetsModel.cs
+TreasureEntity.cs                     TreasureSpotDetailModel.cs
+TreasureStepEnum.cs                   
+              28 File(s)         22,392 bytes
+              11 Dir(s)  572,019,052,544 bytes free

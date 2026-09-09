@@ -1,0 +1,121 @@
+<Window x:Class="CatoriApp.MachineLayoutDesigner.Views.MachineCatalog.MachineInstanceEditorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CatoriApp.MachineLayoutDesigner.Views.MachineCatalog"
+        mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded"
+        Title="Machine Instance " Height="450" Width="1024">
+    <Grid Background="{DynamicResource MainGradient}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Robot Arm Detail" Style="{DynamicResource RedBoldLabelStyle}"  />
+
+        <Label Grid.Row="1" Grid.Column="0"
+           Content="Machine Definition:"/>
+        <ComboBox x:Name="MachineCatalogComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" MinWidth="200"
+              SelectionChanged="MachineCatalogComboBox_SelectionChanged"
+              SelectedValue="{Binding MachineDefinitionId}"
+              SelectedValuePath="MachineDefinitionId"
+              DisplayMemberPath="MachineName"/>
+
+        <!-- InstanceName -->
+        <Label Grid.Row="2" Grid.Column="0"
+           Content="Instance Name:"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+             Text="{Binding InstanceName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- DisplayName -->
+        <Label Grid.Row="3" Grid.Column="0"
+           Content="Display Name:"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+             Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
+        <Border  Grid.Column="1" Grid.Row="4" Margin="4,4,4,4" BorderThickness="2" BorderBrush="#FFEF332A" CornerRadius="5,5,5,5">
+            <GroupBox Grid.Column="1" Grid.Row="3" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75"/>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="22*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- DefaultScale -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Default Scale:"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" >
+                        <TextBox x:Name="DefaultScaleTextBox" TextChanged="DefaultScaleTextBox_TextChanged"
+                                         Text="{Binding DefaultScalePercent, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Width="4" HorizontalAlignment="Left" MinWidth="100"/>
+                        <Label Content="%"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="_25button" Content="25%" Width="30" Click="_25button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_50button" Content="50%" Width="30" Click="_50button_Click"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_75button" Content="75%" Width="30" Click="_75button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_100button" Content="100%" Width="30" Click="_100button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_125button" Content="125%" Width="30" Click="_125button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_150button" Content="150%" Width="30" Click="_150button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_175button" Content="175%" Width="30" Click="_175button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_200button" Content="200%" Width="30" Click="_200button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_225button" Content="225%" Width="30" Click="_225button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_250button" Content="250%" Width="30" Click="_250button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_275button" Content="275%" Width="30" Click="_275button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_300button" Content="300%" Width="30" Click="_300button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_325button" Content="325%" Width="30" Click="_325button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_350button" Content="350%" Width="30" Click="_350button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_375button" Content="375%" Width="30" Click="_375button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                            <Button x:Name="_400button" Content="400%" Width="30" Click="_400button_Click" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                        </StackPanel>
+                    </StackPanel >
+                    <!-- DefaultWidth -->
+                    <Label Grid.Row="5" Grid.Column="0" Content="Default Width:"/>
+                    <TextBox x:Name="DefaultWidthTextBox" Grid.Column="1" TextChanged="DefaultWidthTextBox_TextChanged"
+                            Text="{Binding DefaultWidth, UpdateSourceTrigger=PropertyChanged}" Width="4" HorizontalAlignment="Left" MinWidth="100" Margin="0,24,0,2" Grid.RowSpan="6"/>
+                    <Slider x:Name="DefaultWidthSlider" Grid.Row="5" Grid.Column="2" ValueChanged="DefaultWidthSlider_ValueChanged"  Minimum="0"  HorizontalAlignment="Left"
+                            Maximum="500"   TickFrequency="10" IsSnapToTickEnabled="True" Width="300"/>
+
+                    <!-- DefaultHeight -->
+                    <Label Grid.Row="7" Grid.Column="0"
+           Content="Default Height:"/>
+                    <TextBox x:Name="DefaultHeightTextBox" Grid.Row="7" Grid.Column="1" TextChanged="DefaultHeightTextBox_TextChanged"
+             Text="{Binding DefaultHeight, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Width="4" HorizontalAlignment="Left" MinWidth="100"/>
+                    <Slider x:Name="DefaultHeightSlider" Grid.Row="7" Grid.Column="2" ValueChanged="DefaultHeightSlider_ValueChanged"  Minimum="0"  HorizontalAlignment="Left"
+            Maximum="500" Value="50"   TickFrequency="10" IsSnapToTickEnabled="True" Width="300"/>
+                </Grid>
+            </GroupBox>
+        </Border>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" MinHeight="45" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+            <Button x:Name="OkButton" Content="Ok" MinWidth="50" Click="OkButton_Click" Height="25"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" Margin="0,0,31,0" />
+
+            <Button x:Name="CancelButton" Content="Cancel"  MinWidth="50" Click="CancelButton_Click"  Height="25"  Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource ButtonForeground}" Margin="0,0,30,0" />
+        </StackPanel>
+    </Grid>
+</Window>

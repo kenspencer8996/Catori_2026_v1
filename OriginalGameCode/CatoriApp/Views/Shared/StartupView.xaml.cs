@@ -1,0 +1,145 @@
+using CatoriApp.Controllers;
+using CatoriApp.Game.Views.Locations.Warehouse;
+using CatoriApp.MachineLayoutDesigner.Views.MachineCatalog;
+namespace CatoriApp.Views.Shared
+{
+    /// <summary>
+    /// Interaction logic for StartupView.xaml
+    /// </summary>
+    public partial class StartupView : Window
+    {
+        StartupViewController _controller;
+        string _version = "1.0.1";
+        public StartupView()
+        {
+            InitializeComponent();
+            _controller = new StartupViewController(this);
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss");
+
+            cLogger.LogFilePath = System.IO.Path.Combine("c:\\Logs", "CatoriCity2026WPF" + timestamp + ".Log");
+            cLogger.Log("CatoriCity2026WPF Version: " + _version);
+            Left = 0;
+            Top = 0;
+            string tooltipimagechest = System.IO.Path.Combine(GlobalAllApps.ImageFolder, "Treasure", "CHestClosed.png");
+
+            ImageTextToolTip toolTip = new ImageTextToolTip
+            {
+                Title = "Treasure Field",
+                Description = "View the treasure field to see the clues and information about the bad guys hidden treasure.",
+                Icon = UIUtility.GetImageControl(tooltipimagechest, 32, 32, 0).Source
+            };
+            TreasureHuntButton.ToolTip = toolTip;
+            toolsPanel.startupView = this;
+
+            GlobalGame.MainWindow = this;
+        }
+
+        private void CityScapeButton_Click(object sender, RoutedEventArgs e)
+        {
+            CityScapeView cityScapeView = new CityScapeView();
+            cityScapeView.ShowDialog();
+            cityScapeView.Close();
+        }
+        private void CityScapePath_MouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {   
+            CityScapeView cityScapeView = new CityScapeView();
+            cityScapeView.ShowDialog();
+            cityScapeView.Close();
+        }
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void TreasureHuntButton_Click(object sender, RoutedEventArgs e)
+        {
+            TreasureFieldView view = new TreasureFieldView(Width,Height);
+            view.Owner = this;
+            view.ShowDialog();
+            view.Close();
+        }
+
+        
+
+        private void Location1Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(1);
+        }
+
+        private void Location2Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(2);
+        }
+
+        private void Location3Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(3);
+        }
+
+        private void Location4Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(4);
+        }
+        private void Location6Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(14);
+        }
+
+        private void Location15Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFactoryView(15);
+        }
+
+        private void Location19Button_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new CatoriApp.Game.Views.Locations.BeachAirport.BeachAirportView { Owner = this };
+            view.Show();
+        }
+
+        private void Location17Button_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new CatoriApp.Game.Views.Locations.BeachFlyover.BeachFlyoverView { Owner = this };
+            view.Show();
+        }
+
+        private void ShowFactoryView(int locationNumber)
+        {
+            FactoryView view = new FactoryView(locationNumber);
+            view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void RobotArmButton_Click(object sender, RoutedEventArgs e)
+        {
+            //RobotTestView _view = new RobotTestView();
+            //_view.ShowDialog();
+        }
+
+       
+        private void SettingsPanelImage_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            toolsPanel.OpenPanel();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
+
+        private void warehouseButton_Click(object sender, RoutedEventArgs e)
+        {
+            WarehouseView view = new WarehouseView();
+            view.Owner = this;
+            view.ShowDialog();
+        }
+
+        private void AirportButton_Click(object sender, RoutedEventArgs e)
+        {
+            CatoriApp.Game.Views.Locations.AirportTerminalExterior.AirportTerminalExteriorView view = new CatoriApp.Game.Views.Locations.AirportTerminalExterior.AirportTerminalExteriorView { Owner = this };
+            view.Show();
+
+        }
+    }
+}
+
+

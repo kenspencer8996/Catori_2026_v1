@@ -9,6 +9,17 @@ global using System.Timers;
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Media;
+global using CatoriApp.Core.Objects.Production;
+global using CatoriApp.Game.Objects.AnimationOnPath;
+global using CatoriApp.Game.Objects.Hotspots;
+global using CatoriServices.Objects.database.Production;
+global using CatoriUCLibrary.Views.FactoryControls;
+global using CatoriUCLibrary.Views.Person;
+global using CatoriUCLibrary.Views.Products;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+
 namespace CatoriApp
 {
     /// <summary>

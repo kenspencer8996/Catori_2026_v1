@@ -126,7 +126,7 @@
                     <Image Source="/Images/AirportSign.png" Width="50" Height="50"/>
                 </Button>
                 <Button x:Name="RobotArmButton" Content="RobotArm" Canvas.Left="1708" Canvas.Top="954" Click="RobotArmButton_Click"/>
-                <Controls:ToolsPanel x:Name="toolsPanel" Canvas.Left="10" Canvas.Top="70"/>
+                <!--<Controls:ToolsPanel x:Name="toolsPanel" Canvas.Left="10" Canvas.Top="70"/>-->
             </Canvas>
         </Viewbox>
     </Grid>

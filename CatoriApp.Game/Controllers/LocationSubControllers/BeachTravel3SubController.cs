@@ -12,6 +12,9 @@ using CatoriApp.Core.Objects.Production;
 using CatoriApp.Game.Objects.AnimationOnPath;
 using CatoriApp.Game.Objects.Hotspots;
 using CatoriServices.Objects.database.Production;
+using CatoriShared.AnimationHelpers;
+using CatoriShared.AnimationHelpersTest;
+using CatoriUCLibrary.Views.Airplane;
 using CatoriUCLibrary.Views.FactoryControls;
 using CatoriUCLibrary.Views.Person;
 using CatoriUCLibrary.Views.Products;
@@ -34,16 +37,15 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         partial void OnGeneratedAnimationCompleted(AnimationCompleteMessage message);
 
         // Generated code for location layout items
-        FrameworkElement unassigned_part83_productUC;
-        PathAnimationHandle _pathHandlerFlyingPath;
+        PathAnimationHandleTest _pathHandlerFlyingPath;
 
         private readonly record struct GeneratedRobotTask(string RobotName, string? PickupPath, string? DropPath, double[][] Poses);
         private readonly List<GeneratedRobotTask> _robotTasks = new()
         {
         };
-        private readonly PathAnimationSession _productionSession = new();
+        private readonly PathAnimationSessionTest _animationSession = new();
 
-        private void SetupAnimations()
+        private void SetupAnimations(AirplaneUC airplane)
         {
             try
             {
@@ -66,7 +68,6 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         productionPaths.TryGetValue("FlyingPath", out var productionPathFlyingPath);
         // WARNING: FlyingPath has no dropped product assignment.
         // WARNING: FlyingPath is not connected to a robot.
-        unassigned_part83_productUC = new ProductUC(string.IsNullOrWhiteSpace(productionPathFlyingPath?.PartImagePath) ? "" : productionPathFlyingPath.PartImagePath);
         var optionsFlyingPath = new PathAnimationOptions {
             Duration = TimeSpan.FromSeconds(4), StartDelay = TimeSpan.FromSeconds(0), AutoStart = false,
             RotateWithPath = false, AutoReverse = false,
@@ -77,13 +78,12 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
         var layoutItem83 = layoutItems.FirstOrDefault(item => string.Equals(item.ItemName, "FlyingPath", StringComparison.OrdinalIgnoreCase))
             ?? layoutItems.FirstOrDefault(item => item.LocationLayoutItemId == 83)
             ?? throw new InvalidOperationException($"Layout item 'FlyingPath' was not found in location {_locationId}.");
-        _pathHandlerFlyingPath = GameAnimationHelper.AddControlOnPath("FlyingPath", string.IsNullOrWhiteSpace(productionPathFlyingPath?.PartName) ? "FlyingPathPart" : productionPathFlyingPath.PartName, "BeachAirport", "TransitionToView", _view.MainCanvas,
-            unassigned_part83_productUC, layoutItem83.ItemDataJson ?? string.Empty, optionsFlyingPath);
+        _pathHandlerFlyingPath = GameAnimationHelperTest.AddControlOnPath("FlyingPath", string.IsNullOrWhiteSpace(productionPathFlyingPath?.PartName) ? "FlyingPathPart" : productionPathFlyingPath.PartName, "BeachAirport", "TransitionToView", _view.MainCanvas,
+            airplane, layoutItem83.ItemDataJson ?? string.Empty, optionsFlyingPath);
 
-        _productionSession.Add(_pathHandlerFlyingPath);
-        _productionSession.AddDeferredPath("FlyingPath");
+        _animationSession.Add(_pathHandlerFlyingPath);
         foreach (var task in _robotTasks)
-            if (!string.IsNullOrWhiteSpace(task.DropPath)) _productionSession.AddDropHandoff(task.RobotName, task.DropPath);
+            if (!string.IsNullOrWhiteSpace(task.DropPath)) _animationSession.AddDropHandoff(task.RobotName, task.DropPath);
             }
             catch (Exception ex)
             {
@@ -150,15 +150,18 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
             base._view = view;
             _locationId = locationId;
             InitializeLocationFeature("static airplanes", SetupStaticAirplanes);
+            AirplaneUC? airplane = _view.MainCanvas.Children
+                .OfType<AirplaneUC>().FirstOrDefault();
             InitializeLocationFeature("people", SetupPeople);
             InitializeLocationFeature("factory control panels", SetupFactoryControlPanels);
-            InitializeLocationFeature("path animations", SetupAnimations);
+            InitializeLocationFeature("path animations", () => SetupAnimations(airplane));
             InitializeLocationFeature("hotspots", () =>
-                HotspotLayer.Attach(_view.MainCanvas, LoadLayoutItemsNow(), _view, _productionSession.StartPath));
+                HotspotLayer.Attach(_view.MainCanvas, LoadLayoutItemsNow(), _view, _animationSession.StartPath));
             OnGeneratedLocationInitialized();
+            _animationSession.StartRoots();
         }
 
-        public void StartProduction()
+        public void StartAnimation()
         {
         var robotConfigurations = new CatoriServices.Objects.database.Production.ProductionLayoutRepository().GetRobots(_locationId);
         foreach (var configuration in robotConfigurations)
@@ -169,14 +172,14 @@ namespace CatoriApp.Game.Controllers.LocationSubControllers
             robot.ReleasePartAtDrop = configuration.ReleasePartAtDrop;
             robot.OutputPartImagePath = configuration.OutputPartImagePath;
         }
-        _productionSession.StartRoots();
+        _animationSession.StartRoots();
         OnGeneratedProductionStarted();
         }
 
         public void StopProduction()
         {
             OnGeneratedProductionStopping();
-            _productionSession.StopAll();
+            _animationSession.StopAll();
         }
 
         public void LoadPaths()

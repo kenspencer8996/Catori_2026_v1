@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
+    <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\RobotArmHandBlue.png" />
+    <Resource Include="Images\robotArmLongBlue.png" />
+    <Resource Include="Images\robotArmMediumBlue.png" />
+    <Resource Include="Images\PersonArmStraight.png" />
+    <Resource Include="Images\PersonBodyDefault.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\RobotArm\RoboticArmUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RobotArm\RobotArmSegmentontrol.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

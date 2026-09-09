@@ -138,7 +138,9 @@ namespace CatoriApp.MachineLayoutDesigner.Views.Robots.MachineLayoutDesigner
         }
 
         private static double GetAngle(RobotPoseViewModel pose, int segmentIndex)
-            => pose.Segments.FirstOrDefault(segment => segment.SegmentIndex == segmentIndex)?.Angle ?? 0;
+        {
+            return pose.Segments.FirstOrDefault(segment => segment.SegmentIndex == segmentIndex)?.Angle ?? 0;
+        }
 
         private RobotPose GetCurrentPose()
         {
