@@ -1,10 +1,10 @@
-<Window x:Class="CatoriApp.Game.Views.Locations.AirportTerminalExterior.AirportTerminalExteriorView"
+<Window x:Class="CatoriApp.Game.Views.Locations.{{LocationName}}.{{ViewName}}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AirportTerminalExterior" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize">
+        Title="{{ViewName}}" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize">
     <Canvas x:Name="MainCanvas" ClipToBounds="True" Width="1920"
             SizeChanged="MainCanvas_SizeChanged">
-        <Image x:Name="BackgroundImage" Source="C:\Development\Gaming\Catori2026\Catori_2026_v1\Images\Airports\AirportTerminal.png" Width="{Binding ActualWidth, ElementName=MainCanvas}" Height="{Binding ActualHeight, ElementName=MainCanvas}" Stretch="UniformToFill"/>
+        <Image x:Name="BackgroundImage" Source="{{BackgroundImage}}" Width="{Binding ActualWidth, ElementName=MainCanvas}" Height="{Binding ActualHeight, ElementName=MainCanvas}" Stretch="UniformToFill"/>
         <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Top="8" Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="10002"/>
     </Canvas>
 </Window>
