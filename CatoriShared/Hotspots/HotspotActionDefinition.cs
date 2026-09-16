@@ -1,4 +1,4 @@
-namespace CatoriShared.Hotspots;
+﻿namespace CatoriShared.Hotspots;
 
 public enum HotspotActionType
 {
@@ -7,7 +7,8 @@ public enum HotspotActionType
     ShowMessage,
     InvokeButton,
     OpenWindow,
-    StartPath
+    StartPath,
+    ChangeScene
 }
 
 public sealed class HotspotActionDefinition
