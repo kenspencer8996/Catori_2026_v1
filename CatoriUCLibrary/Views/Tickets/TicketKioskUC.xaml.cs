@@ -4,13 +4,14 @@ using System.Windows.Input;
 using CatoriApp.Core.Objects.DragDrop;
 using CatoriInterfaces;
 using CommunityToolkit.Mvvm.Messaging;
+using CatoriUCLibrary.Views.Person;
 
 namespace CatoriUCLibrary.Views.Tickets;
 
 public sealed class TicketPurchaseRequestedEventArgs(
     string destination,
     decimal cost,
-    DateTime purchasedDateTime) : EventArgs
+    DateTime purchasedDateTime) : EventArgs, ITicket
 {
     public string Destination
     {
@@ -118,9 +119,50 @@ public partial class TicketKioskUC : UserControl, IDraggable, ICanvasDragAnchor,
 
     private void BuyTicketButton_Click(object sender, RoutedEventArgs e)
     {
-        BuyTicketRequested?.Invoke(
-            this,
-            new TicketPurchaseRequestedEventArgs(Destination, Cost, DateTime.Now));
+        var request = new TicketPurchaseRequestedEventArgs(Destination, Cost, DateTime.Now);
+        if (BuyTicketRequested is { } purchaseHandler)
+        {
+            purchaseHandler.Invoke(this, request);
+            return;
+        }
+        PurchaseForNearestTraveler(request);
+    }
+
+    private void PurchaseForNearestTraveler(TicketPurchaseRequestedEventArgs request)
+    {
+        if (!IsVisible || Parent is not Canvas scene)
+        {
+            return;
+        }
+        Point kioskCenter = TranslatePoint(new Point(ActualWidth / 2, ActualHeight / 2), scene);
+        PersonUC? person = scene.Children.OfType<PersonUC>()
+            .Where(candidate => candidate.IsVisible && candidate.Role != PersonRole.Pilot
+                && !candidate.Name.StartsWith("Pilot", StringComparison.OrdinalIgnoreCase))
+            .Select(candidate => new
+            {
+                Person = candidate,
+                Distance = (candidate.TranslatePoint(new Point(candidate.ActualWidth / 2,
+                    candidate.ActualHeight / 2), scene) - kioskCenter).Length
+            })
+            .Where(candidate => candidate.Distance <= 250)
+            .OrderBy(candidate => candidate.Distance)
+            .Select(candidate => candidate.Person)
+            .FirstOrDefault();
+        if (person is null)
+        {
+            SetPurchaseStatus("Move a traveler closer", true);
+            return;
+        }
+        string passengerName = string.IsNullOrWhiteSpace(person.Name)
+            ? person.ToolTip as string ?? string.Empty
+            : person.Name;
+        if (string.IsNullOrWhiteSpace(passengerName))
+        {
+            SetPurchaseStatus("Traveler needs a name", true);
+            return;
+        }
+        PublishPurchasedTicket(request, passengerName);
+        SetPurchaseStatus("Ticket purchased");
     }
 
     private void TicketKiosk_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
