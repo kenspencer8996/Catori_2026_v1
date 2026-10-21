@@ -1,11 +1,12 @@
+using CatoriUCLibrary.Views;
 using CatoriInterfaces;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CatoriUCLibrary.Views.PersonItems;
+namespace CatoriUCLibrary.Views;
 
-public partial class Clothes_UC : UserControl, IClothes
+public partial class Clothes_UC : CatoriUCLibrary.Views.UserControlWithProperties, IClothes
 {
     private Point _dragStart;
 

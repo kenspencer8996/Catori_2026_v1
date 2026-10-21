@@ -1,7 +1,7 @@
+using CatoriUCLibrary.Views;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
-using CatoriUCLibrary.Views.Airplane;
 using CatoriUCLibrary.Views.Person;
 using CatoriUCLibrary.Views.Tickets;
 

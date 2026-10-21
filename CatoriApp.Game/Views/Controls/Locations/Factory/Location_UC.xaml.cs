@@ -1,3 +1,4 @@
+using CatoriUCLibrary.Views;
 using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -5,11 +6,9 @@ using CatoriApp.Game.Objects.Services.Locations;
 using CatoriApp.Game.ViewModels.Locations;
 using CatoriUCLibrary.Views.RobotArm;
 using CatoriApp.Core.Objects.Production;
-using CatoriUCLibrary.Views.Airplane;
 using CatoriUCLibrary.Views.Person;
 using CatoriUCLibrary.Views.VisualParts;
 using CatoriUCLibrary.Views.Tickets;
-using CatoriUCLibrary.Views.PersonItems;
 using CatoriApp.Game.Objects.Travel;
 using CommunityToolkit.Mvvm.Messaging;
 using CatoriServices.Objects.Services.Finance;

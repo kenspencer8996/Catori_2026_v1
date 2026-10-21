@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CatoriApp.Game.Views.Locations"
-        xmlns:RobotsDrones="clr-namespace:CatoriApp.Game.Views.Controls.RobotsDrones" xmlns:Airplane="clr-namespace:CatoriUCLibrary.Views.Airplane;assembly=CatoriUCLibrary" xmlns:Person="clr-namespace:CatoriUCLibrary.Views.Person;assembly=CatoriUCLibrary" x:Class="CatoriApp.Game.Views.Locations.AirportTerminalExteriorNewView"
+        xmlns:RobotsDrones="clr-namespace:CatoriApp.Game.Views.Controls.RobotsDrones" xmlns:Airplane="clr-namespace:CatoriUCLibrary.Views;assembly=CatoriUCLibrary" xmlns:Person="clr-namespace:CatoriUCLibrary.Views.Person;assembly=CatoriUCLibrary" x:Class="CatoriApp.Game.Views.Locations.AirportTerminalExteriorNewView"
         mc:Ignorable="d" WindowState="Maximized"
         Title="AirportTerminalExteriorNewView" Height="450" Width="800">
     <Canvas x:Name="MainCanvas" ClipToBounds="True" SizeChanged="MainCanvas_SizeChanged">
@@ -12,6 +12,6 @@
         <Button x:Name="ExitButton" Style="{StaticResource MapHotspotButton}" Width="50" Height="50" Canvas.Top="8" Click="ExitButton_Click" ToolTip="Click to exit" Panel.ZIndex="10002"/>
         <RobotsDrones:RobotUC x:Name="MyRobot" Canvas.Left="936" Canvas.Top="830" Panel.ZIndex="10003"/>
         <Airplane:AirplaneUC Canvas.Left="420" Canvas.Top="338"/>
-        <Person:PersonUC Canvas.Left="107" Canvas.Top="174" Height="277" Width="116"/>
+        <Airplane:PersonUC Canvas.Left="107" Canvas.Top="174" Height="277" Width="116"/>
     </Canvas>
 </Window>

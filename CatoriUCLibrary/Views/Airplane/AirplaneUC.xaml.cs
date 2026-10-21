@@ -7,7 +7,7 @@ using CatoriApp.Core.Objects.DragDrop;
 using System.Windows.Input;
 using CatoriUCLibrary.Views.VisualParts;
 
-namespace CatoriUCLibrary.Views.Airplane;
+namespace CatoriUCLibrary.Views;
 
 public sealed class AirplaneSettings
 {
@@ -29,7 +29,7 @@ public sealed class AirplaneSettings
     }
 }
 
-public partial class AirplaneUC : UserControl,IDraggable,ICanvasDragAnchor,IDropTarget
+public partial class AirplaneUC : CatoriUCLibrary.Views.UserControlWithProperties, IDraggable, ICanvasDragAnchor, IDropTarget
 {
     private AirplaneSettings _settings = new();
     private readonly List<Image> _additionalLandingGearImages = [];

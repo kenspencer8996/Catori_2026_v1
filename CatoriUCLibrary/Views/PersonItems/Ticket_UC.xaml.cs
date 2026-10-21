@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CatoriUCLibrary.Views.PersonItems;
+namespace CatoriUCLibrary.Views;
 
-public partial class Ticket_UC : UserControl, ITicket
+public partial class Ticket_UC : CatoriUCLibrary.Views.UserControlWithProperties, ITicket
 {
     private Point _dragStart;
 

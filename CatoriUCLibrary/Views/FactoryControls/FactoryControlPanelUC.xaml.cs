@@ -1,3 +1,4 @@
+using CatoriUCLibrary.Views.FactoryControls;
 using CatoriApp.Core.Objects.DragDrop;
 using CatoriUCLibrary.Views.Person;
 using CommunityToolkit.Mvvm.Messaging;
@@ -5,9 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CatoriUCLibrary.Views.FactoryControls;
+namespace CatoriUCLibrary.Views;
 
-public partial class FactoryControlPanelUC : UserControl, IDraggable
+public partial class FactoryControlPanelUC : CatoriUCLibrary.Views.UserControlWithProperties
 {
     private static readonly Brush ReadyBrush = new SolidColorBrush(Color.FromRgb(91, 32, 32));
     private static readonly Brush ActiveBrush = new SolidColorBrush(Color.FromRgb(45, 220, 83));

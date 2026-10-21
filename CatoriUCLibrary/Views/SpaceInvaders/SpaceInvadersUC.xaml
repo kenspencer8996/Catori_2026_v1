@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="CatoriUCLibrary.Views.SpaceInvadersUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CatoriUCLibrary.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#17352F"/>
+            <Setter Property="Foreground" Value="#AEFAD1"/>
+            <Setter Property="BorderBrush" Value="#367A63"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="SPACE INVADERS" FontFamily="Consolas" FontSize="28" FontWeight="Bold" Foreground="#AEFAD1"/>
+                <TextBlock Text="EARTH DEFENSE DIVISION  /  ARCADE 01" FontFamily="Consolas" FontSize="11" Foreground="#8193AC" Margin="0,5,0,0"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="StartButton" Content="New game" Click="StartButton_Click" ToolTip="Start or restart (Enter / R)" Margin="0,0,8,0"/>
+                <Button x:Name="PauseButton" Content="Pause / Resume" Click="PauseButton_Click" ToolTip="Pause or resume (P / Escape)"/>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" Background="#040811" BorderBrush="#26384C" BorderThickness="1" Padding="8">
+            <Viewbox Stretch="Uniform">
+                <local:SpaceInvadersGameSurface x:Name="Playfield" Width="900" Height="690" Focusable="True" FocusVisualStyle="{x:Null}"
+                                 KeyDown="Playfield_KeyDown" KeyUp="Playfield_KeyUp" MouseDown="Playfield_MouseDown"
+                                 AutomationProperties.Name="Space Invaders playfield. Arrow keys or A and D move. Space fires. P pauses."/>
+            </Viewbox>
+        </Border>
+        <TextBlock Grid.Row="2" Text="← → / A D  MOVE     SPACE  FIRE     P / ESC  PAUSE     R  RESTART" TextAlignment="Center"
+                 FontFamily="Consolas" FontSize="12" Foreground="#8193AC" TextWrapping="Wrap" Margin="0,16,0,0"/>
+    </Grid>
+</UserControl>

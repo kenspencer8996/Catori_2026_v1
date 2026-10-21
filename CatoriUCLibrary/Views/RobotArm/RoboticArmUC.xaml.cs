@@ -1,3 +1,5 @@
+using CatoriUCLibrary.Views.RobotArm;
+using CatoriUCLibrary.Views;
 using CatoriApp.Core.Objects.DragDrop;
 using CatoriApp.Core.Objects.Arguments;
 using CatoriApp.Core.Objects.Production;
@@ -9,9 +11,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace CatoriUCLibrary.Views.RobotArm
+namespace CatoriUCLibrary.Views
 {
-    public partial class RoboticArmUC : UserControl, IDraggable, ICanvasDragAnchor
+    public partial class RoboticArmUC : CatoriUCLibrary.Views.UserControlWithProperties, IDraggable, ICanvasDragAnchor
     {
         public event EventHandler? DragCompleted;
         public event EventHandler<RobotPoseCompletedEventArgs>? PoseCompleted;

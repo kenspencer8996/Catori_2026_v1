@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="CatoriUCLibrary.Views.SimpleCar"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="Transparent">
+ <UserControl.ContextMenu>
+  <ContextMenu><MenuItem x:Name="StartCarMovementMenuItem" Header="Start" Click="StartMovement_Click"/></ContextMenu>
+ </UserControl.ContextMenu>
+ <Image x:Name="DirectionalCarImage" Stretch="Uniform"/>
+</UserControl>

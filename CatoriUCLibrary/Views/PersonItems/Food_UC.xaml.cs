@@ -1,11 +1,12 @@
+using CatoriUCLibrary.Views;
 using CatoriInterfaces;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CatoriUCLibrary.Views.PersonItems;
+namespace CatoriUCLibrary.Views;
 
-public partial class Food_UC : UserControl, IFood
+public partial class Food_UC : CatoriUCLibrary.Views.UserControlWithProperties, IFood
 {
     private Point _dragStart;
 

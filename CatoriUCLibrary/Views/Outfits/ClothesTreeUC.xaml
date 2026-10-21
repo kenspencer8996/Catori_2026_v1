@@ -1,0 +1,32 @@
+<UserControl x:Class="CatoriUCLibrary.Views.ClothesTreeUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="#172431" MinWidth="400" MinHeight="280">
+ <UserControl.Resources>
+  <Style TargetType="Button"><Setter Property="Padding" Value="12,7"/><Setter Property="Margin" Value="3"/><Setter Property="Background" Value="#D9E8EC"/><Setter Property="Foreground" Value="#132433"/></Style>
+ </UserControl.Resources>
+ <Grid Margin="18">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <StackPanel Margin="0,0,0,14"><TextBlock Text="CATORI WARDROBE" Foreground="#FFD67B" FontSize="23" FontWeight="Bold"/><TextBlock Text="Build an outfit on a hanger. Drag its picture onto a person to wear it." Foreground="#B9CFDA" TextWrapping="Wrap" Margin="0,5,0,0"/></StackPanel>
+  <Grid Grid.Row="1">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="0.8*"/><ColumnDefinition Width="1.5*"/></Grid.ColumnDefinitions>
+   <Grid Margin="0,0,12,0"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+    <TextBlock Text="CLOTHING COMPONENTS" Foreground="#B9CFDA" FontSize="12" Margin="0,0,0,8"/>
+    <ListBox x:Name="GarmentList" Grid.Row="1" Background="#0E1B26" BorderThickness="0" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+     <ListBox.ItemTemplate><DataTemplate><Border Padding="7" PreviewMouseLeftButtonDown="Garment_MouseDown" PreviewMouseMove="Garment_MouseMove" Background="Transparent"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition/></Grid.ColumnDefinitions><Image Source="{Binding ThumbnailImage}" Width="45" Height="55" Stretch="Uniform"/><StackPanel Grid.Column="1" Margin="8,0,0,0"><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/><TextBlock Text="{Binding Slot}" Foreground="#90ABB8" FontSize="11"/></StackPanel></Grid></Border></DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
+   </Grid>
+   <Grid Grid.Column="1"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+    <Border Height="9" Background="#90ABB8" CornerRadius="4" Margin="0,0,0,10"/>
+    <ListBox x:Name="OutfitList" Grid.Row="1" Background="#0E1B26" BorderThickness="0" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+     <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+     <ListBox.ItemTemplate><DataTemplate><Border Width="165" Padding="10" Margin="3" BorderBrush="#577280" BorderThickness="1" CornerRadius="8" Background="#203846" AllowDrop="True" DragOver="Outfit_DragOver" Drop="Outfit_Drop"><StackPanel>
+      <Path Data="M 64,4 C 64,-4 77,-4 77,5 L 77,10 L 106,24 L 34,24 L 64,10 Z" Stroke="#FFD67B" StrokeThickness="2" Height="28" Stretch="Uniform" Margin="0,0,0,5"/>
+      <Border Height="95" Background="#132A36" CornerRadius="6" PreviewMouseLeftButtonDown="Outfit_MouseDown" PreviewMouseMove="Outfit_MouseMove"><Image Source="{Binding ThumbnailImage}" Stretch="Uniform" IsHitTestVisible="False"/></Border>
+      <TextBox x:Name="OutfitNameTextBox" Text="{Binding Name, UpdateSourceTrigger=LostFocus}" Margin="0,8,0,5" ToolTip="Outfit name"/>
+      <TextBlock Text="{Binding GarmentSummary}" TextWrapping="Wrap" Foreground="#B9CFDA" FontSize="11"/>
+     </StackPanel></Border></DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
+   </Grid>
+  </Grid>
+  <WrapPanel Grid.Row="2" Margin="0,12,0,0"><Button x:Name="NewOutfitButton" Content="New outfit" Click="NewOutfit_Click"/><Button x:Name="SaveOutfitsButton" Content="Save outfits" Click="SaveOutfits_Click"/><Button x:Name="DeleteOutfitButton" Content="Delete selected" Click="DeleteOutfit_Click"/><Button x:Name="RefreshWardrobeButton" Content="Refresh" Click="Refresh_Click"/><Button x:Name="OpenComponentsFolderButton" Content="Open components folder" Click="OpenComponentsFolder_Click"/></WrapPanel>
+  <TextBlock x:Name="StatusText" Grid.Row="3" Foreground="#FFD67B" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
+ </Grid>
+</UserControl>

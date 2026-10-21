@@ -5,9 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
-namespace CatoriUCLibrary.Views.Products;
+namespace CatoriUCLibrary.Views;
 
-public partial class ProductUC : UserControl, CatoriInterfaces.IImagePathSource
+public partial class ProductUC : CatoriUCLibrary.Views.UserControlWithProperties, CatoriInterfaces.IImagePathSource
 {
     public string? ImagePath { get; }
 

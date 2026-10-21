@@ -1,3 +1,7 @@
+using CatoriInterfaces.AvatarOutfits;
+using CatoriUCLibrary.Objects.Outfits;
+using CatoriUCLibrary.Views;
+using CatoriUCLibrary.Views.Person;
 using CatoriApp.Core.Objects.DragDrop;
 using System.Diagnostics;
 using System.IO;
@@ -8,13 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CatoriUCLibrary.Views.VisualParts;
 using CatoriInterfaces;
-using CatoriUCLibrary.Views.PersonItems;
 using CatoriUCLibrary.Views.Tickets;
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace CatoriUCLibrary.Views.Person;
+namespace CatoriUCLibrary.Views;
 
-public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDragStartFilter
+public partial class PersonUC : CatoriUCLibrary.Views.UserControlWithProperties, IDraggable, ICanvasDragAnchor, IDragStartFilter
 {
     private PersonAvatarSettings _settings = PersonAvatarSettings.CreateDefault();
     private CancellationTokenSource? _activityCancellation;
@@ -33,6 +36,7 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
     public PersonUC()
     {
         InitializeComponent();
+        InitializeCarriedItems();
         Loaded += (_, _) =>
         {
             ApplySettings(_settings);
@@ -261,6 +265,7 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         ApplyRightShoulderAngle(ArmAngle);
         settings.ShoulderX=right.X;settings.ShoulderY=right.Y;
         settings.ArmWidth=right.Width;settings.ArmHeight=right.Height;
+        RefreshClothingHosts();
         ApplyActivity(CurrentActivity, setFirstFrame: true);
     }
 
@@ -837,6 +842,24 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
         object? item = GetSupportedDroppedItem(e.Data);
         switch (item)
         {
+            case AvatarOutfit outfit:
+                try
+                {
+                    ApplyOutfit(outfit);
+                }
+                catch (Exception exception) when (exception is IOException or ArgumentException)
+                {
+                    MessageBox.Show(exception.Message, "Unable to apply outfit", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                    return;
+                }
+                break;
+            case CatoriUCLibrary.Objects.PersonItems.PersonItem personItem:
+                HoldItem(personItem);
+                e.Effects = DragDropEffects.Move;
+                e.Handled = true;
+                return;
             case ITicket ticket:
                 ReceiveTicket(ticket);
                 break;
@@ -868,18 +891,36 @@ public partial class PersonUC : UserControl, IDraggable, ICanvasDragAnchor, IDra
 
     private static void SetDropEffect(DragEventArgs e)
     {
-        e.Effects = GetSupportedDroppedItem(e.Data) == null
-            ? DragDropEffects.None
-            : DragDropEffects.Copy;
+        object? supportedItem = GetSupportedDroppedItem(e.Data);
+        e.Effects = supportedItem == null ? DragDropEffects.None
+            : supportedItem is CatoriUCLibrary.Objects.PersonItems.PersonItem ? DragDropEffects.Move : DragDropEffects.Copy;
         e.Handled = true;
     }
 
     private static object? GetSupportedDroppedItem(IDataObject data)
     {
+        if (CatoriUCLibrary.Objects.PersonItems.PersonItemDrag.Read(data) is { } personItem)
+        {
+            return personItem;
+        }
+        if (data.GetData(AvatarOutfitDragFormats.Garment) is AvatarGarment garment)
+        {
+            return new AvatarOutfit
+            {
+                Name = garment.Name,
+                ThumbnailImage = garment.ThumbnailImage,
+                Garments = [AvatarWardrobeStore.SnapshotGarment(garment)],
+            };
+        }
+        if (data.GetDataPresent(AvatarOutfitDragFormats.Outfit)
+            && data.GetData(AvatarOutfitDragFormats.Outfit) is AvatarOutfit outfit)
+        {
+            return outfit;
+        }
         foreach (string format in data.GetFormats())
         {
             object? item = data.GetData(format);
-            if (item is ITicket or IClothes or IFood)
+            if (item is AvatarOutfit or ITicket or IClothes or IFood)
             {
                 return item;
             }

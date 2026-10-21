@@ -1,3 +1,4 @@
+using CatoriUCLibrary.Views;
 global using CatoriApp.Core.Objects;
 global using CatoriApp.Game.Objects.Services.People;
 global using CatoriApp.Game.ViewModels.People;
@@ -48,7 +49,7 @@ namespace CatoriApp
             if(sender is not Window owner)return;
             Microsoft.Win32.OpenFileDialog dialog=new(){Title="Add image",Filter="Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*"};
             if(dialog.ShowDialog(owner)!=true)return;
-            var image=new CatoriUCLibrary.Views.MyImage.MyImageUC{ImagePath=dialog.FileName,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
+            var image=new CatoriUCLibrary.Views.MyImageUC{ImagePath=dialog.FileName,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top};
             Panel host;
             if(owner.Content is Panel panel)host=panel;
             else

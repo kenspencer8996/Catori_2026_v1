@@ -1,0 +1,10 @@
+<controls:UserControlWithProperties x:Class="CatoriUCLibrary.Views.ItemUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:CatoriUCLibrary.Views" x:Name="ItemView" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" AllowDrop="True" DragOver="Item_DragOver" Drop="Item_Drop" MouseLeftButtonDown="Item_MouseDown" MouseMove="Item_MouseMove">
+    <Grid Background="Transparent">
+        <Image x:Name="ItemImage" Stretch="Fill" IsHitTestVisible="False" />
+        <Grid.ContextMenu>
+            <ContextMenu x:Name="ItemContextMenu">
+                <MenuItem x:Name="OpenPersonItemContentsMenuItem" Header="Open contents" Click="OpenContents_Click" />
+            </ContextMenu>
+        </Grid.ContextMenu>
+    </Grid>
+</controls:UserControlWithProperties>

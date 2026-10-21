@@ -1,4 +1,5 @@
-﻿using CatoriUCLibrary;
+using CatoriUCLibrary.Views;
+using CatoriUCLibrary;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
 

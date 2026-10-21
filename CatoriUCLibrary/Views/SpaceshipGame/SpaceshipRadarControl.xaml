@@ -1,0 +1,18 @@
+<UserControl x:Class="CatoriUCLibrary.Views.SpaceshipGame.GameObjects.SpaceshipRadarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="190" Height="190" IsHitTestVisible="False">
+    <Border Background="#E0081327" BorderBrush="#62F3FF" BorderThickness="2" CornerRadius="95" Padding="9">
+        <Grid>
+            <Ellipse Stroke="#376E83" StrokeThickness="1" Margin="25"/>
+            <Ellipse Stroke="#376E83" StrokeThickness="1" Margin="53"/>
+            <Line X1="86" Y1="0" X2="86" Y2="172" Stroke="#376E83"/>
+            <Line X1="0" Y1="86" X2="172" Y2="86" Stroke="#376E83"/>
+            <Path Fill="#36F1FF" Data="M 86,77 L 94,94 L 86,90 L 78,94 Z"/>
+            <Ellipse x:Name="ContactDot" Width="14" Height="14" Fill="#FF315A" Stroke="White" StrokeThickness="2"
+                     HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock x:Name="RangeText" Foreground="White" Background="#A0000000" Padding="5,2"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold"/>
+        </Grid>
+    </Border>
+</UserControl>

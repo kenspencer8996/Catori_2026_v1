@@ -1,9 +1,10 @@
+using CatoriUCLibrary.Views;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace CatoriUCLibrary.Views.Vehicles;
+namespace CatoriUCLibrary.Views;
 
-public partial class VehicleTracked_UC : UserControl
+public partial class VehicleTracked_UC : CatoriUCLibrary.Views.UserControlWithProperties
 {
     public VehicleTracked_UC()
     {

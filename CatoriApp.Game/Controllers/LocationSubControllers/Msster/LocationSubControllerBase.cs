@@ -1,5 +1,5 @@
+using CatoriUCLibrary.Views;
 using CatoriApp.MachineLayoutDesigner.ViewModels.Robots;
-using CatoriUCLibrary.Views.Airplane;
 using CatoriUCLibrary.Views.VisualParts;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Security.Policy;

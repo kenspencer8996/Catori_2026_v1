@@ -1,12 +1,11 @@
+using CatoriUCLibrary.Views.ConstructionEquipment;
 using System.Windows.Controls;
 using CatoriUCLibrary.Views.ConstructionMachine;
 using CatoriUCLibrary.Views.VisualParts;
 
-namespace CatoriUCLibrary.Views.ConstructionEquipment;
+namespace CatoriUCLibrary.Views;
 
-public enum ConstructionEquipmentType { Bulldozer, Crane, Excavator, Loader, Custom }
-
-public partial class ConstructionEquipUC : UserControl
+public partial class ConstructionEquipUC : CatoriUCLibrary.Views.UserControlWithProperties
 {
     public ConstructionEquipUC() { InitializeComponent(); }
     public ConstructionEquipmentType EquipmentType { get; set; } = ConstructionEquipmentType.Custom;

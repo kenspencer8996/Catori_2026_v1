@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 
-namespace CatoriUCLibrary.Views.MyImage;
+namespace CatoriUCLibrary.Views;
 
-public partial class MyImageUC : UserControl
+public partial class MyImageUC : CatoriUCLibrary.Views.UserControlWithProperties
 {
     public static readonly DependencyProperty ImagePathProperty = DependencyProperty.Register(
         nameof(ImagePath), typeof(string), typeof(MyImageUC),

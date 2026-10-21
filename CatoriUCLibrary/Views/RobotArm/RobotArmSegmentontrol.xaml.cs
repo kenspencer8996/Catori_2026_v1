@@ -1,15 +1,16 @@
-﻿using System.Runtime.ConstrainedExecution;
+using CatoriUCLibrary.Views.RobotArm;
+using System.Runtime.ConstrainedExecution;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace CatoriUCLibrary.Views.RobotArm
+namespace CatoriUCLibrary.Views
 {
     /// <summary>
     /// Interaction logic for RobotArmSegmentontrol.xaml
     /// </summary>
-    public partial class RobotArmSegmentontrol : UserControl
+    public partial class RobotArmSegmentontrol : CatoriUCLibrary.Views.UserControlWithProperties
     {
         public event EventHandler<SegmentMouseDownArgs> SegmentMouseDown;
   

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+using CatoriUCLibrary.Views;
+using System.Windows;
 using System.Windows.Media.Animation;
 
 namespace CatoriUCLibrary.Views.RobotArm

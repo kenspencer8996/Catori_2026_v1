@@ -1,3 +1,4 @@
+using CatoriUCLibrary.Views;
 using CatoriApp.Core.Objects.Production;
 using CatoriApp.Game.Objects.AnimationOnPath;
 using CatoriApp.Game.Views.Locations.Warehouse;

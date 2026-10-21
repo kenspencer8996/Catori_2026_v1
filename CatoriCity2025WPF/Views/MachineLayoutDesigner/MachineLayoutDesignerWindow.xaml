@@ -1,4 +1,4 @@
-<Window x:Class="CatoriApp.Views.MachineLayoutDesigner.MachineLayoutDesignerWindow"
+﻿<Window xmlns:controlViews="clr-namespace:CatoriUCLibrary.Views;assembly=CatoriUCLibrary" x:Class="CatoriApp.Views.MachineLayoutDesigner.MachineLayoutDesignerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:uslib="clr-namespace:CatoriUCLibrary.Views.RobotArm;assembly=CatoriUCLibrary"
@@ -21,7 +21,7 @@
                             Background="#101010">
                         <Image x:Name="MainImage" Stretch="Fill" Panel.ZIndex="100" />
 
-                        <uslib:RoboticArmUC x:Name="RobotArmNew"
+                        <controlViews:RoboticArmUC x:Name="RobotArmNew"
                                             Canvas.Left="300"
                                             Canvas.Top="200"
                                             Width="400" 

@@ -1,9 +1,9 @@
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace CatoriUCLibrary.Views.Vehicles;
+namespace CatoriUCLibrary.Views;
 
-public partial class VehicleWheeled_UC : UserControl
+public partial class VehicleWheeled_UC : CatoriUCLibrary.Views.UserControlWithProperties
 {
     public VehicleWheeled_UC()
     {

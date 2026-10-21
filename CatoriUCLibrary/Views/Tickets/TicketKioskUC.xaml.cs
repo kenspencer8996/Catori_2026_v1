@@ -1,3 +1,5 @@
+using CatoriUCLibrary.Views.Tickets;
+using CatoriUCLibrary.Views;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -6,30 +8,9 @@ using CatoriInterfaces;
 using CommunityToolkit.Mvvm.Messaging;
 using CatoriUCLibrary.Views.Person;
 
-namespace CatoriUCLibrary.Views.Tickets;
+namespace CatoriUCLibrary.Views;
 
-public sealed class TicketPurchaseRequestedEventArgs(
-    string destination,
-    decimal cost,
-    DateTime purchasedDateTime) : EventArgs, ITicket
-{
-    public string Destination
-    {
-        get;
-    } = destination;
-
-    public decimal Cost
-    {
-        get;
-    } = cost;
-
-    public DateTime PurchasedDateTime
-    {
-        get;
-    } = purchasedDateTime;
-}
-
-public partial class TicketKioskUC : UserControl, IDraggable, ICanvasDragAnchor, IDragStartFilter
+public partial class TicketKioskUC : CatoriUCLibrary.Views.UserControlWithProperties, IDraggable, ICanvasDragAnchor, IDragStartFilter
 {
     private bool _isDragging;
     private Point _dragOffset;
@@ -49,7 +30,8 @@ public partial class TicketKioskUC : UserControl, IDraggable, ICanvasDragAnchor,
         nameof(Destination),
         typeof(string),
         typeof(TicketKioskUC),
-        new PropertyMetadata("Beach"));
+        new PropertyMetadata("Beach", OnConfigurationPropertyChanged),
+        value => value is string destination && !string.IsNullOrWhiteSpace(destination));
 
     public decimal Cost
     {
@@ -61,7 +43,8 @@ public partial class TicketKioskUC : UserControl, IDraggable, ICanvasDragAnchor,
         nameof(Cost),
         typeof(decimal),
         typeof(TicketKioskUC),
-        new PropertyMetadata(0m));
+        new PropertyMetadata(0m, OnConfigurationPropertyChanged),
+        value => value is decimal cost && cost >= 0);
 
     public event EventHandler<TicketPurchaseRequestedEventArgs>? BuyTicketRequested;
     public event EventHandler? DragCompleted;

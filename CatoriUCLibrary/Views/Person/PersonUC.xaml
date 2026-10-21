@@ -1,8 +1,9 @@
-<UserControl x:Class="CatoriUCLibrary.Views.Person.PersonUC"
+<controlViews:UserControlWithProperties xmlns:controlViews="clr-namespace:CatoriUCLibrary.Views" xmlns:controlBase="clr-namespace:CatoriUCLibrary.Objects" x:Class="CatoriUCLibrary.Views.PersonUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:outfits="clr-namespace:CatoriUCLibrary.Views"
              xmlns:visualParts="clr-namespace:CatoriUCLibrary.Views.VisualParts"
-             Background="Transparent"
+             x:Name="PersonViewRoot" Background="Transparent"
              Width="300" Height="400"
              d:DesignHeight="400" d:DesignWidth="300"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,19 +14,70 @@
              DragEnter="Person_DragEnter"
              DragOver="Person_DragOver"
              Drop="Person_Drop">
+    <UserControl.Resources>
+        <outfits:ClothingZIndexConverter x:Key="ClothingZIndex"/>
+        <outfits:ClothingDimensionConverter x:Key="ClothingDimension"/>
+        <DataTemplate x:Key="ClothingImageTemplate">
+            <Image Source="{Binding Image}" Stretch="{Binding Tag.Stretch, RelativeSource={RelativeSource AncestorType=ItemsControl}}" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Image.Width><MultiBinding Converter="{StaticResource ClothingDimension}"><Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/><Binding Path="WidthRatio"/></MultiBinding></Image.Width>
+                <Image.Height><MultiBinding Converter="{StaticResource ClothingDimension}"><Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/><Binding Path="HeightRatio"/></MultiBinding></Image.Height>
+                <Image.RenderTransform><TranslateTransform>
+                    <TranslateTransform.X><MultiBinding Converter="{StaticResource ClothingDimension}"><Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/><Binding Path="OffsetXRatio"/></MultiBinding></TranslateTransform.X>
+                    <TranslateTransform.Y><MultiBinding Converter="{StaticResource ClothingDimension}"><Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/><Binding Path="OffsetYRatio"/></MultiBinding></TranslateTransform.Y>
+                </TranslateTransform></Image.RenderTransform>
+            </Image>
+        </DataTemplate>
+        <Style x:Key="ClothingHostStyle" TargetType="ItemsControl">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="ItemTemplate" Value="{StaticResource ClothingImageTemplate}"/>
+            <Setter Property="ItemsPanel"><Setter.Value><ItemsPanelTemplate><Canvas ClipToBounds="False"/></ItemsPanelTemplate></Setter.Value></Setter>
+            <Setter Property="ItemContainerStyle"><Setter.Value><Style TargetType="ContentPresenter"><Setter Property="Panel.ZIndex" Value="{Binding LayerOrder}"/></Style></Setter.Value></Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid x:Name="PersonDropSurface">
-        <visualParts:VisualPartAnimatorUC x:Name="PartAnimator" IsHitTestVisible="False"/>
+        <controlViews:VisualPartAnimatorUC x:Name="PartAnimator" IsHitTestVisible="False"/>
             <Viewbox Stretch="Uniform">
                 <Canvas x:Name="PersonRoot" Width="300" Height="400" Background="Transparent">
             <Canvas x:Name="LeftLegRoot">
                 <Image x:Name="LeftLegImage" Stretch="Fill" Tag="LeftThigh" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="LeftThighClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=LeftLegImage}"
+                    Width="{Binding Width, ElementName=LeftLegImage}" Height="{Binding Height, ElementName=LeftLegImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=LeftLegImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=LeftLegImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=LeftLegImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=LeftLegImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=LeftLegImage}"
+                    Visibility="{Binding Visibility, ElementName=LeftLegImage}" Opacity="{Binding Opacity, ElementName=LeftLegImage}"/>
                 <Image x:Name="LeftLowerLegImage" Stretch="Fill" Tag="LeftLowerLeg" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="LeftLowerLegClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=LeftLowerLegImage}"
+                    Width="{Binding Width, ElementName=LeftLowerLegImage}" Height="{Binding Height, ElementName=LeftLowerLegImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=LeftLowerLegImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=LeftLowerLegImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=LeftLowerLegImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=LeftLowerLegImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=LeftLowerLegImage}"
+                    Visibility="{Binding Visibility, ElementName=LeftLowerLegImage}" Opacity="{Binding Opacity, ElementName=LeftLowerLegImage}"/>
             </Canvas>
             <Canvas x:Name="RightLegRoot">
                 <Image x:Name="RightLegImage" Stretch="Fill" Tag="RightThigh" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="RightThighClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=RightLegImage}"
+                    Width="{Binding Width, ElementName=RightLegImage}" Height="{Binding Height, ElementName=RightLegImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=RightLegImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=RightLegImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=RightLegImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=RightLegImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=RightLegImage}"
+                    Visibility="{Binding Visibility, ElementName=RightLegImage}" Opacity="{Binding Opacity, ElementName=RightLegImage}"/>
                 <Image x:Name="RightLowerLegImage" Stretch="Fill" Tag="RightLowerLeg" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="RightLowerLegClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=RightLowerLegImage}"
+                    Width="{Binding Width, ElementName=RightLowerLegImage}" Height="{Binding Height, ElementName=RightLowerLegImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=RightLowerLegImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=RightLowerLegImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=RightLowerLegImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=RightLowerLegImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=RightLowerLegImage}"
+                    Visibility="{Binding Visibility, ElementName=RightLowerLegImage}" Opacity="{Binding Opacity, ElementName=RightLowerLegImage}"/>
             </Canvas>
             <Image x:Name="BodyImage" Stretch="Uniform" Width="300" Height="400" Tag="Body" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="BodyClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=BodyImage}"
+                    Width="{Binding Width, ElementName=BodyImage}" Height="{Binding Height, ElementName=BodyImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=BodyImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=BodyImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=BodyImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=BodyImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=BodyImage}"
+                    Visibility="{Binding Visibility, ElementName=BodyImage}" Opacity="{Binding Opacity, ElementName=BodyImage}"/>
             <Image x:Name="HeadImage" Stretch="Uniform" Tag="Head" MouseLeftButtonDown="PartMouseDown"/>
             <Viewbox x:Name="HeldTicketViewbox"
                      Width="90"
@@ -39,7 +91,19 @@
             </Viewbox>
             <Canvas x:Name="LeftArmRoot">
                 <Image x:Name="LeftArmImage" Stretch="Fill" Tag="LeftUpperArm" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="LeftUpperArmClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=LeftArmImage}"
+                    Width="{Binding Width, ElementName=LeftArmImage}" Height="{Binding Height, ElementName=LeftArmImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=LeftArmImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=LeftArmImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=LeftArmImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=LeftArmImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=LeftArmImage}"
+                    Visibility="{Binding Visibility, ElementName=LeftArmImage}" Opacity="{Binding Opacity, ElementName=LeftArmImage}"/>
                 <Image x:Name="LeftForearmImage" Stretch="Fill" Tag="LeftForearm" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="LeftForearmClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=LeftForearmImage}"
+                    Width="{Binding Width, ElementName=LeftForearmImage}" Height="{Binding Height, ElementName=LeftForearmImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=LeftForearmImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=LeftForearmImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=LeftForearmImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=LeftForearmImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=LeftForearmImage}"
+                    Visibility="{Binding Visibility, ElementName=LeftForearmImage}" Opacity="{Binding Opacity, ElementName=LeftForearmImage}"/>
             </Canvas>
             <Canvas x:Name="RightArmRoot">
                 <Canvas.RenderTransform>
@@ -50,9 +114,30 @@
                    MouseLeftButtonDown="PartMouseDown"
                    MouseMove="ArmImage_MouseMove"
                    MouseLeftButtonUp="ArmImage_MouseLeftButtonUp"/>
+                <ItemsControl x:Name="RightUpperArmClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=ArmImage}"
+                    Width="{Binding Width, ElementName=ArmImage}" Height="{Binding Height, ElementName=ArmImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=ArmImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=ArmImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=ArmImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=ArmImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=ArmImage}"
+                    Visibility="{Binding Visibility, ElementName=ArmImage}" Opacity="{Binding Opacity, ElementName=ArmImage}"/>
                 <Image x:Name="RightForearmImage" Stretch="Fill" Tag="RightForearm" MouseLeftButtonDown="PartMouseDown"/>
+                <ItemsControl x:Name="RightForearmClothing" Style="{StaticResource ClothingHostStyle}" Tag="{Binding ElementName=RightForearmImage}"
+                    Width="{Binding Width, ElementName=RightForearmImage}" Height="{Binding Height, ElementName=RightForearmImage}"
+                    Canvas.Left="{Binding Path=(Canvas.Left), ElementName=RightForearmImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=RightForearmImage}"
+                    Panel.ZIndex="{Binding Path=(Panel.ZIndex), ElementName=RightForearmImage, Converter={StaticResource ClothingZIndex}}"
+                    RenderTransform="{Binding RenderTransform, ElementName=RightForearmImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=RightForearmImage}"
+                    Visibility="{Binding Visibility, ElementName=RightForearmImage}" Opacity="{Binding Opacity, ElementName=RightForearmImage}"/>
+                <Canvas Width="{Binding Width, ElementName=RightForearmImage}" Height="{Binding Height, ElementName=RightForearmImage}"
+                      Canvas.Left="{Binding Path=(Canvas.Left), ElementName=RightForearmImage}" Canvas.Top="{Binding Path=(Canvas.Top), ElementName=RightForearmImage}"
+                      RenderTransform="{Binding RenderTransform, ElementName=RightForearmImage}" RenderTransformOrigin="{Binding RenderTransformOrigin, ElementName=RightForearmImage}" Panel.ZIndex="100">
+                    <ItemsControl x:Name="HeldPersonItemsList" ItemsSource="{Binding CarriedItems.Items, ElementName=PersonViewRoot}" Canvas.Left="{Binding Width, ElementName=RightForearmImage}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate><DataTemplate><controlViews:ItemUC x:Name="HeldPersonItemControl" Item="{Binding}" Width="65" Height="65"/></DataTemplate></ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Canvas>
             </Canvas>
                 </Canvas>
             </Viewbox>
     </Grid>
-</UserControl>
+</controlViews:UserControlWithProperties>
+

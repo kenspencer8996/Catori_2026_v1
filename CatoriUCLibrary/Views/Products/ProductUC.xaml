@@ -1,4 +1,4 @@
-<UserControl x:Class="CatoriUCLibrary.Views.Products.ProductUC"
+﻿<controlViews:UserControlWithProperties xmlns:controlViews="clr-namespace:CatoriUCLibrary.Views" xmlns:controlBase="clr-namespace:CatoriUCLibrary.Objects" x:Class="CatoriUCLibrary.Views.ProductUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Width="25"
@@ -6,4 +6,4 @@
     <Grid x:Name="hostGrid">
         <Image x:Name="ProductImage" Stretch="Uniform" />
     </Grid>
-</UserControl>
+</controlViews:UserControlWithProperties>

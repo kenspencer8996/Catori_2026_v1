@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\SimpleCarDirections.png" />
     <Resource Include="Images\RobotArmHandBlue.png" />
     <Resource Include="Images\robotArmLongBlue.png" />
     <Resource Include="Images\robotArmMediumBlue.png" />
@@ -29,4 +30,17 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Airplane\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\SpaceshipGame\*.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PilotAirplane.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ClothesTree.png" />
+  </ItemGroup>
 </Project>

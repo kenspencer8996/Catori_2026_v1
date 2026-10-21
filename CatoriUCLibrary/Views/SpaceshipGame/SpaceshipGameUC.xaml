@@ -1,0 +1,49 @@
+<UserControl x:Class="CatoriUCLibrary.Views.SpaceshipGameUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:game="clr-namespace:CatoriUCLibrary.Views.SpaceshipGame.GameObjects"
+             Focusable="True" Loaded="OnLoaded" Unloaded="OnUnloaded"
+             KeyDown="OnKeyDown" KeyUp="OnKeyUp">
+    <Grid Background="#02040D">
+        <Canvas x:Name="GameCanvas" ClipToBounds="True">
+            <Canvas.Background>
+                <RadialGradientBrush Center="0.5,0.45" RadiusX="0.85" RadiusY="0.85">
+                    <GradientStop Color="#172958"/><GradientStop Color="#02040D" Offset="1"/>
+                </RadialGradientBrush>
+            </Canvas.Background>
+            <game:AstronautSpriteControl x:Name="Astronaut" Canvas.ZIndex="5"
+                MouseLeftButtonDown="Astronaut_MouseLeftButtonDown"
+                MouseMove="Astronaut_MouseMove" MouseLeftButtonUp="Astronaut_MouseLeftButtonUp"/>
+            <game:SpaceshipSpriteControl x:Name="EnemyShip" Canvas.ZIndex="4"/>
+        </Canvas>
+
+        <Border VerticalAlignment="Top" Background="#D018203A" Padding="12">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ASTRONAUT RADAR CHASE" Foreground="#62F3FF" FontWeight="Bold" FontSize="18"/>
+                    <TextBlock x:Name="HealthText" Foreground="White" FontWeight="Bold" FontSize="16" Margin="28,1,0,0"/>
+                    <TextBlock x:Name="ShipHealthText" Foreground="#FF6B87" FontWeight="Bold" FontSize="16" Margin="24,1,0,0"/>
+                </StackPanel>
+                <Button x:Name="RestartButton" Content="Restart" Click="Restart_Click" HorizontalAlignment="Right" Padding="16,5"/>
+            </Grid>
+        </Border>
+
+        <game:SpaceshipRadarControl x:Name="Radar" Visibility="Collapsed"
+            HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,68,18,0"/>
+
+        <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="12" Padding="14,8"
+                Background="#D018203A" CornerRadius="10">
+            <TextBlock x:Name="InstructionText" Foreground="White"
+                Text="Drag or use arrow keys to move • Get behind the ship and press SPACE to fire"/>
+        </Border>
+
+        <Border x:Name="EndPanel" Visibility="Collapsed" Background="#E0060914" CornerRadius="16" Padding="40"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock x:Name="EndTitle" Foreground="White" FontSize="42" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="EndMessage" Foreground="#BDEEFF" FontSize="18" Margin="0,10,0,22" HorizontalAlignment="Center"/>
+                <Button x:Name="PlayAgainButton" Content="Play Again" Click="Restart_Click" Padding="22,10" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
