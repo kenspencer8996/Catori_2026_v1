@@ -82,6 +82,10 @@ public partial class ItemUC : UserControlWithProperties
         {
             return false;
         }
+        if (!ItemPurchase.TryAcquire(incoming, this))
+        {
+            return false;
+        }
         Item.Contents.Receive(incoming);
         return true;
     }

@@ -14,6 +14,9 @@ public partial class PersonUC
     public void HoldItem(PersonItem item)
     {
         Dispatcher.VerifyAccess();
-        CarriedItems.Receive(item);
+        if (ItemPurchase.TryAcquire(item, this))
+        {
+            CarriedItems.Receive(item);
+        }
     }
 }

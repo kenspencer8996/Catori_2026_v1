@@ -57,6 +57,10 @@ public static class ItemDropTarget
         {
             return false;
         }
+        if (!ItemPurchase.TryAcquire(item, target))
+        {
+            return false;
+        }
         inventory.Receive(item);
         return true;
     }

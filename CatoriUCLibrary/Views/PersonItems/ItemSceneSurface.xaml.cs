@@ -32,6 +32,10 @@ public partial class ItemSceneSurface : UserControl
         }
         double width = double.IsFinite(size.Width) && size.Width > 0 ? size.Width : 48;
         double height = double.IsFinite(size.Height) && size.Height > 0 ? size.Height : 64;
+        if (!ItemPurchase.TryAcquire(item, this))
+        {
+            return false;
+        }
         Inventory.Receive(item);
         foreach (var previous in Items.Where(entry => ReferenceEquals(entry.Item, item)).ToList())
         {

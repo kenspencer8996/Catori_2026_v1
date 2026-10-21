@@ -138,6 +138,7 @@
             </Canvas>
                 </Canvas>
             </Viewbox>
+        <outfits:AvatarBalanceView x:Name="AvatarMoneyBalance" HorizontalAlignment="Center" VerticalAlignment="Bottom" Panel.ZIndex="1001" />
     </Grid>
 </controlViews:UserControlWithProperties>
 

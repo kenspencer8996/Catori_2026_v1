@@ -91,6 +91,20 @@ public partial class TicketKioskUC : CatoriUCLibrary.Views.UserControlWithProper
     public void PublishPurchasedTicket(ITicket ticket, string passengerName)
     {
         ArgumentNullException.ThrowIfNull(ticket);
+        var buyer = (Parent as Canvas)?.Children.OfType<PersonUC>().FirstOrDefault(person =>
+            string.Equals(person.Name, passengerName, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(person.ToolTip as string, passengerName, StringComparison.OrdinalIgnoreCase));
+        if (buyer == null)
+        {
+            SetPurchaseStatus("Purchasing avatar was not found", true);
+            return;
+        }
+        string paymentId = "ticket:" + passengerName + ":" + ticket.Destination + ":" + ticket.PurchasedDateTime.Ticks;
+        if (!AvatarMoney.TryPurchase(buyer, ticket.Cost, paymentId, "Ticket: " + ticket.Destination))
+        {
+            SetPurchaseStatus("Insufficient funds", true);
+            return;
+        }
         var message = new TicketPurchasedMessage(
             ticket.Destination,
             ticket.Cost,
@@ -98,6 +112,7 @@ public partial class TicketKioskUC : CatoriUCLibrary.Views.UserControlWithProper
             passengerName);
         PurchasedTicketRegistry.Add(message);
         WeakReferenceMessenger.Default.Send(message);
+        SetPurchaseStatus("Ticket purchased");
     }
 
     private void BuyTicketButton_Click(object sender, RoutedEventArgs e)
@@ -145,7 +160,6 @@ public partial class TicketKioskUC : CatoriUCLibrary.Views.UserControlWithProper
             return;
         }
         PublishPurchasedTicket(request, passengerName);
-        SetPurchaseStatus("Ticket purchased");
     }
 
     private void TicketKiosk_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
