@@ -5,6 +5,7 @@ namespace CatoriUCLibrary.Views;
 
 public static class ItemDropTarget
 {
+    public const string DragAnchorFormat = "Catori.ItemPointerAnchor";
     public const string DragSizeFormat = "Catori.ItemDisplaySize";
     public static readonly DependencyProperty SurfaceProperty = DependencyProperty.RegisterAttached(
         "Surface", typeof(ItemSceneSurface), typeof(ItemDropTarget), new PropertyMetadata(null, InventoryChanged));
@@ -114,7 +115,7 @@ public static class ItemDropTarget
         var surface = GetSurface((DependencyObject)sender);
         Size size = e.Data.GetData(DragSizeFormat) is Size displaySize ? displaySize : new Size(48, 64);
         bool received = surface != null
-            ? surface.TryReceive(item, e.GetPosition(surface), size)
+            ? surface.TryReceive(item, e.GetPosition(surface), size, e.Data.GetData(DragAnchorFormat) is Point anchor ? anchor : new Point(.5, .5))
             : TryReceive((DependencyObject)sender, item);
         if (received)
         {

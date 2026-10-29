@@ -8,17 +8,19 @@ namespace CatoriUCLibrary.Views;
 public partial class ItemDragPreviewWindow : Window
 {
     private readonly FrameworkElement source;
+    private readonly Point anchor;
 
-    public ItemDragPreviewWindow(ImageSource? image, FrameworkElement source)
+    public ItemDragPreviewWindow(ImageSource? image, FrameworkElement source, Size? displaySize = null, Point? pointerAnchor = null)
     {
         InitializeComponent();
         this.source = source;
+        anchor = pointerAnchor ?? new Point(.5, .5);
         DraggedItemImage.Source = image;
         var transform = PresentationSource.FromVisual(source)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
         Point top = transform.Transform(source.PointToScreen(new Point()));
         Point bottom = transform.Transform(source.PointToScreen(new Point(source.ActualWidth, source.ActualHeight)));
-        Width = Math.Max(1, bottom.X - top.X);
-        Height = Math.Max(1, bottom.Y - top.Y);
+        Width = Math.Max(1, bottom.X - top.X) * (displaySize?.Width ?? source.ActualWidth) / Math.Max(1, source.ActualWidth);
+        Height = Math.Max(1, bottom.Y - top.Y) * (displaySize?.Height ?? source.ActualHeight) / Math.Max(1, source.ActualHeight);
         SourceInitialized += (_, _) =>
         {
             var handle = new WindowInteropHelper(this).Handle;
@@ -32,8 +34,8 @@ public partial class ItemDragPreviewWindow : Window
         {
             var transform = PresentationSource.FromVisual(source)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
             Point position = transform.Transform(new Point(point.X, point.Y));
-            Left = position.X + 12;
-            Top = position.Y + 12;
+            Left = position.X - Width * anchor.X;
+            Top = position.Y - Height * anchor.Y;
         }
     }
 

@@ -7,6 +7,10 @@ public sealed class PersonItem
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
     public string ItemName { get; set; } = "Item";
     public string ImagePath { get; set; } = "";
+    public double ShelfWidth { get; set; }
+    public double ShelfHeight { get; set; }
+    public double PlacedWidth { get; set; }
+    public double PlacedHeight { get; set; }
     public decimal Price { get; set; }
     public bool IsForSale { get; set; }
     public bool IsContainer { get; set; }

@@ -1,4 +1,4 @@
-namespace CatoriApp.Core.Objects.Production;
+﻿namespace CatoriApp.Core.Objects.Production;
 
 public enum ProductionAction
 {
@@ -8,5 +8,7 @@ public enum ProductionAction
     DronePickup,
     StartPath,
     TransitionToView,
-    TransitionToScene
+    TransitionToScene,
+    RevealAndStartPath,
+    ParkAndDisembark
 }

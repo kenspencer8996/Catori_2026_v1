@@ -164,7 +164,16 @@ public partial class ItemUC : UserControlWithProperties
             return;
         }
         _dragStart = null;
-        var preview = new ItemDragPreviewWindow(ItemImage.Source, this);
+        if (Item.ShelfWidth <= 0 && Item.ShelfHeight <= 0)
+        {
+            Item.ShelfWidth = ActualWidth;
+            Item.ShelfHeight = ActualHeight;
+        }
+        Size natural = ItemImage.Source is BitmapSource bitmap && (Item.PlacedWidth > 0 || Item.PlacedHeight > 0)
+            ? new Size(bitmap.PixelWidth, bitmap.PixelHeight) : new Size(ActualWidth, ActualHeight);
+        Size size = ItemDisplaySizing.Resolve(Item, natural, false);
+        Point anchor = new(Math.Clamp(start.X / Math.Max(1, ActualWidth), 0, 1), Math.Clamp(start.Y / Math.Max(1, ActualHeight), 0, 1));
+        var preview = new ItemDragPreviewWindow(ItemImage.Source, this, size, anchor);
         GiveFeedbackEventHandler feedback = (_, _) => preview.MoveToCursor();
         GiveFeedback += feedback;
         try
@@ -172,7 +181,8 @@ public partial class ItemUC : UserControlWithProperties
             preview.Show();
             preview.MoveToCursor();
             var data = PersonItemDrag.Create(Item);
-            data.SetData(ItemDropTarget.DragSizeFormat, new Size(ActualWidth, ActualHeight));
+            data.SetData(ItemDropTarget.DragSizeFormat, size);
+            data.SetData(ItemDropTarget.DragAnchorFormat, anchor);
             DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
         }
         finally

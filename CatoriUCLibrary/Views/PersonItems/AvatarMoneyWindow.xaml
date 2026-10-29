@@ -1,0 +1,13 @@
+<Window x:Class="CatoriUCLibrary.Views.AvatarMoneyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:CatoriUCLibrary.Views"
+        Title="Avatar money" Width="230" Height="145" WindowStyle="ToolWindow"
+        ResizeMode="NoResize" ShowInTaskbar="False" ShowActivated="False" Background="#172736">
+    <StackPanel Margin="14">
+        <TextBlock x:Name="AvatarNameText" Foreground="#BED4E8" Text="No active avatar" TextTrimming="CharacterEllipsis" />
+        <TextBlock x:Name="AvatarBalanceText" Foreground="White" FontSize="28" FontWeight="SemiBold"
+                   Text="{Binding Path=(views:AvatarMoney.Balance), StringFormat={}{0:N2}, TargetNullValue=—}" Margin="0,7,0,4" />
+        <TextBlock Text="Ctrl+M to hide / show" Foreground="#BED4E8" FontSize="11" />
+    </StackPanel>
+</Window>

@@ -14,6 +14,14 @@ public static class PurchasedTicketRegistry
         }
     }
 
+    public static void RemoveFor(string passengerId)
+    {
+        lock (SyncRoot)
+        {
+            Tickets.RemoveAll(ticket => string.Equals(ticket.PassengerName, passengerId, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
     public static IReadOnlyList<TicketPurchasedMessage> GetAll()
     {
         lock (SyncRoot)
@@ -22,3 +30,4 @@ public static class PurchasedTicketRegistry
         }
     }
 }
+

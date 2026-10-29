@@ -83,6 +83,14 @@ public static class AvatarMoney
             }
         }
     }
+    public static void RefreshBalance(DependencyObject avatar)
+    {
+        string id = GetAccountId(avatar);
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            avatar.SetValue(BalancePropertyKey, GameEconomy.Current.GetBalance(id));
+        }
+    }
     public static string EnsureAccount(PersonUC avatar)
     {
         string id = GetAccountId(avatar);

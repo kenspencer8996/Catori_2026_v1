@@ -103,9 +103,12 @@ public partial class AirplaneUC : CatoriUCLibrary.Views.UserControlWithPropertie
                 else
                 {
                     await SetPassengerAsync(person);
-                    StartTaxiAsync();
                 }
                 person.Visibility = Visibility.Collapsed;
+                if (HasPilot && HasPassenger)
+                {
+                    await StartTaxiAsync();
+                }
                 await SetDoorOpenAsync(false, TimeSpan.FromMilliseconds(450));
             }
             finally
@@ -239,6 +242,7 @@ public partial class AirplaneUC : CatoriUCLibrary.Views.UserControlWithPropertie
     public Task SetPilotAsync(PersonUC person,CancellationToken token=default)
     {
         ArgumentNullException.ThrowIfNull(person);
+        RememberBoardedPilot(person);
         PilotView.ApplySettings(person.AvatarSettings);
         PilotView.CurrentActivity=PersonActivity.Idle;
         HasPilot=true;
@@ -250,11 +254,13 @@ public partial class AirplaneUC : CatoriUCLibrary.Views.UserControlWithPropertie
     public async Task SetPassengerAsync(PersonUC person,CancellationToken token=default)
     {
         ArgumentNullException.ThrowIfNull(person);
+        RememberBoardedPassenger(person);
         PassengerView.ApplySettings(person.AvatarSettings);
         PassengerView.CurrentActivity=PersonActivity.Idle;
         PassengerView.Opacity=1;
         HasPassenger=true;
         await SetDoorOpenAsync(false,TimeSpan.FromMilliseconds(450),token);
+        person.HideHeldTicket();
         StartEngine(_settings.LeftPropeller??_settings.Propeller,LeftSmoke,ref _leftEngineCancellation);
     }
 

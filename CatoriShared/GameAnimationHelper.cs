@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using CatoriApp.Core.Objects.Production;
 using System.Globalization;
 using CatoriShared.AnimationHelpers;
@@ -263,8 +263,9 @@ public static class GameAnimationHelper
         host.HorizontalContentAlignment = HorizontalAlignment.Stretch;
         host.VerticalContentAlignment = VerticalAlignment.Stretch;
 
-        Canvas.SetLeft(host, options.CenterOnPath ? -width / 2 : 0);
-        Canvas.SetTop(host, options.CenterOnPath ? -height / 2 : 0);
+        Point anchor = options.ControlAnchorOnPath ?? new Point(0.5, 0.5);
+        Canvas.SetLeft(host, options.CenterOnPath ? -width * anchor.X : 0);
+        Canvas.SetTop(host, options.CenterOnPath ? -height * anchor.Y : 0);
         Panel.SetZIndex(host, options.ZIndex);
         if (!canvas.Children.Contains(control))
         {
