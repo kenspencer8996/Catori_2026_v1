@@ -509,6 +509,7 @@ public sealed class CanvasControlOptions
 public sealed class PathAnimationHandle : IDisposable
 {
     private readonly Canvas _canvas;
+    private readonly PathKeyframeRunner? _keyframes;
     private readonly string _translateName;
     private readonly string? _rotateName;
     private bool _isStarted;
@@ -544,6 +545,7 @@ public sealed class PathAnimationHandle : IDisposable
         NextAction = nextAction;
         _pathSet = pathSet;
         _options = options;
+        _keyframes = options.Keyframes.Count == 0 ? null : new PathKeyframeRunner(options.Keyframes, options.AutoReverse);
         _scaleTransform = scaleTransform;
         _path = pathSet.Paths.OrderBy(candidate => candidate.Order).First().WpfPath;
         Host = host;
@@ -579,6 +581,10 @@ public sealed class PathAnimationHandle : IDisposable
     {
         try
         {
+            if (Host.Content is FrameworkElement keyframeControl)
+            {
+                _keyframes?.Complete(keyframeControl);
+            }
             if(Host.Content is FrameworkElement control)_options.Completed?.Invoke(control);
             AnimationCompleteMessage animationComplete =
                 new AnimationCompleteMessage(_animationName,PartName,TargetName,NextAction,
@@ -638,6 +644,7 @@ public sealed class PathAnimationHandle : IDisposable
                 _isStartPending=false;
                 if(_isDisposed)return;
             }
+            _keyframes?.Reset();
             SelectPathForStart();
             Host.Visibility=Visibility.Visible;
             if(Host.Content is FrameworkElement control)_options.Started?.Invoke(control);
@@ -694,7 +701,29 @@ public sealed class PathAnimationHandle : IDisposable
         Storyboard = GameAnimationHelper.CreatePathStoryboard(
             GameAnimationHelper.ParsePathGeometry(_path), _translateName, _rotateName, _scaleTransform, _options);
         Storyboard.Completed += (s, e) => StoryBoardComplete();
+        if (_keyframes != null)
+        {
+            foreach (var animation in Storyboard.Children.OfType<DoubleAnimationUsingPath>())
+            {
+                animation.AutoReverse = _options.AutoReverse;
+                animation.RepeatBehavior = _options.RepeatBehavior;
+            }
+            var progressAnimation = Storyboard.Children.OfType<DoubleAnimationUsingPath>().First(animation => animation.Source == PathAnimationSource.X);
+            progressAnimation.CurrentTimeInvalidated += KeyframeProgressChanged;
+        }
         _visualPath.Data = Geometry.Parse(_path);
+    }
+
+    private void KeyframeProgressChanged(object? sender, EventArgs e)
+    {
+        if (sender is Clock clock && clock.CurrentState != ClockState.Stopped
+            && clock.CurrentProgress is double fraction && Host.Content is FrameworkElement control)
+        {
+            bool reverse = clock.CurrentGlobalSpeed < 0 || clock.CurrentState == ClockState.Filling && _options.AutoReverse;
+            long iteration = Math.Max(0, (clock.CurrentIteration ?? 1) - 1);
+            long traversal = iteration * (_options.AutoReverse ? 2 : 1) + (reverse ? 1 : 0);
+            _keyframes?.Advance(fraction * 100, traversal, reverse, control);
+        }
     }
 
     public void StartWithPart(FrameworkElement part,string? partName=null)

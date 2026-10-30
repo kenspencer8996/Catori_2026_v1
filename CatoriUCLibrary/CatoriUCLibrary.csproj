@@ -43,4 +43,7 @@
   <ItemGroup>
     <Resource Include="Images\ClothesTree.png" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
+  </ItemGroup>
 </Project>

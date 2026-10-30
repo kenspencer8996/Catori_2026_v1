@@ -6,6 +6,7 @@ namespace CatoriShared.AnimationHelpers
 {
     public class PathAnimationOptions
     {
+        public IReadOnlyList<PathKeyframeTrigger> Keyframes { get; set; } = Array.Empty<PathKeyframeTrigger>();
         public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(5);
         public RepeatBehavior RepeatBehavior { get; set; } = new RepeatBehavior(1);
         public bool AutoReverse { get; set; }

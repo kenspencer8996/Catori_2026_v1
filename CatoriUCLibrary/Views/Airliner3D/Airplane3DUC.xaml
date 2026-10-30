@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="CatoriUCLibrary.Views.Airliner3D.Airplane3DUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="http://helix-toolkit.org/wpf" Width="1200" Height="680" Background="{x:Null}" Unloaded="Control_Unloaded">
+    <UserControl.Resources>
+        <MaterialGroup x:Key="FuselageMaterial">
+            <DiffuseMaterial Brush="#8CCDEB"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="45"/>
+        </MaterialGroup>
+        <MaterialGroup x:Key="BodyMaterial">
+            <DiffuseMaterial Brush="#F3F6EF"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+        <MaterialGroup x:Key="BlueMaterial">
+            <DiffuseMaterial Brush="#1478A0"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+        <DiffuseMaterial x:Key="BrandMaterial">
+            <DiffuseMaterial.Brush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <TextBlock Text="C Airline" FontFamily="Segoe UI" FontSize="48" FontWeight="Bold" Foreground="#163D65" Background="Transparent" Padding="2"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </DiffuseMaterial.Brush>
+        </DiffuseMaterial>
+        <MaterialGroup x:Key="GlassMaterial">
+            <DiffuseMaterial Brush="#183B52"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+        <MaterialGroup x:Key="MetalMaterial">
+            <DiffuseMaterial Brush="#748899"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+        <MaterialGroup x:Key="TireMaterial">
+            <DiffuseMaterial Brush="#17242C"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+        <MaterialGroup x:Key="PropMaterial">
+            <DiffuseMaterial Brush="#263740"/>
+            <SpecularMaterial Brush="#CFFFFFFF" SpecularPower="55"/>
+        </MaterialGroup>
+    </UserControl.Resources>
+    <h:HelixViewport3D x:Name="AirplaneViewport" Background="Transparent" IsHitTestVisible="False" IsHeadLightEnabled="False" ShowViewCube="False" ShowCoordinateSystem="False" ZoomExtentsWhenLoaded="False" IsRotationEnabled="False" IsPanEnabled="False" IsZoomEnabled="False" ClipToBounds="True">
+        <h:HelixViewport3D.Camera>
+            <OrthographicCamera x:Name="FixedCamera" Position="0,-900,1200" LookDirection="0,900,-1200" UpDirection="0,0.8,0.6" Width="1200" NearPlaneDistance="1" FarPlaneDistance="4000"/>
+        </h:HelixViewport3D.Camera>
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <Model3DGroup>
+                    <AmbientLight Color="#7D8B9B"/>
+                    <DirectionalLight Color="#FFFFFF" Direction="-1,1,-2"/>
+                    <DirectionalLight Color="#7AC8F2" Direction="1,-1,-0.3"/>
+                </Model3DGroup>
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <Model3DGroup x:Name="AircraftModel">
+                    <Model3DGroup.Transform>
+                        <Transform3DGroup>
+                            <ScaleTransform3D ScaleX="1.2" ScaleY="1.2" ScaleZ="1.2"/>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="ManualRollRotation" Axis="1,0,0"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="ManualPitchRotation" Axis="0,1,0"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="RollRotation" Axis="1,0,0"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="PitchRotation" Axis="0,1,0"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D x:Name="YawRotation" Axis="0,0,1"/>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <TranslateTransform3D x:Name="AirplanePosition"/>
+                        </Transform3DGroup>
+                    </Model3DGroup.Transform>
+                        <GeometryModel3D x:Name="FuselageModel" Material="{StaticResource FuselageMaterial}" BackMaterial="{StaticResource FuselageMaterial}"/>
+                        <GeometryModel3D x:Name="CockpitModel" Material="{StaticResource GlassMaterial}" BackMaterial="{StaticResource GlassMaterial}"/>
+                        <GeometryModel3D x:Name="PassengerWindowsModel" Material="{StaticResource GlassMaterial}" BackMaterial="{StaticResource GlassMaterial}"/>
+                        <GeometryModel3D x:Name="LeftBrandModel" Material="{StaticResource BrandMaterial}"/>
+                        <GeometryModel3D x:Name="RightBrandModel" Material="{StaticResource BrandMaterial}"/>
+                        <GeometryModel3D x:Name="WingsModel" Material="{StaticResource BodyMaterial}" BackMaterial="{StaticResource BodyMaterial}"/>
+                        <GeometryModel3D x:Name="TailModel" Material="{StaticResource BodyMaterial}" BackMaterial="{StaticResource BodyMaterial}"/>
+                        <GeometryModel3D x:Name="FinModel" Material="{StaticResource BlueMaterial}" BackMaterial="{StaticResource BlueMaterial}"/>
+                        <GeometryModel3D x:Name="EnginesModel" Material="{StaticResource BlueMaterial}" BackMaterial="{StaticResource BlueMaterial}"/>
+                        <Model3DGroup>
+                            <Model3DGroup.Transform>
+                                <RotateTransform3D CenterX="-7" CenterY="-18" CenterZ="-3">
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D x:Name="LeftMainGearRotation" Axis="1,0,0" Angle="0"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </Model3DGroup.Transform>
+                            <GeometryModel3D x:Name="LeftMainGearModel" Material="{StaticResource MetalMaterial}" BackMaterial="{StaticResource MetalMaterial}"/>
+                            <GeometryModel3D x:Name="LeftMainWheelModel" Material="{StaticResource TireMaterial}" BackMaterial="{StaticResource TireMaterial}"/>
+                        </Model3DGroup>
+                        <Model3DGroup>
+                            <Model3DGroup.Transform>
+                                <RotateTransform3D CenterX="-7" CenterY="18" CenterZ="-3">
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D x:Name="RightMainGearRotation" Axis="1,0,0" Angle="0"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </Model3DGroup.Transform>
+                            <GeometryModel3D x:Name="RightMainGearModel" Material="{StaticResource MetalMaterial}" BackMaterial="{StaticResource MetalMaterial}"/>
+                            <GeometryModel3D x:Name="RightMainWheelModel" Material="{StaticResource TireMaterial}" BackMaterial="{StaticResource TireMaterial}"/>
+                        </Model3DGroup>
+                        <Model3DGroup>
+                            <Model3DGroup.Transform>
+                                <RotateTransform3D CenterX="45" CenterY="0" CenterZ="-3">
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D x:Name="NoseGearRotation" Axis="0,1,0" Angle="0"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </Model3DGroup.Transform>
+                            <GeometryModel3D x:Name="NoseGearModel" Material="{StaticResource MetalMaterial}" BackMaterial="{StaticResource MetalMaterial}"/>
+                            <GeometryModel3D x:Name="NoseWheelModel" Material="{StaticResource TireMaterial}" BackMaterial="{StaticResource TireMaterial}"/>
+                        </Model3DGroup>
+                        <GeometryModel3D x:Name="SpinnersModel" Material="{StaticResource MetalMaterial}" BackMaterial="{StaticResource MetalMaterial}"/>
+                        <GeometryModel3D x:Name="LeftPropellerModel" Material="{StaticResource PropMaterial}" BackMaterial="{StaticResource PropMaterial}">
+                            <GeometryModel3D.Transform>
+                                <Transform3DGroup>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="LeftPropellerRotation" Axis="1,0,0"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                    <TranslateTransform3D OffsetX="33" OffsetY="31" OffsetZ="-2"/>
+                                </Transform3DGroup>
+                            </GeometryModel3D.Transform>
+                        </GeometryModel3D>
+                        <GeometryModel3D x:Name="RightPropellerModel" Material="{StaticResource PropMaterial}" BackMaterial="{StaticResource PropMaterial}">
+                            <GeometryModel3D.Transform>
+                                <Transform3DGroup>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="RightPropellerRotation" Axis="1,0,0"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                    <TranslateTransform3D OffsetX="33" OffsetY="-31" OffsetZ="-2"/>
+                                </Transform3DGroup>
+                            </GeometryModel3D.Transform>
+                        </GeometryModel3D>
+                </Model3DGroup>
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+    </h:HelixViewport3D>
+</UserControl>
