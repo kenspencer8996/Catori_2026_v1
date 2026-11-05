@@ -1,4 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Content Include="Views\Airliner3D\flaps.json" Link="flaps.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <EmbeddedResource Include="Views\Airliner3D\flaps.json" LogicalName="CatoriUCLibrary.AirlinerFlaps.json" />
+  </ItemGroup>
+  
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
@@ -7,12 +12,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <ProjectReference Include="..\CatoriShared\CatoriShared.csproj" />
     <ProjectReference Include="..\CatoriInterfaces\CatoriInterfaces.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Resource Include="Images\SimpleCarDirections.png" />
     <Resource Include="Images\RobotArmHandBlue.png" />
     <Resource Include="Images\robotArmLongBlue.png" />
@@ -21,7 +26,7 @@
     <Resource Include="Images\PersonBodyDefault.png" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Compile Update="Views\RobotArm\RoboticArmUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -30,20 +35,20 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Folder Include="Views\Airplane\" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Resource Include="Images\SpaceshipGame\*.png" />
   </ItemGroup>
-  <ItemGroup>
+<ItemGroup>
     <Resource Include="Images\PilotAirplane.png" />
   </ItemGroup>
-  <ItemGroup>
+<ItemGroup>
     <Resource Include="Images\ClothesTree.png" />
   </ItemGroup>
-  <ItemGroup>
+<ItemGroup>
     <PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Media.Animation;
 
 namespace CatoriUCLibrary.Views.Airliner3D;
@@ -87,7 +87,7 @@ public partial class Airplane3DUC
     private void ResetLandingGear()
     {
         CancelLandingGearMotion();
-        SetValue(LandingGearPositionProperty, 1d);
+        SetValue(LandingGearPositionProperty, InitialLandingGearRetracted ? 0d : 1d);
         LandingGearChanged?.Invoke();
     }
 }

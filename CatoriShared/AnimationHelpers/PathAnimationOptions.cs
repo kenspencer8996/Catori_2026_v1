@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +6,8 @@ namespace CatoriShared.AnimationHelpers
 {
     public class PathAnimationOptions
     {
+        public Action<string>? PathSelected { get; set; }
+        public Action<double, double>? ProgressChanged { get; set; }
         public IReadOnlyList<PathKeyframeTrigger> Keyframes { get; set; } = Array.Empty<PathKeyframeTrigger>();
         public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(5);
         public RepeatBehavior RepeatBehavior { get; set; } = new RepeatBehavior(1);
@@ -24,6 +26,8 @@ namespace CatoriShared.AnimationHelpers
         public bool HoldAtEndUntilHandoff { get; set; } = true;
         public bool RotateWithPath { get; set; } = true;
         public bool CenterOnPath { get; set; } = true;
+        /// <summary>Fit a receiving path host to the transferred actor instead of its placeholder dimensions.</summary>
+        public bool PreserveControlSizeOnHandoff { get; set; }
         /// <summary>
         /// Optional normalized point on an existing control that follows the path.
         /// For example, (0.5, 1) keeps the bottom-center on a ground path.

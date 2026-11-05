@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using CatoriApp.Core.Objects.Production;
 using System.Globalization;
 using CatoriShared.AnimationHelpers;
@@ -510,6 +510,7 @@ public sealed class PathAnimationHandle : IDisposable
 {
     private readonly Canvas _canvas;
     private readonly PathKeyframeRunner? _keyframes;
+    private double _previousKeyframeProgress = -double.Epsilon;
     private readonly string _translateName;
     private readonly string? _rotateName;
     private bool _isStarted;
@@ -584,6 +585,9 @@ public sealed class PathAnimationHandle : IDisposable
             if (Host.Content is FrameworkElement keyframeControl)
             {
                 _keyframes?.Complete(keyframeControl);
+                double finalProgress = _options.AutoReverse ? 0 : 1;
+                _options.ProgressChanged?.Invoke(_previousKeyframeProgress, finalProgress);
+                _previousKeyframeProgress = finalProgress;
             }
             if(Host.Content is FrameworkElement control)_options.Completed?.Invoke(control);
             AnimationCompleteMessage animationComplete =
@@ -645,6 +649,7 @@ public sealed class PathAnimationHandle : IDisposable
                 if(_isDisposed)return;
             }
             _keyframes?.Reset();
+            _previousKeyframeProgress = -double.Epsilon;
             SelectPathForStart();
             Host.Visibility=Visibility.Visible;
             if(Host.Content is FrameworkElement control)_options.Started?.Invoke(control);
@@ -696,12 +701,13 @@ public sealed class PathAnimationHandle : IDisposable
         };
         LayoutPath selected = paths[index];
         _path = selected.WpfPath;
+        _options.PathSelected?.Invoke(_path);
         PartName = string.IsNullOrWhiteSpace(selected.PartName) ? _defaultPartName : selected.PartName;
         Storyboard.Stop(_canvas);
         Storyboard = GameAnimationHelper.CreatePathStoryboard(
             GameAnimationHelper.ParsePathGeometry(_path), _translateName, _rotateName, _scaleTransform, _options);
         Storyboard.Completed += (s, e) => StoryBoardComplete();
-        if (_keyframes != null)
+        if (_keyframes != null || _options.ProgressChanged != null)
         {
             foreach (var animation in Storyboard.Children.OfType<DoubleAnimationUsingPath>())
             {
@@ -723,6 +729,8 @@ public sealed class PathAnimationHandle : IDisposable
             long iteration = Math.Max(0, (clock.CurrentIteration ?? 1) - 1);
             long traversal = iteration * (_options.AutoReverse ? 2 : 1) + (reverse ? 1 : 0);
             _keyframes?.Advance(fraction * 100, traversal, reverse, control);
+            _options.ProgressChanged?.Invoke(_previousKeyframeProgress, fraction);
+            _previousKeyframeProgress = fraction;
         }
     }
 
@@ -733,6 +741,7 @@ public sealed class PathAnimationHandle : IDisposable
         DetachTransferredPart(part);
         GameAnimationHelper.DetachFromParent(part);
 
+        PathHandoffLayout.Apply(Host, part, _options);
         Host.Content=part;
         Host.Visibility=Visibility.Visible;
         if(!string.IsNullOrWhiteSpace(partName))PartName=partName;

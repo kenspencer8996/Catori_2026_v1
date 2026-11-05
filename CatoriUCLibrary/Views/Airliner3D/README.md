@@ -15,3 +15,12 @@ For boarding: ResetTrip(), ResetPath(taxiPath), ConfigureTaxiPath(taxiPath), the
 Use SetLandingGearAsync(false) to retract and SetLandingGearAsync(true) to lower. The gear must stay down during automatic boarding/taxi. Flight/engine/camera methods remain available independently for authored flight sequences. See the public partial files for events, cancellation and status properties.
 
 This copy does not register a Studio palette entry, adapt Studio drag/drop interfaces, change serialization/code generation, replace the existing AirplaneUC, or modify generated game projects. Those are separate integration steps. It has no dependency on the standalone test application. Gear folds into the fuselage without modeled bay doors; the host supplies any visible boarded-avatar or door animations.
+
+
+## Configurable flaps and zoom
+
+Call `NoFlap()`, `HalfFlap()`, or `FullFlap()` (or `SetFlaps(FlapSetting.FullFlap)`). Half and full angles load from `flaps.json` beside the host executable; the packaged JSON defaults are 20 and 40 degrees. No flap is always zero. Edit the JSON and restart, or call `LoadFlapConfiguration(path)` / `ConfigureFlaps(configuration)`. Angles must satisfy `0 < HalfFlapDegrees < FullFlapDegrees <= 85`.
+
+`CurrentFlapSetting` identifies the named position, `FlapSettingDegrees` is the target angle, and `FlapAngleDegrees` is the displayed animated angle. Both amber wing flaps move together over 0.6 seconds. Flight simulation is unchanged.
+
+The model is 25% larger. Set `Zoom` from 1 to 3 for a closer aircraft view while preserving the path anchor. The host supplies its own zoom controls.
