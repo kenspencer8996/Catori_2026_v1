@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Animation;
 
 namespace CatoriUCLibrary.Views.Airliner3D;
@@ -50,13 +50,13 @@ public partial class Airplane3DUC
         {
             if (version != gearVersion) return;
             SetValue(LandingGearPositionProperty, target);
-            BeginAnimation(LandingGearPositionProperty, null);
+            ApplyPlaybackAnimation(this, LandingGearPositionProperty, null);
             gearCancellation.Dispose();
             gearCompletion = null;
             LandingGearChanged?.Invoke();
             completion.TrySetResult();
         };
-        BeginAnimation(LandingGearPositionProperty, animation, HandoffBehavior.SnapshotAndReplace);
+        ApplyPlaybackAnimation(this, LandingGearPositionProperty, animation, HandoffBehavior.SnapshotAndReplace);
         LandingGearChanged?.Invoke();
         return completion.Task;
     }
@@ -76,7 +76,7 @@ public partial class Airplane3DUC
         gearVersion++;
         double current = LandingGearPosition;
         SetValue(LandingGearPositionProperty, current);
-        BeginAnimation(LandingGearPositionProperty, null);
+        ApplyPlaybackAnimation(this, LandingGearPositionProperty, null);
         gearCancellation.Dispose();
         var previous = gearCompletion;
         gearCompletion = null;

@@ -1,75 +1,77 @@
-﻿using System.Windows.Media.Animation;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace CatoriUCLibrary.Views.Airliner3D;
 
 public partial class Airplane3DUC
 {
-    public double ManualRollDegrees => ManualRollRotation.Angle;
-    public double ManualPitchDegrees => -ManualPitchRotation.Angle;
+    // Compatibility readings now refer to the single authoritative attitude.
+    public double ManualRollDegrees => Roll;
+    public double ManualPitchDegrees => Pitch;
 
     public void BankRight(double degrees)
     {
-        ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualRollRotation, degrees);
+        BankRight(degrees, TimeSpan.FromSeconds(.6));
     }
 
     public void BankLeft(double degrees)
     {
-        ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualRollRotation, -degrees);
+        BankLeft(degrees, TimeSpan.FromSeconds(.6));
     }
 
     public void NoseUp(double degrees)
     {
-        ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualPitchRotation, -degrees);
+        NoseUp(degrees, TimeSpan.FromSeconds(.6));
     }
 
     public void NoseDown(double degrees)
     {
-        ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualPitchRotation, degrees);
-    }
-
-    public void ReturnToAutomaticOrientation()
-    {
-        Dispatcher.VerifyAccess();
-        AnimateAdjustment(ManualRollRotation, 0);
-        AnimateAdjustment(ManualPitchRotation, 0);
-        AnimatePathOrientation(1, TimeSpan.FromSeconds(.6));
+        NoseDown(degrees, TimeSpan.FromSeconds(.6));
     }
 
     public void BankRight(double degrees, TimeSpan duration)
     {
         ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualRollRotation, degrees, duration);
+        SetAttitudeChannel(RollRotation, degrees, duration);
     }
 
     public void BankLeft(double degrees, TimeSpan duration)
     {
         ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualRollRotation, -degrees, duration);
+        SetAttitudeChannel(RollRotation, -degrees, duration);
     }
 
     public void NoseUp(double degrees, TimeSpan duration)
     {
         ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualPitchRotation, -degrees, duration);
+        SetAttitudeChannel(PitchRotation, -degrees, duration);
     }
 
     public void NoseDown(double degrees, TimeSpan duration)
     {
         ValidateAdjustment(degrees);
-        AnimateAdjustment(ManualPitchRotation, degrees, duration);
+        SetAttitudeChannel(PitchRotation, degrees, duration);
+    }
+
+    public void ReturnToAutomaticOrientation()
+    {
+        ReturnToAutomaticOrientation(TimeSpan.FromSeconds(.6));
     }
 
     public void ReturnToAutomaticOrientation(TimeSpan duration)
     {
         Dispatcher.VerifyAccess();
-        AnimateAdjustment(ManualRollRotation, 0, duration);
-        AnimateAdjustment(ManualPitchRotation, 0, duration);
-        AnimatePathOrientation(1, duration);
+        if (duration < TimeSpan.Zero || duration.TotalSeconds > 30)
+        {
+            throw new ArgumentOutOfRangeException(nameof(duration));
+        }
+        // Relinquish explicit ownership; do not add manual rotations to the pose.
+        CancelKeyframeHeading();
+        ApplyPlaybackAnimation(RollRotation, AxisAngleRotation3D.AngleProperty, null);
+        ApplyPlaybackAnimation(PitchRotation, AxisAngleRotation3D.AngleProperty, null);
+        _hasAuthoredAttitude = false;
+        _hasKeyframeHeading = false;
+        UpdatePathOrientation();
     }
 
     private void ValidateAdjustment(double degrees)
@@ -81,31 +83,32 @@ public partial class Airplane3DUC
         }
     }
 
-    private static void AnimateAdjustment(AxisAngleRotation3D rotation, double target, TimeSpan? duration = null)
+    private void AnimateAdjustment(AxisAngleRotation3D rotation, double target, TimeSpan? duration = null)
     {
         TimeSpan animationDuration = duration ?? TimeSpan.FromSeconds(.6);
         if (!double.IsFinite(animationDuration.TotalSeconds) || animationDuration.TotalSeconds < 0 || animationDuration.TotalSeconds > 30)
         {
             throw new ArgumentOutOfRangeException(nameof(duration));
         }
+        double current = rotation.Angle;
+        ApplyPlaybackAnimation(rotation, AxisAngleRotation3D.AngleProperty, null);
+        rotation.Angle = current;
         if (animationDuration == TimeSpan.Zero)
         {
-            rotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, null);
             rotation.Angle = target;
             return;
         }
-        var animation = new DoubleAnimation(rotation.Angle, target, animationDuration)
+        var animation = new DoubleAnimation(current, target, animationDuration)
         {
             EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut },
             FillBehavior = FillBehavior.HoldEnd
         };
-        rotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, animation, HandoffBehavior.SnapshotAndReplace);
+        ApplyPlaybackAnimation(rotation, AxisAngleRotation3D.AngleProperty, animation, HandoffBehavior.SnapshotAndReplace);
     }
 
     private void ClearManualOrientation()
     {
-        ManualRollRotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, null);
-        ManualPitchRotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, null);
+        // Legacy preview placeholders carry no visual orientation.
         ManualRollRotation.Angle = 0;
         ManualPitchRotation.Angle = 0;
     }

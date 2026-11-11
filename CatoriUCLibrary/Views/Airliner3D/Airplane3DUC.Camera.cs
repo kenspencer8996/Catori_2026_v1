@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 
 using System.Windows.Media.Animation;
 
@@ -114,7 +114,7 @@ public partial class Airplane3DUC
 
             SetValue(CameraElevationProperty, target);
 
-            BeginAnimation(CameraElevationProperty, null);
+            ApplyPlaybackAnimation(this, CameraElevationProperty, null);
 
             CurrentCameraPreset = preset;
 
@@ -124,7 +124,7 @@ public partial class Airplane3DUC
 
         };
 
-        BeginAnimation(CameraElevationProperty, animation, HandoffBehavior.SnapshotAndReplace);
+        ApplyPlaybackAnimation(this, CameraElevationProperty, animation, HandoffBehavior.SnapshotAndReplace);
 
         return completion.Task;
 
@@ -152,7 +152,7 @@ public partial class Airplane3DUC
 
         SetValue(CameraElevationProperty, current);
 
-        BeginAnimation(CameraElevationProperty, null);
+        ApplyPlaybackAnimation(this, CameraElevationProperty, null);
 
         cameraTransition?.TrySetCanceled();
 

@@ -1,4 +1,4 @@
-using System.Windows.Media.Animation;
+﻿using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace CatoriUCLibrary.Views.Airliner3D;
@@ -100,13 +100,13 @@ public partial class Airplane3DUC
         AnimateFlap(RightFlapRotation, degrees);
     }
 
-    private static void AnimateFlap(AxisAngleRotation3D rotation, double target)
+    private void AnimateFlap(AxisAngleRotation3D rotation, double target)
     {
         var animation = new DoubleAnimation(rotation.Angle, target, TimeSpan.FromSeconds(0.6))
         {
             EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut },
         };
-        rotation.BeginAnimation(
+        ApplyPlaybackAnimation(rotation, 
             AxisAngleRotation3D.AngleProperty,
             animation,
             HandoffBehavior.SnapshotAndReplace

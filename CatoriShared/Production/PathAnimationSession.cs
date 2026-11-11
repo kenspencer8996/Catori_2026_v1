@@ -1,9 +1,9 @@
-using CatoriApp.Core.Objects.Production;
+﻿using CatoriApp.Core.Objects.Production;
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace CatoriApp.Game.Objects.AnimationOnPath;
 
-public sealed class PathAnimationSession:IDisposable
+public sealed partial class PathAnimationSession:IDisposable
 {
     private readonly List<PathAnimationHandle> _handles=[];
     // Robot names are identities. Case-insensitive matching makes Robot4 and
@@ -30,6 +30,8 @@ public sealed class PathAnimationSession:IDisposable
         ObjectDisposedException.ThrowIf(_disposed,this);
         ArgumentNullException.ThrowIfNull(handle);
         _handles.Add(handle);
+        handle.PlaybackChanged += HandlePlaybackChanged;
+        if (IsPaused) handle.Pause();
     }
 
     public void StartAll()
@@ -108,9 +110,12 @@ public sealed class PathAnimationSession:IDisposable
 
         async void ContinueProduction()
         {
-            await Task.Delay(TimeSpan.FromMilliseconds(650));
-            if(_disposed||!_handles.Contains(handle))return;
-            handle.StartWithPart(message.Part,message.PartName);
+            await DelayAsync(TimeSpan.FromMilliseconds(650));
+            await handle.Host.Dispatcher.InvokeAsync(() =>
+            {
+                if(_disposed||!_handles.Contains(handle))return;
+                handle.StartWithPart(message.Part,message.PartName);
+            });
         }
         if(handle.Host.Dispatcher.CheckAccess())ContinueProduction();
         else handle.Host.Dispatcher.BeginInvoke((Action)ContinueProduction);
@@ -127,13 +132,14 @@ public sealed class PathAnimationSession:IDisposable
             string.Equals(candidate.AnimationName,message.AnimationName,StringComparison.OrdinalIgnoreCase));
         async void ContinuePath()
         {
-            if(handoff.Delay>TimeSpan.Zero)await Task.Delay(handoff.Delay);
-            if(_disposed||!_handles.Contains(handle))return;
-            // The source stays parked at HoldEnd during the delay. Transfer the
-            // same visual only when the receiving path is ready to start.
-            FrameworkElement? part=sourceHandle?.ReleasePartForPathHandoff();
-            if(part!=null)handle.StartWithPart(part,message.PartName);
-            else handle.Start();
+            if(handoff.Delay>TimeSpan.Zero)await DelayAsync(handoff.Delay);
+            await handle.Host.Dispatcher.InvokeAsync(() =>
+            {
+                if(_disposed||!_handles.Contains(handle))return;
+                FrameworkElement? part=sourceHandle?.ReleasePartForPathHandoff();
+                if(part!=null)handle.StartWithPart(part,message.PartName);
+                else handle.Start();
+            });
         }
         if(handle.Host.Dispatcher.CheckAccess())ContinuePath();
         else handle.Host.Dispatcher.BeginInvoke((Action)ContinuePath);
@@ -148,12 +154,22 @@ public sealed class PathAnimationSession:IDisposable
     public void Clear()
     {
         if(_disposed)return;
-        foreach(var handle in _handles)handle.Dispose();
+        foreach (var control in _debugControls) control.ResumeAnimations();
+        _debugControls.Clear();
+        foreach (var delay in _debugDelays.ToArray()) delay.Dispose();
+        _debugDelays.Clear();
+        IsPaused = false;
+        foreach(var handle in _handles)
+        {
+            handle.PlaybackChanged -= HandlePlaybackChanged;
+            handle.Dispose();
+        }
         _handles.Clear();
         _dropPathsByRobot.Clear();
         _dropTargetPaths.Clear();
         _deferredPaths.Clear();
         _pathHandoffs.Clear();
+        PlaybackChanged?.Invoke();
     }
 
     public void Dispose()

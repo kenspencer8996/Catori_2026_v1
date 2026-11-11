@@ -11,8 +11,6 @@ public partial class Airplane3DUC
     public void WingsLevel(TimeSpan duration)
     {
         Dispatcher.VerifyAccess();
-        AnimateAdjustment(RollRotation, 0, duration);
-        AnimateAdjustment(ManualRollRotation, 0, duration);
-        AnimatePathOrientation(0, duration);
+        SetAttitudeChannel(RollRotation, 0, duration);
     }
 }

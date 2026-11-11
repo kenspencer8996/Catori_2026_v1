@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using CatoriApp.Core.Objects.Production;
 using System.Globalization;
 using CatoriShared.AnimationHelpers;
@@ -506,7 +506,7 @@ public sealed class CanvasControlOptions
 
 
 
-public sealed class PathAnimationHandle : IDisposable
+public sealed partial class PathAnimationHandle : IDisposable
 {
     private readonly Canvas _canvas;
     private readonly PathKeyframeRunner? _keyframes;
@@ -580,6 +580,11 @@ public sealed class PathAnimationHandle : IDisposable
 
     private void StoryBoardComplete()
     {
+        if (_isDisposed || _completionProcessed || _seeking)
+        {
+            return;
+        }
+        _completionProcessed = true;
         try
         {
             if (Host.Content is FrameworkElement keyframeControl)
@@ -602,7 +607,8 @@ public sealed class PathAnimationHandle : IDisposable
             RestoreSaneState();
         }
 
-        //StopGlow();
+        StopGlow();
+        PlaybackChanged?.Invoke();
     }
 
     private void HandlePartTransfer(RobotPartTransferMessage message)
@@ -635,39 +641,65 @@ public sealed class PathAnimationHandle : IDisposable
     public async void Start()
     {
         ThrowIfDisposed();
-        if(_isStartPending||_isStarted)return;
+        if (_isStartPending || _isStarted) return;
+        _completionProcessed = false;
         try
         {
-            if(_options.StartDelay>TimeSpan.Zero)
+            if (_options.StartDelay > TimeSpan.Zero)
             {
-                _isStartPending=true;
-                Host.Visibility=Visibility.Collapsed;
+                _isStartPending = true;
+                Host.Visibility = Visibility.Collapsed;
                 _startDelayCancellation?.Dispose();
-                _startDelayCancellation=new CancellationTokenSource();
-                await Task.Delay(_options.StartDelay,_startDelayCancellation.Token);
-                _isStartPending=false;
-                if(_isDisposed)return;
+                _startDelayCancellation = new CancellationTokenSource();
+                var delay = new PlaybackDelay(_options.StartDelay, _isPaused, _startDelayCancellation.Token);
+                _startDelay = delay;
+                PlaybackChanged?.Invoke();
+                await delay.Completion;
+                await _canvas.Dispatcher.InvokeAsync(() =>
+                {
+                    delay.Dispose();
+                    if (_isDisposed || !ReferenceEquals(_startDelay, delay)) return;
+                    _startDelay = null;
+                    _isStartPending = false;
+                    BeginPlayback();
+                });
             }
-            _keyframes?.Reset();
-            _previousKeyframeProgress = -double.Epsilon;
-            SelectPathForStart();
-            Host.Visibility=Visibility.Visible;
-            if(Host.Content is FrameworkElement control)_options.Started?.Invoke(control);
-            StartGlow();
-            Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
-            _isStarted = true;
+            else
+            {
+                BeginPlayback();
+            }
         }
-        catch(OperationCanceledException)
+        catch (OperationCanceledException)
         {
-            _isStartPending=false;
+            _isStartPending = false;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            _isStartPending=false;
-            CatoriShared.Diagnostics.GameSafetyLog.Error("Animation",
-                $"Animation '{_animationName}' failed to start and was reset.",ex);
-            RestoreSaneState();
+            await _canvas.Dispatcher.InvokeAsync(() =>
+            {
+                _isStartPending = false;
+                CatoriShared.Diagnostics.GameSafetyLog.Error("Animation",
+                    $"Animation '{_animationName}' failed to start and was reset.", ex);
+                RestoreSaneState();
+                PlaybackChanged?.Invoke();
+            });
         }
+    }
+
+    private void BeginPlayback()
+    {
+        _keyframes?.Reset();
+        _previousKeyframeProgress = -double.Epsilon;
+        _traversal = 0;
+        _reverseTraversal = false;
+        SelectPathForStart();
+        Host.Visibility = Visibility.Visible;
+        if (Host.Content is FrameworkElement control) _options.Started?.Invoke(control);
+        StartGlow();
+        Storyboard.Begin(_canvas, HandoffBehavior.SnapshotAndReplace, true);
+        _isStarted = true;
+        if (_isPaused) Storyboard.Pause(_canvas);
+        PlaybackChanged?.Invoke();
     }
 
     private void RestoreSaneState()
@@ -714,23 +746,35 @@ public sealed class PathAnimationHandle : IDisposable
                 animation.AutoReverse = _options.AutoReverse;
                 animation.RepeatBehavior = _options.RepeatBehavior;
             }
-            var progressAnimation = Storyboard.Children.OfType<DoubleAnimationUsingPath>().First(animation => animation.Source == PathAnimationSource.X);
-            progressAnimation.CurrentTimeInvalidated += KeyframeProgressChanged;
         }
+        var progressAnimation = Storyboard.Children.OfType<DoubleAnimationUsingPath>().First(animation => animation.Source == PathAnimationSource.X);
+        progressAnimation.CurrentTimeInvalidated += KeyframeProgressChanged;
+        _debugPathLength = null;
+        _debugSegments = null;
+        _debugClock = null;
         _visualPath.Data = Geometry.Parse(_path);
     }
 
     private void KeyframeProgressChanged(object? sender, EventArgs e)
     {
-        if (sender is Clock clock && clock.CurrentState != ClockState.Stopped
+        if (!_isDisposed && !_seeking && sender is Clock clock && clock.CurrentState != ClockState.Stopped
             && clock.CurrentProgress is double fraction && Host.Content is FrameworkElement control)
         {
             bool reverse = clock.CurrentGlobalSpeed < 0 || clock.CurrentState == ClockState.Filling && _options.AutoReverse;
             long iteration = Math.Max(0, (clock.CurrentIteration ?? 1) - 1);
             long traversal = iteration * (_options.AutoReverse ? 2 : 1) + (reverse ? 1 : 0);
+            _debugClock = clock;
+            if (_isPaused)
+            {
+                PlaybackChanged?.Invoke();
+                return;
+            }
+            _traversal = traversal;
+            _reverseTraversal = reverse;
             _keyframes?.Advance(fraction * 100, traversal, reverse, control);
             _options.ProgressChanged?.Invoke(_previousKeyframeProgress, fraction);
             _previousKeyframeProgress = fraction;
+            PlaybackChanged?.Invoke();
         }
     }
 
@@ -779,13 +823,33 @@ public sealed class PathAnimationHandle : IDisposable
     public void Pause()
     {
         ThrowIfDisposed();
+        _isPaused = true;
+        _hasSteppedSincePause = false;
+        _startDelay?.Pause();
+        _glowStoryboard?.Pause(Host);
         if (_isStarted)
+        {
             Storyboard.Pause(_canvas);
+            if (_debugClock is not null)
+            {
+                double fraction = RenderedProgress();
+                if (Host.Content is FrameworkElement control)
+                {
+                    _keyframes?.Advance(fraction * 100, _traversal, _reverseTraversal, control);
+                }
+                _options.ProgressChanged?.Invoke(_previousKeyframeProgress, fraction);
+                _previousKeyframeProgress = fraction;
+            }
+        }
     }
 
     public void Resume()
     {
         ThrowIfDisposed();
+        _isPaused = false;
+        _hasSteppedSincePause = false;
+        _startDelay?.Resume();
+        _glowStoryboard?.Resume(Host);
         if (_isStarted)
             Storyboard.Resume(_canvas);
     }
@@ -892,12 +956,12 @@ public sealed class PathAnimationHandle : IDisposable
             opacityAnimation,
             new PropertyPath(DropShadowEffect.OpacityProperty));
 
-        _glowStoryboard.Begin();
+        _glowStoryboard.Begin(Host, HandoffBehavior.SnapshotAndReplace, true);
     }
 
     private void StopGlow()
     {
-        _glowStoryboard?.Stop();
+        _glowStoryboard?.Stop(Host);
         _glowStoryboard = null;
 
         if (_visualPath.Effect is DropShadowEffect glow)

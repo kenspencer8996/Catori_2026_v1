@@ -1,8 +1,6 @@
 using System.IO;
-using Path = System.IO.Path;
 using System.Text.Json;
-using System.Windows;
-using System.Windows.Media;
+using Path = System.IO.Path;
 namespace CatoriShared.Keyframes;
 public static class SceneKeyframeStore
 {

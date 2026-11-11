@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 
 using System.Windows.Controls;
 
@@ -115,6 +115,8 @@ public partial class Airplane3DUC : UserControl
     {
 
         InitializeComponent();
+        InitializePhysicalAttitude();
+        InitializeRotationalAxis();
 
         var meshes = new AirplaneMeshes();
 
@@ -167,8 +169,7 @@ public partial class Airplane3DUC : UserControl
 
         ValidateAngle(degrees);
 
-        CancelKeyframeHeading();
-        YawRotation.Angle = AngleMath.Unwrap(YawRotation.Angle, SceneProjection.ToYaw(degrees));
+        SetHeading(degrees, TimeSpan.Zero);
 
     }
 
@@ -180,7 +181,7 @@ public partial class Airplane3DUC : UserControl
 
         ValidateAngle(degrees);
 
-        PitchRotation.Angle = -degrees;
+        SetAttitudeChannel(PitchRotation, -degrees, TimeSpan.Zero);
 
     }
 
@@ -192,7 +193,7 @@ public partial class Airplane3DUC : UserControl
 
         ValidateAngle(degrees);
 
-        RollRotation.Angle = degrees;
+        SetAttitudeChannel(RollRotation, degrees, TimeSpan.Zero);
 
     }
 
@@ -234,7 +235,7 @@ public partial class Airplane3DUC : UserControl
 
         };
 
-        rotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, animation, HandoffBehavior.SnapshotAndReplace);
+        ApplyPlaybackAnimation(rotation, AxisAngleRotation3D.AngleProperty, animation, HandoffBehavior.SnapshotAndReplace);
 
         if (engineNumber == 1)
 
@@ -266,7 +267,7 @@ public partial class Airplane3DUC : UserControl
 
         double current = rotation.Angle;
 
-        rotation.BeginAnimation(AxisAngleRotation3D.AngleProperty, null);
+        ApplyPlaybackAnimation(rotation, AxisAngleRotation3D.AngleProperty, null);
 
         rotation.Angle = current % 360;
 
@@ -386,7 +387,7 @@ public partial class Airplane3DUC : UserControl
 
         player = new PathFlightPlayer(simulation, ApplyPose, Dispatcher);
 
-        SetPitch(0);
+        ResetAutomaticAttitude();
 
         ApplyPose(simulation.Pose);
 
@@ -406,9 +407,7 @@ public partial class Airplane3DUC : UserControl
 
         AirplanePosition.OffsetZ = position.Z;
 
-        SetHeading(pose.Heading);
-
-        SetRoll(pose.Bank);
+        ApplyAutomaticAttitude(pose.Heading, pose.Bank);
 
         CurrentPose = pose;
 
@@ -423,7 +422,8 @@ public partial class Airplane3DUC : UserControl
     private void Control_Unloaded(object sender, RoutedEventArgs e)
 
     {
-        CancelKeyframeHeading();
+        // Keep the finite heading animation running across path-host handoffs.
+        // A subsequent explicit heading replaces it.
 
         CancelTrip();
 

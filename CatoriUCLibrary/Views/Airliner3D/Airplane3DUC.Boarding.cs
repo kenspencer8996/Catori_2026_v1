@@ -156,7 +156,7 @@ public partial class Airplane3DUC
     {
         token.ThrowIfCancellationRequested();
         var rotation = EngineRotation(number);
-        rotation.BeginAnimation(AxisAngleRotation3D.AngleProperty,
+        ApplyPlaybackAnimation(rotation, AxisAngleRotation3D.AngleProperty,
             new DoubleAnimation(rotation.Angle, rotation.Angle + 720, TimeSpan.FromMilliseconds(800))
             {
                 AccelerationRatio = 1,

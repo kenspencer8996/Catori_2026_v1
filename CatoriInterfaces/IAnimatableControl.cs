@@ -5,5 +5,6 @@
         void AnimationStarted();
         void AnimationCompleted();
         string ControlImagePath { get; set; }
+        bool ShowRotationalAxis { get; set; }
     }
 }
