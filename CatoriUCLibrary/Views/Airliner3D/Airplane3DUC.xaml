@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="CatoriUCLibrary.Views.Airliner3D.Airplane3DUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="http://helix-toolkit.org/wpf" Width="1200" Height="680" Background="{x:Null}" Unloaded="Control_Unloaded">
+<UserControl x:Class="CatoriUCLibrary.Views.Airliner3D.Airplane3DUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="http://helix-toolkit.org/wpf" Width="1200" Height="680" Background="{x:Null}" Unloaded="Control_Unloaded">
 
     <UserControl.Resources>
         <MaterialGroup x:Key="FlapMaterial">
@@ -159,9 +159,26 @@
                                     </RotateTransform3D>
                                 </GeometryModel3D.Transform>
                             </GeometryModel3D>
-                            <GeometryModel3D x:Name="TailModel" Material="{StaticResource BodyMaterial}" BackMaterial="{StaticResource BodyMaterial}"/>
+                            <GeometryModel3D x:Name="TailModel" Material="{StaticResource BodyMaterial}" BackMaterial="{StaticResource BodyMaterial}">
+                                <GeometryModel3D.Transform>
+                                    <RotateTransform3D CenterX="-55" CenterY="0" CenterZ="3">
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="ElevatorRotation" Axis="0,1,0" Angle="0" />
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                </GeometryModel3D.Transform>
+                            </GeometryModel3D>
 
                             <GeometryModel3D x:Name="FinModel" Material="{StaticResource BlueMaterial}" BackMaterial="{StaticResource BlueMaterial}"/>
+                            <GeometryModel3D x:Name="RudderModel" Material="{StaticResource BlueMaterial}" BackMaterial="{StaticResource BlueMaterial}">
+                                <GeometryModel3D.Transform>
+                                    <RotateTransform3D CenterX="-60.2" CenterY="0" CenterZ="3">
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="RudderRotation" Axis="-5.2,0,22" Angle="0" />
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                </GeometryModel3D.Transform>
+                            </GeometryModel3D>
 
                             <GeometryModel3D x:Name="EnginesModel" Material="{StaticResource BlueMaterial}" BackMaterial="{StaticResource BlueMaterial}"/>
 

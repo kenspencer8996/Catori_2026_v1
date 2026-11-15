@@ -32,6 +32,7 @@ namespace CatoriApp
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            CatoriUCLibrary.Objects.Economy.EconomyKeyboardShortcuts.Register();
             base.OnStartup(e);
             DispatcherUnhandledException += OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += OnDomainUnhandledException;

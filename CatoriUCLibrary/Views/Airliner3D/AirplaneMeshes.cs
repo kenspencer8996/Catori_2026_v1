@@ -21,17 +21,7 @@ public sealed partial class AirplaneMeshes
 
     public MeshGeometry3D Engines { get; } = CreateEngines();
 
-    public MeshGeometry3D Fin { get; } =
-        Prism(
-            new[]
-            {
-                new Point3D(-64, -1.5, 3),
-                new Point3D(-45, -1.5, 3),
-                new Point3D(-59, -1.5, 25),
-                new Point3D(-67, -1.5, 25),
-            },
-            new Vector3D(0, 3, 0)
-        );
+    public MeshGeometry3D Fin { get; } = CreateFin();
 
     public MeshGeometry3D Gear { get; } = CreateGear();
 

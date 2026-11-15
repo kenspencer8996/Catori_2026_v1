@@ -1,4 +1,4 @@
-﻿namespace CatoriUCLibrary.Views.Airliner3D;
+namespace CatoriUCLibrary.Views.Airliner3D;
 public partial class Airplane3DUC : CatoriInterfaces.IKeyframeAnimatable
 {
     public void ExecuteKeyframe(string json)
@@ -75,6 +75,15 @@ public partial class Airplane3DUC : CatoriInterfaces.IKeyframeAnimatable
                     else
                         SetFlaps(FlapSetting.FullFlap);
                     break;
+                case ActionEnum.SetCamera:
+                    _ = TransitionCameraAsync(action.CameraPreset, action.Duration);
+                    break;
+                case ActionEnum.SetCameraElevation:
+                    _ = TransitionCameraElevationAsync(action.ElevationDegrees, action.Duration);
+                    break;
+                case ActionEnum.Disembark:
+                    Disembark();
+                    break;
                 case ActionEnum.SetScale:
                     SetScale(action.Scale, TimeSpan.FromSeconds(action.Duration));
                     break;
@@ -89,6 +98,11 @@ public partial class Airplane3DUC : CatoriInterfaces.IKeyframeAnimatable
 
     public void SetHeading(double degrees, TimeSpan duration)
     {
+        SetHeading(degrees, duration, HeadingTurnDirection.Shortest);
+    }
+
+    public void SetHeading(double degrees, TimeSpan duration, HeadingTurnDirection turnDirection)
+    {
         Dispatcher.VerifyAccess();
         if (duration < TimeSpan.Zero)
         {
@@ -96,7 +110,7 @@ public partial class Airplane3DUC : CatoriInterfaces.IKeyframeAnimatable
         }
         ValidateAngle(degrees);
         double current = YawRotation.Angle;
-        double target = AngleMath.Unwrap(current, -degrees);
+        double target = HeadingTurnTarget.Resolve(current, degrees, turnDirection);
         CancelKeyframeHeading();
         _hasKeyframeHeading = true;
         _hasAuthoredAttitude = true;

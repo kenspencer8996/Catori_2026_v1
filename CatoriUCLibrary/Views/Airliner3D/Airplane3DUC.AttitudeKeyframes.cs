@@ -17,7 +17,7 @@ public partial class Airplane3DUC
         switch (action.Action)
         {
             case ActionEnum.SetHeading:
-                SetHeading(action.Angle, duration);
+                SetHeading(action.Angle, duration, action.TurnDirection);
                 return;
             case ActionEnum.BankLeft:
                 channel = RollRotation;

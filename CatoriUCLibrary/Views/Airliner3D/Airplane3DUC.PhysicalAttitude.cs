@@ -73,6 +73,8 @@ public partial class Airplane3DUC
             return;
         }
         PhysicalAttitudeTransform.Matrix = PhysicalOrientationMatrix();
+        UpdateElevator();
+        UpdateRudder();
         UpdateRotationalAxis();
     }
 

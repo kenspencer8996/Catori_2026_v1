@@ -119,6 +119,40 @@ public sealed class GameEconomy
         });
     }
 
+    public int ResetBalances()
+    {
+        string[] accounts = Locked(() =>
+        {
+            var save = Read();
+            string[] ids = save.Balances.Keys.ToArray();
+            foreach (string id in ids)
+            {
+                decimal difference = config.DefaultBalance - save.Balances[id];
+                save.Balances[id] = config.DefaultBalance;
+                if (difference != 0)
+                {
+                    save.Transactions["reset:" + Guid.NewGuid().ToString("N")] = new MoneyTransaction
+                    {
+                        AvatarId = id,
+                        Amount = difference,
+                        Description = "Funds reset to configured default",
+                        TimestampUtc = DateTime.UtcNow
+                    };
+                }
+            }
+            if (ids.Length > 0)
+            {
+                Write(save);
+            }
+            return ids;
+        });
+        foreach (string id in accounts)
+        {
+            BalanceChanged?.Invoke(id, config.DefaultBalance);
+        }
+        return accounts.Length;
+    }
+
     public bool TryPurchase(string avatarId, decimal amount, string transactionId, string description = "Purchase")
     {
         return Change(avatarId, amount, transactionId, description, false);

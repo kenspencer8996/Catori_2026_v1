@@ -37,7 +37,10 @@
 
     <Grid x:Name="PersonDropSurface">
         <controlViews:VisualPartAnimatorUC x:Name="PartAnimator" IsHitTestVisible="False"/>
-            <Viewbox Stretch="Uniform">
+            <Viewbox Stretch="Uniform" RenderTransformOrigin="0.5,1">
+                <Viewbox.RenderTransform>
+                    <ScaleTransform x:Name="AvatarKeyframeScale" ScaleX="1" ScaleY="1" />
+                </Viewbox.RenderTransform>
                 <Canvas x:Name="PersonRoot" Width="300" Height="400" Background="Transparent">
             <Canvas x:Name="LeftLegRoot">
                 <Image x:Name="LeftLegImage" Stretch="Fill" Tag="LeftThigh" MouseLeftButtonDown="PartMouseDown"/>

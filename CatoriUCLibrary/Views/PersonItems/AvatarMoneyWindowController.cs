@@ -32,6 +32,7 @@ public sealed class AvatarMoneyWindowController
 
     public static void Attach(Window window)
     {
+        CatoriUCLibrary.Objects.Economy.EconomyKeyboardShortcuts.Register();
         controllers.GetValue(window, key => new AvatarMoneyWindowController(key));
     }
 

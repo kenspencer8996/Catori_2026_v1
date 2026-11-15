@@ -14,6 +14,7 @@ public class DragManager
     private IDraggable _currentDraggable;
     private UIElement _dragged;
 
+    private bool _dropConsumed;
     private bool _mouseDown;
     private bool _isDragging;
     private Point _mouseDownPos;
@@ -50,6 +51,20 @@ public class DragManager
         if (!_dropTargets.Contains(target))
             _dropTargets.Add(target);
         _debug.RegisterTarget(target);
+    }
+
+    public void ConsumeCurrentDrop()
+    {
+        _dropConsumed = true;
+        ClearHighlight();
+        _activeTarget = null;
+    }
+
+    public void ClearDropTargets()
+    {
+        ClearHighlight();
+        _activeTarget = null;
+        _dropTargets.Clear();
     }
 
     // ---------------------------------------------------------
@@ -136,37 +151,42 @@ public class DragManager
     // ---------------------------------------------------------
     private void OnMouseUp(object sender, MouseButtonEventArgs e)
     {
+        CompleteDrag(e.GetPosition(_root));
+    }
+
+    private void CompleteDrag(Point mousePosition)
+    {
         if (!_mouseDown)
-            return;
-
-        _mouseDown = false;
-
-        bool wasDragging = _isDragging;
-        _isDragging = false;
-        _canvas.ReleaseMouseCapture();
-        _physics.Stop();
-        _currentDraggable.OnDragMouseup();
-
-        if (wasDragging && _currentDraggable != null && _activeTarget != null)
         {
-            if (_activeTarget.CanDrop(_currentDraggable))
+            return;
+        }
+        bool wasDragging = _isDragging;
+        _mouseDown = false;
+        _isDragging = false;
+        _physics.Stop();
+        if (wasDragging && _dragged is not null)
+        {
+            SetElementPosition(ClampToCanvas(new Point(mousePosition.X - _grabOffset.X, mousePosition.Y - _grabOffset.Y)));
+        }
+        _canvas.ReleaseMouseCapture();
+        try
+        {
+            _currentDraggable?.OnDragMouseup();
+            if (wasDragging && !_dropConsumed && _currentDraggable is not null
+                && _currentDraggable.Visual is FrameworkElement element && element.IsVisible && element.IsDescendantOf(_canvas)
+                && _activeTarget is FrameworkElement target && target.IsVisible && target.IsDescendantOf(_canvas)
+                && _activeTarget.CanDrop(_currentDraggable))
             {
                 SnapToTarget(_currentDraggable, _activeTarget);
                 _activeTarget.OnDrop(_currentDraggable);
             }
-            else
-            {
-                
-                //(_activeTarget as dynamic)?.RejectDrop(_currentDraggable);
-            }
         }
-
-        ClearHighlight();
-        ResetDragState();
+        finally
+        {
+            ClearHighlight();
+            ResetDragState();
+        }
     }
-
-
-  
 
     // ---------------------------------------------------------
     // SNAP TO TARGET (Option 3)
@@ -185,6 +205,7 @@ public class DragManager
     private void ResetDragState()
     {
         CreatePhysicsController();
+        _dropConsumed = false;
         _currentDraggable = null;
         _dragged = null;
         _activeTarget = null;
@@ -261,13 +282,11 @@ public class DragManager
 
         foreach (var target in _dropTargets)
         {
-            if (target is FrameworkElement feTarget)
+            if (target is FrameworkElement feTarget && feTarget.IsVisible && feTarget.IsDescendantOf(_canvas)
+                && _currentDraggable is not null && target.CanDrop(_currentDraggable))
             {
-                var targetBounds = new Rect(
-                    Canvas.GetLeft(feTarget),
-                    Canvas.GetTop(feTarget),
-                    feTarget.ActualWidth,
-                    feTarget.ActualHeight);
+                var targetBounds = feTarget.TransformToAncestor(_canvas)
+                    .TransformBounds(new Rect(0, 0, feTarget.ActualWidth, feTarget.ActualHeight));
 
                 if (elementBounds.IntersectsWith(targetBounds))
                 {

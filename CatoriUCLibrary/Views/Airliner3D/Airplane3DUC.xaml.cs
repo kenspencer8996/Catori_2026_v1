@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 using System.Windows.Controls;
 
@@ -138,6 +138,7 @@ public partial class Airplane3DUC : UserControl
         TailModel.Geometry = meshes.Tail;
 
         FinModel.Geometry = meshes.Fin;
+        RudderModel.Geometry = meshes.Rudder;
 
         EnginesModel.Geometry = meshes.Engines;
 
@@ -420,28 +421,25 @@ public partial class Airplane3DUC : UserControl
 
 
     private void Control_Unloaded(object sender, RoutedEventArgs e)
-
     {
         // Keep the finite heading animation running across path-host handoffs.
         // A subsequent explicit heading replaces it.
-
-        CancelTrip();
-
+        // External path hosts temporarily unload this control during reparenting.
+        // Explicit scene cleanup and Disembark own the tracked person manifest.
+        if (_boardedPeople.Count == 0)
+        {
+            CancelTrip();
+        }
         CancelLandingGearMotion();
-
         ClearManualOrientation();
-
-        CancelCameraTransition();
-
+        // Finite camera transitions, like heading transitions, survive path-host handoffs.
+        // ConfigureSceneCamera cancels them when Studio resets or restarts playback.
         player?.Dispose();
-
         player = null;
-
-        StopEngine(1);
-
-        StopEngine(2);
-
+        if (_boardedPeople.Count == 0)
+        {
+            StopEngine(1);
+            StopEngine(2);
+        }
     }
-
 }
-

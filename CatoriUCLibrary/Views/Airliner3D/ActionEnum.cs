@@ -25,6 +25,9 @@ namespace CatoriUCLibrary.Views.Airliner3D
         FlapHalf = 14,
         FlapDown = 15,
         SetHeading = 16,
-        SetScale = 17
+        SetScale = 17,
+        SetCamera = 18,
+        SetCameraElevation = 19,
+        Disembark = 20
     }
 }
