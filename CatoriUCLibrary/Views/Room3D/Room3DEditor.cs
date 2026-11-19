@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
 
 namespace CatoriUCLibrary.Views.Room3D;
@@ -74,7 +74,7 @@ public sealed class Room3DEditor
     {
         if (!Lines.Contains(line) || !double.IsFinite(duration) || duration < 0.05 || duration > 3600)
         {
-            throw new ArgumentException("Choose a line and a duration of 0.05–3600 seconds.");
+            throw new ArgumentException("Choose a line and a duration of 0.05â€“3600 seconds.");
         }
         if (line.Duration == duration)
         {
@@ -103,6 +103,101 @@ public sealed class Room3DEditor
         Select(data);
         Changed?.Invoke();
         return data;
+    }
+
+    public RoomChildModel AddVisual(string typeName)
+    {
+        var data = new RoomChildModel { Name = typeName.Split('.').Last(), VisualType = typeName };
+        var instance = new RoomChildInstance(data);
+        instances.Add(data.Id, instance);
+        Root.Children.Add(instance.Model);
+        definition.Models.Add(data);
+        Models.Add(data);
+        Select(data);
+        Changed?.Invoke();
+        return data;
+    }
+
+    public void ConfigureSelectedRoom(RoomConstructionSettings settings)
+    {
+        var data = SelectedModel ?? throw new InvalidOperationException("Select a Room3D object first.");
+        if (data.VisualType != RoomVisualCatalog.RoomType)
+        {
+            throw new InvalidOperationException("Select a Room3D object first.");
+        }
+        var previous = data.Room;
+        data.Room = settings;
+        RoomChildInstance replacement;
+        try
+        {
+            replacement = new RoomChildInstance(data);
+        }
+        catch
+        {
+            data.Room = previous;
+            throw;
+        }
+        playback.Stop();
+        Root.Children.Remove(instances[data.Id].Model);
+        instances[data.Id] = replacement;
+        Root.Children.Add(replacement.Model);
+        SelectionChanged?.Invoke();
+        Changed?.Invoke();
+    }
+
+    public void LoadShelfItem(string path, bool sourceYUp, int level)
+    {
+        var data = SelectedModel ?? throw new InvalidOperationException("Select a shelf first.");
+        if (!RoomVisualCatalog.Types.Any(type => type.FullName == data.VisualType && (type.FullName == RoomVisualCatalog.ShelfType || type.FullName == RoomVisualCatalog.SimpleShelfType)))
+        {
+            throw new InvalidOperationException("Select a shelf first.");
+        }
+        var entry = new RoomShelfContent { ModelPath = path, SourceYUp = sourceYUp, Level = level };
+        data.ShelfContents.Add(entry);
+        RoomChildInstance replacement;
+        try
+        {
+            replacement = new RoomChildInstance(data);
+        }
+        catch
+        {
+            data.ShelfContents.Remove(entry);
+            throw;
+        }
+        playback.Stop();
+        Root.Children.Remove(instances[data.Id].Model);
+        instances[data.Id] = replacement;
+        Root.Children.Add(replacement.Model);
+        SelectionChanged?.Invoke();
+        Changed?.Invoke();
+    }
+
+    public void RotateSelected(double degrees)
+    {
+        if (SelectedModel is null || !double.IsFinite(degrees) || !instances.TryGetValue(SelectedModel.Id, out var instance))
+        {
+            return;
+        }
+        playback.Stop();
+        SelectedModel.Rotation = ((degrees % 360) + 360) % 360;
+        instance.Orientation.Angle = SelectedModel.Rotation;
+        SelectionChanged?.Invoke();
+        Changed?.Invoke();
+    }
+
+    public void ResizeSelected(double scale)
+    {
+        if (SelectedModel is null || !double.IsFinite(scale) || !instances.TryGetValue(SelectedModel.Id, out var instance))
+        {
+            return;
+        }
+        playback.Stop();
+        SelectedModel.Scale = Math.Clamp(scale, 0.02, 100);
+        instance.Size.ScaleX = SelectedModel.Scale;
+        instance.Size.ScaleY = SelectedModel.Scale;
+        instance.Size.ScaleZ = SelectedModel.Scale;
+        SelectionChanged?.Invoke();
+        Changed?.Invoke();
     }
 
     public void Select(RoomChildModel? model)
@@ -137,7 +232,7 @@ public sealed class Room3DEditor
         ValidateName(name);
         if ((end - start).Length < 0.01 || !double.IsFinite(duration) || duration < 0.05 || duration > 3600)
         {
-            throw new ArgumentException("Draw a nonzero line and enter a duration of 0.05–3600 seconds.");
+            throw new ArgumentException("Draw a nonzero line and enter a duration of 0.05â€“3600 seconds.");
         }
         var line = new RoomNamedLine { Name = name, StartX = start.X, StartY = start.Y, EndX = end.X, EndY = end.Y, Duration = duration };
         definition.Lines.Add(line);

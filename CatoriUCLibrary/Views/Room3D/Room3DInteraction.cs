@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -16,6 +16,12 @@ public sealed class Room3DInteraction
     private double duration;
     private long target;
     private Vector3D? dragOffset;
+    private Point? resizeStart;
+    private double resizeScale;
+    private Point? rotationStart;
+    private double rotationDegrees;
+    public Func<Model3D, bool>? IsRotationHandle { get; set; }
+    public Func<Model3D, bool>? IsResizeHandle { get; set; }
     public bool IsDrawing => drawingName is not null;
     public event Action<string>? Status;
 
@@ -47,6 +53,8 @@ public sealed class Room3DInteraction
         drawingName = null;
         first = null;
         dragOffset = null;
+        resizeStart = null;
+        rotationStart = null;
         editor.Preview.Children.Clear();
         viewport.Cursor = null;
     }
@@ -88,6 +96,23 @@ public sealed class Room3DInteraction
         }
         foreach (var hit in Hits(point))
         {
+            if (editing && editor.SelectedModel is not null && IsRotationHandle?.Invoke(hit.ModelHit) == true)
+            {
+                EndDrag();
+                editor.Stop();
+                rotationStart = point;
+                rotationDegrees = editor.SelectedModel.Rotation;
+                viewport.Cursor = Cursors.ScrollWE;
+                Status?.Invoke("Drag left or right to rotate the object. Release to finish.");
+                return true;
+            }
+            if (editing && editor.SelectedModel is not null && IsResizeHandle?.Invoke(hit.ModelHit) == true)
+            {
+                resizeStart = point;
+                resizeScale = editor.SelectedModel.Scale;
+                viewport.Cursor = Cursors.SizeNWSE;
+                return true;
+            }
             var model = editor.FindModel(hit.ModelHit);
             if (model is not null && editing)
             {
@@ -102,7 +127,7 @@ public sealed class Room3DInteraction
             var region = editor.FindHotspot(hit.ModelHit);
             if (region is not null)
             {
-                Status?.Invoke(region.Name + " → scene " + region.TargetSceneId + ". Double-click to test navigation.");
+                Status?.Invoke(region.Name + " â†’ scene " + region.TargetSceneId + ". Double-click to test navigation.");
                 if (!editing || clickCount == 2)
                 {
                     editor.ActivateHotspot(region);
@@ -115,6 +140,17 @@ public sealed class Room3DInteraction
 
     public void MouseMove(Point point, bool pressed)
     {
+        if (pressed && rotationStart.HasValue)
+        {
+            editor.RotateSelected(rotationDegrees + point.X - rotationStart.Value.X);
+            Status?.Invoke("Rotation: " + editor.SelectedModel?.Rotation.ToString("0") + "°. Release to finish.");
+            return;
+        }
+        if (pressed && resizeStart.HasValue)
+        {
+            editor.ResizeSelected(resizeScale * Math.Exp((point.X - resizeStart.Value.X - point.Y + resizeStart.Value.Y) / 180));
+            return;
+        }
         var floor = Room3DFloorProjection.FloorPoint(viewport.Viewport, point);
         if (!floor.HasValue)
         {
@@ -133,7 +169,10 @@ public sealed class Room3DInteraction
 
     public void EndDrag()
     {
+        viewport.Cursor = null;
         dragOffset = null;
+        resizeStart = null;
+        rotationStart = null;
     }
 
     private IEnumerable<RayMeshGeometry3DHitTestResult> Hits(Point point)
